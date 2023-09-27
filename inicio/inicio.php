@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!$_SESSION['logged_in']) {
+  header("location: ../controlador/validar_login.php");
+  exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,6 +22,8 @@
     <link rel="stylesheet" href="/css/inicio.css" />
   </head>
   <body>
+
+  <!-- nava bar  -->
     <nav class="navbar">
       <div class="logo">
       
@@ -71,11 +81,15 @@
             <img src="/img/incio/chevron.png" />
           </a>
           <div class="menu">
-            <a href="#"> salir </a>
+            <a href="/controlador/cerrar_sesion.php"> salir </a>
            
           </div>
         </div>
       </div>
-    </nav>
+    </nav><br><br><br>
+
+    <!-- Inicio pagina  -->
+    <h1 >Bienvenido  <?php echo $_SESSION ['Nombre']; ?></h1>
+    
   </body>
 </html>
