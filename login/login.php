@@ -11,24 +11,7 @@
     <title>Login</title>
 </head>
 
-<body>
-    <!-- Barra de navegacion -->
-
-    <header class="header">
-        <div class="logo">
-            <img src="/img/Logo.png" alt="logoImagen">
-        </div>
-        <nav>
-            <ul class="nav-links">
-                <li> <a href="/quienes_somos/quienes_somos.html">Quienes somos</a></li>
-                <li> <a href="/nuestra_historia/historia.html">Nuestra Historia</a></li>
-                <li> <a href="/tecnicas/tecnicas.html">tecnicas</a></li>
-                <li><a href="/index.html">Inicio</a></li>
-            </ul>
-        </nav>
-        <a href="/contacto/Contacto.html" class="boton"><button>Contacto</button></a>
-    </header>
-
+<body> 
     <!-- inicio de sesion -->
     <div class="container">
         <h1>Iniciar sesión</h1>
@@ -38,9 +21,9 @@
             echo '<p class="error-message">' . $mensaje . '</p>';
         }
         ?>
-        <form action="/Login_registro/login/validar.php" method="post">
-          <label for="email">Correo electrónico:</label>
-          <input type="email" id="email" name="correo" >
+        <form action="/controlador/validar_login.php" method="post">
+          <label for="usuario">Usuario:</label>
+          <input type="usuario" id="usuario" name="usuario" >
       
           <label for="password">Contraseña:</label>
           <input type="password" id="password" name="contraseña" >
