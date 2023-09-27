@@ -1,12 +1,20 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "prestamos2.0";
+<?php 
+//conexion al servidor con usuario y contraseña y base de datos 
+$servidor = "localhost";
+$usuario = "root";
+$contrasena = "";
+$dbnombre = "academia";
 
-$conn = new mysqli($servername, $username, $password, $database);
+//crear la conexion
 
-if ($conn->connect_error) {
-    die("La conexión a la base de datos falló: " . $conn->connect_error);
-}s
-?>
+$conexion = new mysqli($servidor, $usuario, $contrasena, $dbnombre);
+
+// //comprobar la conexion 
+
+   if ($conexion->connect_error) {
+      echo" error de conexion";
+  }
+   else { 
+       echo" conexion efectiva ";
+  }
+
