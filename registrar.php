@@ -11,23 +11,23 @@
         <form action="controlador/validar_registro.php" method="post">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese su nombre" required>
             </div>
             <div class="input-container">
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" required>
+                <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido" required>
             </div>
             <div class="input-container">
                 <label for="email">Correo Electrónico:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" placeholder="Por favor ingrese su correo" required>
             </div>
             <div class="input-container">
                 <label for="contrasena">Contraseña:</label>
-                <input type="password" id="contrasena" name="contrasena" required>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
             </div>
             <div class="input-container">
                 <label for="zona">Zona:</label>
-                <select id="zona" name="zona" required>
+                <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                     // Incluye el archivo de conexión a la base de datos
                     include("controlador/conexion.php");
