@@ -1,36 +1,43 @@
 <?php
-// Incluye el archivo de conexión a la base de datos
-include("conexion.php");
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellido'];
+    $email = $_POST['email'];
+    $contrasena = $_POST['contrasena'];
+    $zona = $_POST['zona'];
+    $moneda = $_POST['moneda'];
 
-// Recupera los datos del formulario
-$nombre = $_POST['nombre'];
-$apellido = $_POST['apellido'];
-$email = $_POST['email'];
-$contrasena = password_hash($_POST['contrasena'], PASSWORD_DEFAULT); // Almacena la contraseña de manera segura
-$zona = $_POST['zona'];
-$monedaPreferida = $_POST['moneda'];
-$rolID = $_POST['rol'];
+    // Hashea la contraseña utilizando password_hash
+    $contrasenaHasheada = password_hash($contrasena, PASSWORD_DEFAULT);
 
-// Consulta SQL para insertar el nuevo usuario en la tabla "Usuarios"
-$sql = "INSERT INTO Usuarios (Nombre, Apellido, Email, Password, Zona, MonedaPreferida, RolID) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)";
+    // Incluye el archivo de conexión a la base de datos
+    include("conexion.php");
 
-$stmt = mysqli_prepare($conexion, $sql);
+    // Prepara la consulta SQL
+    $sql = "INSERT INTO Usuarios (Nombre, Apellido, Email, Password, Zona, MonedaPreferida, RolID) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-if ($stmt) {
-    mysqli_stmt_bind_param($stmt, "ssssssi", $nombre, $apellido, $email, $contrasena, $zona, $monedaPreferida, $rolID);
-    
-    if (mysqli_stmt_execute($stmt)) {
-        echo "Usuario registrado exitosamente.";
+    $stmt = $conexion->prepare($sql);
+
+    if ($stmt) {
+        // Asigna los valores a los marcadores de posición en la consulta preparada
+        $stmt->bind_param("ssssssi", $nombre, $apellido, $email, $contrasenaHasheada, $zona, $moneda, $rolID);
+
+        // Define el valor del rol (por ejemplo, 'admin')
+        $rolID = 1;
+
+        // Ejecuta la consulta
+        if ($stmt->execute()) {
+            echo "Usuario registrado con éxito.";
+        } else {
+            echo "Error al registrar el usuario: " . $stmt->error;
+        }
+
+        $stmt->close();
     } else {
-        echo "Error al registrar el usuario: " . mysqli_error($conexion);
+        echo "Error de consulta preparada: " . $conexion->error;
     }
 
-    mysqli_stmt_close($stmt);
-} else {
-    echo "Error en la consulta preparada: " . mysqli_error($conexion);
+    $conexion->close();
 }
-
-// Cierra la conexión a la base de datos cuando hayas terminado
-mysqli_close($conexion);
 ?>

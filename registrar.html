@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/views/assets/css/registrar.css">
+    <title>Registro de Usuarios</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Usuarios</h1>
+        <form action="/controlador/validar_registro.php" method="POST">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
+            
+            <label for="zona">Zona:</label>
+            <input type="text" id="zona" name="zona" required>
+            
+            <label for="moneda">Moneda Preferida:</label>
+            <select id="moneda" name="moneda">
+                <option value="dolares">Dólares</option>
+                <option value="pesos_colombianos">Pesos Colombianos</option>
+                <option value="pesos_mexicanos">Pesos Mexicanos</option>
+            </select>
+            
+            <input type="submit" value="Registrarse">
+        </form>
+    </div>
+</body>
+</html>
