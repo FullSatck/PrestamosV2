@@ -18,6 +18,24 @@
   border-bottom: 1px solid #f2f2f2;
   font-family: "Euclid Circular A", "Poppins";
 }
+.field-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva línea si no caben en el ancho actual */
+  margin: 10px 10px 0 10px; /* Espacio entre campos y hacia arriba */
+  padding: 10px; /* Espacio interno del recuadro */
+  border: 1px solid #ccc; /* Borde del recuadro */
+}
+
+/* Estilos para las columnas */
+.column {
+  flex: 1; /* Las columnas ocupan un espacio igual */
+  padding: 10px; /* Espacio interno de las columnas */
+}
+
+/* Estilos para los campos de texto con ancho reducido en dos columnas */
+.column input[type="text"] {
+  width: 100%; /* Ancho completo dentro de las columnas */
+}
 
 .logo,
 .links {
@@ -169,4 +187,55 @@ a.join-link {
   background: #f5f5f5;
 }
 
+.second-toolbar {
+  text-align: center; /* Centra el contenido horizontalmente */
+  margin-top: 50px; /* Ajusta la distancia desde la parte superior */
+}
 
+.grid-button {
+  /* Estilos para los botones en forma de cuadrícula */
+  margin: 5px; /* Espaciado entre botones */
+  padding: 10px 20px; /* Espaciado interno de botones */
+}
+
+.grid-input {
+  /* Estilos para los campos de texto en forma de cuadrícula */
+  margin: 5px; /* Espaciado entre campos de texto */
+  padding: 5px; /* Espaciado interno de campos de texto */
+}
+
+ /* Estilos para la barra larga de cobro */
+ .cobro-bar {
+  background-color: #888; /* Color de fondo gris */
+  text-align: center; /* Centra el texto horizontalmente */
+  padding: 10px 0; /* Espaciado interno de la barra */
+}
+
+.cobro-text {
+  color: #000; /* Color del texto negro */
+  font-weight: bold; /* Negrita */
+}
+
+/* Estilos para el recuadro de campos */
+.field-container {
+  margin: 10px 10px 0 10px; /* Espacio entre campos y hacia arriba */
+  padding: 10px; /* Espacio interno del recuadro */
+  border: 1px solid #ccc; /* Borde del recuadro */
+}
+
+/* Estilos para los campos de texto con ancho reducido */
+input[type="text"] {
+  width: 100%; /* Ancho completo */
+  padding: 5px;
+  margin-bottom: 10px; /* Espacio entre campos de respuesta */
+}
+
+/* Estilos para el botón de guardar */
+.btn-guardar {
+  background-color: #337ab7;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  float: left; /* Alinea el botón a la izquierda */
+}
