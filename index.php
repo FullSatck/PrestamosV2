@@ -23,16 +23,17 @@
         ?>
         <form action="/controlador/validar_login.php" method="post">
           <label for="usuario">Usuario:</label>
-          <input type="usuario" id="usuario" name="usuario" >
+          <input type="usuario" id="usuario" name="usuario" placeholder= "Por favor ingrese su usuario" >
       
           <label for="password">Contraseña:</label>
-          <input type="password" id="password" name="contrasena" >
+          <input type="password" id="password" name="contrasena" placeholder="Por favor ingrese su clave" >
       
           <button type="submit">Iniciar sesión</button>
         </form>
       
-        <p>¿No tienes cuenta? <a href="/Login_registro/registrarse/registrarse.php">Regístrate aquí</a>.</p>
+        <p>¿No tienes cuenta? <a href="registrar.php">Regístrate aquí</a>.</p>
       </div>
+      
 
 
     
