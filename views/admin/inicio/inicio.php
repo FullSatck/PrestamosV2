@@ -115,7 +115,7 @@
                 <table summary="Models available in the Empresa application." class="table table-striped table-bordered">
                     <tr>
                         <th scope="row">
-                            <a href="/admin/empresa/cliente/">Clientes</a>
+                            <a href="/views/admin/clientes/clientes.php">Clientes</a>
                             <div class="pull-right">
                             <button class="jeje"><a href="/admin/empresa/cliente/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
                                <strong>Añadir</strong></a></button>
@@ -144,7 +144,7 @@
                 
                     <tr>
                         <th scope="row">
-                            <a href="/admin/recaudo/cliente/">Clientes</a>
+                            <a href="/views/admin/clientes/clientes.php">Clientes</a>
                             <div class="pull-right">
                             <button class="jeje"><a href="/admin/recaudo/cliente/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
                                <strong>Añadir</strong></a></button>
