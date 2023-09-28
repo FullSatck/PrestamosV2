@@ -3,7 +3,7 @@
 $servidor = "localhost";
 $usuario = "root";
 $contrasena = "";
-$dbnombre = "prestamos2_0";
+$dbnombre = "prestamos";
 
 //crear la conexion
 

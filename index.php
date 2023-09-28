@@ -31,8 +31,9 @@
           <button type="submit">Iniciar sesión</button>
         </form>
       
-        <p>¿No tienes cuenta? <a href="/Login_registro/registrarse/registrarse.php">Regístrate aquí</a>.</p>
+        <p>¿No tienes cuenta? <a href="registrar.php">Regístrate aquí</a>.</p>
       </div>
+      
 
 
     

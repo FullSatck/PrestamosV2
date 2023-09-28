@@ -1,52 +1,63 @@
 <?php
 session_start();
-include("conexion.php");
+include("conexion.php"); // Asegúrate de que este archivo contiene tu conexión a la base de datos
 
-$usuario = $_POST['usuario'];
-$contrasena = $_POST['contrasena'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $contrasena = $_POST['contrasena'];
 
-// Utiliza consultas preparadas para prevenir ataques de SQL injection
-$consulta = "SELECT * FROM usuarios WHERE usuario = ? AND contrasena = ?";
-$stmt = mysqli_prepare($conexion, $consulta);
+    // Utiliza consultas preparadas para prevenir ataques de SQL injection
+    $consulta = "SELECT ID, Email, Password, RolID, Nombre FROM Usuarios WHERE Email = ?";
+    $stmt = mysqli_prepare($conexion, $consulta);
 
-if ($stmt) {
-    mysqli_stmt_bind_param($stmt, "ss", $usuario, $contrasena);
-    mysqli_stmt_execute($stmt);
-    $resultado = mysqli_stmt_get_result($stmt);
-    $filas = mysqli_fetch_assoc($resultado);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+        $resultado = mysqli_stmt_get_result($stmt);
+        $fila = mysqli_fetch_assoc($resultado);
 
-    if ($filas) {
-        $_SESSION['logged_in'] = true;
-        $_SESSION['IDrol'] = $filas['IDrol']; // Leer rol de bd
-        $_SESSION['Nombre'] = $filas['usuario']; // Ver nombre de usuario
+        if ($fila) {
+            // Verificar la contraseña con password_verify
+            $hash_contrasena = $fila['Password'];
+            if (password_verify($contrasena, $hash_contrasena)) {
+                $_SESSION['logged_in'] = true;
+                $_SESSION['IDrol'] = $fila['RolID']; // Leer rol de BD
+                $_SESSION['Email'] = $fila['Email']; // Guardar el email del usuario
+                $_SESSION['NombreUsuario'] = $fila['Nombre']; // Guardar el nombre del usuario
 
-        switch ($filas['IDrol']) {
-            case 0:
-                header("location: ../#"); // no tiene rol
-                break;
-            case 1:
-                header("location: ../views/admin/inicio/inicio.php"); //  ir a inicio admin
-                break;
-            case 2:
-                header("location: ../####"); //  ir al inicio supervisor
-                break;
-            case 3:
-                header("location: ../##"); //  ir al inicio cobrador
-                break;
-            default:
-                header("location: ../pagina_error.php"); //  error de pagina
-                break;
+                switch ($fila['RolID']) {
+                    case 1:
+                        header("location: inicio_admin.php"); // Redirigir al inicio de administrador
+                        break;
+                    case 2:
+                        header("location: inicio_supervisor.php"); // Redirigir al inicio de supervisor
+                        break;
+                    case 3:
+                        header("location: inicio_cobrador.php"); // Redirigir al inicio de cobrador
+                        break;
+                    default:
+                        header("location: pagina_error.php"); // Redirigir a página de error
+                        break;
+                }
+
+                exit();
+            } else {
+                // Contraseña incorrecta
+                $_SESSION['logged_in'] = false;
+                header("location: pagina_errorcontra.php"); // Redirigir a página de error
+                exit();
+            }
+        } else {
+            // Usuario no encontrado
+            $_SESSION['logged_in'] = false;
+            header("location: pagina_erroruser.php"); // Usuario no encontrado (página de error)
+            exit();
         }
-
-        exit();
     } else {
+        // Error de consulta preparada
         $_SESSION['logged_in'] = false;
-        header("location: ../pagina_error.php#"); //  error de pagina
+        header("location: pagina_errorns.php"); // Error de consulta preparada (página de error)
         exit();
     }
-} else {
-    $_SESSION['logged_in'] = false;
-    header("location: ../pagina_error.php##"); //  error de pagina
-    exit();
 }
 ?>
