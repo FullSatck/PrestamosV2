@@ -1,0 +1,132 @@
+/* Reset de estilos */
+html, body, div, h1, h2, h3, p, ul, li, table, th, td, form, input, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Estilos para la barra de navegación superior */
+.navbar {
+    background-color: #9e9fa0;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para el encabezado */
+.header {
+    text-align: center;
+    padding: 20px;
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Estilos para botones */
+.btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para la tabla de resultados */
+#result_list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#result_list th,
+#result_list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+#result_list th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+/* Estilos para la paginación */
+.pagination {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+    text-align: center;
+}
+
+.pagination li {
+    display: inline;
+    margin-right: 5px;
+}
+
+.pagination a {
+    text-decoration: none;
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.pagination .this-page {
+    background-color: #333;
+}
+
+/* Estilos para el formulario de búsqueda */
+#changelist-search {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.search-query {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Estilos para el pie de página */
+#footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-top: 1px solid #ddd;
+}

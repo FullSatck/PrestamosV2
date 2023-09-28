@@ -38,7 +38,7 @@
                 <a href="#"><strong>Empresa</strong></a>
             </li>            
             <li>             
-                    <a href="/admin/empresa/cliente/">Clientes</a>                
+                    <a href="/views/admin/clientes/clientes.php">Cliesssstes</a>                
             </li>
             <li role="presentation" class="divider"></li>
             <li>
@@ -48,7 +48,7 @@
                     <a href="../abonos/inicio.php">Abonos</a>                
             </li>            
             <li>                
-                    <a href="/admin/recaudo/cliente/">Clientes</a>                
+                    <a href="../../clientes/clientes.php">Clientes</a>                
             </li>            
             <li>                
                     <a href="/admin/recaudo/cobro/">Cobros</a>                
@@ -115,7 +115,7 @@
                 <table summary="Models available in the Empresa application." class="table table-striped table-bordered">
                     <tr>
                         <th scope="row">
-                            <a href="/admin/empresa/cliente/">Clientes</a>
+                            <a href="/views/admin/clientes/clientes.php">Clientes</a>
                             <div class="pull-right">
                             <button class="jeje"><a href="/admin/empresa/cliente/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
                                <strong>Añadir</strong></a></button>
@@ -123,8 +123,8 @@
                                <strong>Modificar</strong></a></button>
                             </div>
                         </th>
-                    </tr
-                </table>            
+                    </tr>
+                </table>      
                 
             <h2 id='recaudo' class="app-name"><a href="/admin/recaudo/">Recaudo</a></h2>
                 
@@ -144,7 +144,7 @@
                 
                     <tr>
                         <th scope="row">
-                            <a href="/admin/recaudo/cliente/">Clientes</a>
+                            <a href="/views/admin/clientes/clientes.php">Clientes</a>
                             <div class="pull-right">
                             <button class="jeje"><a href="/admin/recaudo/cliente/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
                                <strong>Añadir</strong></a></button>
