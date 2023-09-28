@@ -38,7 +38,7 @@
                 <a href="#"><strong>Empresa</strong></a>
             </li>            
             <li>             
-                    <a href="../clientes/clientes.php">Clientes</a>                
+                    <a href="/views/admin/clientes/clientes.php">Cliesssstes</a>                
             </li>
             <li role="presentation" class="divider"></li>
             <li>
