@@ -25,7 +25,7 @@ if ($stmt) {
                 header("location: ../#"); // no tiene rol
                 break;
             case 1:
-                header("location: ../inicio/inicio.php"); //  ir a inicio admin
+                header("location: ../views/inicio/inicio.php"); //  ir a inicio admin
                 break;
             case 2:
                 header("location: ../####"); //  ir al inicio supervisor
