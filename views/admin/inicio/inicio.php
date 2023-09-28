@@ -38,7 +38,7 @@
                 <a href="#"><strong>Empresa</strong></a>
             </li>            
             <li>             
-                    <a href="/admin/empresa/cliente/">Clientes</a>                
+                    <a href="/views/admin/clientes/clientes.php">Cliesssstes</a>                
             </li>
             <li role="presentation" class="divider"></li>
             <li>
@@ -48,7 +48,7 @@
                     <a href="../abonos/inicio.php">Abonos</a>                
             </li>            
             <li>                
-                    <a href="/admin/recaudo/cliente/">Clientes</a>                
+                    <a href="../../clientes/clientes.php">Clientes</a>                
             </li>            
             <li>                
                     <a href="/admin/recaudo/cobro/">Cobros</a>                
@@ -80,243 +80,140 @@
         
 <div class="row">
     <div id="content-main" class="col-sm-12">
-
-        <div class="tabbable">
-            
-                
-<h2 id='auth' class="app-name"><a href="/admin/auth/">Autenticación y autorización</a></h2>
+        <div class="tabbable">  
+            <h2 id='auth' class="app-name"><a href="/admin/auth/">Autenticación y autorización</a></h2>
 
                 
                 <table summary="Models available in the Autenticación y autorización application." class="table table-striped table-bordered">
-                
                     <tr>
                         <th scope="row">
-                            
                             <a href="/admin/auth/group/">Grupos</a>
-                            
-
-                            
                             <div class="pull-right">
-                                
-                                <a href="/admin/auth/group/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/auth/group/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                            <button class="jeje"><a href="/admin/auth/group/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                                <strong>Añadir</strong></a></button>
+                            <button class="jeje"><a href="/admin/auth/group/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                                <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
                 
                     <tr>
                         <th scope="row">
-                            
                             <a href="/admin/auth/user/">Usuarios</a>
-                            
-
-                            
                             <div class="pull-right">
-                                
-                                <a href="/admin/auth/user/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/auth/user/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                            <button class="jeje"><a href="/admin/auth/user/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</strong></a></button>
+                            <button class="jeje"><a href="/admin/auth/user/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                               <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
-                
                 </table>
             
-                
-<h2 id='empresa' class="app-name"><a href="/admin/empresa/">Empresa</a></h2>
+            <h2 id='empresa' class="app-name"><a href="/admin/empresa/">Empresa</a></h2>
 
-                
                 <table summary="Models available in the Empresa application." class="table table-striped table-bordered">
-                
                     <tr>
                         <th scope="row">
-                            
-                            <a href="/admin/empresa/cliente/">Clientes</a>
-                            
-
-                            
+                            <a href="/views/admin/clientes/clientes.php">Clientes</a>
                             <div class="pull-right">
-                                
-                                <a href="/admin/empresa/cliente/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/empresa/cliente/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                            <button class="jeje"><a href="/admin/empresa/cliente/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</strong></a></button>
+                            <button class="jeje"><a href="/admin/empresa/cliente/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                               <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
+                </table>      
                 
-                </table>
-            
-                
-<h2 id='recaudo' class="app-name"><a href="/admin/recaudo/">Recaudo</a></h2>
-
+            <h2 id='recaudo' class="app-name"><a href="/admin/recaudo/">Recaudo</a></h2>
                 
                 <table summary="Models available in the Recaudo application." class="table table-striped table-bordered">
                 
                     <tr>
                         <th scope="row">
-                            
                             <a href="../abonos/abonos.php">Abonos</a>
-                            
-
-                            
                             <div class="pull-right">
-                                
-                                <a href="/admin/recaudo/abono/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/recaudo/abono/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                            <button class="jeje"><a href="/admin/recaudo/abono/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</strong></a></button>
+                            <button class="jeje"><a href="/admin/recaudo/abono/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                               <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
                 
                     <tr>
                         <th scope="row">
-                            
-                            <a href="/admin/recaudo/cliente/">Clientes</a>
-                            
-
-                            
+                            <a href="/views/admin/clientes/clientes.php">Clientes</a>
                             <div class="pull-right">
-                                
-                                <a href="/admin/recaudo/cliente/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/recaudo/cliente/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                            <button class="jeje"><a href="/admin/recaudo/cliente/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</strong></a></button>
+                            <button class="jeje"><a href="/admin/recaudo/cliente/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                               <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
                 
                     <tr>
                         <th scope="row">
-                            
                             <a href="/admin/recaudo/cobro/">Cobros</a>
-                            
-
-                            
                             <div class="pull-right">
-                                
-                                <a href="/admin/recaudo/cobro/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/recaudo/cobro/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                            <button class="jeje"><a href="/admin/recaudo/cobro/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</strong></a></button>
+                            <button class="jeje"><a href="/admin/recaudo/cobro/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                               <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
                 
                     <tr>
                         <th scope="row">
-                            
                             <a href="/admin/recaudo/codeudor/">Codeudors</a>
-                            
-
-                            
                             <div class="pull-right">
-                                
-                                <a href="/admin/recaudo/codeudor/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/recaudo/codeudor/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                            <button class="jeje"><a href="/admin/recaudo/codeudor/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</strong></a></button>
+                            <button class="jeje"><a href="/admin/recaudo/codeudor/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                               <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
                 
                     <tr>
                         <th scope="row">
-                            
                             <a href="/admin/recaudo/deuda/">Deudas</a>
-                            
-
-                            
                             <div class="pull-right">
-                                
-                                <a href="/admin/recaudo/deuda/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/recaudo/deuda/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                                <button class="jeje"><a href="/admin/recaudo/deuda/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</a></strong></button>
+                                <button class="jeje"><a href="/admin/recaudo/deuda/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                                <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
                 
                     <tr>
                         <th scope="row">
-                            
                             <a href="/admin/recaudo/gasto/">Gastos</a>
-                            
-
-                            
                             <div class="pull-right">
-                                
-                                <a href="/admin/recaudo/gasto/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/recaudo/gasto/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
+                            <button class="jeje"><a href="/admin/recaudo/gasto/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</a></strong></button>
+                            <button class="jeje"><a href="/admin/recaudo/gasto/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                               <strong>Modificar</strong></a></button>
                             </div>
-                            
                         </th>
                     </tr>
                 
                     <tr>
-                        <th scope="row">
-                            
+                        <th scope="row">                            
                             <a href="/admin/recaudo/retiro/">Retiros</a>
-                            
-
-                            
-                            <div class="pull-right">
-                                
-                                <a href="/admin/recaudo/retiro/add/" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
-                                Añadir</a>
-                                
-                                
-                                <a href="/admin/recaudo/retiro/" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
-                                Modificar</a>
-                                
-                            </div>
-                            
-                        </th>
-                    </tr>
-                
-                </table>
-            
+                         <div class="pull-right">                                
+                            <button class="jeje"><a href="##" class="btn btn-xs addlink"><span class="glyphicon glyphicon-plus"></span>
+                               <strong>Añadir</strong></a></button>
+                            <button class="jeje"><a href="##" class="btn btn-xs changelink"><span class="glyphicon glyphicon-edit"></span>
+                               <strong>Modificar</strong></a></button>                                
+                         </div>
+                        </th> 
+                    </tr>                
+                </table>            
         </div>
     </div>
 </div>

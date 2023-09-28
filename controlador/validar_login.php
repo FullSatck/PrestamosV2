@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 switch ($fila['RolID']) {
                     case 1:
-                        header("location: ../views/vendedor/prestamos.php"); // Redirigir al inicio de administrador
+                        header("location: inicio_admin.php"); // Redirigir al inicio de administrador
                         break;
                     case 2:
                         header("location: inicio_supervisor.php"); // Redirigir al inicio de supervisor
