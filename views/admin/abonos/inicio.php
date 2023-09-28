@@ -4,7 +4,7 @@ if (!$_SESSION['logged_in']) {
   header("location: ../controlador/validar_login.php");
   exit();
 }
-?>
+?> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +19,7 @@ if (!$_SESSION['logged_in']) {
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/css/inicio.css" />
+    <link rel="stylesheet" href="/views/assets/css/inicio.css" />
   </head>
   <body>
 
@@ -33,7 +33,7 @@ if (!$_SESSION['logged_in']) {
         <div class="dropdown">
           <a href="#"
             >Zonas
-            <img src="/img/incio/chevron.png" />
+            <img src="/views/assets/img/inicio/chevron.png" />
           </a>
           <div class="menu">
             <a href="#"> Puebla </a>
@@ -49,7 +49,7 @@ if (!$_SESSION['logged_in']) {
         <div class="dropdown">
           <a href="#"
             >Menu
-            <img src="/img/incio/chevron.png" />
+            <img src="/views/assets/img/inicio/chevron.png" />
           </a>
           <div class="menu">
             <a href="#"> clientes </a>
@@ -65,7 +65,7 @@ if (!$_SESSION['logged_in']) {
         <div class="dropdown">
           <a href="#"
             >Reportes
-            <img src="/img/incio/chevron.png" />
+            <img src="/views/assets/img/inicio/chevron.png" />
           </a>
           <div class="menu">
             <a href="#"> Suma saldo</a>
@@ -78,7 +78,7 @@ if (!$_SESSION['logged_in']) {
         <div class="dropdown">
           <a href="#"
             >Cerrar sesion
-            <img src="/img/incio/chevron.png" />
+            <img src="/views/assets/img/inicio/chevron.png" />
           </a>
           <div class="menu">
             <a href="/controlador/cerrar_sesion.php"> salir </a>

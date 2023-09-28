@@ -271,7 +271,7 @@
             
             <li>
                 
-                    <a href="/admin/recaudo/abono/">Abonos</a>
+                    <a href="../abonos/inicio.php">Abonos</a>
                 
             </li>
             
@@ -419,7 +419,7 @@
                     <tr>
                         <th scope="row">
                             
-                            <a href="/admin/recaudo/abono/">Abonos</a>
+                            <a href="../abonos/inicio.php">Abonos</a>
                             
 
                             
