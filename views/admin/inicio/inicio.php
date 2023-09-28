@@ -38,7 +38,7 @@
                 <a href="#"><strong>Empresa</strong></a>
             </li>            
             <li>             
-                    <a href="/admin/empresa/cliente/">Clientes</a>                
+                    <a href="../clientes/clientes.php">Clientes</a>                
             </li>
             <li role="presentation" class="divider"></li>
             <li>
@@ -48,7 +48,7 @@
                     <a href="../abonos/inicio.php">Abonos</a>                
             </li>            
             <li>                
-                    <a href="/admin/recaudo/cliente/">Clientes</a>                
+                    <a href="../../clientes/clientes.php">Clientes</a>                
             </li>            
             <li>                
                     <a href="/admin/recaudo/cobro/">Cobros</a>                
@@ -123,8 +123,8 @@
                                <strong>Modificar</strong></a></button>
                             </div>
                         </th>
-                    </tr
-                </table>            
+                    </tr>
+                </table>      
                 
             <h2 id='recaudo' class="app-name"><a href="/admin/recaudo/">Recaudo</a></h2>
                 
