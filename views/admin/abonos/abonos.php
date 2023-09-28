@@ -19,7 +19,7 @@ if (!$_SESSION['logged_in']) {
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/views/assets/css/inicio.css" />
+    <link rel="stylesheet" href="/views/assets/css/abonos.css" />
   </head>
   <body>
 
