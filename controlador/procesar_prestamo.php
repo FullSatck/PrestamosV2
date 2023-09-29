@@ -9,7 +9,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $monto = $_POST["monto"];
     $tasaInteres = $_POST["tasaInteres"];
     $plazo = $_POST["plazo"];
-    $monedaID = $_POST["moneda"]; // Cambio "moneda" a "monedaID"
     $frecuenciaPago = $_POST["frecuenciaPago"];
     $zona = $_POST["zona"];
 
@@ -17,14 +16,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fechaVencimiento = calcularFechaVencimiento($frecuenciaPago, $plazo);
 
     // Insertar los datos en la tabla "Prestamos"
-    $sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, 'pendiente', ?, ?)";
+    $sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona) VALUES (?, ?, ?, ?, CURDATE(), ?, 'pendiente', ?, ?)";
 
     // Preparar la consulta
     $stmt = $conexion->prepare($sql);
 
     if ($stmt) {
         // Enlazar parámetros
-        $stmt->bind_param("idiiiss", $clienteID, $monto, $tasaInteres, $plazo, $monedaID, $fechaVencimiento, $zona);
+        $stmt->bind_param("idiiiss", $clienteID, $monto, $tasaInteres, $plazo, $fechaVencimiento, $zona, $estado);
+
+        // Definir los valores fijos
+        $estado = 'pendiente';
 
         // Ejecutar la consulta
         if ($stmt->execute()) {
