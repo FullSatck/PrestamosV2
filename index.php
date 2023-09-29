@@ -32,12 +32,6 @@
         </form>
       
         <p>¿No tienes cuenta? <a href="registrar.html">Regístrate aquí</a>.</p>
-      </div>
-      
-
-
-    
-
-</body>
-
+      </div> 
+</body> 
 </html>
