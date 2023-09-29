@@ -2,74 +2,60 @@
 // Incluir el archivo de conexión a la base de datos
 include("conexion.php");
 
-// Procesar la solicitud de préstamo
+// Verificar si se ha enviado un formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $monto = $_POST["monto"];
-    $tasaInteresAnual = $_POST["tasaInteres"] / 100; // Convertir la tasa de interés a decimal
-    $plazo = $_POST["plazo"];
-    $frecuenciaPago = $_POST["frecuenciaPago"];
+    // Obtener los datos del formulario
     $clienteID = $_POST["clienteID"];
-    $zona = $_POST["zona"]; // Variable para la zona
+    $monto = $_POST["monto"];
+    $tasaInteres = $_POST["tasaInteres"];
+    $plazo = $_POST["plazo"];
+    $monedaID = $_POST["moneda"]; // Cambio "moneda" a "monedaID"
+    $frecuenciaPago = $_POST["frecuenciaPago"];
+    $zona = $_POST["zona"];
 
-    // Calcular la tasa de interés periódica
-    if ($frecuenciaPago === "mensual") {
-        $tasaInteresPeriodica = $tasaInteresAnual / 12;
-    } elseif ($frecuenciaPago === "quincenal") {
-        $tasaInteresPeriodica = $tasaInteresAnual / 24;
-    } elseif ($frecuenciaPago === "semanal") {
-        $tasaInteresPeriodica = $tasaInteresAnual / 52;
-    } elseif ($frecuenciaPago === "diario") {
-        $tasaInteresPeriodica = $tasaInteresAnual / 365;
+    // Calcula la fecha de vencimiento
+    $fechaVencimiento = calcularFechaVencimiento($frecuenciaPago, $plazo);
+
+    // Insertar los datos en la tabla "Prestamos"
+    $sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, 'pendiente', ?, ?)";
+
+    // Preparar la consulta
+    $stmt = $conexion->prepare($sql);
+
+    if ($stmt) {
+        // Enlazar parámetros
+        $stmt->bind_param("idiiiss", $clienteID, $monto, $tasaInteres, $plazo, $monedaID, $fechaVencimiento, $zona);
+
+        // Ejecutar la consulta
+        if ($stmt->execute()) {
+            echo "Préstamo solicitado con éxito.";
+        } else {
+            echo "Error al solicitar el préstamo: " . $stmt->error;
+        }
+
+        // Cerrar la consulta
+        $stmt->close();
     } else {
-        // Manejar casos no válidos o desconocidos
-        echo "Frecuencia de pago no válida.";
-        exit;
+        echo "Error en la preparación de la consulta: " . $conexion->error;
     }
 
-    // Calcular el número total de pagos
-    if ($frecuenciaPago === "mensual") {
-        $numeroPagos = $plazo;
-    } elseif ($frecuenciaPago === "quincenal") {
-        $numeroPagos = $plazo * 2;
-    } elseif ($frecuenciaPago === "semanal") {
-        $numeroPagos = $plazo * 4;
-    } elseif ($frecuenciaPago === "diario") {
-        $numeroPagos = $plazo * 30; // Suponiendo un mes de 30 días
-    }
-
-    // Calcular el monto del pago periódico
-    if ($tasaInteresPeriodica > 0) {
-        $factor = (1 + $tasaInteresPeriodica) ** $numeroPagos; // Utilizar ** en lugar de pow
-        $montoPago = ($monto * $tasaInteresPeriodica * $factor) / ($factor - 1);
-    } else {
-        $montoPago = $monto / $numeroPagos;
-    }
-
-    // Calcular la fecha de inicio (hoy)
-    $fechaInicio = date("Y-m-d");
-
-    // Calcular la fecha de vencimiento
-    if ($frecuenciaPago === "mensual") {
-        $fechaVencimiento = date("Y-m-d", strtotime("+{$plazo} months", strtotime($fechaInicio)));
-    } elseif ($frecuenciaPago === "quincenal") {
-        $fechaVencimiento = date("Y-m-d", strtotime("+{$plazo * 15} days", strtotime($fechaInicio)));
-    } elseif ($frecuenciaPago === "semanal") {
-        $fechaVencimiento = date("Y-m-d", strtotime("+{$plazo * 7} days", strtotime($fechaInicio)));
-    } elseif ($frecuenciaPago === "diario") {
-        $fechaVencimiento = date("Y-m-d", strtotime("+{$plazo} days", strtotime($fechaInicio)));
-    }
-
-    // Insertar los detalles del préstamo en la base de datos
-    $sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona)
-            VALUES ($clienteID, $monto, $tasaInteresAnual, $plazo, 1, '$fechaInicio', '$fechaVencimiento', 'pendiente', 1, '$zona')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Préstamo solicitado con éxito.";
-    } else {
-        echo "Error al solicitar el préstamo: " . $conn->error;
-    }
+    // Cerrar la conexión
+    $conexion->close();
 }
 
-// Cerrar la conexión a la base de datos (si es necesario)
-$conn->close();
+// Función para calcular la fecha de vencimiento
+function calcularFechaVencimiento($frecuenciaPago, $plazo) {
+    $fechaInicio = new DateTime();
+    $fechaVencimiento = clone $fechaInicio;
+
+    if ($frecuenciaPago === "mensual") {
+        $fechaVencimiento->add(new DateInterval("P{$plazo}M"));
+    } elseif ($frecuenciaPago === "quincenal") {
+        $fechaVencimiento->add(new DateInterval("P{$plazo}D"));
+    } elseif ($frecuenciaPago === "semanal") {
+        $fechaVencimiento->add(new DateInterval("P" . ($plazo * 7) . "D"));
+    }
+
+    return $fechaVencimiento->format("Y-m-d");
+}
 ?>

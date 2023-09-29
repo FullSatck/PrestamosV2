@@ -38,6 +38,24 @@
                 <option value="diario">Diario</option>
             </select>
             
+            <label for="moneda">Moneda:</label>
+<select name="moneda" required>
+    <?php
+    // Consulta para obtener las monedas disponibles y sus símbolos
+    $sql = "SELECT ID, Nombre, Simbolo FROM Monedas";
+    $result = $conexion->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Mostrar el símbolo de la moneda
+            echo "<option value='" . $row["ID"] . "'>" . $row["Simbolo"] . "</option>";
+        }
+    } else {
+        echo "<option value=''>No hay monedas disponibles</option>";
+    }
+    ?>
+</select>
+            
             <label for="clienteID">Cliente:</label>
             <select name="clienteID" required>
                 <?php
