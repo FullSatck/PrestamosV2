@@ -3,7 +3,7 @@
 
 <head>
     <title>Administrador Recaudo</title>
-    <link rel="stylesheet" href="/views/assets/css/inicio.css">
+    <link rel="stylesheet" href="/public/assets/css/inicio.css">
 </head>
 
 <body class="dashboard">

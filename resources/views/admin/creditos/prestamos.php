@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitud de Préstamo</title>
-    <link rel="stylesheet" href="/views/assets/css/prestamo.css">
+    <link rel="stylesheet" href="/public/assets/css/prestamo.css">
 </head>
 <body>
     <div class="container">
