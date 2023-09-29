@@ -1,11 +1,16 @@
+<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Asegúrate de incluir esta línea para hacer tu sitio web responsive -->
     <title>Registro de Usuario</title>
     <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar.css">
 </head>
+
 <body>
-<div class="registro-container">
+    <div class="registro-container">
         <h2>Registro de Usuario</h2>
         <form action="controlador/validar_registro.php" method="post">
             <div class="input-container">
@@ -22,14 +27,15 @@
             </div>
             <div class="input-container">
                 <label for="contrasena">Contraseña:</label>
-                <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave"
+                    required>
             </div>
             <div class="input-container">
                 <label for="zona">Zona:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                     // Incluye el archivo de conexión a la base de datos
-                    include("../../../../controlador/conexion.php");
+                    include("../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
                     $consultaZonas = "SELECT ID, Nombre FROM Zonas";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
@@ -72,10 +78,7 @@
                 <button type="submit">Registrar</button>
             </div>
         </form>
-                </div>
-        
-            
-        </body>
-      
-        </html>
-                
+    </div>
+</body>
+
+</html>
