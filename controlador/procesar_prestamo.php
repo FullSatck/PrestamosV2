@@ -23,10 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt) {
         // Enlazar parámetros
-        $stmt->bind_param("idiiiss", $clienteID, $monto, $tasaInteres, $plazo, $fechaVencimiento, $zona, $estado);
-
-        // Definir los valores fijos
-        $estado = 'pendiente';
+        $stmt->bind_param("idissis", $clienteID, $monto, $tasaInteres, $plazo, $fechaVencimiento, $zona);
 
         // Ejecutar la consulta
         if ($stmt->execute()) {
