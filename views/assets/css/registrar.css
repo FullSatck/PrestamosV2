@@ -9,7 +9,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
 }
 
 .registration-container {
@@ -50,7 +50,6 @@ select {
     border: 1px solid #ccc;
     border-radius: 5px;
     outline: none;
-    font-size: 16px;
 }
 
 select {
@@ -72,7 +71,6 @@ button[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
 }
 
 /* Estilos responsivos */
