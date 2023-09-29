@@ -12,7 +12,7 @@
 <body>
     <div class="registro-container">
         <h2>Registro de Usuario</h2>
-        <form action="controlador/validar_registro.php" method="post">
+        <form action="/controllers/validar_registro.php" method="post">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese su nombre" required>
