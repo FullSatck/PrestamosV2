@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $plazo = $_POST["plazo"];
     $frecuenciaPago = $_POST["frecuenciaPago"];
     $clienteID = $_POST["clienteID"];
+    $zona = $_POST["zona"]; // Variable para la zona
 
     // Calcular la tasa de interés periódica
     if ($frecuenciaPago === "mensual") {
@@ -38,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Calcular el monto del pago periódico
     if ($tasaInteresPeriodica > 0) {
-        $factor = pow(1 + $tasaInteresPeriodica, $numeroPagos);
+        $factor = (1 + $tasaInteresPeriodica) ** $numeroPagos; // Utilizar ** en lugar de pow
         $montoPago = ($monto * $tasaInteresPeriodica * $factor) / ($factor - 1);
     } else {
         $montoPago = $monto / $numeroPagos;
@@ -60,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insertar los detalles del préstamo en la base de datos
     $sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona)
-            VALUES ($clienteID, $monto, $tasaInteresAnual, $plazo, 1, '$fechaInicio', '$fechaVencimiento', 'pendiente', 1, 'zona1')";
+            VALUES ($clienteID, $monto, $tasaInteresAnual, $plazo, 1, '$fechaInicio', '$fechaVencimiento', 'pendiente', 1, '$zona')";
 
     if ($conn->query($sql) === TRUE) {
         echo "Préstamo solicitado con éxito.";
