@@ -1,0 +1,71 @@
+/* Estilos para la barra de navegación */
+a {
+  text-decoration: none;
+  color: black;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f0f0f0; /* Color de fondo */
+  color: #333; /* Color del texto principal */
+  font-size: 16px; /* Tamaño de fuente predeterminado */
+}
+ 
+.navbar {
+  background-color: #0084ff;
+  color: #fff;
+  padding: 10px;
+}
+
+.navbar-brand {
+  font-size: 24px;
+}
+
+/* Estilos para los encabezados de aplicación */
+h2 a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Estilos para las tablas */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #a5a5a5;
+  color: white;
+}
+
+/* Estilos para los botones en la tabla */
+.table button {
+  background-color: #02d5fa;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 5px;
+  text-decoration: none;
+}
+
+.table button:hover {
+  background-color: #0084ff;
+} 
+
+#footer {
+  text-align: center; /* Centra el texto horizontalmente */
+  background-color: #f0f0f0; /* Color de fondo */
+  padding: 10px 0; /* Espaciado interno del pie de página */
+  color: #333; /* Color del texto */
+  font-size: 14px; /* Tamaño de fuente */
+}
+
