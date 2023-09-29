@@ -3,7 +3,7 @@
 
 <head>
     <title>Escoja cliente a modificar</title>
-    <link rel="stylesheet" type="text/css" href="/views/assets/css/clientes.css" />
+    <link rel="stylesheet" type="text/css" href="/public/assets/css/clientes.css" />
 
 </head>
 
