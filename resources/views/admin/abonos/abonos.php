@@ -92,14 +92,33 @@ if (!$_SESSION['logged_in']) {
       </div>
     </nav><br><br><br>
 
+    <div class="outer-container">
     <div class="second-toolbar">
-    <!-- Botones y campos en forma de cuadrícula aquí -->
-    <button class="grid-button">Botón 1</button>
-    <button class="grid-button">Botón 2</button>
-    <button class="grid-button">Botón 3</button>
-    <input type="text" class="grid-input" placeholder="Campo de texto">
-    <!-- Puedes agregar más elementos aquí según sea necesario -->
+        <div class="button-container">
+            <button class="grid-button back-button">&lt;</button>
+            <button class="grid-button forward-button">&gt;</button>
+            <button class="grid-button options-button" id="options-button">Opciones</button>
+        </div>
+        <div class="button-container">
+            <button class="grid-button loan-button">Prestamo <span class="icon">+</span></button>
+        </div>
+    </div>
+    <ul class="submenu" id="submenu">
+        <li><a href="#">Historial</a></li>
+        <li><a href="#">Retirar tarjeta</a></li>
+        <li><a href="#">Archivos</a></li>
+    </ul>
 </div>
+
+<script>
+    var submenu = document.getElementById("submenu");
+    submenu.style.display = "none"; // Ocultar el submenú inicialmente
+
+    document.getElementById("options-button").addEventListener("click", function() {
+        submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+    });
+</script>
+
 
 <div class="cobro-bar">
     <span class="cobro-text">Cobro</span>
