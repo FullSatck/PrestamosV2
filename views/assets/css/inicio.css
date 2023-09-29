@@ -1,25 +1,21 @@
-/* Estilos generales */
+/* Estilos para la barra de navegación */
 a {
+  text-decoration: none;
   color: black;
-  text-decoration: none; /* Elimina el subrayado por defecto */
-  padding: 2px 10px; /* Agrega un poco de relleno en los lados de los enlaces */
 }
 
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  background-color: #f0f0f0;
+  padding: 20px;
+  background-color: #f0f0f0; /* Color de fondo */
+  color: #333; /* Color del texto principal */
+  font-size: 16px; /* Tamaño de fuente predeterminado */
 }
-
-h2 {
-  color: black;
-}
-
-/* Estilos para la barra de navegación */
+ 
 .navbar {
   background-color: #0084ff;
-  color: rgb(0, 0, 0);
+  color: #fff;
   padding: 10px;
 }
 
@@ -27,22 +23,16 @@ h2 {
   font-size: 24px;
 }
 
-/* Estilos para la lista de navegación */
-.navbar-nav {
-  list-style-type: none;
-  padding: 0;
-}
-
-.navbar-nav li {
-  display: inline;
-  margin-right: 20px;
+/* Estilos para los encabezados de aplicación */
+h2 a {
+  text-decoration: none;
+  color: #333;
 }
 
 /* Estilos para las tablas */
 .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
 }
 
 .table th,
@@ -53,38 +43,29 @@ h2 {
 }
 
 .table th {
-  background-color: #d8d5d5;
+  background-color: #a5a5a5;
   color: white;
 }
 
-/* Estilos para los botones */
-.btn {
+/* Estilos para los botones en la tabla */
+.table button {
   background-color: #02d5fa;
   color: white;
   border: none;
   padding: 5px 10px;
+  margin-left: 5px;
   text-decoration: none;
-  display: inline-block; /* Cambia el comportamiento de bloque a en línea */
-  margin-right: 10px; /* Cambia el margen derecho para separar los botones */
 }
 
-.btn:hover {
-  color: black;
+.table button:hover {
   background-color: #0084ff;
+} 
+
+#footer {
+  text-align: center; /* Centra el texto horizontalmente */
+  background-color: #f0f0f0; /* Color de fondo */
+  padding: 10px 0; /* Espaciado interno del pie de página */
+  color: #333; /* Color del texto */
+  font-size: 14px; /* Tamaño de fuente */
 }
 
-/* Estilos para los div con clase 'jeje' */
-.jeje {
-  background: #02d5fa;
-  border: 1px solid #02d5fa;
-  border-radius: 5px;
-  display: inline-block; /* Cambia el comportamiento de bloque a en línea */
-  padding: 5px 10px; /* Agrega un poco de relleno a los cuadros */
-  margin-right: 10px; /* Cambia el margen derecho para separar los cuadros */
-}
-
-.jeje:hover {
-  background: #0084ff;
-  border: 1px solid #0084ff;
-  border-radius: 5px;
-}
