@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" type="text/css" href="/views/assets/css/registrar.css">
+    <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar.css">
 </head>
 <body>
 <div class="registro-container">
@@ -30,12 +29,10 @@
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                     // Incluye el archivo de conexión a la base de datos
-                    include("controlador/conexion.php");
-
+                    include("../../../../controlador/conexion.php");
                     // Consulta SQL para obtener las zonas
                     $consultaZonas = "SELECT ID, Nombre FROM Zonas";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
-
                     // Genera las opciones del menú desplegable para Zona
                     while ($row = mysqli_fetch_assoc($resultZonas)) {
                         echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
@@ -50,7 +47,6 @@
                     // Consulta SQL para obtener las opciones de moneda preferida
                     $consultaMonedas = "SELECT DISTINCT MonedaPreferida FROM Usuarios";
                     $resultMonedas = mysqli_query($conexion, $consultaMonedas);
-
                     // Genera las opciones del menú desplegable para Moneda Preferida
                     while ($row = mysqli_fetch_assoc($resultMonedas)) {
                         echo '<option value="' . $row['MonedaPreferida'] . '">' . $row['MonedaPreferida'] . '</option>';
@@ -65,7 +61,6 @@
                     // Consulta SQL para obtener las opciones de roles
                     $consultaRoles = "SELECT ID, Nombre FROM Roles";
                     $resultRoles = mysqli_query($conexion, $consultaRoles);
-
                     // Genera las opciones del menú desplegable para Rol
                     while ($row = mysqli_fetch_assoc($resultRoles)) {
                         echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
@@ -77,6 +72,10 @@
                 <button type="submit">Registrar</button>
             </div>
         </form>
-    </div>
-</body>
-</html>
+                </div>
+        
+            
+        </body>
+      
+        </html>
+                
