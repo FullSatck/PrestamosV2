@@ -7,7 +7,7 @@ a {
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 40px;
   background-color: #f0f0f0; /* Color de fondo */
   color: #333; /* Color del texto principal */
   font-size: 16px; /* Tamaño de fuente predeterminado */
@@ -15,7 +15,7 @@ body {
  
 .navbar {
   background-color: #0084ff;
-  color: #fff;
+  color: #000000;
   padding: 10px;
 }
 
@@ -43,22 +43,23 @@ h2 a {
 }
 
 .table th {
-  background-color: #a5a5a5;
+  background-color: #d4d2d2;
   color: white;
 }
 
 /* Estilos para los botones en la tabla */
 .table button {
-  background-color: #02d5fa;
+  background-color: #0084ff;
   color: white;
   border: none;
   padding: 5px 10px;
   margin-left: 5px;
   text-decoration: none;
+  border-radius: 8px;
 }
 
 .table button:hover {
-  background-color: #0084ff;
+  background-color: #0004ff;
 } 
 
 #footer {
