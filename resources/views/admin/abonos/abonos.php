@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!$_SESSION['logged_in']) {
-  header("location: ../controlador/validar_login.php");
+  header("location: ../../../../controllers/validar_login.php");
   exit();
 }
 ?> 
@@ -110,21 +110,9 @@ if (!$_SESSION['logged_in']) {
     </ul>
 </div>
 
-<script>
-    var submenu = document.getElementById("submenu");
-    submenu.style.display = "none"; // Ocultar el submenú inicialmente
-
-    document.getElementById("options-button").addEventListener("click", function() {
-        submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-    });
-</script>
 
 
-<<<<<<< Updated upstream:resources/views/admin/abonos/abonos.php
-=======
 
-
->>>>>>> Stashed changes:views/admin/abonos/abonos.php
 <div class="cobro-bar">
     <span class="cobro-text">Cobro</span>
 </div>
@@ -195,7 +183,14 @@ if (!$_SESSION['logged_in']) {
         $("#fecha").datepicker("show");
     }
 </script>
+<script>
+    var submenu = document.getElementById("submenu");
+    submenu.style.display = "none"; // Ocultar el submenú inicialmente
 
+    document.getElementById("options-button").addEventListener("click", function() {
+        submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+    });
+</script>
 
 
 
