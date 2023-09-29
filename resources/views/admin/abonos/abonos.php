@@ -120,6 +120,11 @@ if (!$_SESSION['logged_in']) {
 </script>
 
 
+<<<<<<< Updated upstream:resources/views/admin/abonos/abonos.php
+=======
+
+
+>>>>>>> Stashed changes:views/admin/abonos/abonos.php
 <div class="cobro-bar">
     <span class="cobro-text">Cobro</span>
 </div>
@@ -190,6 +195,9 @@ if (!$_SESSION['logged_in']) {
         $("#fecha").datepicker("show");
     }
 </script>
+
+
+
 
 
 </body>
