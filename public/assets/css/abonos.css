@@ -187,22 +187,85 @@ a.join-link {
   background: #f5f5f5;
 }
 
+.outer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .second-toolbar {
-  text-align: center; /* Centra el contenido horizontalmente */
-  margin-top: 50px; /* Ajusta la distancia desde la parte superior */
+  display: flex;
+  flex-direction: row; /* Organiza los botones en una fila horizontal */
+  align-items: center;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  position: relative; /* Añadido para el posicionamiento del submenú */
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
 }
 
 .grid-button {
-  /* Estilos para los botones en forma de cuadrícula */
-  margin: 5px; /* Espaciado entre botones */
-  padding: 10px 20px; /* Espaciado interno de botones */
+  background-color: rgb(6, 4, 4);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 18px;
 }
 
-.grid-input {
-  /* Estilos para los campos de texto en forma de cuadrícula */
-  margin: 5px; /* Espaciado entre campos de texto */
-  padding: 5px; /* Espaciado interno de campos de texto */
+.grid-button.back-button {
+  border-radius: 4px 0 0 4px;
 }
+
+.grid-button.forward-button {
+  border-radius: 0 4px 4px 0;
+}
+
+.grid-button.options-button {
+  border-radius: 0;
+}
+
+.grid-button.loan-button {
+  border-radius: 0;
+  margin-left: 10px; /* Espacio entre los botones */
+}
+
+.icon {
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+.submenu {
+  list-style: none;
+  padding: 0;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: none;
+  top: 100%; /* Posiciona el submenú debajo del botón */
+  left: 0;
+}
+
+.submenu li {
+  padding: 10px;
+}
+
+.submenu li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+
+.submenu li a:hover {
+  background-color: #f0f0f0;
+}
+
 
  /* Estilos para la barra larga de cobro */
  .cobro-bar {
