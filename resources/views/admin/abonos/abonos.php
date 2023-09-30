@@ -29,7 +29,7 @@ if (!$_SESSION['logged_in']) {
     <button>&larr;</button> <!-- Flecha hacia la izquierda -->
     <button>&#8801;</button> <!-- Tres líneas horizontales -->
     <button>&rarr;</button> <!-- Flecha hacia la derecha -->
-     <a href="/resources/views/admin/prestamos/crudPrestamos.php" class="separated-button">Nuevo Prestamo</a>
+     <a href="/resources/views/admin/creditos/crudPrestamos.php" class="separated-button">Nuevo Prestamo</a>
 </div><br>
 
 <div class="cobro-bar">

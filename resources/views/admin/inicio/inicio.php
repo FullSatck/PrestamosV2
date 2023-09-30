@@ -76,7 +76,15 @@
                 </div>
             </th>
         </tr>
-
+        <tr>
+            <th scope="row">
+                <a href="/resources/views/admin/creditos/prestamos.php">Prestamos </a>
+                <div class="button-container">
+                    <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
+                    <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
+                </div>
+            </th>
+        </tr>
         <tr>
             <th scope="row">
                 <a href="/resources/views/admin/clientes/lista_clientes.php">Clientes </a>
