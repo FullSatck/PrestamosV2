@@ -4,11 +4,11 @@ if (!$_SESSION['logged_in']) {
   header("location: ../../../../controllers/validar_login.php");
   exit();
 }
-?> 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,99 +19,18 @@ if (!$_SESSION['logged_in']) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/public/assets/css/abonos.css" />
-  </head>
-  <body>
+</head>
+<body>
 
-  <!-- nava bar  -->
-    <nav class="navbar">
-      <div class="logo">
-    <h1 >Bienvenido  <?php echo $_SESSION ['NombreUsuario']; ?></h1>
-        <h2> a Recaudos v2.1</h2>
-      </div>
-      <div class="links">
-        <div class="dropdown">
-          <a href="#"
-            >Zonas
-            <img src="/views/assets/img/inicio/chevron.png" />
-          </a>
-          <div class="menu">
-            <a href="#"> Puebla </a>
-            <a href="#"> ciudad de mexico</a>
-            <a href="#"> guadalajara </a>
-            <a href="#"> zacatecas</a>
-            <a href="#"> tijuana</a>
-            <a href="#"> jalisco</a>
-            <a href="#"> campeche</a>
-            <a href="#"> veracruz</a>
-          </div>
-        </div>
-        <div class="dropdown">
-          <a href="#"
-            >Menu
-            <img src="/views/assets/img/inicio/chevron.png" />
-          </a>
-          <div class="menu">
-            <a href="#"> clientes </a>
-            <a href="#"> codeudores</a>
-            <a href="#"> cobros </a>
-            <a href="#"> retiros </a>
-            <a href="#"> gastos </a>
-            <a href="#"> deudas </a>
-            <a href="#"> abonos </a>
-            <a href="#"> loteria </a>
-          </div>
-        </div>
-        <div class="dropdown">
-          <a href="#"
-            >Reportes
-            <img src="/views/assets/img/inicio/chevron.png" />
-          </a>
-          <div class="menu">
-            <a href="#"> Suma saldo</a>
-            <a href="#"> Contabilidad </a>
-            <a href="#"> Contabilidad empresa </a>
-            <a href="#"> Canceladas </a>
-           
-          </div>
-        </div>
-        <div class="dropdown">
-          <a href="#"
-            >Cerrar sesion
-            <img src="/views/assets/img/inicio/chevron.png" />
-          </a>
-          <div class="menu">
-            <a href="/controlador/cerrar_sesion.php"> Salir </a>
-           
-          </div>
-        </div>
-      </div>
-    </nav><br><br><br>
-
-    <div class="outer-container">
-    <div class="second-toolbar">
-        <div class="button-container">
-            <button class="grid-button back-button">&lt;</button>
-            <button class="grid-button forward-button">&gt;</button>
-            <button class="grid-button options-button" id="options-button">Opciones</button>
-        </div>
-        <div class="button-container">
-            <button class="grid-button loan-button">Prestamo <span class="icon">+</span></button>
-        </div>
-    </div>
-    <ul class="submenu" id="submenu">
-        <li><a href="#">Historial</a></li>
-        <li><a href="#">Retirar tarjeta</a></li>
-        <li><a href="#">Archivos</a></li>
-    </ul>
-</div>
-
-
-
+<!-- Barra de navegación -->
+<div class="navbar">
+    <button>&larr;</button> <!-- Flecha hacia la izquierda -->
+    <button>&#8801;</button> <!-- Tres líneas horizontales -->
+    <button>&rarr;</button> <!-- Flecha hacia la derecha -->
+    <button class="separated-button">Botón Separado</button>
+</div><br>
 
 <div class="cobro-bar">
     <span class="cobro-text">Cobro</span>
@@ -137,12 +56,10 @@ if (!$_SESSION['logged_in']) {
     </div>
 
     <div class="column">
-    <label for="fecha">5. Fecha</label>
-    <input type="text" id="fecha" placeholder="28/09/2023 6:52 p.m">
-    <button id="calendarioBtn" onclick="mostrarCalendario()">Calendario</button>
-</div>
-
-
+        <label for="fecha">5. Fecha</label>
+        <input type="text" id="fecha" placeholder="28/09/2023 6:52 p.m">
+        <button id="calendarioBtn" onclick="mostrarCalendario()">Calendario</button>
+    </div>
 
     <div class="column">
         <label for="plazo">6. Plazo</label>
@@ -170,6 +87,7 @@ if (!$_SESSION['logged_in']) {
 
 <!-- Botón de guardar -->
 <button class="btn-guardar">Guardar</button>
+
 <script>
     $(function() {
         $("#fecha").datepicker({
@@ -183,17 +101,6 @@ if (!$_SESSION['logged_in']) {
         $("#fecha").datepicker("show");
     }
 </script>
-<script>
-    var submenu = document.getElementById("submenu");
-    submenu.style.display = "none"; // Ocultar el submenú inicialmente
-
-    document.getElementById("options-button").addEventListener("click", function() {
-        submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-    });
-</script>
-
-
-
 
 </body>
 </html>
