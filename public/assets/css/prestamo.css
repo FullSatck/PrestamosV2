@@ -1,129 +1,99 @@
+/* Estilos generales */
 body {
-    font-family: sans-serif;
-    font-size: 16px;
-    color: #222;
-    background-color: #fff;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 400px;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  text-align: center;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+/* Estilos para etiquetas y campos de entrada */
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+select,
+input[type="text"],
+input[type="date"] {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Estilo para el botón */
+input[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para el cuadro de resultados */
+.result-container {
+  margin-top: 30px;
+  border-top: 2px solid #007bff;
+  padding-top: 20px;
+}
+
+.result-container h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+.result-container p {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Estilos para el formulario en dispositivos móviles */
+@media (max-width: 768px) {
+  select,
+  input[type="text"],
+  input[type="date"],
+  select[name="frecuencia_pago"] {
+      flex-basis: 100%;
+      padding: 10px; /* Reducir el padding en dispositivos móviles */
+      font-size: 14px; /* Reducir el tamaño de fuente en dispositivos móviles */
   }
-  
-  h1 {
-    font-size: 24px;
-    margin-top: 0;
-    text-align: center;
-  }
-  
-  form {
-    width: 500px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  label {
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  }
-  
-  select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  }
-  
+
   input[type="submit"] {
-    background-color: #000;
-    color: #fff;
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    text-align: center;
+      font-size: 14px; /* Reducir el tamaño de fuente del botón en dispositivos móviles */
   }
-  
-  input[type="submit"]:hover {
-    background-color: #222;
-    color: #fff;
-  }
-  
-  .error {
-    color: red;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  /* Animaciones */
-  
-  .form-container {
-    animation: fade-in 0.5s ease-in-out;
-  }
-  
-  input[type="submit"]:hover {
-    transform: scale(1.1);
-  }
-  
-  /* Imágenes y iconos */
-  
-  .logo {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
-  }
-  
-  .icono-moneda {
-    width: 20px;
-    height: 20px;
-  }
-  
-  /* Mensaje de agradecimiento */
-  
-  .mensaje-agradecimiento {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  /* Enlace a política de privacidad */
-  
-  .politica-privacidad {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 12px;
-  }
-  
-  /* Centrar todo */
-  
-  .form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* Integrar los elementos */
-  
-  .form-container {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-  }
-  
-  .label,
-  .input,
-  .select {
-    margin-bottom: 5px;
-  }
-  
-  input[type="submit"] {
-    margin-top: 20px;
-  }
-  
+}
