@@ -1,42 +1,40 @@
 <?php
-// Incluir el archivo de conexión
-include("conexion.php");
+// Incluir el archivo de conexión a la base de datos
+include 'conexion.php';
 
-// Verificar si se ha enviado el formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $cliente_id = $_POST["cliente_id"];
-    $monto = $_POST["monto"];
-    $tasa_interes = $_POST["tasa_interes"];
-    $plazo = $_POST["plazo"];
-    $moneda_id = $_POST["moneda_id"];
-    $fecha_inicio = $_POST["fecha_inicio"];
-    $frecuencia_pago = $_POST["frecuencia_pago"];
+// Recuperar los datos del formulario
+$id_cliente = $_POST['id_cliente'];
+$monto = $_POST['monto'];
+$tasa_interes = $_POST['tasa_interes'];
+$plazo = $_POST['plazo'];
+$moneda_id = $_POST['moneda_id'];
+$fecha_inicio = $_POST['fecha_inicio'];
+$frecuencia_pago = $_POST['frecuencia_pago'];
+$zona = $_POST['zona'];
 
-    // Sentencia SQL para insertar datos en la tabla
-    $sql = "INSERT INTO prestamos (cliente_id, monto, tasa_interes, plazo, moneda_id, fecha_inicio, frecuencia_pago) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-    // Preparar la sentencia SQL
-    $stmt = $conexion->prepare($sql);
-
-    if ($stmt) {
-        // Vincular los parámetros
-        $stmt->bind_param("iiiiiss", $cliente_id, $monto, $tasa_interes, $plazo, $moneda_id, $fecha_inicio, $frecuencia_pago);
-
-        // Ejecutar la sentencia
-        if ($stmt->execute()) {
-            echo "Los datos se han insertado correctamente.";
-        } else {
-            echo "Error al insertar datos: " . $stmt->error;
-        }
-
-        // Cerrar la sentencia y la conexión
-        $stmt->close();
-    } else {
-        echo "Error en la preparación de la sentencia: " . $conexion->error;
-    }
+// Calcular la fecha de vencimiento en función de la frecuencia de pago y el plazo
+if ($frecuencia_pago == 'diario') {
+    $fecha_vencimiento = date('Y-m-d', strtotime("+$plazo days", strtotime($fecha_inicio)));
+} elseif ($frecuencia_pago == 'semanal') {
+    $fecha_vencimiento = date('Y-m-d', strtotime("+$plazo weeks", strtotime($fecha_inicio)));
+} elseif ($frecuencia_pago == 'quincenal') {
+    $fecha_vencimiento = date('Y-m-d', strtotime("+$plazo weeks", strtotime($fecha_inicio)));
 } else {
-    echo "El formulario no se ha enviado correctamente.";
+    $fecha_vencimiento = date('Y-m-d', strtotime("+$plazo months", strtotime($fecha_inicio)));
+}
+
+// Calcular el monto a pagar
+// Fórmula: Monto a pagar = Monto + (Monto * Tasa de Interés / 100)
+$monto_a_pagar = $monto + ($monto * $tasa_interes / 100);
+
+// Insertar la solicitud de préstamo en la base de datos
+$sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona, MontoAPagar) 
+        VALUES ('$id_cliente', '$monto', '$tasa_interes', '$plazo', '$moneda_id', '$fecha_inicio', '$fecha_vencimiento', 'pendiente', NULL, '$zona', '$monto_a_pagar')";
+
+if ($conexion->query($sql) === TRUE) {
+    echo "Solicitud de préstamo realizada con éxito. Monto a pagar: $monto_a_pagar";
+} else {
+    echo "Error al solicitar el préstamo: " . $conexion->error;
 }
 
 // Cerrar la conexión a la base de datos

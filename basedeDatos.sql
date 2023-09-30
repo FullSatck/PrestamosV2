@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS Usuarios (
     Email VARCHAR(255) UNIQUE,
     Password VARCHAR(255),
     Zona VARCHAR(255),
-    MonedaPreferida VARCHAR(50),
+    
     RolID INT,
     FOREIGN KEY (RolID) REFERENCES Roles(ID)
 );
