@@ -12,7 +12,7 @@
 <body>
     <div class="registro-container"><br><br><br><br><br><br><br><br>
         
-        <form action="/controllers/validar_clientes.php" method="post" class="form">
+        <form action="/controllers/validar_clientes.php" method="post" class="form"><br><br><br><br><br><br><br><br><br><br>
             <h2>Registro de Cliente</h2>
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
@@ -22,6 +22,16 @@
                 <label for="apellido">Apellido:</label>
                 <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese el apellido">
             </div>
+            <div class="input-container">
+                <label for="apellido">CRUP/Ced:</label>
+                <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su indentificacion">
+            </div>
+            <div class="inp" >
+            <div class="input-container">
+                <label for="media">Foto:</label>
+                <input type="file" id="foto" name="foto">
+            </div>
+
             <div class="input-container">
                 <label for="direccion">Domicilio:</label>
                 <input type="text" id="direccion" name="direccion" placeholder="Por favor ingrese la dirección" required>
@@ -35,6 +45,7 @@
                 <textarea id="historial_crediticio" name="historial_crediticio"
                     placeholder="Por favor ingrese el historial crediticio" required></textarea>
             </div>
+            
             <div class="input-container">
                 <label for="referencias_personales">Referencias Personales:</label>
                 <textarea id="referencias_personales" name="referencias_personales"

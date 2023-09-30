@@ -25,7 +25,7 @@ $resultado = $conexion->query($sql);
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Dirección</th>
+                <th>Domicilio</th>
                 <th>Teléfono</th>
                 <th>Historial Crediticio</th>
                 <th>Referencias Personales</th>
