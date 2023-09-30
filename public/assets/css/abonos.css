@@ -99,3 +99,40 @@ input[type="text"] {
   margin-top: 10px;
   float: left; /* Alinea el botón a la izquierda */
 }
+
+/* Estilo para el contenedor de la tabla */
+.table-container {
+  position: fixed; /* Posicionamiento fijo */
+  bottom: 0; /* Alinea la tabla en la parte inferior */
+  left: 100px; /* Alinea la tabla a la izquierda */
+  width: 100%; /* Ancho al 100% de la ventana */
+  background-color: rgba(255, 255, 255, 0.285); /* Color de fondo para la tabla */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); /* Sombra para separar de la página */
+  z-index: 1; /* Coloca la tabla sobre otros elementos */
+}
+
+/* Estilo para la tabla */
+table {
+  width: 100%; /* Ancho de la tabla al 100% del contenedor */
+  margin-top: 20px; /* Margen superior para separarla del contenido anterior */
+  border-collapse: collapse; /* Colapsar bordes de celdas para eliminar cuadriculas */
+}
+
+/* Estilo para las filas de encabezado */
+thead th {
+  background-color: #333; /* Color de fondo del encabezado */
+  color: white; /* Color del texto en el encabezado */
+  text-align: left; /* Alineación del texto a la izquierda */
+  padding: 10px; /* Espaciado interno en celdas de encabezado */
+}
+
+/* Estilo para las filas de datos */
+tbody td {
+  padding: 10px; /* Espaciado interno en celdas de datos */
+  border-bottom: 1px solid #0004ff43; /* Línea horizontal para separar filas */
+}
+
+/* Estilo para las últimas filas de datos (eliminar borde inferior) */
+tbody tr:last-child td {
+  border-bottom: none; /* Eliminar borde inferior en la última fila de datos */
+}
