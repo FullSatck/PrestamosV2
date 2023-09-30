@@ -23,7 +23,7 @@
                 <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese el apellido">
             </div>
             <div class="input-container">
-                <label for="direccion">Dirección:</label>
+                <label for="direccion">Domicilio:</label>
                 <input type="text" id="direccion" name="direccion" placeholder="Por favor ingrese la dirección">
             </div>
             <div class="input-container">
@@ -69,6 +69,11 @@
                     <?php
         // Incluye el archivo de conexión a la base de datos
         include("../../../../controllers/conexion.php");
+        
+        while ($row = mysqli_fetch_assoc($resultMonedas)) {
+            echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+        }
+
 
         // Consulta SQL para obtener las zonas
         $consultaZonas = "SELECT ID, Nombre FROM Zonas";
