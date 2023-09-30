@@ -89,7 +89,7 @@
 
         <tr>
             <th scope="row">
-                <a href="/resources/views/admin/cobros/cobros.php">Cobros </a>
+                <a href="/resources/views/admin/cobros/cobros.php">Zona de cobros </a>
                 <div class="button-container">
                     <button><a href="/admin/recaudo/cobro/add/">Añadir</a></button>
                     <button><a href="/admin/recaudo/cobro/">Modificar</a></button>
