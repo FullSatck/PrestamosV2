@@ -35,13 +35,16 @@ CREATE TABLE IF NOT EXISTS Monedas (
     Simbolo VARCHAR(10)
 );
 
--- Insertar datos en la tabla Monedas
-INSERT INTO Monedas (Nombre, Simbolo) VALUES
-('pesos_colombianos', 'COP'),
-('pesos_mexicanos', 'MXN'),
-('dolares', 'USD');
+-- Crear la tabla de Zonas con un índice único en la columna Nombre
+CREATE TABLE IF NOT EXISTS Zonas (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(255) UNIQUE,
+    Descripcion TEXT,
+    CobradorAsignado INT,
+    FOREIGN KEY (CobradorAsignado) REFERENCES Usuarios(ID)
+);
 
--- Crear la tabla de Clientes (anteriormente Prestatarios)
+-- Crear la tabla de Clientes con las columnas MonedaPreferida y ZonaAsignada
 CREATE TABLE IF NOT EXISTS Clientes (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Nombre VARCHAR(255),
@@ -49,16 +52,11 @@ CREATE TABLE IF NOT EXISTS Clientes (
     Direccion VARCHAR(255),
     Telefono VARCHAR(20),
     HistorialCrediticio TEXT,
-    ReferenciasPersonales TEXT
-);
-
--- Crear la tabla de Zonas
-CREATE TABLE IF NOT EXISTS Zonas (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(255),
-    Descripcion TEXT,
-    CobradorAsignado INT,
-    FOREIGN KEY (CobradorAsignado) REFERENCES Usuarios(ID)
+    ReferenciasPersonales TEXT,
+    MonedaPreferida VARCHAR(50),
+    ZonaAsignada VARCHAR(255),
+    FOREIGN KEY (MonedaPreferida) REFERENCES Monedas(Nombre),
+    FOREIGN KEY (ZonaAsignada) REFERENCES Zonas(Nombre)
 );
 
 -- Crear la tabla de Prestamos
@@ -79,9 +77,3 @@ CREATE TABLE IF NOT EXISTS Prestamos (
     FOREIGN KEY (CobradorAsignado) REFERENCES Usuarios(ID),
     FOREIGN KEY (Zona) REFERENCES Zonas(Nombre)
 );
-
-
-
-
-
-

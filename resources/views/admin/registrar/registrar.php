@@ -47,18 +47,7 @@
                 </select>
             </div>
             <div class="input-container">
-                <label for="moneda">Moneda Preferida:</label>
-                <select id="moneda" name="moneda" required>
-                    <?php
-                    // Consulta SQL para obtener las opciones de moneda preferida
-                    $consultaMonedas = "SELECT DISTINCT MonedaPreferida FROM Usuarios";
-                    $resultMonedas = mysqli_query($conexion, $consultaMonedas);
-                    // Genera las opciones del menú desplegable para Moneda Preferida
-                    while ($row = mysqli_fetch_assoc($resultMonedas)) {
-                        echo '<option value="' . $row['MonedaPreferida'] . '">' . $row['MonedaPreferida'] . '</option>';
-                    }
-                    ?>
-                </select>
+                
             </div>
             <div class="input-container">
                 <label for="rol">Rol:</label>

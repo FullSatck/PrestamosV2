@@ -1,43 +1,51 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtiene los valores del formulario
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $email = $_POST['email'];
     $contrasena = $_POST['contrasena'];
     $zona = $_POST['zona'];
-    $moneda = $_POST['moneda'];
+    $rol = $_POST['rol'];
 
-    // Hashea la contraseña utilizando password_hash
-    $contrasenaHasheada = password_hash($contrasena, PASSWORD_DEFAULT);
+    // Validación básica (campos no vacíos)
+    if (empty($nombre) || empty($apellido) || empty($email) || empty($contrasena) || empty($zona) || empty($rol)) {
+        echo "Todos los campos son obligatorios. Por favor, complete el formulario.";
+    } else {
+        // Hashea la contraseña utilizando password_hash
+        $contrasenaHasheada = password_hash($contrasena, PASSWORD_DEFAULT);
 
-    // Incluye el archivo de conexión a la base de datos
-    include("conexion.php");
+        // Incluye el archivo de conexión a la base de datos
+        include("conexion.php");
 
-    // Prepara la consulta SQL
-    $sql = "INSERT INTO Usuarios (Nombre, Apellido, Email, Password, Zona, MonedaPreferida, RolID) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Prepara la consulta SQL
+        $sql = "INSERT INTO Usuarios (Nombre, Apellido, Email, Password, Zona, RolID) 
+                VALUES (?, ?, ?, ?, ?, ?)";
 
-    $stmt = $conexion->prepare($sql);
+        $stmt = $conexion->prepare($sql);
 
-    if ($stmt) {
-        // Asigna los valores a los marcadores de posición en la consulta preparada
-        $stmt->bind_param("ssssssi", $nombre, $apellido, $email, $contrasenaHasheada, $zona, $moneda, $rolID);
+        if ($stmt) {
+            // Asigna los valores a los marcadores de posición en la consulta preparada
+            $stmt->bind_param("sssssi", $nombre, $apellido, $email, $contrasenaHasheada, $zona, $rol);
 
-        // Define el valor del rol (por ejemplo, 'admin')
-        $rolID = 1;
+            // Ejecuta la consulta
+            if ($stmt->execute()) {
+                // Redirige al usuario a una página de éxito o muestra un mensaje
+                header("Location: registro_exitoso.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
+                exit();
+            } else {
+                echo "Error al registrar el usuario: " . $stmt->error;
+            }
 
-        // Ejecuta la consulta
-        if ($stmt->execute()) {
-            echo "Usuario registrado con éxito.";
+            $stmt->close();
         } else {
-            echo "Error al registrar el usuario: " . $stmt->error;
+            echo "Error de consulta preparada: " . $conexion->error;
         }
 
-        $stmt->close();
-    } else {
-        echo "Error de consulta preparada: " . $conexion->error;
+        $conexion->close();
     }
-
-    $conexion->close();
+} else {
+    // Redirecciona o muestra un mensaje de error si se accede directamente a este archivo sin enviar el formulario.
+    echo "Acceso no autorizado.";
 }
 ?>
