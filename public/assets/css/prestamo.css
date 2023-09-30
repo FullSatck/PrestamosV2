@@ -1,48 +1,129 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
+    font-family: sans-serif;
+    font-size: 16px;
+    color: #222;
     background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-h1 {
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-top: 0;
     text-align: center;
-    margin-bottom: 20px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
+  }
+  
+  form {
+    width: 500px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  label {
+    font-weight: bold;
     margin-bottom: 10px;
-}
-
-input,
-select {
+    text-align: center;
+  }
+  
+  input {
+    width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
-}
-
-button {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  select {
+    width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  input[type="submit"] {
+    background-color: #000;
     color: #fff;
-    border: none;
+    font-size: 18px;
+    padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #222;
+    color: #fff;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* Animaciones */
+  
+  .form-container {
+    animation: fade-in 0.5s ease-in-out;
+  }
+  
+  input[type="submit"]:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Imágenes y iconos */
+  
+  .logo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+  
+  .icono-moneda {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Mensaje de agradecimiento */
+  
+  .mensaje-agradecimiento {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  /* Enlace a política de privacidad */
+  
+  .politica-privacidad {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  /* Centrar todo */
+  
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Integrar los elementos */
+  
+  .form-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  
+  .label,
+  .input,
+  .select {
+    margin-bottom: 5px;
+  }
+  
+  input[type="submit"] {
+    margin-top: 20px;
+  }
+  

@@ -1,88 +1,109 @@
-/* Estilos CSS personalizados */
-
-/* Fondo y estilos generales */
+/* Estilos generales */
 body {
-    background-color: #f7f7f7;
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container-fluid {
+    padding: 20px;
+}
+
+/* Estilos para la paginación */
+#pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
     margin: 0;
     padding: 0;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+.pagination li {
+    display: inline;
+    margin-right: 5px;
 }
 
-/* Estilo de la barra de búsqueda */
-.search-container {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px;
-}
-
-.search-input {
-    display: flex;
-    align-items: center;
-}
-
-.search-input input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-    font-size: 16px;
-}
-
-.search-button {
+.pagination li a {
+    text-decoration: none;
+    padding: 5px 10px;
     background-color: #007bff;
-    color: white;
-    border: none;
+    color: #fff;
+    border: 1px solid #007bff;
     border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
 }
 
-/* Estilo de la tabla */
+.pagination li a:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para la tabla */
 .table-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
+    margin-top: 20px;
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .table th,
 .table td {
-    padding: 10px;
+    padding: 8px 12px;
     text-align: left;
+    border-bottom: 1px solid #ccc;
 }
 
 .table th {
-    background-color: #007bff;
-    color: white;
+    background-color: #f8f9fa;
+    font-weight: bold;
 }
 
-.table tr:nth-child(even) {
+.table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-/* Estilo del botón de regreso */
-.return-button {
-    text-align: left; /* Alinea el botón a la izquierda */
-    margin-bottom: 10px; /* Menos espacio hacia abajo */
-    margin-left: 15px; /* Agrega un margen a la izquierda */
-    margin-top: 10px; /* Agrega espacio hacia arriba */
+.table tbody tr:hover {
+    background-color: #dcdcdc;
 }
 
-/* Estilo del título */
+
+/* Estilos para la barra de búsqueda */
+.search-container {
+    margin-bottom: 10px;
+}
+
+.search-input {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#search-input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+#search-button {
+    flex-basis: 30px;
+    padding: 8px 10px;
+}
+
+/* Estilos para los botones */
+.return-button,
+.register-button {
+    margin-top: 10px;
+}
+
+.btn-secondary,
+.btn-success {
+    margin-right: 10px;
+}
+
+/* Estilos para el título */
 h1 {
     text-align: center;
-    color: #333;
+    margin-bottom: 20px;
 }

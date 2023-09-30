@@ -1,60 +1,44 @@
 <?php
-// Incluir el archivo de conexión a la base de datos
+// Incluir el archivo de conexión
 include("conexion.php");
 
-// Verificar si se ha enviado un formulario
+// Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
-    $clienteID = $_POST["clienteID"];
+    $cliente_id = $_POST["cliente_id"];
     $monto = $_POST["monto"];
-    $tasaInteres = $_POST["tasaInteres"];
+    $tasa_interes = $_POST["tasa_interes"];
     $plazo = $_POST["plazo"];
-    $frecuenciaPago = $_POST["frecuenciaPago"];
-    $zona = $_POST["zona"];
+    $moneda_id = $_POST["moneda_id"];
+    $fecha_inicio = $_POST["fecha_inicio"];
+    $frecuencia_pago = $_POST["frecuencia_pago"];
 
-    // Calcula la fecha de vencimiento
-    $fechaVencimiento = calcularFechaVencimiento($frecuenciaPago, $plazo);
+    // Sentencia SQL para insertar datos en la tabla
+    $sql = "INSERT INTO prestamos (cliente_id, monto, tasa_interes, plazo, moneda_id, fecha_inicio, frecuencia_pago) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    // Insertar los datos en la tabla "Prestamos"
-    $sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona) VALUES (?, ?, ?, ?, CURDATE(), ?, 'pendiente', ?, ?)";
-
-    // Preparar la consulta
+    // Preparar la sentencia SQL
     $stmt = $conexion->prepare($sql);
 
     if ($stmt) {
-        // Enlazar parámetros
-        $stmt->bind_param("idissis", $clienteID, $monto, $tasaInteres, $plazo, $fechaVencimiento, $zona);
+        // Vincular los parámetros
+        $stmt->bind_param("iiiiiss", $cliente_id, $monto, $tasa_interes, $plazo, $moneda_id, $fecha_inicio, $frecuencia_pago);
 
-        // Ejecutar la consulta
+        // Ejecutar la sentencia
         if ($stmt->execute()) {
-            echo "Préstamo solicitado con éxito.";
+            echo "Los datos se han insertado correctamente.";
         } else {
-            echo "Error al solicitar el préstamo: " . $stmt->error;
+            echo "Error al insertar datos: " . $stmt->error;
         }
 
-        // Cerrar la consulta
+        // Cerrar la sentencia y la conexión
         $stmt->close();
     } else {
-        echo "Error en la preparación de la consulta: " . $conexion->error;
+        echo "Error en la preparación de la sentencia: " . $conexion->error;
     }
-
-    // Cerrar la conexión
-    $conexion->close();
+} else {
+    echo "El formulario no se ha enviado correctamente.";
 }
 
-// Función para calcular la fecha de vencimiento
-function calcularFechaVencimiento($frecuenciaPago, $plazo) {
-    $fechaInicio = new DateTime();
-    $fechaVencimiento = clone $fechaInicio;
-
-    if ($frecuenciaPago === "mensual") {
-        $fechaVencimiento->add(new DateInterval("P{$plazo}M"));
-    } elseif ($frecuenciaPago === "quincenal") {
-        $fechaVencimiento->add(new DateInterval("P{$plazo}D"));
-    } elseif ($frecuenciaPago === "semanal") {
-        $fechaVencimiento->add(new DateInterval("P" . ($plazo * 7) . "D"));
-    }
-
-    return $fechaVencimiento->format("Y-m-d");
-}
+// Cerrar la conexión a la base de datos
+$conexion->close();
 ?>
