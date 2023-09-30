@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/views/assets/css/login.css">
+    <link rel="stylesheet" href="/public/assets/css/login.css">
     <script src="validacion.js"></script>
     
     <title>Login</title>
@@ -21,7 +21,7 @@
             echo '<p class="error-message">' . $mensaje . '</p>';
         }
         ?>
-        <form action="/controlador/validar_login.php" method="post">
+        <form action="/controllers/validar_login.php" method="post">
           <label for="usuario">correo:</label>
           <input type="usuario" id="email" name="email" placeholder= "Por favor ingrese su usuario" >
       

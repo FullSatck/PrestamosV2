@@ -1,60 +1,64 @@
 <?php
 // Incluir el archivo de conexión a la base de datos
-include("conexion.php");
+include 'conexion.php';
 
-// Verificar si se ha enviado un formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $clienteID = $_POST["clienteID"];
-    $monto = $_POST["monto"];
-    $tasaInteres = $_POST["tasaInteres"];
-    $plazo = $_POST["plazo"];
-    $frecuenciaPago = $_POST["frecuenciaPago"];
-    $zona = $_POST["zona"];
+// Recuperar los datos del formulario
+$id_cliente = $_POST['id_cliente'];
+$monto = $_POST['monto'];
+$tasa_interes = $_POST['tasa_interes'];
+$plazo = $_POST['plazo'];
+$moneda_id = $_POST['moneda_id'];
+$fecha_inicio = $_POST['fecha_inicio'];
+$frecuencia_pago = $_POST['frecuencia_pago'];
+$zona = $_POST['zona'];
 
-    // Calcula la fecha de vencimiento
-    $fechaVencimiento = calcularFechaVencimiento($frecuenciaPago, $plazo);
+// Calcular la fecha de vencimiento en función de la frecuencia de pago y el plazo
+$fecha_vencimiento = calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago);
 
-    // Insertar los datos en la tabla "Prestamos"
-    $sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona) VALUES (?, ?, ?, ?, CURDATE(), ?, 'pendiente', ?, ?)";
+// Calcular el monto total a pagar
+// Fórmula: Monto Total a Pagar = Monto + (Monto * Tasa de Interés / 100)
+$monto_total = $monto + ($monto * $tasa_interes / 100);
 
-    // Preparar la consulta
-    $stmt = $conexion->prepare($sql);
+// Calcular el monto de cada cuota
+$cuota = $monto_total / $plazo;
 
-    if ($stmt) {
-        // Enlazar parámetros
-        $stmt->bind_param("idissis", $clienteID, $monto, $tasaInteres, $plazo, $fechaVencimiento, $zona);
+// Insertar la solicitud de préstamo en la base de datos
+$sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona, FrecuenciaPago, MontoAPagar, Cuota, MontoCuota) 
+VALUES ('$id_cliente', '$monto', '$tasa_interes', '$plazo', '$moneda_id', '$fecha_inicio', '$fecha_vencimiento', 'pendiente', NULL, '$zona', '$frecuencia_pago', '$monto_total', '$cuota', '$cuota')";
 
-        // Ejecutar la consulta
-        if ($stmt->execute()) {
-            echo "Préstamo solicitado con éxito.";
-        } else {
-            echo "Error al solicitar el préstamo: " . $stmt->error;
-        }
 
-        // Cerrar la consulta
-        $stmt->close();
-    } else {
-        echo "Error en la preparación de la consulta: " . $conexion->error;
-    }
-
-    // Cerrar la conexión
-    $conexion->close();
+if ($conexion->query($sql) === TRUE) {
+    echo "Solicitud de préstamo realizada con éxito. Monto Total a Pagar: $monto_total. Cada cuota es de: $cuota";
+} else {
+    echo "Error al solicitar el préstamo: " . $conexion->error;
 }
 
-// Función para calcular la fecha de vencimiento
-function calcularFechaVencimiento($frecuenciaPago, $plazo) {
-    $fechaInicio = new DateTime();
-    $fechaVencimiento = clone $fechaInicio;
+// Cerrar la conexión a la base de datos
+$conexion->close();
 
-    if ($frecuenciaPago === "mensual") {
-        $fechaVencimiento->add(new DateInterval("P{$plazo}M"));
-    } elseif ($frecuenciaPago === "quincenal") {
-        $fechaVencimiento->add(new DateInterval("P{$plazo}D"));
-    } elseif ($frecuenciaPago === "semanal") {
-        $fechaVencimiento->add(new DateInterval("P" . ($plazo * 7) . "D"));
+// Función para calcular la fecha de vencimiento en función del plazo y la frecuencia de pago
+function calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago) {
+    $fecha = new DateTime($fecha_inicio);
+
+    switch ($frecuencia_pago) {
+        case 'diario':
+            $fecha->add(new DateInterval('P' . $plazo . 'D'));
+            break;
+        case 'semanal':
+            $fecha->add(new DateInterval('P' . ($plazo * 7) . 'D'));
+            break;
+        case 'quincenal':
+            $fecha->add(new DateInterval('P' . ($plazo * 15) . 'D'));
+            break;
+        case 'mensual':
+            $fecha->add(new DateInterval('P' . $plazo . 'M'));
+            break;
+        default:
+            // Por defecto, se asume pago mensual
+            $fecha->add(new DateInterval('P' . $plazo . 'M'));
+            break;
     }
 
-    return $fechaVencimiento->format("Y-m-d");
+    return $fecha->format('Y-m-d');
 }
 ?>

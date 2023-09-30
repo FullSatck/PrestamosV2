@@ -3,38 +3,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtiene los valores del formulario
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
-    $email = $_POST['email'];
-    $contrasena = $_POST['contrasena'];
-    $zona = $_POST['zona'];
-    $rol = $_POST['rol'];
+    $direccion = $_POST['direccion'];
+    $telefono = $_POST['telefono'];
+    $historial_crediticio = $_POST['historial_crediticio'];
+    $referencias_personales = $_POST['referencias_personales'];
+    $moneda_preferida = $_POST['moneda_preferida'];
+    $zona_asignada = $_POST['zona_asignada'];
 
     // Validación básica (campos no vacíos)
-    if (empty($nombre) || empty($apellido) || empty($email) || empty($contrasena) || empty($zona) || empty($rol)) {
+    if (empty($nombre) || empty($apellido) || empty($direccion) || empty($telefono) || empty($moneda_preferida) || empty($zona_asignada)) {
         echo "Todos los campos son obligatorios. Por favor, complete el formulario.";
     } else {
-        // Hashea la contraseña utilizando password_hash
-        $contrasenaHasheada = password_hash($contrasena, PASSWORD_DEFAULT);
-
         // Incluye el archivo de conexión a la base de datos
         include("conexion.php");
 
-        // Prepara la consulta SQL
-        $sql = "INSERT INTO Usuarios (Nombre, Apellido, Email, Password, Zona, RolID) 
-                VALUES (?, ?, ?, ?, ?, ?)";
+        // Prepara la consulta SQL para insertar el cliente
+        $sql = "INSERT INTO Clientes (Nombre, Apellido, Direccion, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conexion->prepare($sql);
 
         if ($stmt) {
             // Asigna los valores a los marcadores de posición en la consulta preparada
-            $stmt->bind_param("sssssi", $nombre, $apellido, $email, $contrasenaHasheada, $zona, $rol);
+            $stmt->bind_param("ssssssss", $nombre, $apellido, $direccion, $telefono, $historial_crediticio, $referencias_personales, $moneda_preferida, $zona_asignada);
 
             // Ejecuta la consulta
             if ($stmt->execute()) {
                 // Redirige al usuario a una página de éxito o muestra un mensaje
-                header("Location: registro_exitoso.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
+                header("Location: ../resources/views/admin/inicio/inicio.php");
                 exit();
             } else {
-                echo "Error al registrar el usuario: " . $stmt->error;
+                echo "Error al registrar el cliente: " . $stmt->error;
             }
 
             $stmt->close();

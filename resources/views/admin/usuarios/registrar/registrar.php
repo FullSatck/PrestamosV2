@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Asegúrate de incluir esta línea para hacer tu sitio web responsive -->
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar.css">
+    <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar_usuarios.css">
 </head>
 
 <body>
     <div class="registro-container">
         <h2>Registro de Usuario</h2>
-        <form action="controlador/validar_registro.php" method="post">
+        <form action="/controllers/validar_registro.php" method="post">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese su nombre" required>
@@ -35,7 +35,7 @@
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                     // Incluye el archivo de conexión a la base de datos
-                    include("../../../../controllers/conexion.php");
+                    include("../../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
                     $consultaZonas = "SELECT ID, Nombre FROM Zonas";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
@@ -46,20 +46,7 @@
                     ?>
                 </select>
             </div>
-            <div class="input-container">
-                <label for="moneda">Moneda Preferida:</label>
-                <select id="moneda" name="moneda" required>
-                    <?php
-                    // Consulta SQL para obtener las opciones de moneda preferida
-                    $consultaMonedas = "SELECT DISTINCT MonedaPreferida FROM Usuarios";
-                    $resultMonedas = mysqli_query($conexion, $consultaMonedas);
-                    // Genera las opciones del menú desplegable para Moneda Preferida
-                    while ($row = mysqli_fetch_assoc($resultMonedas)) {
-                        echo '<option value="' . $row['MonedaPreferida'] . '">' . $row['MonedaPreferida'] . '</option>';
-                    }
-                    ?>
-                </select>
-            </div>
+        
             <div class="input-container">
                 <label for="rol">Rol:</label>
                 <select id="rol" name="rol" required>
