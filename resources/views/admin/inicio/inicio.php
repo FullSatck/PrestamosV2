@@ -66,7 +66,7 @@
 
         <tr>
             <th scope="row">
-                <a href="/views/admin/clientes/clientes.php">Clientes </a>
+                <a href="/resources/views/admin/clientes/clientes.php">Clientes </a>
                 <button><a href="/admin/recaudo/cliente/add/">Añadir</a></button>
                 <button><a href="/admin/recaudo/cliente/">Modificar</a></button>
             </th>
