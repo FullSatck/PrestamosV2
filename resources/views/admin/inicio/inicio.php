@@ -80,8 +80,10 @@
         <tr>
             <th scope="row">
                 <a href="/views/admin/clientes/clientes.php">Clientes </a>
-                <button><a href="/admin/recaudo/cliente/add/">Añadir</a></button>
-                <button><a href="/admin/recaudo/cliente/">Modificar</a></button>
+                <div class="button-container">
+                    <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
+                    <button><a href="/admin/recaudo/abono/">Modificar</a></button>
+                </div>
             </th>
         </tr>
 
