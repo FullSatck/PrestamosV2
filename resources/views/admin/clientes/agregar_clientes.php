@@ -11,88 +11,77 @@
 
 <body>
     <div class="registro-container"><br><br><br><br><br><br><br><br>
-
+        
         <form action="/controllers/validar_clientes.php" method="post" class="form">
             <h2>Registro de Cliente</h2>
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese el nombre">
+                <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese el nombre" required>
             </div>
             <div class="input-container">
                 <label for="apellido">Apellido:</label>
-                <input type="media" id="apellido" name="apellido" placeholder="Por favor ingrese el apellido">
-            </div>
-            <div class="input-container">
-                <label for="telefono">Curp/Ced:</label>
-                <input type="text" id="telefono" name="Curp" placeholder="Por favor ingrese el Curp">
-            </div>
-            <div class="input-container">
-                <label for="media">Foto:</label>
-                <input type="file" id="foto" name="foto">
+                <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese el apellido">
             </div>
             <div class="input-container">
                 <label for="direccion">Domicilio:</label>
-                <input type="text" id="direccion" name="direccion" placeholder="Por favor ingrese la dirección">
+                <input type="text" id="direccion" name="direccion" placeholder="Por favor ingrese la dirección" required>
             </div>
             <div class="input-container">
                 <label for="telefono">Teléfono:</label>
-                <input type="text" id="telefono" name="telefono" placeholder="Por favor ingrese el teléfono">
+                <input type="text" id="telefono" name="telefono" placeholder="Por favor ingrese el teléfono" required>
             </div>
             <div class="input-container">
                 <label for="historial_crediticio">Historial Crediticio:</label>
                 <textarea id="historial_crediticio" name="historial_crediticio"
-                    placeholder="Por favor ingrese el historial crediticio"></textarea>
+                    placeholder="Por favor ingrese el historial crediticio" required></textarea>
             </div>
             <div class="input-container">
                 <label for="referencias_personales">Referencias Personales:</label>
                 <textarea id="referencias_personales" name="referencias_personales"
-                    placeholder="Por favor ingrese las referencias personales"></textarea>
+                    placeholder="Por favor ingrese las referencias personales" required></textarea>
             </div>
             <div class="input-container">
                 <label for="moneda_preferida">Moneda Preferida:</label>
                 <select id="moneda_preferida" name="moneda_preferida">
-
+                
                     <?php
-        // Incluye el archivo de conexión a la base de datos
-        include("../../../../controllers/conexion.php");
+                    // Incluye el archivo de conexión a la base de datos
+                    include("../../../../controllers/conexion.php");
 
         // Consulta SQL para obtener las monedas
-        $consultaMonedas = "SELECT ID, Nombre FROM monedas";
+        $consultaMonedas = "SELECT ID, Nombre FROM Monedas";
         $resultMonedas = mysqli_query($conexion, $consultaMonedas);
 
-        // Genera las opciones del menú desplegable para Moneda Preferida
-        while ($row = mysqli_fetch_assoc($resultMonedas)) {
-            echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
-        }
+                    // Genera las opciones del menú desplegable para Moneda Preferida
+                    while ($row = mysqli_fetch_assoc($resultMonedas)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    }
 
         // Cierra la conexión a la base de datos
         mysqli_close($conexion);
         ?>
-                </select>
+               </select>
             </div>
 
             <div class="input-container">
                 <label for="zona_asignada">Zona Asignada:</label>
                 <select id="zona_asignada" name="zona_asignada">
                     <?php
-        // Incluye el archivo de conexión a la base de datos
-        include("../../../../controllers/conexion.php");
-        
-        while ($row = mysqli_fetch_assoc($resultMonedas)) {
-            echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
-        }
+                    // Incluye el archivo de conexión a la base de datos
+                    include("../../../../controllers/conexion.php");
 
+                    // Consulta SQL para obtener las zonas
+                    $consultaZonas = "SELECT ID, Nombre FROM Zonas";
+                    $resultZonas = mysqli_query($conexion, $consultaZonas);
 
-        // Consulta SQL para obtener las zonas
-        $consultaZonas = "SELECT ID, Nombre FROM Zonas";
-        $resultZonas = mysqli_query($conexion, $consultaZonas);
+                    // Genera las opciones del menú desplegable para Zona Asignada
+                    while ($row = mysqli_fetch_assoc($resultZonas)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    }
 
-        // Genera las opciones del menú desplegable para Zona Asignada
-        while ($row = mysqli_fetch_assoc($resultZonas)) {
-            echo '<option value="' . $row['Nombre'] . '">' . $row['Nombre'] . '</option>';
-        }
-
-        ?>
+                    // Cierra la conexión a la base de datos
+                    mysqli_close($conexion);
+                    ?>
                 </select>
             </div>
 
