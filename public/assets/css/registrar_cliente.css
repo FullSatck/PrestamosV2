@@ -1,92 +1,77 @@
-/* Estilos generales */
+/* Estilos Generales */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: #ffffff;
+/* Contenedor del Registro */
+.registro-container {
+    max-width: 500px;
+    width: 100%;
+    background-color: #fff;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+   
 }
 
-h1 {
-    text-align: center;
-    color: #007bff;
-    margin-bottom: 20px;
-}
 
-/* Estilos para etiquetas y campos de entrada */
-label {
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-form {
+/* Estilos para los Inputs y Selects */
+.input-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-select,
-input[type="text"],
-input[type="date"],
-select[name="frecuencia_pago"] {
-    flex-basis: calc(50% - 10px);
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-/* Estilo para el botón */
-input[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-input[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-/* Estilos para el cuadro de resultados */
-.result-container {
-    margin-top: 30px;
-    border-top: 2px solid #007bff;
-    padding-top: 20px;
-}
-
-.result-container h2 {
-    font-size: 24px;
+    flex-direction: column;
     margin-bottom: 15px;
-    color: #007bff;
 }
 
-.result-container p {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
+.input-container label {
+    margin-bottom: 5px;
 }
 
-/* Estilos para el formulario en dispositivos móviles */
-@media (max-width: 768px) {
-    select,
-    input[type="text"],
-    input[type="date"],
-    select[name="frecuencia_pago"] {
-        flex-basis: 100%;
-    }
+.input-container input,
+.input-container select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 40px;
+    border: none;
+    box-shadow: 7px 5px 5px rgba(0,0,0,0.1);
+}
+
+/* Botón de Registro */
+.btn-container button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-container button:hover {
+    background-color: #2980b9;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 600px) {
+   .registro-container {
+       padding: 20px;
+   }
+
+   .input-container input,
+   .input-container select {
+       font-size: 14px;
+       padding: 8px;
+   }
+
+   .btn-container button {
+       padding: 8px 12px;
+       font-size: 14px;
+   }
 }

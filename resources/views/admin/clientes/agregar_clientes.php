@@ -11,8 +11,9 @@
 
 <body>
     <div class="registro-container"><br><br><br><br><br><br><br><br>
+        
+        <form action="/controllers/validar_clientes.php" method="post" class="form">
         <h2>Registro de Cliente</h2>
-        <form action="validar_clientes.php" method="post">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese el nombre">
