@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         header("location: ../resources/views/admin/inicio/inicio.php"); // Redirigir al inicio de administrador
                         break;
                     case 2:
-                        header("location: inicio_supervisor.php"); // Redirigir al inicio de supervisor
+                        header("location: ../resources/views/admin/inicio/inicio.php"); // Redirigir al inicio de supervisor
                         break;
                     case 3:
                         header("location: inicio_cobrador.php"); // Redirigir al inicio de cobrador

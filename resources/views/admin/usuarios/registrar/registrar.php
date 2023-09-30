@@ -35,7 +35,7 @@
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                     // Incluye el archivo de conexión a la base de datos
-                    include("../../../../controllers/conexion.php");
+                    include("../../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
                     $consultaZonas = "SELECT ID, Nombre FROM Zonas";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
@@ -46,9 +46,7 @@
                     ?>
                 </select>
             </div>
-            <div class="input-container">
-                
-            </div>
+        
             <div class="input-container">
                 <label for="rol">Rol:</label>
                 <select id="rol" name="rol" required>

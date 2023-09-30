@@ -1,0 +1,109 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container-fluid {
+    padding: 20px;
+}
+
+/* Estilos para la paginación */
+#pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination li {
+    display: inline;
+    margin-right: 5px;
+}
+
+.pagination li a {
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+}
+
+.pagination li a:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para la tabla */
+.table-container {
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table th,
+.table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #dcdcdc;
+}
+
+
+/* Estilos para la barra de búsqueda */
+.search-container {
+    margin-bottom: 10px;
+}
+
+.search-input {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#search-input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+#search-button {
+    flex-basis: 30px;
+    padding: 8px 10px;
+}
+
+/* Estilos para los botones */
+.return-button,
+.register-button {
+    margin-top: 10px;
+}
+
+.btn-secondary,
+.btn-success {
+    margin-right: 10px;
+}
+
+/* Estilos para el título */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}

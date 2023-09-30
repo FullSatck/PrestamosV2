@@ -1,4 +1,4 @@
-/* Estilos para la barra de navegación */
+
 a {
   text-decoration: none;
   color: black;
@@ -7,10 +7,13 @@ a {
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 40px;
-  background-color: #f0f0f0; /* Color de fondo */
-  color: #333; /* Color del texto principal */
-  font-size: 16px; /* Tamaño de fuente predeterminado */
+  padding: 20px; 
+  background-color: #f0f0f0; 
+  color: #333; 
+  font-size: 16px; 
+}
+h2{
+  margin-top: 8px;
 }
  
 .navbar {
@@ -48,7 +51,11 @@ h2 a {
 }
 
 /* Estilos para los botones en la tabla */
-.table button {
+.button-container {
+  float: right; 
+}
+
+.button-container button {
   background-color: #0084ff;
   color: white;
   border: none;
@@ -58,15 +65,31 @@ h2 a {
   border-radius: 8px;
 }
 
-.table button:hover {
+.button-container button:hover {
   background-color: #0004ff;
 } 
 
 #footer {
-  text-align: center; /* Centra el texto horizontalmente */
-  background-color: #f0f0f0; /* Color de fondo */
-  padding: 10px 0; /* Espaciado interno del pie de página */
-  color: #333; /* Color del texto */
-  font-size: 14px; /* Tamaño de fuente */
+  text-align: center; 
+  background-color: #f0f0f0; 
+  padding: 10px 0; 
+  color: #333; 
+  font-size: 14px; 
 }
 
+/* Media query para dispositivos pequeños */
+@media screen and (max-width: 768px) {
+  body {
+    padding: 10px; 
+    font-size: 14px; 
+  }
+
+  .navbar-brand {
+    font-size: 20px; 
+  }
+
+  .table button {
+    font-size: 12px; 
+    padding: 3px 6px; 
+  }
+}

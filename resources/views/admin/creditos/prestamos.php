@@ -1,87 +1,94 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Préstamo</title>
+    <title>Sistema de Préstamos</title>
     <link rel="stylesheet" href="/public/assets/css/prestamo.css">
 </head>
+
 <body>
-    <div class="container">
-        <h1>Solicitud de Préstamo</h1>
+    <h1>Solicitud de Préstamo</h1>
+    <form action="/controllers/procesar_prestamo.php" method="POST">
         <?php
         // Incluir el archivo de conexión a la base de datos
-        include("../../controlador/conexion.php");
+        include("../../../../controllers/conexion.php");
 
-        // Verificar si la conexión se realizó correctamente
-        if ($conexion->connect_error) {
-            echo "<p class='error-message'>Error de conexión a la base de datos: " . $conexion->connect_error . "</p>";
-        } else {
-            echo "<p class='success-message'>Conexión efectiva a la base de datos</p>";
-        }
+        // Obtener la lista de clientes, monedas y zonas desde la base de datos
+        $query_clientes = "SELECT ID, Nombre FROM Clientes";
+        $query_monedas = "SELECT ID, Nombre FROM Monedas";
+        $query_zonas = "SELECT Nombre FROM Zonas";
+
+        $result_clientes = $conexion->query($query_clientes);
+        $result_monedas = $conexion->query($query_monedas);
+        $result_zonas = $conexion->query($query_zonas);
         ?>
-        <form action="/controlador/procesar_prestamo.php" method="POST">
-            <label for="monto">Monto del Préstamo:</label>
-            <input type="number" name="monto" required>
-            
-            <label for="tasaInteres">Tasa de Interés (%):</label>
-            <input type="number" name="tasaInteres" required>
-            
-            <label for="plazo">Plazo (meses):</label>
-            <input type="number" name="plazo" required>
-            
-            <label for="frecuenciaPago">Frecuencia de Pago:</label>
-            <select name="frecuenciaPago" required>
-                <option value="mensual">Mensual</option>
-                <option value="quincenal">Quincenal</option>
-                <option value="semanal">Semanal</option>
-                <option value="diario">Diario</option>
-            </select>
-            
-            <label for="clienteID">Cliente:</label>
-            <select name="clienteID" required>
-                <?php
-                // Consulta para obtener los nombres de los clientes
-                $sql = "SELECT ID, Nombre, Apellido FROM Clientes";
-                $result = $conexion->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row["ID"] . "'>" . $row["Nombre"] . " " . $row["Apellido"] . "</option>";
-                    }
-                } else {
-                    echo "<option value=''>No hay clientes disponibles</option>";
-                }
-                ?>
-            </select>
-            
-            <label for="zona">Zona:</label>
-            <select name="zona" required>
-                <?php
-                // Consulta para obtener las zonas disponibles
-                $sql = "SELECT ID, Nombre FROM Zonas";
-                $result = $conexion->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row["ID"] . "'>" . $row["Nombre"] . "</option>";
-                    }
-                } else {
-                    echo "<option value=''>No hay zonas disponibles</option>";
-                }
-                ?>
-            </select>
-
-            <button type="submit">Solicitar Préstamo</button>
-        </form>
-        <!-- Agregar un div para mostrar mensajes de error -->
-        <div class="error-message">
+        <label for="id_cliente">Cliente:</label>
+        <select name="id_cliente" required>
             <?php
-            if (isset($_GET["error"])) {
-                echo "Error: " . $_GET["error"];
+            while ($row = $result_clientes->fetch_assoc()) {
+                echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
             }
             ?>
-        </div>
-    </div>
+        </select><br>
+
+        <label for="monto">Monto:</label>
+        <input type="text" name="monto" id="monto" required><br>
+
+        <label for="tasa_interes">Tasa de Interés (%):</label>
+        <input type="text" name="tasa_interes" id="tasa_interes" required oninput="calcularMontoPagar()"><br>
+
+        <!-- Elemento para mostrar el monto a pagar en tiempo real -->
+        <label for="monto_a_pagar">Monto a Pagar:</label>
+        <span id="monto_a_pagar">0.00</span><br>
+
+        <label for="plazo">Plazo (en días):</label>
+        <input type="text" name="plazo" required><br>
+
+        <label for="moneda_id">Moneda:</label>
+        <select name="moneda_id" required>
+            <?php
+            while ($row = $result_monedas->fetch_assoc()) {
+                echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+            }
+            ?>
+        </select><br>
+
+        <label for="fecha_inicio">Fecha de Inicio:</label>
+        <input type="date" name="fecha_inicio" required><br>
+
+        <label for="frecuencia_pago">Frecuencia de Pago:</label>
+        <select name="frecuencia_pago" required>
+            <option value="diario">Diario</option>
+            <option value="semanal">Semanal</option>
+            <option value="quincenal">Quincenal</option>
+            <option value="mensual">Mensual</option>
+        </select><br>
+
+        <label for="zona">Zona:</label>
+        <select name="zona" required>
+            <?php
+            while ($row = $result_zonas->fetch_assoc()) {
+                echo "<option value='" . $row['Nombre'] . "'>" . $row['Nombre'] . "</option>";
+            }
+            ?>
+        </select><br>
+
+        <input type="submit" value="Solicitar Préstamo">
+    </form>
+
+    <script>
+    function calcularMontoPagar() {
+        // Obtener los valores ingresados por el usuario
+        var monto = parseFloat(document.getElementById('monto').value);
+        var tasa_interes = parseFloat(document.getElementById('tasa_interes').value);
+
+        // Calcular el monto a pagar
+        var monto_a_pagar = monto + (monto * tasa_interes / 100);
+
+        // Mostrar el monto a pagar en tiempo real en el elemento HTML
+        document.getElementById('monto_a_pagar').textContent = monto_a_pagar.toFixed(2);
+    }
+    </script>
 </body>
+
 </html>
