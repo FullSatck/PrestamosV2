@@ -15,7 +15,7 @@
         // Verifica si se ha pasado un ID de usuario a modificar por GET
         if (isset($_GET['id'])) {
             // Incluye el archivo de conexión a la base de datos
-            include("../../../../../controllers/conexion.php");
+            include("../../../../controllers/conexion.php");
             // Obtiene el ID del usuario a modificar
             $usuario_id = $_GET['id'];
             // Consulta SQL para obtener los datos del usuario por su ID
