@@ -29,7 +29,7 @@ if (!$_SESSION['logged_in']) {
     <button>&larr;</button> <!-- Flecha hacia la izquierda -->
     <button>&#8801;</button> <!-- Tres líneas horizontales -->
     <button>&rarr;</button> <!-- Flecha hacia la derecha -->
-    <button class="separated-button">Botón Separado</button>
+    <button class="separated-button">Añadir prestamo</button>
 </div><br>
 
 <div class="cobro-bar">
@@ -87,6 +87,42 @@ if (!$_SESSION['logged_in']) {
 
 <!-- Botón de guardar -->
 <button class="btn-guardar">Guardar</button>
+
+
+<div class="table-container">
+    <table>
+<thead>
+        <tr>
+            <th>Fecha Servidor</th>
+            <th>Fecha Móvil</th>
+            <th>Abono</th>
+            <th>Saldo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>01/01/2023</td>
+            <td>02/01/2023</td>
+            <td>100.00</td>
+            <td>500.00</td>
+        </tr>
+        <tr>
+            <td>02/01/2023</td>
+            <td>03/01/2023</td>
+            <td>150.00</td>
+            <td>350.00</td>
+        </tr>
+        <tr>
+            <td>03/01/2023</td>
+            <td>04/01/2023</td>
+            <td>75.00</td>
+            <td>275.00</td>
+        </tr>
+        <!-- Puedes agregar más filas según sea necesario -->
+    </tbody>
+
+</table>
+
 
 <script>
     $(function() {
