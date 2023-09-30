@@ -27,7 +27,7 @@
                 </div>
                 <!-- Botón para registrar trabajadores -->
                 <div class="register-button">
-                    <a href="/ruta/a/tu/pagina/de/registro" class="btn btn-success"><i class="fas fa-user-plus"></i> Registrar Trabajador</a>
+                    <a href="registrar/registrar.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Registrar Trabajador</a>
                 </div>
             </div>
             <div class="col-md-9">

@@ -17,7 +17,7 @@ h2{
 }
  
 .navbar {
-  background-color: #0084ff;
+  background-color: #70aee9;
   color: #000000;
   padding: 10px;
 }
@@ -46,7 +46,7 @@ h2 a {
 }
 
 .table th {
-  background-color: #d4d2d2;
+  background-color: #dfe0e756;
   color: white;
 }
 
@@ -56,7 +56,7 @@ h2 a {
 }
 
 .button-container button {
-  background-color: #0084ff;
+  background-color: #70aee9;
   color: white;
   border: none;
   padding: 5px 10px;

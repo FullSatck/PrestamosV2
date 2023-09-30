@@ -32,7 +32,7 @@
 
         <tr>
             <th scope="row">
-                <a href="/admin/auth/user/">Usuarios </a>
+                <a href="/resources/views/admin/usuarios/crudusuarios.php">Usuarios </a>
                 <div class="button-container">
                     <button><a href="/admin/auth/user/add/">Añadir</a></button>
                     <button><a href="/admin/auth/user/">Modificar</a></button>
@@ -45,7 +45,7 @@
     <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
-                <a href="/resources/views/admin/usuarios/crudusuarios.php">Registrar Trabajadores </a>
+                <a href="/resources/views/admin/usuarios/registrar/registrar.php">Registrar Usuario</a>
                 <div class="button-container">
                     <button><a href="/admin/empresa/cliente/add/">Añadir</a></button>
                     <button><a href="/admin/empresa/cliente/">Modificar</a></button>
