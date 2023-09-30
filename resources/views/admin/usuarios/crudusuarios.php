@@ -27,7 +27,7 @@
                 </div>
                 <!-- Botón para registrar trabajadores -->
                 <div class="register-button">
-                    <a href="registrar/registrar.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Registrar Trabajador</a>
+                    <a href="registrar.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Registrar Trabajador</a>
                 </div>
             </div>
             <div class="col-md-9">
@@ -66,7 +66,7 @@
                                     <td><?= $datos->Email ?></td>
                                     <td><?= $datos->Zona ?></td>
                                     <td><?= $datos->Rol ?></td>
-                                    <td><a href="/lognprin/admi/instructor/modificar_instruc.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
+                                    <td><a href="/resources/views/admin/usuarios/modificarUser.php $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
                                     <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
                                 </tr>
                             <?php } ?>

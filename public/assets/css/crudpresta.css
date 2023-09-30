@@ -1,0 +1,147 @@
+/* Estilos generales para la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    margin-top: 20px;
+    padding: 0;
+}
+
+/* Estilos para el encabezado */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Estilos para la barra de búsqueda */
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 5px 20px; /* Reducir el espacio interior para hacerlo más pequeño en PC */
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+    flex-grow: 1;
+    display: flex;
+}
+
+#search-input {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 1px solid #007bff; /* Color de borde azul */
+    border-radius: 0;
+    margin-right: 10px;
+    padding: 4px 6px; /* Reducir el espacio interior para hacerlo más pequeño en PC */
+    font-size: 14px; /* Tamaño de fuente estándar en PC */
+    color: #333;
+}
+
+#search-button {
+    border: none;
+    background-color: #007bff; /* Color de fondo azul */
+    color: #fff;
+    padding: 4px 8px; /* Reducir el tamaño del botón en PC */
+    font-size: 14px; /* Tamaño de fuente estándar en PC */
+    cursor: pointer;
+}
+
+/* Estilos para el botón de registro */
+.register-button {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la tabla */
+.table-container {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    overflow-x: auto; /* Hacer scroll horizontal en dispositivos pequeños */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th, .table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table th {
+    background-color: #f8f9fa; /* Color de fondo gris claro */
+    font-weight: bold;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Color de fondo gris claro para filas pares */
+}
+
+/* Estilos para los botones */
+.btn {
+    padding: 6px 12px;
+    margin-bottom: 10px;
+}
+
+/* Estilos para la paginación */
+#pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination li {
+    display: inline;
+    list-style-type: none;
+    margin-right: 5px;
+}
+
+.pagination li a {
+    border: 1px solid #007bff; /* Borde azul */
+    padding: 6px 12px;
+    text-decoration: none;
+    color: #007bff; /* Texto azul */
+}
+
+.pagination li.active a {
+    background-color: #007bff; /* Fondo azul */
+    color: #fff;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 767px) {
+    .search-input {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #search-input {
+        margin-bottom: 10px;
+    }
+
+    .register-button {
+        text-align: left;
+    }
+
+    .table-container {
+        overflow-x: auto; /* Habilitar scroll horizontal en dispositivos móviles */
+    }
+}

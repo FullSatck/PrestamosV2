@@ -45,7 +45,7 @@
     <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
-                <a href="/resources/views/admin/usuarios/registrar/registrar.php">Registrar Usuario</a>
+                <a href="/resources/views/admin/usuarios/registrar.php">Registrar Usuario</a>
                 <div class="button-container">
                     <button><a href="/admin/empresa/cliente/add/">Añadir</a></button>
                     <button><a href="/admin/empresa/cliente/">Modificar</a></button>
