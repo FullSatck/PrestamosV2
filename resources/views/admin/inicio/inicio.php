@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <h2>Autenticación y autorización</h2>
+    <h2 class="h22">Autenticación y autorización</h2>
     <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
@@ -41,7 +41,7 @@
         </tr>
     </table>
 
-    <h2>Empresa</h2>
+    <h2 class="h22">Empresa</h2>
     <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
@@ -65,7 +65,7 @@
         </tr>
     </table>
 
-    <h2>Recaudo</h2>
+    <h2 class="h22">Recaudo</h2>
     <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
