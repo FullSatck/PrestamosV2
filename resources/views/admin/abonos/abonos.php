@@ -22,14 +22,14 @@ if (!$_SESSION['logged_in']) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/public/assets/css/abonos.css" />
 </head>
-<body>
+<body> 
 
 <!-- Barra de navegación -->
 <div class="navbar">
     <button>&larr;</button> <!-- Flecha hacia la izquierda -->
     <button>&#8801;</button> <!-- Tres líneas horizontales -->
     <button>&rarr;</button> <!-- Flecha hacia la derecha -->
-    <button class="separated-button">Añadir prestamo</button>
+     <a href="/resources/views/admin/prestamos/crudPrestamos.php" class="separated-button">Nuevo Prestamo</a>
 </div><br>
 
 <div class="cobro-bar">
