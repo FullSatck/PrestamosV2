@@ -11,16 +11,24 @@
 
 <body>
     <div class="registro-container"><br><br><br><br><br><br><br><br>
-        
+
         <form action="/controllers/validar_clientes.php" method="post" class="form">
-        <h2>Registro de Cliente</h2>
+            <h2>Registro de Cliente</h2>
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese el nombre">
             </div>
             <div class="input-container">
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese el apellido">
+                <input type="media" id="apellido" name="apellido" placeholder="Por favor ingrese el apellido">
+            </div>
+            <div class="input-container">
+                <label for="telefono">Curp/Ced:</label>
+                <input type="text" id="telefono" name="Curp" placeholder="Por favor ingrese el Curp">
+            </div>
+            <div class="input-container">
+                <label for="media">Foto:</label>
+                <input type="file" id="foto" name="foto">
             </div>
             <div class="input-container">
                 <label for="direccion">Domicilio:</label>
@@ -43,13 +51,13 @@
             <div class="input-container">
                 <label for="moneda_preferida">Moneda Preferida:</label>
                 <select id="moneda_preferida" name="moneda_preferida">
-                
+
                     <?php
         // Incluye el archivo de conexión a la base de datos
         include("../../../../controllers/conexion.php");
 
         // Consulta SQL para obtener las monedas
-        $consultaMonedas = "SELECT ID, Nombre FROM Monedas";
+        $consultaMonedas = "SELECT ID, Nombre FROM monedas";
         $resultMonedas = mysqli_query($conexion, $consultaMonedas);
 
         // Genera las opciones del menú desplegable para Moneda Preferida
@@ -60,7 +68,7 @@
         // Cierra la conexión a la base de datos
         mysqli_close($conexion);
         ?>
-               </select>
+                </select>
             </div>
 
             <div class="input-container">
