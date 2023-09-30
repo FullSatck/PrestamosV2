@@ -1,0 +1,88 @@
+/* Estilos CSS personalizados */
+
+/* Fondo y estilos generales */
+body {
+    background-color: #f7f7f7;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilo de la barra de búsqueda */
+.search-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    display: flex;
+    align-items: center;
+}
+
+.search-input input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.search-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Estilo de la tabla */
+.table-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Estilo del botón de regreso */
+.return-button {
+    text-align: left; /* Alinea el botón a la izquierda */
+    margin-bottom: 10px; /* Menos espacio hacia abajo */
+    margin-left: 15px; /* Agrega un margen a la izquierda */
+    margin-top: 10px; /* Agrega espacio hacia arriba */
+}
+
+/* Estilo del título */
+h1 {
+    text-align: center;
+    color: #333;
+}
