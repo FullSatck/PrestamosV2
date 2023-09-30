@@ -1,0 +1,77 @@
+/* Estilos Generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor del Registro */
+.registro-container {
+    max-width: 500px;
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+   
+}
+
+
+/* Estilos para los Inputs y Selects */
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input-container label {
+    margin-bottom: 5px;
+}
+
+.input-container input,
+.input-container select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 40px;
+    border: none;
+    box-shadow: 7px 5px 5px rgba(0,0,0,0.1);
+}
+
+/* Botón de Registro */
+.btn-container button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-container button:hover {
+    background-color: #2980b9;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 600px) {
+   .registro-container {
+       padding: 20px;
+   }
+
+   .input-container input,
+   .input-container select {
+       font-size: 14px;
+       padding: 8px;
+   }
+
+   .btn-container button {
+       padding: 8px 12px;
+       font-size: 14px;
+   }
+}

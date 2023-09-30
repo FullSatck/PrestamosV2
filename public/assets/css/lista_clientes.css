@@ -1,0 +1,74 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    padding: 20px;
+}
+
+/* Estilos para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tbody tr:hover {
+    background-color: #dcdcdc;
+}
+
+/* Estilos para la barra de búsqueda */
+.search-container {
+    margin: 20px 0;
+}
+
+.search-input {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#search-input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+#search-button {
+    flex-basis: 30px;
+    padding: 8px 10px;
+}
+
+/* Estilos para los botones */
+.return-button,
+.register-button {
+    margin-top: 10px;
+}
+
+.btn-secondary,
+.btn-success {
+    margin-right: 10px;
+}
+
+/* Estilos para el título */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Asegúrate de incluir esta línea para hacer tu sitio web responsive -->
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar.css">
+    <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar_usuarios.css">
 </head>
 
 <body>

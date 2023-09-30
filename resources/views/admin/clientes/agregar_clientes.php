@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Cliente</title>
     <!-- Asegúrate de incluir esta línea para hacer tu sitio web responsive -->
-    <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar.css">
+    <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar_cliente.css">
 </head>
 
 <body>
-    <div class="registro-container">
+    <div class="registro-container"><br><br><br><br><br><br><br><br>
         <h2>Registro de Cliente</h2>
         <form action="validar_clientes.php" method="post">
             <div class="input-container">
