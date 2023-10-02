@@ -1,9 +1,14 @@
 <?php
 session_start();
-if (!$_SESSION['logged_in']) {
-  header("location: ../../../../controllers/validar_login.php");
-  exit();
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
+    header("location: ../../../../index.php");
+    exit();
 }
+
+// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
 <!DOCTYPE html>
