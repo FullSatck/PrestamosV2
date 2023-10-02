@@ -19,7 +19,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <link rel="stylesheet" href="/public/assets/css/cobros.css"> 
 </head>
 <body>
-    <a href="/resources/views/admin/cobros/agregar_cobro.php" class="add-button">Agregar Zona</a>
+    
+    <a href="/resources/views/admin/cobros/agregar_cobro.php" class="add-button">Agregar Zona</a> 
     <h2>Listado de Zonas</h2>
     <table border="1">
         <tr>
