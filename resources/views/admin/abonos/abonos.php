@@ -1,6 +1,13 @@
 <?php
 session_start();
 
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
+    header("location: ../../../../index.php");
+    exit();
+}
+
 // Incluye la configuración de conexión a la base de datos
 include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
