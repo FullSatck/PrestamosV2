@@ -1,70 +1,39 @@
 <?php
+require_once("conexion.php"); // Incluye el archivo de conexión
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtiene los valores del formulario
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $direccion = $_POST['direccion'];
-    $telefono = $_POST['telefono'];
-    $historial_crediticio = $_POST['historial_crediticio'];
-    $referencias_personales = $_POST['referencias_personales'];
-    $moneda_preferida_nombre = $_POST['moneda_preferida']; // Cambio: Ahora capturamos el nombre de la moneda preferida
-    $zona_asignada = $_POST['zona_asignada'];
+    // Recuperar datos del formulario
+    $nombre = $_POST["nombre"];
+    $apellido = $_POST["apellido"];
+    $curp = $_POST["curp"];
+    $domicilio = $_POST["domicilio"];
+    $telefono = $_POST["telefono"];
+    $historial = $_POST["historial"];
+    $referencias = $_POST["referencias"];
+    $moneda = $_POST["moneda"];
+    $zona = $_POST["zona"];
 
-    // Validación básica (campos no vacíos)
-    if (empty($nombre) || empty($apellido) || empty($direccion) || empty($telefono) || empty($moneda_preferida_nombre) || empty($zona_asignada)) {
-        echo "Todos los campos son obligatorios. Por favor, complete el formulario.";
+    // Procesar la imagen del cliente
+    if ($_FILES["imagen"]["error"] === 0) {
+        $imagen_nombre = $_FILES["imagen"]["name"];
+        $imagen_temporal = $_FILES["imagen"]["tmp_name"];
+        $ruta_imagen = "../public/assets/img/imgclient" . $imagen_nombre;
+        move_uploaded_file($imagen_temporal, $ruta_imagen);
     } else {
-        // Incluye el archivo de conexión a la base de datos
-        include("conexion.php");
-
-        // Verifica que el nombre de la moneda preferida exista en la tabla de monedas
-        $consultaMoneda = "SELECT ID FROM Monedas WHERE Nombre = ?";
-        $stmt = $conexion->prepare($consultaMoneda);
-
-        if ($stmt) {
-            $stmt->bind_param("s", $moneda_preferida_nombre);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows === 0) {
-                echo "La moneda preferida no existe en la tabla de monedas.";
-            } else {
-                // Obtiene el ID de la moneda preferida
-                $row = $result->fetch_assoc();
-                $moneda_preferida_id = $row['ID'];
-
-                // Prepara la consulta SQL para insertar el cliente
-                $sql = "INSERT INTO Clientes (Nombre, Apellido, Direccion, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-                $stmt = $conexion->prepare($sql);
-
-                if ($stmt) {
-                    // Asigna los valores a los marcadores de posición en la consulta preparada
-                    $stmt->bind_param("ssssssss", $nombre, $apellido, $direccion, $telefono, $historial_crediticio, $referencias_personales, $moneda_preferida_id, $zona_asignada);
-
-                    // Ejecuta la consulta
-                    if ($stmt->execute()) {
-                        // Redirige al usuario a una página de éxito o muestra un mensaje
-                        header("Location: ../resources/views/admin/inicio/inicio.php");
-                        exit();
-                    } else {
-                        echo "Error al registrar el cliente: " . $stmt->error;
-                    }
-
-                    $stmt->close();
-                } else {
-                    echo "Error de consulta preparada: " . $conexion->error;
-                }
-            }
-        } else {
-            echo "Error de consulta preparada: " . $conexion->error;
-        }
-
-        $conexion->close();
+        $ruta_imagen = "";
     }
-} else {
-    // Redirecciona o muestra un mensaje de error si se accede directamente a este archivo sin enviar el formulario.
-    echo "Acceso no autorizado.";
+
+    // Insertar los datos en la tabla de clientes
+    $sql = "INSERT INTO clientes (Nombre, Apellido, IdentificacionCURP, Domicilio, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada, ImagenCliente)
+            VALUES ('$nombre', '$apellido', '$curp', '$domicilio', '$telefono', '$historial', '$referencias', '$moneda', '$zona', '$ruta_imagen')";
+
+    if (mysqli_query($conexion, $sql)) {
+        echo "Registro exitoso.";
+    } else {
+        echo "Error al registrar el cliente: " . mysqli_error($conexion);
+    }
+
+    // Cerrar la conexión
+    mysqli_close($conexion);
 }
 ?>
