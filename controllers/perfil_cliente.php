@@ -41,6 +41,10 @@ if ($resultado->num_rows === 1) {
     header("location: lista_clientes.php");
     exit();
 }
+
+// Consulta SQL para obtener los préstamos del cliente
+$sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
+$resultado_prestamos = $conexion->query($sql_prestamos);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,5 +73,52 @@ if ($resultado->num_rows === 1) {
             <p>Zona Asignada: <?= $fila["ZonaAsignada"] ?></p>
         </div>
     </div>
+    
+    <!-- Agregar una sección para mostrar los préstamos del cliente -->
+    <div class="profile-loans">
+        <h2>Préstamos del Cliente</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID del Préstamo</th>
+                    <th>Monto</th>
+                    <th>Tasa de Interés</th>
+                    <th>Plazo</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Vencimiento</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
+                    <tr>
+                        <td><?= $fila_prestamo["ID"] ?></td>
+                        <td><?= $fila_prestamo["Monto"] ?></td>
+                        <td><?= $fila_prestamo["TasaInteres"] ?></td>
+                        <td><?= $fila_prestamo["Plazo"] ?></td>
+                        <td><?= $fila_prestamo["FechaInicio"] ?></td>
+                        <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
+                        <td><?= $fila_prestamo["Estado"] ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Agregar un enlace para gestionar los préstamos -->
+    <div class="manage-loans">
+        <a href="gestion_prestamos.php?id_cliente=<?= $id_cliente ?>">Gestionar Préstamos</a>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const profileImage = document.querySelector('.profile-image img');
+    
+    // Agrega un controlador de eventos para hacer clic en la imagen
+    profileImage.addEventListener('click', function () {
+        profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
+    });
+});
+</script>
+
 </body>
 </html>
