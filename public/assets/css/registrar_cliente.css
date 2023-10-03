@@ -1,57 +1,69 @@
-/* Estilos Generales */
+/* registrar_cliente.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #e9e4e4;
     margin: 0;
     padding: 0;
     color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-}
-
-/* Contenedor del Registro */
-.registro-container {
-    max-width: 500px;
-    width: 100%;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
    
 }
 
+.container {
+    max-width: 480px;
+    width: 80%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
 
-/* Estilos para los Inputs y Selects */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 .input-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .input-container label {
-    margin-bottom: 5px;
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .input-container input,
 .input-container select {
+    width: 95%;
     padding: 10px;
     font-size: 16px;
-    border-radius: 40px;
-    border: none;
-    box-shadow: 7px 5px 5px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Botón de Registro */
-.btn-container button {
-    background-color: #3498db;
+textarea {
+    resize: vertical;
+    width: 99%;
+}
+
+.btn-container {
+    text-align: center;
+}
+
+.btn-container {
+    background-color: #1070b1;
     color: #fff;
-    padding: 10px 15px;
+    padding: 5px 5px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .btn-container button:hover {
@@ -60,18 +72,18 @@ body {
 
 /* Media Queries para Responsividad */
 @media (max-width: 600px) {
-   .registro-container {
-       padding: 20px;
-   }
+    .container {
+        padding: 20px;
+    }
 
-   .input-container input,
-   .input-container select {
-       font-size: 14px;
-       padding: 8px;
-   }
+    .input-container input,
+    .input-container select {
+        font-size: 14px;
+        padding: 8px;
+    }
 
-   .btn-container button {
-       padding: 8px 12px;
-       font-size: 14px;
-   }
+    .btn-container button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 }

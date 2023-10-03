@@ -15,12 +15,7 @@
     <!-- inicio de sesion -->
     <div class="container">
         <h1>Iniciar sesión</h1>
-        <?php
-        if (isset($_GET['mensaje'])) {
-            $mensaje = $_GET['mensaje'];
-            echo '<p class="error-message">' . $mensaje . '</p>';
-        }
-        ?>
+      
         <form action="/controllers/validar_login.php" method="post">
           <label for="usuario">correo:</label>
           <input type="usuario" id="email" name="email" placeholder= "Por favor ingrese su usuario" >
