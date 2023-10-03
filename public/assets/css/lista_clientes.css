@@ -2,73 +2,138 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    margin: 0;
+    padding: 40px;
+}
+
+h1{
+    background-color: #70aee9;
+  color: #000000;
+  padding: 20px;
 }
 
 .container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
+}
+
+/* Estilos para el contenedor del enlace "volver" */
+.div {
+    margin-top: 20px; /* Agrega espacio superior */
+}
+
+/* Estilos para el enlace "volver" */
+.div a {
+    text-decoration: none; /* Quita la decoración de subrayado */
+    background-color: #007bff; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+    transition: background-color 0.3s ease; /* Transición de color de fondo */
+}
+
+/* Estilos para el enlace "volver" al pasar el mouse */
+.div a:hover {
+    background-color: #0056b3; /* Cambia el color de fondo al pasar el mouse */
+}
+
+
+/* Estilos para el encabezado */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+/* Estilos para la barra de búsqueda */
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 900px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Estilos para la tabla */
+.table-container {
+    margin-top: 20px;
 }
 
 /* Estilos para la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
-table th,
-table td {
-    padding: 8px 12px;
+th, td {
+    padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ccc;
 }
 
-table th {
-    background-color: #f8f9fa;
+th {
+    background-color: #70aee9;
+    color: #000000;
     font-weight: bold;
 }
 
-table tbody tr:nth-child(even) {
+tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-table tbody tr:hover {
+tbody tr:hover {
     background-color: #dcdcdc;
 }
 
-/* Estilos para la barra de búsqueda */
-.search-container {
-    margin: 20px 0;
+/* Estilos para los enlaces en la última columna */
+td a {
+    background: #70aee9;
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.3s ease;
+    padding: 7px;
+    border-radius: 8px;
 }
 
-.search-input {
-    display: flex;
-    margin-bottom: 10px;
+td a:hover {
+    background: #007bff;
+    color: #fff;
 }
 
-#search-input {
-    flex: 1;
-    margin-right: 10px;
-}
-
-#search-button {
-    flex-basis: 30px;
-    padding: 8px 10px;
-}
 
 /* Estilos para los botones */
 .return-button,
-.register-button {
-    margin-top: 10px;
-}
-
-.btn-secondary,
-.btn-success {
+.add-button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
     margin-right: 10px;
 }
 
-/* Estilos para el título */
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+.return-button:hover,
+.add-button:hover {
+    background-color: #0056b3;
 }
