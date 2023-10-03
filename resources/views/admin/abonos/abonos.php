@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Incluye la configuración de conexión a la base de datos
+include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
+
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     // El usuario no ha iniciado sesión, redirigir al inicio de sesión
@@ -8,140 +11,188 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
+// Obtener todos los clientes de la base de datos
+$sql = "SELECT * FROM clientes";
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+    $clientes = $resultado->fetch_all(MYSQLI_ASSOC);
+    // Liberar el resultado
+    $resultado->free();
+} else {
+    // No se encontraron clientes en la base de datos, puedes manejar esto de acuerdo a tus necesidades
+    echo "No se encontraron clientes en la base de datos.";
+    exit();
+}
+
+// Obtener el cliente actual
+$clienteActual = 0;
+
+if (isset($_GET['cliente_id']) && is_numeric($_GET['cliente_id'])) {
+    $clienteID = $_GET['cliente_id'];
+
+    // Buscar el índice del cliente en el array
+    $clienteIndex = array_search($clienteID, array_column($clientes, 'ID'));
+
+    if ($clienteIndex !== false) {
+        $clienteActual = $clienteIndex;
+    } else {
+        // El cliente no se encontró en el array, puedes manejar esto de acuerdo a tus necesidades
+        echo "Cliente no encontrado.";
+    }
+}
+
+// Obtener el cliente actual
+$cliente = $clientes[$clienteActual];
+
+// Obtener Plazo y Cuota de la tabla Prestamos
+$sqlPrestamo = "SELECT Plazo, Cuota FROM Prestamos WHERE IDCliente = {$cliente['ID']}";
+$resultadoPrestamo = $conexion->query($sqlPrestamo);
+
+if ($resultadoPrestamo->num_rows > 0) {
+    $prestamo = $resultadoPrestamo->fetch_assoc();
+    // Liberar el resultado
+    $resultadoPrestamo->free();
+} else {
+    // No se encontraron datos de préstamo para este cliente, puedes manejar esto de acuerdo a tus necesidades
+    echo "No se encontraron datos de préstamo para este cliente.";
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abonos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/public/assets/css/abonos.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/assets/css/abonos.css">
 </head>
-<body> 
+<body>
+    <!-- Barra de navegación -->
+    <div class="navbar">
+    <button id="fecha-izquierda" class="boton-flecha">&larr;</button> <!-- Flecha hacia la izquierda -->
+    <button id="menu" class="boton-menu" onclick="redireccionar()">&#8801;</button> <!-- Menu -->
+    <button id="fecha-derecha" class="boton-flecha">&rarr;</button> <!-- Flecha hacia la derecha -->
+    </div><br>
 
-<!-- Barra de navegación -->
-<div class="navbar">
-    <button>&larr;</button> <!-- Flecha hacia la izquierda -->
-    <button>&#8801;</button> <!-- Tres líneas horizontales -->
-    <button>&rarr;</button> <!-- Flecha hacia la derecha -->
-     <a href="/resources/views/admin/creditos/crudPrestamos.php" class="separated-button">Nuevo Prestamo</a>
-</div><br>
-
-<div class="cobro-bar">
-    <span class="cobro-text">Cobro</span>
-</div>
-
-<!-- Recuadro para campos en dos columnas -->
-<div class="field-container">
-    <!-- Columna 1: CURP/CED y Nombre -->
-    <div class="column">
-        <label for="curp_ced">1. CURP/CED</label>
-        <input type="text" id="curp_ced" placeholder="Ingrese CURP/CED">
+    <div class="cobro-bar">
+        <span class="cobro-text">Cobro</span>
     </div>
 
-    <!-- Columna 2: Domicilio, Tel/Cel, Fecha y Plazo -->
-    <div class="column">
-        <label for="domicilio">3. Domicilio</label>
-        <input type="text" id="domicilio" placeholder="Ingrese el domicilio">
+    <!-- Recuadro para campos en dos columnas -->
+    <div class="field-container">
+        <!-- Columna 1: Nombre y Apellido del Cliente -->
+        <div class="column">
+            <label for="nombre" style="color: blue;">Nombre: </label> <br>
+            <span id="nombre"><?php echo $cliente['Nombre']; ?></span>
+        </div>
+
+        <!-- Columna 2: Domicilio, Tel/Cel, Fecha y Plazo -->
+        <div class="column">
+            <label for="domicilio" style="color: blue;">Domicilio: </label> <br>
+            <span id="domicilio"><?php echo $cliente['Domicilio']; ?></span>
+        </div>
+
+        <div class="column">
+            <label for="tel_cel" style="color: blue;">Tel/Cel: </label> <br>
+            <span id="tel_cel"><?php echo $cliente['Telefono']; ?></span>
+        </div>
+
+        <div class="column">
+            <label for="cuota" style="color: blue;">Cuota: </label> 
+            <span id="cuota"><?php echo $prestamo['Cuota']; ?></span>
+        </div>
+
+        <div class="column">
+            <label for="plazo" style="color: blue;">Plazo: </label> <br>
+            <span id="plazo"><?php echo $prestamo['Plazo']; ?></span>
+        </div>
     </div>
 
-    <div class="column">
-        <label for="tel_cel">4. Tel/Cel</label>
-        <input type="text" id="tel_cel" placeholder="Ingrese el teléfono o celular">
+    <div class="field-container">
+        <!-- Fila 3: Pagar y Cuota -->
+        <div class="column">
+            <label for="pagar" style="color: blue;">Pagar: </label>
+            <input type="text" id="pagar" placeholder="Ingrese la cantidad a pagar">
+        </div>
+
+        <div class="column">
+            <label for="fecha" style="color: blue;">Fecha: </label>
+            <input type="text" id="fecha" placeholder="28/09/2023 6:52 p.m">
+            <button id="calendarioBtn" onclick="mostrarCalendario()">Calendario</button>
+        </div>
     </div>
 
-    <div class="column">
-        <label for="fecha">5. Fecha</label>
-        <input type="text" id="fecha" placeholder="28/09/2023 6:52 p.m">
-        <button id="calendarioBtn" onclick="mostrarCalendario()">Calendario</button>
-    </div>
+    <!-- Botón de guardar -->
+    <button class="btn-guardar">Guardar</button>
 
-    <div class="column">
-        <label for="plazo">6. Plazo</label>
-        <input type="text" id="plazo" placeholder="Ingrese el plazo">
-    </div>
-</div>
+    <script>
+        // Datos de los clientes
+        var clientes = <?php echo json_encode($clientes); ?>;
 
-<div class="field-container">
-    <!-- Fila 3: Valor, Pagar y Cuota -->
-    <div class="column">
-        <label for="valor">7. Valor</label>
-        <input type="text" id="valor" placeholder="Ingrese el valor">
-    </div>
+        // Índice del cliente actual
+        var clienteActual = <?php echo $clienteActual; ?>;
 
-    <div class="column">
-        <label for="pagar">8. Pagar</label>
-        <input type="text" id="pagar" placeholder="Ingrese la cantidad a pagar">
-    </div>
+        // Mostrar cliente actual
+        function mostrarCliente(clienteIndex) {
+            var cliente = clientes[clienteIndex];
+            document.getElementById("nombre").textContent = cliente.Nombre;
+            document.getElementById("domicilio").textContent = cliente.Domicilio;
+            document.getElementById("tel_cel").textContent = cliente.Telefono;
+            document.getElementById("plazo").textContent = cliente.Plazo;
+            document.getElementById("pagar").value = ""; // Limpia el campo de pagar
+            document.getElementById("cuota").textContent = cliente.Cuota;
+        }
 
-    <div class="column">
-        <label for="cuota">9. Cuota</label>
-        <input type="text" id="cuota" placeholder="Ingrese la cuota">
-    </div>
-</div>
+        mostrarCliente(clienteActual);
 
-<!-- Botón de guardar -->
-<button class="btn-guardar">Guardar</button>
+        // Función para actualizar el plazo y la cuota según el cliente actual
+        function actualizarPlazoYCuota(clienteIndex) {
+            var cliente = clientes[clienteIndex];
+            document.getElementById("plazo").textContent = cliente.Plazo;
+            document.getElementById("cuota").textContent = cliente.Cuota;
+        }
 
-
-<div class="table-container">
-    <table>
-<thead>
-        <tr>
-            <th>Fecha Servidor</th>
-            <th>Fecha Móvil</th>
-            <th>Abono</th>
-            <th>Saldo</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>01/01/2023</td>
-            <td>02/01/2023</td>
-            <td>100.00</td>
-            <td>500.00</td>
-        </tr>
-        <tr>
-            <td>02/01/2023</td>
-            <td>03/01/2023</td>
-            <td>150.00</td>
-            <td>350.00</td>
-        </tr>
-        <tr>
-            <td>03/01/2023</td>
-            <td>04/01/2023</td>
-            <td>75.00</td>
-            <td>275.00</td>
-        </tr>
-        <!-- Puedes agregar más filas según sea necesario -->
-    </tbody>
-
-</table>
-
-
-<script>
-    $(function() {
-        $("#fecha").datepicker({
-            dateFormat: "dd/mm/yy hh:mm tt", // Formato de fecha y hora deseado
-            showTimepicker: true, // Permite seleccionar la hora
-            timeFormat: "hh:mm tt", // Formato de hora
+        document.getElementById("fecha-izquierda").addEventListener("click", function () {
+            if (clienteActual > 0) {
+                clienteActual--;
+                mostrarCliente(clienteActual);
+                actualizarPlazoYCuota(clienteActual); // Llama a la función para actualizar plazo y cuota
+            }
         });
-    });
 
-    function mostrarCalendario() {
-        $("#fecha").datepicker("show");
-    }
-</script>
+        document.getElementById("fecha-derecha").addEventListener("click", function () {
+            if (clienteActual < clientes.length - 1) {
+                clienteActual++;
+                mostrarCliente(clienteActual);
+                actualizarPlazoYCuota(clienteActual); // Llama a la función para actualizar plazo y cuota
+            }
+        });
 
+        function mostrarCalendario() {
+            $("#fecha").datepicker({
+                dateFormat: "dd/mm/yy hh:mm tt", // Formato de fecha y hora deseado
+                showTimepicker: true, // Permite seleccionar la hora
+                timeFormat: "hh:mm tt", // Formato de hora
+            });
+        }
+
+        function redireccionar() {
+        // Aquí debes proporcionar la URL del archivo al que deseas redirigir
+        var nuevaURL = "../clientes/lista_clientes.php";
+    
+        // Redirige a la nueva URL
+        window.location.href = nuevaURL;
+}
+
+    </script>
 </body>
 </html>
