@@ -58,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <h1>Agregar Roles</h1>
-    <button><a href="/resources/views/admin/grupos/grupos.php">Volver</a></button>
 
     <!-- Mostrar mensaje de éxito o error -->
     <?php if (!empty($mensaje)) : ?>
@@ -70,6 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="nombre_grupo">Nombre del Rol:</label>
         <input type="text" id="nombre_grupo" name="nombre_grupo" value="<?php echo $nombre_grupo; ?>" required>
         <button type="submit">Agregar Rol</button>
+        <a href="/resources/views/admin/grupos/grupos.php" class="a">Volver</a>
     </form>
 </body>
 
