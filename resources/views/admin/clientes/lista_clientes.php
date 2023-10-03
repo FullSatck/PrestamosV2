@@ -44,6 +44,7 @@ $resultado = $conexion->query($sql);
                 <th>Referencias Personales</th>
                 <th>Moneda Preferida</th>
                 <th>Zona Asignada</th>
+                <th></th>
             </tr>
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
                 <tr>
@@ -56,6 +57,7 @@ $resultado = $conexion->query($sql);
                     <td><?= $fila["ReferenciasPersonales"] ?></td>
                     <td><?= $fila["MonedaPreferida"] ?></td>
                     <td><?= $fila["ZonaAsignada"] ?></td>
+                    <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Ver Perfil</a></td>
                 </tr>
             <?php } ?>
         </table>
