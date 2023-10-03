@@ -1,0 +1,139 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Encabezado */
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #333;
+}
+
+/* Contenedor del perfil */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea los elementos al inicio */
+    margin: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Imagen del perfil */
+.profile-image {
+    padding: 20px;
+    text-align: center;
+    flex: 1;
+}
+
+.profile-image img {
+    max-width: 100%;
+    max-height: 300px; /* Ajusta la altura máxima según tus preferencias */
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.profile-image img.zoomed {
+    transform: scale(1.2); /* Hace zoom en la imagen al 120% de su tamaño original */
+}
+
+/* Detalles del perfil */
+.profile-details {
+    padding: 20px;
+    text-align: center;
+    flex: 2;
+}
+
+.profile-details h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.profile-details p {
+    margin-bottom: 10px;
+    color: #777;
+    font-size: 16px;
+}
+
+/* Préstamos del cliente */
+.profile-loans {
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-loans h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Tabla de préstamos */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-size: 18px;
+}
+
+/* Enlace para gestionar préstamos */
+.manage-loans {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.manage-loans a {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+.manage-loans a:hover {
+    background-color: #0056b3;
+}
+
+/* CSS para dispositivos móviles */
+@media screen and (max-width: 768px) {
+    .profile-image img {
+        max-height: 150px; /* Reduce la altura máxima en dispositivos móviles */
+    }
+
+    /* Ajustes adicionales para dispositivos móviles */
+    .profile-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-image {
+        margin-bottom: 10px; /* Reduce el espacio entre la imagen y los datos */
+    }
+
+    .profile-details {
+        text-align: center;
+    }
+}
