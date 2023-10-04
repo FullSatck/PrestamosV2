@@ -49,19 +49,19 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Nombre del Cliente</th>
+                                    <th scope="col">Nombre</th>
                                     <th scope="col">Monto</th>
-                                    <th scope="col">Tasa Interés</th>
+                                    <th scope="col">Interés</th>
                                     <th scope="col">Plazo</th>
-                                    <th scope="col">MonedaID</th>
-                                    <th scope="col">Fe Inicio</th>
-                                    <th scope="col">Fe Vencimiento</th>
+                                    <th scope="col">Moneda</th>
+                                    <th scope="col">F. Inicio</th>
+                                    <th scope="col">F. Vencimiento</th>
                                     <th scope="col">Estado</th>
-                                    <th scope="col">Cobrador Asignado</th>
+                                    <th scope="col">Cobrador</th>
                                     <th scope="col">Zona</th>
-                                    <th scope="col">Monto a Pagar</th>
-                                    <th scope="col">Frecuencia de Pago</th>
-                                    <th scope="col">Monto Cuota</th>
+                                    <th scope="col">Deuda</th>
+                                    <th scope="col">Frecuencia</th>
+                                    <th scope="col">Cuota</th>
                                     <th scope="col">Editar</th>
                                 </tr>
                             </thead>

@@ -32,16 +32,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     </div>
 
     <h2 class="h22">Autenticación y autorización</h2>
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/grupos/grupos.php">Roles </a>
-                <div class="button-container">
-                    <button><a href="/admin/auth/group/add/">Añadir</a></button>
-                    <button><a href="/admin/auth/group/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
+    <table class="table table-striped table-bordered"> 
 
         <tr>
             <th scope="row">
@@ -80,16 +71,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
     <h2 class="h22">Recaudo</h2>
     <table class="table table-striped table-bordered">
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/abonos/abonos.php">Abonos </a>
-                <div class="button-container">
-                    <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
-                    <button><a href="/admin/recaudo/abono/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-
+         
         <tr>
             <th scope="row">
                 <a href="/resources/views/admin/clientes/lista_clientes.php">Clientes </a>
@@ -123,6 +105,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         <tr>
             <th scope="row">
                 <a href="/resources/views/admin/creditos/prestamos.php">Prestamos </a>
+                <div class="button-container">
+                    <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
+                    <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
+                </div>
+            </th>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <a href="/resources/views/admin/creditos/crudPrestamos.php">Lista Prestamos </a>
                 <div class="button-container">
                     <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
                     <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
