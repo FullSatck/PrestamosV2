@@ -11,13 +11,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 // Incluye la configuración de conexión a la base de datos
 include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
-    header("location: ../../../../index.php");
-    exit();
-}
-
 // Obtener todos los clientes de la base de datos
 $sql = "SELECT * FROM clientes";
 $resultado = $conexion->query($sql);
@@ -85,9 +78,9 @@ if ($resultadoPrestamo->num_rows > 0) {
 <body>
     <!-- Barra de navegación -->
     <div class="navbar">
-    <button id="fecha-izquierda" class="boton-flecha">&larr;</button> <!-- Flecha hacia la izquierda -->
-    <button id="menu" class="boton-menu" onclick="redireccionar()">&#8801;</button> <!-- Menu -->
-    <button id="fecha-derecha" class="boton-flecha">&rarr;</button> <!-- Flecha hacia la derecha -->
+        <button id="fecha-izquierda" class="boton-flecha">&larr;</button> <!-- Flecha hacia la izquierda -->
+        <button id="menu" class="boton-menu" onclick="redireccionar()">&#8801;</button> <!-- Menu -->
+        <button id="fecha-derecha" class="boton-flecha">&rarr;</button> <!-- Flecha hacia la derecha -->
     </div><br>
 
     <div class="cobro-bar">
@@ -131,7 +124,7 @@ if ($resultadoPrestamo->num_rows > 0) {
             <input type="text" id="pagar" placeholder="Ingrese la cantidad a pagar">
         </div>
 
-        <div class="column">
+        <div class="column" style="position: relative;">
             <label for="fecha" style="color: blue;">Fecha: </label>
             <input type="text" id="fecha" placeholder="28/09/2023 6:52 p.m">
             <button id="calendarioBtn" onclick="mostrarCalendario()">Calendario</button>
@@ -189,17 +182,17 @@ if ($resultadoPrestamo->num_rows > 0) {
                 dateFormat: "dd/mm/yy hh:mm tt", // Formato de fecha y hora deseado
                 showTimepicker: true, // Permite seleccionar la hora
                 timeFormat: "hh:mm tt", // Formato de hora
+                position: 'right' // Muestra el calendario al lado derecho de la casilla
             });
         }
 
         function redireccionar() {
-        // Aquí debes proporcionar la URL del archivo al que deseas redirigir
-        var nuevaURL = "../clientes/lista_clientes.php";
-    
-        // Redirige a la nueva URL
-        window.location.href = nuevaURL;
-}
-
+            // Aquí debes proporcionar la URL del archivo al que deseas redirigir
+            var nuevaURL = "../clientes/lista_clientes.php";
+        
+            // Redirige a la nueva URL
+            window.location.href = nuevaURL;
+        }
     </script>
 </body>
 </html>
