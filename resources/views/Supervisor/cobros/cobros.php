@@ -13,14 +13,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Listado de Zonas</title>
-    <link rel="stylesheet" href="/public/assets/css/cobros.css"> 
+    <link rel="stylesheet" href="/public/assets/css/cobros.css">
 </head>
+
 <body>
-    
-    <a href="/resources/views/admin/cobros/agregar_cobro.php" class="add-button">Agregar Zona</a> 
+
+    <a href="/resources/views/admin/cobros/agregar_cobro.php" class="add-button">Agregar Zona</a>
     <h2>Listado de Zonas</h2>
     <table border="1">
         <tr>
@@ -28,7 +30,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <th>Nombre</th>
             <th>Capital</th>
             <th>Cobrador Asignado</th>
-            <th>CdPostal</th>
+            <th>CD Postal</th>
             <th>Acciones</th>
             <th>Enrutar</th>
         </tr>
@@ -59,4 +61,5 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         ?>
     </table>
 </body>
+
 </html>
