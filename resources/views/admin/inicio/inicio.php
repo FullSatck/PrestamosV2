@@ -28,7 +28,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <div class="navbar-header">
                 <span class="navbar-brand">Administrador Recaudo</span>
                 <div class="button-container">
-                <button><a href="../../../../../index.php" class="aa"><strong>Cerrar Sesion</strong></a></button>
+                <button><a href="/controllers/cerrar_sesion.php" class="aa"><strong>Cerrar Sesion</strong></a></button>
                 </div>
             </div>
         </div>
