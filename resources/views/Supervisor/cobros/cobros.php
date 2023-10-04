@@ -26,8 +26,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Descripción</th>
+            <th>Capital</th>
             <th>Cobrador Asignado</th>
+            <th>CD Postal</th>
             <th>Acciones</th>
             <th>Enrutar</th>
         </tr>
@@ -45,8 +46,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             echo "<tr>";
             echo "<td>" . $row["ID"] . "</td>";
             echo "<td>" . $row["Nombre"] . "</td>";
-            echo "<td>" . $row["Descripcion"] . "</td>";
+            echo "<td>" . $row["Capital"] . "</td>";
             echo "<td>" . $row["CobradorAsignado"] . "</td>";
+            echo "<td>" . $row["CodigoPostal"] . "</td>";
             echo '<td><a href="editar_zona.php?id=' . $row["ID"] . '">Editar</a> | <a href="eliminar_zona.php?id=' . $row["ID"] . '">Eliminar</a></td>';
             echo '<td><a href="/resources/views/admin/enrutar/cobradores_ruta.php?id=' . $row["ID"] . '">Enrutar</a>';
             echo "</tr>";
