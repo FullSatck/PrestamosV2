@@ -28,15 +28,17 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     // Incluye la configuración de conexión a la base de datos
     include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
-    // Realiza la consulta para obtener los gastos
-    $sql = "SELECT * FROM Gastos";
+    // Realiza la consulta para obtener los gastos con el nombre de la zona
+    $sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
+            FROM Gastos G
+            INNER JOIN Zonas Z ON G.IDZona = Z.ID";
     $resultado = $conexion->query($sql);
 
     // Crear una tabla HTML para mostrar las columnas de las filas
     echo '<table border="1">';
     echo '<tr>';
     echo '<th>ID</th>';
-    echo '<th>ID Zona</th>';
+    echo '<th>Zona</th>';
     echo '<th>Fecha</th>';
     echo '<th>Descripción</th>';
     echo '<th>Valor</th>';
@@ -48,7 +50,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         while ($fila = $resultado->fetch_assoc()) {
             echo '<tr>';
             echo '<td>' . $fila['ID'] . '</td>';
-            echo '<td>' . $fila['IDZona'] . '</td>';
+            echo '<td>' . $fila['NombreZona'] . '</td>';
             echo '<td>' . $fila['Fecha'] . '</td>';
             echo '<td>' . $fila['Descripcion'] . '</td>';
             echo '<td>' . $fila['Valor'] . '</td>';
