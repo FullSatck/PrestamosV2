@@ -41,7 +41,7 @@ h1 {
 }
 
 .profile-image img.zoomed {
-    transform: scale(1.2); /* Hace zoom en la imagen al 120% de su tamaño original */
+    transform: scale(1.5); /* Hace zoom en la imagen al 120% de su tamaño original */
 }
 
 /* Detalles del perfil */
@@ -91,11 +91,11 @@ table {
 table th, table td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #818080;
 }
 
 table th {
-    background-color: #f2f2f2;
+    background-color: #969595;
     color: #333;
     font-size: 18px;
 }

@@ -55,16 +55,16 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
     <title>Perfil del Cliente</title>
 </head>
 <body>
-    <h1>Perfil del Cliente</h1>
+   
     <div class="profile-container">
-        <div class="profile-image">
+        <div class="profile-image"><br><br><br>
             <!-- Mostrar la foto del cliente -->
             <img src="<?= $imagen_cliente ?>" alt="Foto del Cliente">
         </div>
         <div class="profile-details">
             <!-- Mostrar los datos del cliente -->
             <h1><strong><?= $fila["Nombre"] ?></strong></h1>
-            <p><strong><?= $fila["Apellido"] ?></strong></p>
+            <p>Apellido: <strong><?= $fila["Apellido"] ?></strong></p>
             <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
             <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
             <p>Historial Crediticio: <strong><?= $fila["HistorialCrediticio"] ?></strong> </p>
