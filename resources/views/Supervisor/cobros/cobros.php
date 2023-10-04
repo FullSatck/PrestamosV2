@@ -28,7 +28,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <th>Nombre</th>
             <th>Capital</th>
             <th>Cobrador Asignado</th>
-            <th>CD Postal</th>
+            <th>CdPostal</th>
             <th>Acciones</th>
             <th>Enrutar</th>
         </tr>

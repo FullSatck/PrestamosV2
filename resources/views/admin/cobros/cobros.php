@@ -23,15 +23,15 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <a href="/resources/views/admin/cobros/agregar_cobro.php" class="add-button">Agregar Zona</a> 
     <h2>Listado de Zonas</h2>
     <table border="1">
-        <tr>
+    <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Descripción</th>
+            <th>Capital</th>
             <th>Cobrador Asignado</th>
+            <th>CD Postal</th>
             <th>Acciones</th>
             <th>Enrutar</th>
         </tr>
-
         <?php
         // Realiza la conexión a la base de datos (ajusta los detalles de conexión según tu configuración)
         include("../../../../controllers/conexion.php");
@@ -45,9 +45,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             echo "<tr>";
             echo "<td>" . $row["ID"] . "</td>";
             echo "<td>" . $row["Nombre"] . "</td>";
-            echo "<td>" . $row["Descripcion"] . "</td>";
+            echo "<td>" . $row["Capital"] . "</td>";
             echo "<td>" . $row["CobradorAsignado"] . "</td>";
+            echo "<td>" . $row["CodigoPostal"] . "</td>";
             echo '<td><a href="editar_zona.php?id=' . $row["ID"] . '">Editar</a> | <a href="eliminar_zona.php?id=' . $row["ID"] . '">Eliminar</a></td>';
+            echo '<td><a href="/resources/views/admin/enrutar/cobradores_ruta.php?id=' . $row["ID"] . '">Enrutar</a>';
                         echo "</tr>";
         }
 
