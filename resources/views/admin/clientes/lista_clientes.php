@@ -20,7 +20,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
         LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID";
 $resultado = $conexion->query($sql);
 ?>
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
