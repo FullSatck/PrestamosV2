@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         header("location: ../resources/views/admin/inicio/inicio.php"); // Redirigir al inicio de administrador
                         break;
                     case 2:
-                        header("location: ../resources/views/admin/inicio/inicio.php"); // Redirigir al inicio de supervisor
+                        header("location: ../resources/views/Supervisor/inicio/inicio.php"); // Redirigir al inicio de supervisor
                         break;
                     case 3:
                         header("location: inicio_cobrador.php"); // Redirigir al inicio de cobrador
@@ -44,13 +44,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 // Contraseña incorrecta
                 $_SESSION['logged_in'] = false;
-                header("location: pagina_errorcontra.php"); // Redirigir a página de error
+                header("location: pagina_errorcontra.php1"); // Redirigir a página de error
                 exit();
             }
         } else {
             // Usuario no encontrado
             $_SESSION['logged_in'] = false;
-            header("location: pagina_erroruser.php"); // Usuario no encontrado (página de error)
+            header("location: pagina_erroruser.php2"); // Usuario no encontrado (página de error)
             exit();
         }
     } else {
