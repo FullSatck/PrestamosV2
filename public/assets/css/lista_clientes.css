@@ -15,7 +15,7 @@ h1{
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px; 
 }
 
 /* Estilos para el contenedor del enlace "volver" */
@@ -136,4 +136,16 @@ td a:hover {
 .return-button:hover,
 .add-button:hover {
     background-color: #0056b3;
+}
+
+#mensaje {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }

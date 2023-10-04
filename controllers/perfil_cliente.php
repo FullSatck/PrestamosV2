@@ -106,9 +106,9 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
     </div>
     
     <!-- Agregar un enlace para gestionar los préstamos -->
-    <div class="manage-loans">
+    <!-- <div class="manage-loans">
         <a href="gestion_prestamos.php?id_cliente=<?= $id_cliente ?>">Gestionar Préstamos</a>
-    </div>
+    </div> -->
     <script>
 document.addEventListener('DOMContentLoaded', function () {
     const profileImage = document.querySelector('.profile-image img');

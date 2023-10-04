@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 }
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
-?>
+?> 
 
 
 
@@ -108,6 +108,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             </div>
         </form>
     </div>
+    <script src="/public/assets/js/mensaje.js"></script> 
 </body>
 
 </html>
