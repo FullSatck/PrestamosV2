@@ -8,7 +8,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
+
 ?>
 
 

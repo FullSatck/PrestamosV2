@@ -39,6 +39,7 @@ if (isset($_GET['cliente_id']) && is_numeric($_GET['cliente_id'])) {
     } else {
         // El cliente no se encontró en el array, puedes manejar esto de acuerdo a tus necesidades
         echo "Cliente no encontrado.";
+        exit();
     }
 }
 
@@ -47,12 +48,16 @@ $cliente = $clientes[$clienteActual];
 
 // Obtener Plazo y Cuota de la tabla Prestamos
 $sqlPrestamo = "SELECT Plazo, Cuota FROM Prestamos WHERE IDCliente = {$cliente['ID']}";
+
 $resultadoPrestamo = $conexion->query($sqlPrestamo);
+
+if ($resultadoPrestamo === false) {
+    // Si hay un error en la consulta SQL, muestra el mensaje de error
+    die("Error en la consulta SQL: " . $conexion->error);
+}
 
 if ($resultadoPrestamo->num_rows > 0) {
     $prestamo = $resultadoPrestamo->fetch_assoc();
-    // Liberar el resultado
-    $resultadoPrestamo->free();
 } else {
     // No se encontraron datos de préstamo para este cliente, puedes manejar esto de acuerdo a tus necesidades
     echo "No se encontraron datos de préstamo para este cliente.";
@@ -62,6 +67,7 @@ if ($resultadoPrestamo->num_rows > 0) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -75,12 +81,13 @@ if ($resultadoPrestamo->num_rows > 0) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/public/assets/css/abonos.css">
 </head>
+
 <body>
     <!-- Barra de navegación -->
     <div class="navbar">
-        <button id="fecha-izquierda" class="boton-flecha">&larr;</button> <!-- Flecha hacia la izquierda -->
+        <button id="fecha-izquierda" class="boton-flecha" onclick="cambiarCliente(-1)">&larr;</button> <!-- Flecha hacia la izquierda -->
         <button id="menu" class="boton-menu" onclick="redireccionar()">&#8801;</button> <!-- Menu -->
-        <button id="fecha-derecha" class="boton-flecha">&rarr;</button> <!-- Flecha hacia la derecha -->
+        <button id="fecha-derecha" class="boton-flecha" onclick="cambiarCliente(1)">&rarr;</button> <!-- Flecha hacia la derecha -->
     </div><br>
 
     <div class="cobro-bar">
@@ -95,7 +102,7 @@ if ($resultadoPrestamo->num_rows > 0) {
             <span id="nombre"><?php echo $cliente['Nombre']; ?></span>
         </div>
 
-        <!-- Columna 2: Domicilio, Tel/Cel, Fecha y Plazo -->
+        <!-- Columna 2: Domicilio, Tel/Cel, Plazo y Cuota -->
         <div class="column">
             <label for="domicilio" style="color: blue;">Domicilio: </label> <br>
             <span id="domicilio"><?php echo $cliente['Domicilio']; ?></span>
@@ -107,18 +114,18 @@ if ($resultadoPrestamo->num_rows > 0) {
         </div>
 
         <div class="column">
-            <label for="cuota" style="color: blue;">Cuota: </label> 
-            <span id="cuota"><?php echo $prestamo['Cuota']; ?></span>
+            <label for="plazo" style="color: blue;">Plazo: </label> <br>
+            <span id="plazo"><?php echo $prestamo['Plazo']; ?></span>
         </div>
 
         <div class="column">
-            <label for="plazo" style="color: blue;">Plazo: </label> <br>
-            <span id="plazo"><?php echo $prestamo['Plazo']; ?></span>
+            <label for="cuota" style="color: blue;">Cuota: </label> <br>
+            <span id="cuota"><?php echo $prestamo['Cuota']; ?></span>
         </div>
     </div>
 
     <div class="field-container">
-        <!-- Fila 3: Pagar y Cuota -->
+        <!-- Fila 3: Pagar y Fecha -->
         <div class="column">
             <label for="pagar" style="color: blue;">Pagar: </label>
             <input type="text" id="pagar" placeholder="Ingrese la cantidad a pagar">
@@ -147,35 +154,19 @@ if ($resultadoPrestamo->num_rows > 0) {
             document.getElementById("nombre").textContent = cliente.Nombre;
             document.getElementById("domicilio").textContent = cliente.Domicilio;
             document.getElementById("tel_cel").textContent = cliente.Telefono;
-            document.getElementById("plazo").textContent = cliente.Plazo;
-            document.getElementById("pagar").value = ""; // Limpia el campo de pagar
-            document.getElementById("cuota").textContent = cliente.Cuota;
         }
 
         mostrarCliente(clienteActual);
 
-        // Función para actualizar el plazo y la cuota según el cliente actual
-        function actualizarPlazoYCuota(clienteIndex) {
-            var cliente = clientes[clienteIndex];
-            document.getElementById("plazo").textContent = cliente.Plazo;
-            document.getElementById("cuota").textContent = cliente.Cuota;
+        // Cambiar al cliente anterior o siguiente
+        function cambiarCliente(direccion) {
+            var nuevoCliente = clienteActual + direccion;
+
+            if (nuevoCliente >= 0 && nuevoCliente < clientes.length) {
+                clienteActual = nuevoCliente;
+                mostrarCliente(clienteActual);
+            }
         }
-
-        document.getElementById("fecha-izquierda").addEventListener("click", function () {
-            if (clienteActual > 0) {
-                clienteActual--;
-                mostrarCliente(clienteActual);
-                actualizarPlazoYCuota(clienteActual); // Llama a la función para actualizar plazo y cuota
-            }
-        });
-
-        document.getElementById("fecha-derecha").addEventListener("click", function () {
-            if (clienteActual < clientes.length - 1) {
-                clienteActual++;
-                mostrarCliente(clienteActual);
-                actualizarPlazoYCuota(clienteActual); // Llama a la función para actualizar plazo y cuota
-            }
-        });
 
         function mostrarCalendario() {
             $("#fecha").datepicker({
@@ -189,10 +180,11 @@ if ($resultadoPrestamo->num_rows > 0) {
         function redireccionar() {
             // Aquí debes proporcionar la URL del archivo al que deseas redirigir
             var nuevaURL = "../clientes/lista_clientes.php";
-        
+
             // Redirige a la nueva URL
             window.location.href = nuevaURL;
         }
     </script>
 </body>
+
 </html>
