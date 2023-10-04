@@ -63,14 +63,14 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
         </div>
         <div class="profile-details">
             <!-- Mostrar los datos del cliente -->
-            <h1><?= $fila["Nombre"] ?></h1>
-            <p><?= $fila["Apellido"] ?></p>
-            <p>Domicilio: <?= $fila["Domicilio"] ?></p>
-            <p>Teléfono: <?= $fila["Telefono"] ?></p>
-            <p>Historial Crediticio: <?= $fila["HistorialCrediticio"] ?></p>
-            <p>Referencias Personales: <?= $fila["ReferenciasPersonales"] ?></p>
-            <p>Moneda Preferida: <?= $fila["MonedaPreferida"] ?></p>
-            <p>Zona Asignada: <?= $fila["ZonaAsignada"] ?></p>
+            <h1><strong><?= $fila["Nombre"] ?></strong></h1>
+            <p><strong><?= $fila["Apellido"] ?></strong></p>
+            <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
+            <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
+            <p>Historial Crediticio: <strong><?= $fila["HistorialCrediticio"] ?></strong> </p>
+            <p>Referencias Personales: <strong><?= $fila["ReferenciasPersonales"] ?></strong> </p>
+            <p>Moneda Preferida: <strong><?= $fila["MonedaPreferida"] ?></strong></p>
+            <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
         </div>
     </div>
     
