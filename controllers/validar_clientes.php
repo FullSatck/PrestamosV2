@@ -40,6 +40,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error al registrar el cliente: " . mysqli_error($conexion);
         }
     }
+
+    if ($conexion->query($sql) === TRUE) {
+        // Redirige al usuario a la página de agregar zona con un mensaje de confirmación
+        header('Location: ../resources/views/admin/clientes/lista_clientes.php?mensaje=Cliente guardada exitosamente');
+        exit;
+    } else {
+        echo "Error al agregar el registro: " . $conexion->error;
+    }
     // Cerrar la conexión
     mysqli_close($conexion);
 }

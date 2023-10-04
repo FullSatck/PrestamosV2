@@ -145,7 +145,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
         <tr>
             <th scope="row">
-                <a href="/admin/recaudo/gasto/">Gastos </a>
+                <a href="/resources/views/admin/gastos/gastos.php">Gastos </a>
                 <div class="button-container">
                     <button><a href="/admin/recaudo/gasto/add/">Añadir</a></button>
                     <button><a href="/admin/recaudo/gasto/">Modificar</a></button>
@@ -155,7 +155,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
         <tr>
             <th scope="row">
-                <a href="/admin/recaudo/retiro/">Retiros </a>
+                <a href="/resources/views/admin/retiros/retiros.php">Retiros </a>
                 <div class="button-container">
                     <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
                     <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>

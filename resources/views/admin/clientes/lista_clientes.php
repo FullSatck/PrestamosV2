@@ -31,6 +31,14 @@ $resultado = $conexion->query($sql);
 </head>
 <body>
     <h1>Listado de Clientes</h1>
+
+    <div id="mensaje">
+            <?php
+            if (isset($_GET['mensaje'])) {
+                echo htmlspecialchars($_GET['mensaje']);
+            }
+            ?>
+        </div>
     
     <div class="search-container">
         <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
