@@ -27,6 +27,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         <div class="navbar-inner">
             <div class="navbar-header">
                 <span class="navbar-brand">Supervisor | Inicio</span>
+                <div class="button-container">
+                <button><a href="../../../../../index.php" class="aa"><strong>Cerrar Sesion</strong></a></button>
+                </div>
             </div>
         </div>
     </div>

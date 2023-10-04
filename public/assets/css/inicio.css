@@ -1,99 +1,124 @@
-
+/* Quita la decoración de subrayado y establece el color del texto para los enlaces */
 a {
   text-decoration: none;
   color: black;
 }
 
+/* Estilos generales para el cuerpo del documento */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 40px; 
-  background-color: #f0f0f0; 
-  color: #333; 
-  font-size: 16px; 
-}
-h2{
-  margin-top: 15px; 
+  font-family: Arial, sans-serif; /* Fuente y tipo de fuente predeterminados */
+  margin: 0; /* Sin márgenes en el cuerpo */
+  padding: 40px; /* Relleno en el cuerpo */
+  background-color: #f0f0f0; /* Color de fondo */
+  color: #333; /* Color del texto */
+  font-size: 16px; /* Tamaño de fuente */
 }
 
-.h22{
-  margin-top: 30px;
+/* Estilos para el encabezado de nivel 2 */
+h2 {
+  margin-top: 15px; /* Espacio superior para encabezados h2 */
 }
- 
+
+/* Estilos adicionales para un encabezado de nivel 2 */
+.h22 {
+  margin-top: 30px; /* Espacio superior adicional para encabezados h2 con clase h22 */
+}
+
+/* Estilos para la barra de navegación */
 .navbar {
-  background-color: #70aee9;
-  color: #000000;
-  padding: 20px;
+  background-color: #70aee9; /* Color de fondo de la barra de navegación */
+  color: #000000; /* Color del texto en la barra de navegación */
+  padding: 20px; /* Relleno en la barra de navegación */
 }
 
+/* Estilos para el texto en la barra de navegación */
 .navbar-brand {
-  font-size: 24px;
+  font-size: 24px; /* Tamaño de fuente para el texto de la marca en la barra de navegación */
 }
 
-/* Estilos para los encabezados de aplicación */
+/* Estilos para los encabezados h2 como enlaces */
 h2 a {
-  text-decoration: none;
-  color: #333;
+  text-decoration: none; /* Quita la decoración de subrayado para los enlaces en los encabezados h2 */
+  color: #333; /* Color del texto para los enlaces en los encabezados h2 */
 }
 
 /* Estilos para las tablas */
 .table {
-  width: 100%;
-  border-collapse: collapse;
+  width: 100%; /* Ancho de la tabla al 100% */
+  border-collapse: collapse; /* Colapsa los bordes de la tabla */
 }
 
+/* Estilos para las celdas de encabezado y las celdas de datos en la tabla */
 .table th,
 .table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+  border: 1px solid #ddd; /* Bordes de 1px sólido con sombreado en las celdas */
+  padding: 8px; /* Relleno en las celdas */
+  text-align: left; /* Alineación de texto a la izquierda en las celdas */
 }
 
+/* Estilos para las celdas de encabezado de la tabla */
 .table th {
-  background-color: #dfe0e756;
-  color: white;
+  background-color: #dfe0e756; /* Color de fondo de las celdas de encabezado */
+  color: white; /* Color del texto en las celdas de encabezado */
 }
 
-/* Estilos para los botones en la tabla */
+/* Estilos para los botones dentro de la tabla */
 .button-container {
-  float: right; 
+  float: right; /* Coloca los botones a la derecha de la tabla */
 }
 
 .button-container button {
-  background-color: #70aee9;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  margin-left: 5px;
-  text-decoration: none;
-  border-radius: 8px;
+  background-color: #70aee9; /* Color de fondo de los botones */
+  color: white; /* Color del texto en los botones */
+  border: none; /* Sin bordes en los botones */
+  padding: 5px 10px; /* Relleno en los botones */
+  margin-left: 5px; /* Margen izquierdo entre los botones */
+  text-decoration: none; /* Quita la decoración de subrayado en los botones */
+  border-radius: 8px; /* Bordes redondeados en los botones */
 }
 
+/* Estilos para los botones al pasar el mouse */
 .button-container button:hover {
-  background-color: #0004ff;
-} 
+  background-color: #0004ff; /* Cambia el color de fondo de los botones al pasar el mouse */
+}
 
+.aa{
+  background: #3366f0;
+  color: #000000;
+  padding: 8px;
+  border-radius: 7px;
+}
+
+.aa:hover{
+  background: #0044ff;
+  color: #000000;
+  padding: 8px;
+  border-radius: 7px;
+}
+
+
+/* Estilos para el pie de página */
 #footer {
-  text-align: center; 
-  background-color: #f0f0f0; 
-  padding: 10px 0; 
-  color: #333; 
-  font-size: 14px; 
+  text-align: center; /* Alineación de texto al centro para el pie de página */
+  background-color: #f0f0f0; /* Color de fondo del pie de página */
+  padding: 10px 0; /* Relleno en el pie de página */
+  color: #333; /* Color del texto en el pie de página */
+  font-size: 14px; /* Tamaño de fuente en el pie de página */
 }
 
 /* Media query para dispositivos pequeños */
 @media screen and (max-width: 768px) {
   body {
-    padding: 10px; 
-    font-size: 14px; 
+    padding: 10px; /* Relleno reducido en dispositivos pequeños */
+    font-size: 14px; /* Tamaño de fuente reducido en dispositivos pequeños */
   }
 
   .navbar-brand {
-    font-size: 20px; 
+    font-size: 20px; /* Tamaño de fuente reducido para el texto de la marca en dispositivos pequeños */
   }
 
   .table button {
-    font-size: 12px; 
-    padding: 3px 6px; 
+    font-size: 12px; /* Tamaño de fuente reducido para los botones en dispositivos pequeños */
+    padding: 3px 6px; /* Relleno reducido para los botones en dispositivos pequeños */
   }
 }
