@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Ejecuta la consulta
             if ($stmt->execute()) {
                 // Redirige al usuario a una página de éxito o muestra un mensaje
-                header("Location: registro_exitoso.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
+                header("Location: ../resources/views/admin/usuarios/crudusuarios.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
                 exit();
             } else {
                 echo "Error al registrar el usuario: " . $stmt->error;

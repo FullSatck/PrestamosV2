@@ -132,6 +132,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
         <tr>
             <th scope="row">
+                <a href="/resources/views/admin/creditos/crudPrestamos.php">Lista Prestamos </a>
+                <div class="button-container">
+                    <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
+                    <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
+                </div>
+            </th>
+        </tr>
+
+        <tr>
+            <th scope="row">
                 <a href="/admin/recaudo/gasto/">Gastos </a>
                 <div class="button-container">
                     <button><a href="/admin/recaudo/gasto/add/">Añadir</a></button>

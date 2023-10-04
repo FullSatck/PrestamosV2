@@ -29,6 +29,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <th>Descripción</th>
             <th>Cobrador Asignado</th>
             <th>Acciones</th>
+            <th>Enrutar</th>
         </tr>
 
         <?php
@@ -47,6 +48,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             echo "<td>" . $row["Descripcion"] . "</td>";
             echo "<td>" . $row["CobradorAsignado"] . "</td>";
             echo '<td><a href="editar_zona.php?id=' . $row["ID"] . '">Editar</a> | <a href="eliminar_zona.php?id=' . $row["ID"] . '">Eliminar</a></td>';
+            echo '<td><a href="/resources/views/admin/enrutar/cobradores_ruta.php?id=' . $row["ID"] . '">Enrutar</a>';
             echo "</tr>";
         }
 
