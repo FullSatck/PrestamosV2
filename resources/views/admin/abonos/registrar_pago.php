@@ -1,26 +1,25 @@
 <?php
-// Incluye el archivo de conexión
+// Incluye el archivo de conexión a la base de datos
 include '../../../../controllers/conexion.php';
 
-// Obtén los datos del pago enviados desde JavaScript
-$clienteId = $_POST['clienteId'];
-$monto = $_POST['monto'];
-$fechaPago = $_POST['fechaPago'];
+// Verifica que se haya enviado el clienteId, monto y fechaPago
+if (isset($_POST['clienteId']) && isset($_POST['monto']) && isset($_POST['fechaPago'])) {
+    $clienteId = $_POST['clienteId'];
+    $monto = $_POST['monto'];
+    $fechaPago = $_POST['fechaPago'];
 
-// Insertar un registro en la tabla cuotas_pagadas
-$sqlInsert = "INSERT INTO cuotas_pagadas (IDCliente, MontoPagado, FechaPago) VALUES ($clienteId, $monto, '$fechaPago')";
-if ($conn->query($sqlInsert) === TRUE) {
-    // Actualizar el saldo de deuda del cliente en la tabla prestamos
-    $sqlUpdate = "UPDATE prestamos SET SaldoDeuda = SaldoDeuda - $monto WHERE IDCliente = $clienteId";
-    if ($conn->query($sqlUpdate) === TRUE) {
+    // Inserta el pago en la tabla de historial_pagos
+    $sql = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado) VALUES ($clienteId, '$fechaPago', $monto)";
+    
+    if ($conexion->query($sql) === TRUE) {
         echo "Pago registrado con éxito";
     } else {
-        echo "Error al actualizar el saldo de deuda";
+        echo "Error al registrar el pago: " . $conexion->error;
     }
 } else {
-    echo "Error al registrar el pago";
+    echo "Faltan parámetros para registrar el pago.";
 }
 
-// Cierra la conexión
-$conn->close();
+// Cierra la conexión a la base de datos
+$conexion->close();
 ?>

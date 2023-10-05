@@ -4,6 +4,14 @@ body {
   padding: 30px;
   background-color: #f0f0f0;
 } 
+date-input {
+  border: 1px solid #ccc;
+  padding: 1px;
+  color: #0056b3;
+  display: inline-block; /* Para que se comporte como un elemento en línea */
+  min-width: 140px; /* Ancho mínimo deseado */
+  text-align: center; /* Para centrar el texto */
+}
  
 /* Barra de navegación */
 .navbar {
@@ -161,3 +169,5 @@ tbody td {
 tbody tr:last-child td {
   border-bottom: none; /* Eliminar borde inferior en la última fila de datos */
 }
+
+
