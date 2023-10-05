@@ -50,7 +50,7 @@
         </div>
 
         <div class="column">
-            <label for="curp" style="color: blue;">CURP: </label> <br>
+            <label for="curp" style="color: blue;">Curp/Ced: </label> <br>
             <span id="curp"></span>
         </div>
 
