@@ -1,70 +1,3 @@
-<?php
-session_start();
-
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
-    header("location: ../../../../index.php");
-    exit();
-}
-
-// Incluye la configuración de conexión a la base de datos
-include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
-
-// Obtener todos los clientes de la base de datos
-$sql = "SELECT * FROM clientes";
-$resultado = $conexion->query($sql);
-
-if ($resultado->num_rows > 0) {
-    $clientes = $resultado->fetch_all(MYSQLI_ASSOC);
-    // Liberar el resultado
-    $resultado->free();
-} else {
-    // No se encontraron clientes en la base de datos, puedes manejar esto de acuerdo a tus necesidades
-    echo "No se encontraron clientes en la base de datos.";
-    exit();
-}
-
-// Obtener el cliente actual
-$clienteActual = 0;
-
-if (isset($_GET['cliente_id']) && is_numeric($_GET['cliente_id'])) {
-    $clienteID = $_GET['cliente_id'];
-
-    // Buscar el índice del cliente en el array
-    $clienteIndex = array_search($clienteID, array_column($clientes, 'ID'));
-
-    if ($clienteIndex !== false) {
-        $clienteActual = $clienteIndex;
-    } else {
-        // El cliente no se encontró en el array, puedes manejar esto de acuerdo a tus necesidades
-        echo "Cliente no encontrado.";
-        exit();
-    }
-}
-
-// Obtener el cliente actual
-$cliente = $clientes[$clienteActual];
-
-// Obtener Plazo y Cuota de la tabla Prestamos
-$sqlPrestamo = "SELECT Plazo, Cuota FROM Prestamos WHERE IDCliente = {$cliente['ID']}";
-
-$resultadoPrestamo = $conexion->query($sqlPrestamo);
-
-if ($resultadoPrestamo === false) {
-    // Si hay un error en la consulta SQL, muestra el mensaje de error
-    die("Error en la consulta SQL: " . $conexion->error);
-}
-
-if ($resultadoPrestamo->num_rows > 0) {
-    $prestamo = $resultadoPrestamo->fetch_assoc();
-} else {
-    // No se encontraron datos de préstamo para este cliente, puedes manejar esto de acuerdo a tus necesidades
-    echo "No se encontraron datos de préstamo para este cliente.";
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -85,9 +18,12 @@ if ($resultadoPrestamo->num_rows > 0) {
 <body>
     <!-- Barra de navegación -->
     <div class="navbar">
-        <button id="fecha-izquierda" class="boton-flecha" onclick="cambiarCliente(-1)">&larr;</button> <!-- Flecha hacia la izquierda -->
-        <button id="menu" class="boton-menu" onclick="redireccionar()">&#8801;</button> <!-- Menu -->
-        <button id="fecha-derecha" class="boton-flecha" onclick="cambiarCliente(1)">&rarr;</button> <!-- Flecha hacia la derecha -->
+        <button id="fecha-izquierda" class="boton-flecha" onclick="cambiarCliente(-1)">&larr;</button>
+        <!-- Flecha hacia la izquierda -->
+        <button id="menu" class="boton-menu" onclick="redireccionar()">&#8801;</button>
+        <!-- Menu -->
+        <button id="fecha-derecha" class="boton-flecha" onclick="cambiarCliente(1)">&rarr;</button>
+        <!-- Flecha hacia la derecha -->
     </div><br>
 
     <div class="cobro-bar">
@@ -99,28 +35,33 @@ if ($resultadoPrestamo->num_rows > 0) {
         <!-- Columna 1: Nombre y Apellido del Cliente -->
         <div class="column">
             <label for="nombre" style="color: blue;">Nombre: </label> <br>
-            <span id="nombre"><?php echo $cliente['Nombre']; ?></span>
+            <span id="nombre"></span>
         </div>
 
         <!-- Columna 2: Domicilio, Tel/Cel, Plazo y Cuota -->
         <div class="column">
             <label for="domicilio" style="color: blue;">Domicilio: </label> <br>
-            <span id="domicilio"><?php echo $cliente['Domicilio']; ?></span>
+            <span id="domicilio"></span>
         </div>
 
         <div class="column">
             <label for="tel_cel" style="color: blue;">Tel/Cel: </label> <br>
-            <span id="tel_cel"><?php echo $cliente['Telefono']; ?></span>
+            <span id="tel_cel"></span>
+        </div>
+
+        <div class="column">
+            <label for="curp" style="color: blue;">CURP: </label> <br>
+            <span id="curp"></span>
         </div>
 
         <div class="column">
             <label for="plazo" style="color: blue;">Plazo: </label> <br>
-            <span id="plazo"><?php echo $prestamo['Plazo']; ?></span>
+            <span id="plazo"></span>
         </div>
 
         <div class="column">
             <label for="cuota" style="color: blue;">Cuota: </label> <br>
-            <span id="cuota"><?php echo $prestamo['Cuota']; ?></span>
+            <span id="cuota"></span>
         </div>
     </div>
 
@@ -142,49 +83,59 @@ if ($resultadoPrestamo->num_rows > 0) {
     <button class="btn-guardar">Guardar</button>
 
     <script>
-        // Datos de los clientes
-        var clientes = <?php echo json_encode($clientes); ?>;
+    // Variables globales para llevar un registro del ID del cliente actual
+    var clienteActualId = 1; // Empieza con el primer cliente (puedes cambiarlo si deseas)
 
-        // Índice del cliente actual
-        var clienteActual = <?php echo $clienteActual; ?>;
+    // Función para cargar los datos del cliente
+    function cargarDatosCliente(clienteId) {
+        $.ajax({
+            url: "consulta.php?clienteId=" + clienteId,
+            dataType: "json",
+            success: function(data) {
+                // Rellenar los campos con los datos obtenidos
+                $("#nombre").text(data.Nombre);
+                $("#domicilio").text(data.Domicilio);
+                $("#curp").text(data.IdentificacionCURP);
+                $("#plazo").text(data.Plazo);
+                $("#cuota").text(data.Cuota);
 
-        // Mostrar cliente actual
-        function mostrarCliente(clienteIndex) {
-            var cliente = clientes[clienteIndex];
-            document.getElementById("nombre").textContent = cliente.Nombre;
-            document.getElementById("domicilio").textContent = cliente.Domicilio;
-            document.getElementById("tel_cel").textContent = cliente.Telefono;
-        }
-
-        mostrarCliente(clienteActual);
-
-        // Cambiar al cliente anterior o siguiente
-        function cambiarCliente(direccion) {
-            var nuevoCliente = clienteActual + direccion;
-
-            if (nuevoCliente >= 0 && nuevoCliente < clientes.length) {
-                clienteActual = nuevoCliente;
-                mostrarCliente(clienteActual);
+                // Actualizar el ID del cliente actual
+                clienteActualId = clienteId;
+            },
+            error: function() {
+                alert("No hay clientes que mostrar");
             }
-        }
+        });
+    }
 
-        function mostrarCalendario() {
-            $("#fecha").datepicker({
-                dateFormat: "dd/mm/yy hh:mm tt", // Formato de fecha y hora deseado
-                showTimepicker: true, // Permite seleccionar la hora
-                timeFormat: "hh:mm tt", // Formato de hora
-                position: 'right' // Muestra el calendario al lado derecho de la casilla
-            });
-        }
+    // Función para cambiar al cliente anterior
+    function cambiarClienteAnterior() {
+        clienteActualId--; // Disminuir el ID en 1 (cambia al cliente anterior)
+        cargarDatosCliente(clienteActualId);
+    }
 
-        function redireccionar() {
-            // Aquí debes proporcionar la URL del archivo al que deseas redirigir
-            var nuevaURL = "../clientes/lista_clientes.php";
+    // Función para cambiar al cliente siguiente
+    function cambiarClienteSiguiente() {
+        clienteActualId++; // Aumentar el ID en 1 (cambia al cliente siguiente)
+        cargarDatosCliente(clienteActualId);
+    }
 
-            // Redirige a la nueva URL
-            window.location.href = nuevaURL;
-        }
-    </script>
+    // Llama a la función para cargar los datos del cliente inicial
+    cargarDatosCliente(clienteActualId);
+
+    // Manejar los eventos de los botones para cambiar de cliente
+    $("#fecha-izquierda").click(cambiarClienteAnterior);
+    $("#fecha-derecha").click(cambiarClienteSiguiente);
+     // Función para redireccionar al CRUD de clientes
+     function redireccionarCrudClientes() {
+        // Cambia 'crud_clientes.html' por la URL de tu página de CRUD de clientes
+        window.location.href = '/resources/views/admin/clientes/lista_clientes.php';
+    }
+
+    // Asocia la función al evento de clic en el botón "Menu"
+    $("#menu").click(redireccionarCrudClientes);
+</script>
+
 </body>
 
 </html>
