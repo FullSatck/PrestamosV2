@@ -4,6 +4,14 @@ body {
   padding: 30px;
   background-color: #f0f0f0;
 } 
+date-input {
+  border: 1px solid #ccc;
+  padding: 1px;
+  color: #0056b3;
+  display: inline-block; /* Para que se comporte como un elemento en línea */
+  min-width: 140px; /* Ancho mínimo deseado */
+  text-align: center; /* Para centrar el texto */
+}
  
 /* Barra de navegación */
 .navbar {
@@ -160,13 +168,4 @@ tbody td {
 /* Estilo para las últimas filas de datos (eliminar borde inferior) */
 tbody tr:last-child td {
   border-bottom: none; /* Eliminar borde inferior en la última fila de datos */
-}
-
-/* Estilos para el pie de página */
-#footer {
-  text-align: center; /* Alineación de texto al centro para el pie de página */
-  background-color: #f0f0f0; /* Color de fondo del pie de página */
-  padding: 10px 0; /* Relleno en el pie de página */
-  color: #333; /* Color del texto en el pie de página */
-  font-size: 14px; /* Tamaño de fuente en el pie de página */
 }

@@ -4,7 +4,7 @@ include '../../../../controllers/conexion.php';
 
 // Consulta SQL para obtener los datos del cliente y préstamo
 $clienteId = $_GET['clienteId']; // Asegúrate de pasar el ID del cliente desde tu HTML
-$sql = "SELECT c.Nombre, c.Domicilio, c.IdentificacionCURP, p.Plazo, p.Cuota FROM clientes c INNER JOIN prestamos p ON c.ID = p.IDCliente WHERE c.ID = $clienteId";
+$sql = "SELECT c.Nombre, c.Domicilio, c.IdentificacionCURP, c.Telefono, p.Plazo, p.Monto, p.Cuota FROM clientes c INNER JOIN prestamos p ON c.ID = p.IDCliente WHERE c.ID = $clienteId";
 
 $result = $conexion->query($sql);
 

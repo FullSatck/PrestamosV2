@@ -44,13 +44,22 @@
             <span id="domicilio"></span>
         </div>
 
+        <!-- Agrega elementos <span> para mostrar el teléfono y el monto a pagar -->
         <div class="column">
             <label for="tel_cel" style="color: blue;">Tel/Cel: </label> <br>
             <span id="tel_cel"></span>
         </div>
 
+        <!-- Agrega un elemento <span> para mostrar el monto -->
         <div class="column">
-            <label for="curp" style="color: blue;">CURP: </label> <br>
+            <label for="monto" style="color: blue;">Monto: </label> <br>
+            <span id="monto"></span>
+        </div>
+
+
+
+        <div class="column">
+            <label for="curp" style="color: blue;">Curp/Ced: </label> <br>
             <span id="curp"></span>
         </div>
 
@@ -74,17 +83,25 @@
 
         <div class="column" style="position: relative;">
             <label for="fecha" style="color: blue;">Fecha: </label>
-            <input type="text" id="fecha" placeholder="28/09/2023 6:52 p.m">
-            <button id="calendarioBtn" onclick="mostrarCalendario()">Calendario</button>
+            <div id="fecha-actual" style="border: 1px solid #ccc; padding: 4px;"></div>
         </div>
+
+
+
     </div>
 
-    <!-- Botón de guardar -->
-    <button class="btn-guardar">Guardar</button>
+
+    <!-- Agrega un botón o formulario para registrar el pago -->
+    <button id="registrarPago" class="btn-guardar">Registrar Pago</button>
+
+
+
+
 
     <script>
     // Variables globales para llevar un registro del ID del cliente actual
     var clienteActualId = 1; // Empieza con el primer cliente (puedes cambiarlo si deseas)
+
 
     // Función para cargar los datos del cliente
     function cargarDatosCliente(clienteId) {
@@ -96,17 +113,17 @@
                 $("#nombre").text(data.Nombre);
                 $("#domicilio").text(data.Domicilio);
                 $("#curp").text(data.IdentificacionCURP);
+                $("#tel_cel").text(data.Telefono); // Mostrar teléfono
                 $("#plazo").text(data.Plazo);
-                $("#cuota").text(data.Cuota);
-
-                // Actualizar el ID del cliente actual
-                clienteActualId = clienteId;
+                $("#monto").text(data.Monto); // Mostrar monto
+                $("#cuota").text(data.Cuota); // Mostrar cuota
             },
             error: function() {
-                alert("No hay clientes que mostrar");
+                alert("Error al cargar los datos del cliente.");
             }
         });
     }
+
 
     // Función para cambiar al cliente anterior
     function cambiarClienteAnterior() {
@@ -126,15 +143,77 @@
     // Manejar los eventos de los botones para cambiar de cliente
     $("#fecha-izquierda").click(cambiarClienteAnterior);
     $("#fecha-derecha").click(cambiarClienteSiguiente);
-     // Función para redireccionar al CRUD de clientes
-     function redireccionarCrudClientes() {
+    // Función para redireccionar al CRUD de clientes
+    function redireccionarCrudClientes() {
         // Cambia 'crud_clientes.html' por la URL de tu página de CRUD de clientes
         window.location.href = '/resources/views/admin/clientes/lista_clientes.php';
     }
 
     // Asocia la función al evento de clic en el botón "Menu"
     $("#menu").click(redireccionarCrudClientes);
-</script>
+    // Función para registrar un pago
+    function registrarPago() {
+        // Obtener el monto a pagar y otros datos necesarios
+        var monto = parseFloat($("#pagar").val());
+        var fechaPago = $("#fecha").val();
+
+        // Realizar una solicitud AJAX para registrar el pago
+        $.ajax({
+            type: "POST",
+            url: "/resources/views/admin/abonos/registrar_pago.php",
+            data: {
+                clienteId: clienteActualId, // ID del cliente actual
+                monto: monto,
+                fechaPago: fechaPago
+            },
+            success: function(response) {
+                // Actualizar la página o mostrar un mensaje de éxito
+                alert("Pago registrado con éxito");
+                // Puedes agregar aquí código adicional para actualizar la interfaz si es necesario
+            },
+            error: function() {
+                alert("Error al registrar el pago");
+            }
+        });
+    }
+
+    // Asocia la función al evento de clic en el botón "Registrar Pago"
+    $("#registrarPago").click(registrarPago);
+
+    // Función para obtener la fecha actual en formato deseado (dd/mm/yyyy hh:mm a)
+    function obtenerFechaActual() {
+        var fecha = new Date();
+        var dia = fecha.getDate().toString().padStart(2, '0');
+        var mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Los meses son base 0
+        var anio = fecha.getFullYear();
+        var horas = fecha.getHours().toString().padStart(2, '0');
+        var minutos = fecha.getMinutes().toString().padStart(2, '0');
+        var ampm = horas >= 12 ? 'p.m.' : 'a.m.';
+        horas = horas % 12;
+        horas = horas ? horas : 12; // Las 12:00 p.m. y las 12:00 a.m. se muestran como 12:00
+        var formatoFecha = dia + '/' + mes + '/' + anio + ' ' + horas + ':' + minutos + ' ' + ampm;
+        return formatoFecha;
+    }
+
+    // Función para mostrar la fecha actual en el div en tiempo real
+    function mostrarFechaActualEnTiempoReal() {
+        var fechaDiv = document.getElementById("fecha-actual");
+
+        function actualizarFecha() {
+            var fechaActual = obtenerFechaActual();
+            fechaDiv.textContent = fechaActual;
+        }
+
+        // Actualizar la fecha cada segundo (1000 milisegundos)
+        setInterval(actualizarFecha, 1000);
+
+        // Llamar a la función inicialmente para mostrar la fecha inmediatamente
+        actualizarFecha();
+    }
+
+    // Llama a la función para mostrar la fecha en tiempo real cuando se carga la página
+    mostrarFechaActualEnTiempoReal();
+    </script>
 
 </body>
 
