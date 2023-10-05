@@ -77,34 +77,19 @@ h2 a {
   border-radius: 8px; /* Bordes redondeados en los botones */
 }
 
-/* Estilos para los botones al pasar el mouse */
-.button-container button:hover {
-  background-color: #0004ff; /* Cambia el color de fondo de los botones al pasar el mouse */
-}
+ 
 
 .aa{
-  background: #3366f0;
-  color: #000000;
-  padding: 8px;
-  border-radius: 7px;
+    background-color: #3283cf; /* Color de fondo de los botones */
+    color: rgb(0, 0, 0); /* Color del texto en los botones */
+    border: none; /* Sin bordes en los botones */
+    padding: 5px 10px; /* Relleno en los botones */
+    margin-left: 5px; /* Margen izquierdo entre los botones */
+    text-decoration: none; /* Quita la decoración de subrayado en los botones */
+    border-radius: 8px; /* Bordes redondeados en los botones */
 }
-
-.aa:hover{
-  background: #0044ff;
-  color: #000000;
-  padding: 8px;
-  border-radius: 7px;
-}
-
-
-/* Estilos para el pie de página */
-#footer {
-  text-align: center; /* Alineación de texto al centro para el pie de página */
-  background-color: #f0f0f0; /* Color de fondo del pie de página */
-  padding: 10px 0; /* Relleno en el pie de página */
-  color: #333; /* Color del texto en el pie de página */
-  font-size: 14px; /* Tamaño de fuente en el pie de página */
-}
+  
+  
 
 /* Media query para dispositivos pequeños */
 @media screen and (max-width: 768px) {
