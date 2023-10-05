@@ -44,10 +44,19 @@
             <span id="domicilio"></span>
         </div>
 
+        <!-- Agrega elementos <span> para mostrar el teléfono y el monto a pagar -->
         <div class="column">
             <label for="tel_cel" style="color: blue;">Tel/Cel: </label> <br>
             <span id="tel_cel"></span>
         </div>
+
+        <!-- Agrega un elemento <span> para mostrar el monto -->
+        <div class="column">
+            <label for="monto" style="color: blue;">Monto: </label> <br>
+            <span id="monto"></span>
+        </div>
+
+
 
         <div class="column">
             <label for="curp" style="color: blue;">CURP: </label> <br>
@@ -79,34 +88,38 @@
         </div>
     </div>
 
-    <!-- Botón de guardar -->
-    <button class="btn-guardar">Guardar</button>
+
+    <!-- Agrega un botón o formulario para registrar el pago -->
+    <button id="registrarPago" class="btn-guardar">Registrar Pago</button>
+
+
 
     <script>
     // Variables globales para llevar un registro del ID del cliente actual
     var clienteActualId = 1; // Empieza con el primer cliente (puedes cambiarlo si deseas)
 
-    // Función para cargar los datos del cliente
-    function cargarDatosCliente(clienteId) {
-        $.ajax({
-            url: "consulta.php?clienteId=" + clienteId,
-            dataType: "json",
-            success: function(data) {
-                // Rellenar los campos con los datos obtenidos
-                $("#nombre").text(data.Nombre);
-                $("#domicilio").text(data.Domicilio);
-                $("#curp").text(data.IdentificacionCURP);
-                $("#plazo").text(data.Plazo);
-                $("#cuota").text(data.Cuota);
+  
+// Función para cargar los datos del cliente
+function cargarDatosCliente(clienteId) {
+    $.ajax({
+        url: "consulta.php?clienteId=" + clienteId,
+        dataType: "json",
+        success: function(data) {
+            // Rellenar los campos con los datos obtenidos
+            $("#nombre").text(data.Nombre);
+            $("#domicilio").text(data.Domicilio);
+            $("#curp").text(data.IdentificacionCURP);
+            $("#tel_cel").text(data.Telefono); // Mostrar teléfono
+            $("#plazo").text(data.Plazo);
+            $("#monto").text(data.Monto); // Mostrar monto
+            $("#cuota").text(data.Cuota); // Mostrar cuota
+        },
+        error: function() {
+            alert("Error al cargar los datos del cliente.");
+        }
+    });
+}
 
-                // Actualizar el ID del cliente actual
-                clienteActualId = clienteId;
-            },
-            error: function() {
-                alert("No hay clientes que mostrar");
-            }
-        });
-    }
 
     // Función para cambiar al cliente anterior
     function cambiarClienteAnterior() {
@@ -126,15 +139,43 @@
     // Manejar los eventos de los botones para cambiar de cliente
     $("#fecha-izquierda").click(cambiarClienteAnterior);
     $("#fecha-derecha").click(cambiarClienteSiguiente);
-     // Función para redireccionar al CRUD de clientes
-     function redireccionarCrudClientes() {
+    // Función para redireccionar al CRUD de clientes
+    function redireccionarCrudClientes() {
         // Cambia 'crud_clientes.html' por la URL de tu página de CRUD de clientes
         window.location.href = '/resources/views/admin/clientes/lista_clientes.php';
     }
 
     // Asocia la función al evento de clic en el botón "Menu"
     $("#menu").click(redireccionarCrudClientes);
-</script>
+    // Función para registrar un pago
+    function registrarPago() {
+        // Obtener el monto a pagar y otros datos necesarios
+        var monto = parseFloat($("#pagar").val());
+        var fechaPago = $("#fecha").val();
+
+        // Realizar una solicitud AJAX para registrar el pago
+        $.ajax({
+            type: "POST",
+            url: "registrar_pago.php",
+            data: {
+                clienteId: clienteActualId, // ID del cliente actual
+                monto: monto,
+                fechaPago: fechaPago
+            },
+            success: function(response) {
+                // Actualizar la página o mostrar un mensaje de éxito
+                alert("Pago registrado con éxito");
+                // Puedes agregar aquí código adicional para actualizar la interfaz si es necesario
+            },
+            error: function() {
+                alert("Error al registrar el pago");
+            }
+        });
+    }
+
+    // Asocia la función al evento de clic en el botón "Registrar Pago"
+    $("#registrarPago").click(registrarPago);
+    </script>
 
 </body>
 
