@@ -63,7 +63,7 @@ $resultado = $conexion->query($sql);
             </tr>
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
                 <tr>
-                    <td><?= $fila["ID"] ?></td>
+                    <td><?= "REC 100" .$fila["ID"] ?></td>
                     <td><?= $fila["Nombre"] ?></td>
                     <td><?= $fila["Apellido"] ?></td>
                     <td><?= $fila["Domicilio"] ?></td>

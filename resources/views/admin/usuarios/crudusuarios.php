@@ -85,7 +85,7 @@ if (isset($_GET['mensaje'])) {
                                 $rowCount++; // Incrementar el contador de filas
                                 ?>
                                 <tr class="row<?= $rowCount ?>">
-                                    <td><?= $datos->ID ?></td>
+                                    <td><?= "REC 100" .$datos->ID ?></td>
                                     <td><?= $datos->Nombre ?></td>
                                     <td><?= $datos->Apellido ?></td>
                                     <td><?= $datos->Email ?></td>

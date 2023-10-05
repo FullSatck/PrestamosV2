@@ -1,0 +1,121 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 40px;
+} 
+
+h1 {
+    background-color: #70aee9;
+    color: #000;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Estilos para los cuadros de saldo */
+.saldo-box {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.saldo-item {
+    text-align: center;
+}
+
+.saldo-item h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.saldo-item p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff; /* Color del saldo */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilos para la barra de búsqueda */
+#busqueda {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #70aee9;
+    color: #000;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #dcdcdc;
+}
+
+/* Estilos para los enlaces en la última columna */
+td a {
+    background: #f2f2f2;
+    text-decoration: none;
+    color: #0056b3;
+    transition: color 0.3s ease;
+    padding: 7px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+}
+ 
+
+/* Estilos para los botones */
+.button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+
+.aa{
+    color: #ff0000;
+}

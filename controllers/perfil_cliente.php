@@ -21,8 +21,12 @@ include("conexion.php");
 // Obtener el ID del cliente desde el parámetro GET
 $id_cliente = $_GET['id'];
 
-// Consulta SQL para obtener los detalles del cliente
-$sql = "SELECT * FROM clientes WHERE ID = $id_cliente";
+// Consulta SQL para obtener los detalles del cliente con el nombre de la moneda
+$sql = "SELECT c.*, m.Nombre AS MonedaNombre 
+        FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
+        WHERE c.ID = $id_cliente";
+
 $resultado = $conexion->query($sql);
 
 if ($resultado->num_rows === 1) {
@@ -38,7 +42,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: lista_clientes.php");
+    header("location: ../resources/views/admin/clientes/lista_clientes.php");
     exit();
 }
 
@@ -69,7 +73,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
             <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
             <p>Historial Crediticio: <strong><?= $fila["HistorialCrediticio"] ?></strong> </p>
             <p>Referencias Personales: <strong><?= $fila["ReferenciasPersonales"] ?></strong> </p>
-            <p>Moneda Preferida: <strong><?= $fila["MonedaPreferida"] ?></strong></p>
+            <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
             <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
         </div>
     </div>
@@ -84,6 +88,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <th>Monto</th>
                     <th>Tasa de Interés</th>
                     <th>Plazo</th>
+                    <th>Frecuencia de Pago</th> <!-- Agregar Frecuencia de Pago -->
                     <th>Fecha de Inicio</th>
                     <th>Fecha de Vencimiento</th>
                     <th>Estado</th>
@@ -92,10 +97,11 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
             <tbody>
                 <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
                     <tr>
-                        <td><?= $fila_prestamo["ID"] ?></td>
+                        <td><a href="/controllers/dias_pago.php"><?= "REC 100" .$fila_prestamo["ID"] ?></a></td>
                         <td><?= $fila_prestamo["Monto"] ?></td>
                         <td><?= $fila_prestamo["TasaInteres"] ?></td>
                         <td><?= $fila_prestamo["Plazo"] ?></td>
+                        <td><?= $fila_prestamo["FrecuenciaPago"] ?></td> <!-- Mostrar Frecuencia de Pago -->
                         <td><?= $fila_prestamo["FechaInicio"] ?></td>
                         <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
                         <td><?= $fila_prestamo["Estado"] ?></td>

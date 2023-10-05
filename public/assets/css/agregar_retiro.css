@@ -1,0 +1,92 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 30px;
+    background-color: #f0f0f0;
+  }
+
+/* Estilo para el encabezado h1 */
+h1 {
+    background-color: #70aee9; /* Color de fondo */
+    color: #000000; /* Color del texto */
+    padding: 20px; /* Espaciado interno */
+    text-align: center; /* Alineación del texto al centro */  
+    margin-bottom: 20px; /* Espaciado inferior */
+}
+
+
+/* Estilos generales del formulario */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px 40px 20px 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos para etiquetas de texto */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* Estilos para campos de entrada de texto y textarea */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* Estilos para el menú desplegable */
+select {
+    appearance: none;
+    background: transparent;
+    padding-right: 30px;
+    background-image: url('arrow-down.png'); /* Agrega una flecha personalizada */
+    background-repeat: no-repeat;
+    background-position: 95% center;
+}
+
+/* Estilos para el botón */
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilos para el botón al pasar el mouse */
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para el enlace de "Volver" */
+a {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #ddd;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+/* Estilos para el enlace de "Volver" al pasar el mouse */
+a:hover {
+    background-color: #ccc;
+}
