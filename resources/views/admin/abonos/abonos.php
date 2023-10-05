@@ -59,7 +59,7 @@
 
 
         <div class="column">
-            <label for="curp" style="color: blue;">Curp/Ced: </label> <br>
+            <label for="curp" style="color: blue;">CURP: </label> <br>
             <span id="curp"></span>
         </div>
 
@@ -83,9 +83,8 @@
 
         <div class="column" style="position: relative;">
             <label for="fecha" style="color: blue;">Fecha: </label>
-            <div id="fecha-actual" style="border: 1px solid #ccc; padding: 4px;"></div>
+            <div id="fecha-actual" class="date-input"></div>
         </div>
-
 
 
     </div>
@@ -119,7 +118,7 @@
                 $("#cuota").text(data.Cuota); // Mostrar cuota
             },
             error: function() {
-                alert("Error al cargar los datos del cliente.");
+                alert("No hay mas clientes que mostrar");
             }
         });
     }
