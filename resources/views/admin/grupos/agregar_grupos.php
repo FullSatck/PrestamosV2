@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" id="nombre_grupo" name="nombre_grupo" value="<?php echo $nombre_grupo; ?>" required>
         <button type="submit">Agregar Rol</button>
         <a href="/resources/views/admin/grupos/grupos.php" class="a">Volver</a>
-    </form>
+    </form> 
 </body>
 
 </html>

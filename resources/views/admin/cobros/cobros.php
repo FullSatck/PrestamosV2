@@ -58,7 +58,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         // Cierra la conexión a la base de datos
         mysqli_close($conexion);
         ?>
-    </table>
+    </table> 
 </body>
 
 </html>

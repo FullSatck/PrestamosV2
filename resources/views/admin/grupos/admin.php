@@ -43,7 +43,7 @@ if (!$result) {
             echo "<li>" . $row['Nombre'] . " / " . $row['Email'] . "</li>";
         }
         ?>
-    </ul>
+    </ul> 
 </body>
 
 </html>

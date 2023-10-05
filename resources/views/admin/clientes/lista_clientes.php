@@ -100,6 +100,6 @@ $resultado = $conexion->query($sql);
                 }
             });
         });
-    </script>
+    </script> 
 </body>
 </html>

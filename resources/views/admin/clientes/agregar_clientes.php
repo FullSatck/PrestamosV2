@@ -105,7 +105,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <div class="btn-container">
                 <input class="btn-container" type="submit" value="Registrar">
-            </div>
+            </div> 
         </form>
     </div>
     <script src="/public/assets/js/mensaje.js"></script> 

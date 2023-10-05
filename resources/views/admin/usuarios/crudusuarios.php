@@ -8,7 +8,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
+// Verificar si se ha pasado un mensaje en la URL
+$mensaje = "";
+if (isset($_GET['mensaje'])) {
+    $mensaje = $_GET['mensaje'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +54,14 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 </div>
 
                 <div class="table-container">
+                    <!-- Código para mostrar el mensaje emergente -->
+                    <?php if (!empty($mensaje)) : ?>
+                        <div class="alert alert-success">
+                            <?php echo htmlspecialchars($mensaje); ?>
+                        </div>
+                    <?php endif; ?>
+                    <!-- Fin del código para mostrar el mensaje emergente -->
+
                     <!-- Resto del código de la tabla -->
                     <table class="table">
                         <thead>
@@ -167,6 +179,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 showPage(currentPage);
             });
         });
-    </script>
+    </script> 
 </body>
 </html>

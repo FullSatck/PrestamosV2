@@ -81,3 +81,12 @@ p {
       font-size: 20px;
   }
 }
+/* Estilos para el pie de página */
+#footer {
+  text-align: center; /* Alineación de texto al centro para el pie de página */
+  background-color: #f0f0f0; /* Color de fondo del pie de página */
+  padding: 10px 0; /* Relleno en el pie de página */
+  color: #333; /* Color del texto en el pie de página */
+  font-size: 14px; /* Tamaño de fuente en el pie de página */
+}
+

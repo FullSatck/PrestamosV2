@@ -162,8 +162,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 </div>
             </th>
         </tr>
-    </table>
-    <footer id="footer">Derechos reservados</footer>
+    </table> 
 </body>
 
 </html>

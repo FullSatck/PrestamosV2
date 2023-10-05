@@ -47,6 +47,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </form>
     </div>
 
-    <script src="/public/assets/js/mensaje.js"></script> 
+    <script src="/public/assets/js/mensaje.js"></script>  
 </body
 </html>

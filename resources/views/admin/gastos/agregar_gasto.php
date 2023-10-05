@@ -153,6 +153,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <h1>Agregar Gasto</h1>
     
+    <div id="mensaje">
+            <?php
+            if (isset($_GET['mensaje'])) {
+                echo htmlspecialchars($_GET['mensaje']);
+            }
+            ?>
+        </div>
+    
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <div class="form-group">
             <label for="id_zona">Zona:</label>
@@ -202,6 +210,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 showButtonPanel: true, // Muestra botones de "Hoy" y "Limpiar"
             });
         });
-    </script>
+    </script> 
 </body>
 </html>

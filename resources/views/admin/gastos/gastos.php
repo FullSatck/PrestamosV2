@@ -67,6 +67,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
     // Cierra la conexión a la base de datos
     $conexion->close();
-    ?>
+    ?> 
 </body>
 </html>
