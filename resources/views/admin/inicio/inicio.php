@@ -141,7 +141,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
-                <a href="/resources/views/admin/abonos/abonos.php">Abonos </a>
+                <a href="/resources/views/admin/abonos/lista_super.php">Abonos </a>
                 <div class="button-container">
                     <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
                     <button><a href="/admin/recaudo/abono/">Modificar</a></button>

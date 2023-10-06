@@ -1,0 +1,82 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+    background-color: #3498db;
+    color: #fff;
+    padding: 20px;
+    margin: 0;
+}
+
+h2 {
+    color: #333;
+    margin-top: 20px;
+}
+
+/* Tabla de fechas de pago */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 8px;
+}
+
+tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* Estilos para los párrafos de información */
+.p {
+    color: gray;
+    text-align: center;
+}
+
+.pp {
+    color: #000000;
+    background-color: rgb(158, 156, 156);
+    padding: 10px;
+}
+
+/* Estilos para los enlaces */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

@@ -11,7 +11,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 // Verificar si se ha pasado un ID válido como parámetro GET
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     // Redirigir a una página de error o a la lista de clientes
-    header("location: lista_clientes.php");
+    header("location: dias_pagos.php");
     exit();
 }
 
@@ -92,12 +92,13 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <th>Fecha de Inicio</th>
                     <th>Fecha de Vencimiento</th>
                     <th>Estado</th>
+                    <th>Pagos</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
                     <tr>
-                        <td><a href="/controllers/dias_pago.php"><?= "REC 100" .$fila_prestamo["ID"] ?></a></td>
+                        <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
                         <td><?= $fila_prestamo["Monto"] ?></td>
                         <td><?= $fila_prestamo["TasaInteres"] ?></td>
                         <td><?= $fila_prestamo["Plazo"] ?></td>
@@ -105,6 +106,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                         <td><?= $fila_prestamo["FechaInicio"] ?></td>
                         <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
                         <td><?= $fila_prestamo["Estado"] ?></td>
+                        <td><a href="dias_pago.php?id=<?= $fila_prestamo["ID"]; ?>">Ir</a></td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
