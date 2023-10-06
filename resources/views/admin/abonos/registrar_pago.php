@@ -1,30 +1,43 @@
 <?php
-// Incluye el archivo de conexión que contiene la variable $conexion
-include("../../../../controllers/conexion.php");
+// Incluir el archivo de conexión a la base de datos
+include '../../../../controllers/conexion.php';
 
-// Inicializa una respuesta por defecto
-$response = array("success" => false, "message" => "");
+// Obtener los datos del formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $clienteId = $_POST['clienteId'];
+    $montoPagado = $_POST['cantidadPago'];
+    $fechaPago = $_POST['fechaPago'];
 
-// Obtener los datos enviados por la solicitud AJAX
-$clienteId = $_POST["clienteId"];
-$monto = $_POST["monto"];
-$fechaPago = $_POST["fechaPago"];
+    // Consulta SQL para obtener el monto actual del préstamo
+    $sqlMontoPendiente = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = '$clienteId' AND Estado = 'pendiente'";
+    $result = $conexion->query($sqlMontoPendiente);
 
-// Realizar la inserción en la tabla de historial de pagos
-$sql = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado) VALUES ($clienteId, '$fechaPago', $monto)";
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $montoActual = $row["MontoAPagar"];
+        
+        // Calcular el nuevo monto pendiente después del pago
+        $nuevoMonto = $montoActual - $montoPagado;
 
-if ($conexion->query($sql) === TRUE) {
-    // Éxito
-    $response["success"] = true;
-    $response["message"] = "Pago registrado con éxito";
-} else {
-    // Error al insertar en el historial de pagos
-    $response["message"] = "Error al registrar el pago: " . $conexion->error;
+        // Consulta SQL para registrar el pago en la tabla 'historial_pagos'
+        $sqlRegistrarPago = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado) VALUES ('$clienteId', '$fechaPago', '$montoPagado')";
+
+        if ($conexion->query($sqlRegistrarPago) === TRUE) {
+            // Actualizar el monto pendiente en la tabla 'prestamos'
+            $sqlActualizarMonto = "UPDATE prestamos SET MontoAPagar = '$nuevoMonto' WHERE IDCliente = '$clienteId' AND Estado = 'pendiente'";
+            if ($conexion->query($sqlActualizarMonto) === TRUE) {
+                echo $nuevoMonto; // Devolver el nuevo monto pendiente al JavaScript
+            } else {
+                echo "Error al actualizar el monto pendiente: " . $conexion->error;
+            }
+        } else {
+            echo "Error al registrar el pago: " . $conexion->error;
+        }
+    } else {
+        echo "No se encontró un préstamo pendiente para este cliente.";
+    }
 }
 
-// Agrega encabezados para indicar que la respuesta es JSON
-header("Content-Type: application/json; charset=UTF-8");
-
-// Devuelve la respuesta como JSON
-echo json_encode($response);
+// Cerrar la conexión a la base de datos
+$conexion->close();
 ?>

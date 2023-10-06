@@ -1,21 +1,29 @@
 <?php
-// Incluye el archivo de conexión
+// Incluye tu archivo de conexión a la base de datos
 include '../../../../controllers/conexion.php';
 
-// Consulta SQL para obtener los datos del cliente y préstamo
-$clienteId = $_GET['clienteId']; // Asegúrate de pasar el ID del cliente desde tu HTML
-$sql = "SELECT c.Nombre, c.Domicilio, c.IdentificacionCURP, c.Telefono, p.Plazo, p.Monto, p.Cuota FROM clientes c INNER JOIN prestamos p ON c.ID = p.IDCliente WHERE c.ID = $clienteId";
+// Obtén el ID del cliente desde la solicitud GET
+$clienteId = $_GET["clienteId"];
 
-$result = $conexion->query($sql);
+// Prepara y ejecuta la consulta para obtener datos del cliente y préstamo
+$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.IdentificacionCURP, c.ZonaAsignada,
+               p.ID AS IDPrestamo, p.TasaInteres, p.FechaInicio, p.FechaVencimiento, p.Zona, p.MontoAPagar, p.Cuota
+        FROM clientes c
+        LEFT JOIN prestamos p ON c.ID = p.IDCliente
+        WHERE c.ID = $clienteId";
 
-if ($result->num_rows > 0) {
-    // Mostrar los datos en formato JSON para que JavaScript los maneje
-    $row = $result->fetch_assoc();
-    echo json_encode($row);
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+    // Obtiene los datos como un arreglo asociativo
+    $fila = $resultado->fetch_assoc();
+
+    // Devuelve los datos en formato JSON
+    echo json_encode($fila);
 } else {
-    echo "No se encontraron datos.";
+    echo "No se encontraron datos del cliente y préstamo.";
 }
 
-// Cierra la conexión
+// Cierra la conexión a la base de datos
 $conexion->close();
 ?>
