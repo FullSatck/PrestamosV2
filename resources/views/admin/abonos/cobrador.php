@@ -16,7 +16,7 @@ if (!isset($_GET['zona'])) {
 }
 
 // Obtener el ID de la zona desde la URL
-$idZona = $_GET['zona'];
+$zonaID = $_GET['zona'];
 
 // Verificar si se ha pasado un mensaje en la URL
 $mensaje = "";
@@ -32,39 +32,34 @@ if (isset($_GET['mensaje'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
-    <title>Cobradores en Zona con ID: <?= $idZona ?></title>
-  
+    <title>Zona: <?= $nombreZona ?></title>
 </head>
 <body>
     <!-- Botón para volver a la página anterior -->
-    <h1 class="text-center">Listado de Cobradores en Zona con ID: <?= $idZona ?></h1>
+    <h1 class="text-center">Listado de Préstamos en Zona: <?= $nombreZona ?></h1>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">
-                <!-- Botón para volver a la página de supervisores -->
-                <div class="return-button">
-                    <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver a Supervisores</a>
-                </div>
-            </div>
+            
             <div class="col-md-9">
-                <!-- Resto del código de la tabla -->
+                <!-- Tabla de préstamos -->
                 <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Apellido</th> 
-                            <th scope="col">Email</th>
-                            <th scope="col">ID Zona</th> <!-- Cambiamos a mostrar el ID de la zona -->
+                            <th scope="col">ID Cliente</th>
+                            <th scope="col">Monto</th> 
+                            <th scope="col">Tasa de Interés</th>
+                            <th scope="col">Plazo</th> 
+                            <th scope="col">Frecuencia</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         include("../../../../controllers/conexion.php");
-                        // Consulta para obtener los cobradores en la zona especificada por ID
-                        $sql = $conexion->prepare("SELECT U.ID, U.Nombre, U.Apellido, U.Email, U.Zona AS IDZona FROM Usuarios U WHERE U.Zona = ? AND U.RolID = 3"); // Suponemos que el RolID de los cobradores es 3
-                        $sql->bind_param("s", $idZona);
+                        // Consulta para obtener los préstamos en la zona especificada
+                        $sql = $conexion->prepare("SELECT ID, IDCliente, Monto, TasaInteres, Plazo, FrecuenciaPago FROM prestamos WHERE Zona = ?");
+                        $sql->bind_param("s", $nombreZona);
                         $sql->execute();
                         $result = $sql->get_result();
                         
@@ -72,10 +67,11 @@ if (isset($_GET['mensaje'])) {
                             ?>
                             <tr>
                                 <td><?= $datos['ID'] ?></td>
-                                <td><?= $datos['Nombre'] ?></td>
-                                <td><?= $datos['Apellido'] ?></td>
-                                <td><?= $datos['Email'] ?></td>
-                                <td><?= $datos['IDZona'] ?></td> <!-- Mostramos el ID de la zona -->
+                                <td><?= $datos['IDCliente'] ?></td>
+                                <td><?= $datos['Monto'] ?></td>
+                                <td><?= $datos['TasaInteres'] ?></td>
+                                <td><?= $datos['Plazo'] ?></td>
+                                <td><?= $datos['FrecuenciaPago'] ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -83,5 +79,47 @@ if (isset($_GET['mensaje'])) {
             </div>
         </div>
     </div> 
+  
+    <!-- Agregar la segunda tabla para los cobradores -->
+    <h1 class="text-center">Listado de Cobradores en Zona: <?= $nombreZona ?></h1>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <!-- Tabla de cobradores -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th> 
+                            <th scope="col">Email</th>
+                            <th scope="col">Rol</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Consulta para obtener solo a los cobradores de la zona asignada utilizando el ID de la zona
+                        $sql = $conexion->prepare("SELECT U.ID, U.Nombre, U.Apellido, U.Email, R.Nombre AS Rol FROM Usuarios U JOIN Roles R ON U.RolID = R.ID WHERE U.RolID = 3 AND U.ZonaID = ?");
+                        $sql->bind_param("s", $zonaID);
+                        $sql->execute();
+                        $result = $sql->get_result();
+                        
+                        while ($datos = $result->fetch_assoc()) {
+                            ?>
+                            <tr>
+                                <td><?= "REC 100" . $datos['ID'] ?></td>
+                                <td><?= $datos['Nombre'] ?></td>
+                                <td><?= $datos['Apellido'] ?></td>
+                                <td><?= $datos['Email'] ?></td>
+                                <td><?= $datos['Rol'] ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> 
+
 </body>
 </html>

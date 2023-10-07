@@ -35,13 +35,11 @@ if (isset($_GET['mensaje'])) {
                 <!-- Botón para registrar trabajadores -->
                 <div class="register-button">
                     <a href="registrar.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Registrar Trabajador</a>
+                    <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
+                
                 </div>
             </div>
-            <div class="col-md-9">
-                <!-- Botón para volver a la página anterior -->
-                <div class="return-button">
-                    <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
-                </div>
+            
 
                     <!-- Resto del código de la tabla -->
                     <table class="table">
