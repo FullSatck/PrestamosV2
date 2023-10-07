@@ -79,7 +79,7 @@ if (isset($_GET['mensaje'])) {
                         <tbody>
                             <?php
                             include("../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, ZonaID.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID");
+                            $sql = $conexion->query("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, ZonaID.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zona ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID");
                             $rowCount = 0; // Contador de filas
                             while ($datos = $sql->fetch_object()) { 
                                 $rowCount++; // Incrementar el contador de filas
@@ -91,7 +91,7 @@ if (isset($_GET['mensaje'])) {
                                     <td><?= $datos->Email ?></td>
                                     <td><?= $datos->Zona ?></td>
                                     <td><?= $datos->Rol ?></td>
-                                    <td><a href="/resources/views/admin/usuarios/modificarUser.php $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
+                                    <td><a href="/resources/views/admin/usuarios/modificarUser.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
                                     <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
                                 </tr>
                             <?php } ?>

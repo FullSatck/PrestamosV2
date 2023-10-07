@@ -80,7 +80,7 @@ if (isset($_GET['mensaje'])) {
                                 <!-- Botón para ver los cobradores de la zona -->
                                 <a href="ver_cobradores.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Cobradores</a>
                                 <!-- Botón para editar la zona (puedes crear esta página si aún no existe) -->
-                                <a href="editar_zona.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-warning">Editar Zona</a>
+                                <a href="abonos_hoy.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-warning">Enrutar</a>
                             </td>
                         </tr>
                     <?php } ?>
