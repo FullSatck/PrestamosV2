@@ -3,50 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Préstamos Pendientes para Hoy</title>
+    <link rel="stylesheet" href="/public/assets/css/dias_pago.css">
+    <title>Pagos Pendientes para Hoy</title>
 </head>
 <body>
-    <h1>Préstamos Pendientes para Hoy</h1>
+
+<?php
+include("../../../../controllers/conexion.php");
+
+// Obtener la fecha actual
+$fechaHoy = date("Y-m-d");
+
+$sql = "SELECT ID, IDPrestamo, Monto, FechaPago FROM pagos WHERE Estado = 'pendiente' AND FechaPago = '$fechaHoy'";
+
+$result = $conexion->query($sql);
+
+if ($result->num_rows > 0) {
+    echo "<div class='container'>";
+    echo "<h1>Pagos Pendientes para Hoy ($fechaHoy)</h1>";
+    echo "<table>";
+    echo "<tr><th>ID Pago</th><th>ID Préstamo</th><th>Monto</th><th>Fecha de Pago</th></tr>";
     
-    <!-- Contenedor para mostrar los préstamos -->
-    <div id="prestamos-container">
-        Cargando préstamos...
-    </div>
+    while ($row = $result->fetch_assoc()) {
+        $pagoID = $row["ID"];
+        $prestamoID = $row["IDPrestamo"];
+        $monto = $row["Monto"];
+        $fechaPago = $row["FechaPago"];
+        
+        echo "<tr><td>$pagoID</td><td>$prestamoID</td><td>$monto</td><td>$fechaPago</td></tr>";
+    }
+    
+    echo "</table>";
+    echo "</div>";
+} else {
+    echo "<div class='container'>";
+    echo "No se encontraron pagos pendientes para hoy.";
+    echo "</div>";
+}
 
-    <script>
-        // Función para cargar los préstamos pendientes para hoy en tiempo real
-        function cargarPrestamos() {
-            // Crear una instancia de XMLHttpRequest
-            var xhr = new XMLHttpRequest();
+$conexion->close();
+?>
 
-            // Definir la URL del archivo PHP que obtiene los préstamos
-            var url = "validar_abonohoy.php";
-
-            // Definir los parámetros que deseas enviar al servidor (en este caso, la zona del supervisor)
-            var zona = "<?= $zonaSupervisor ?>"; // Esto debe coincidir con la zona del supervisor actual
-            var params = "zona=" + zona;
-
-            // Configurar la solicitud AJAX
-            xhr.open("GET", url + "?" + params, true);
-
-            // Configurar la función de callback para manejar la respuesta
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    // La solicitud se ha completado y la respuesta está lista
-                    // Actualizar el contenido del contenedor con los préstamos obtenidos
-                    document.getElementById("prestamos-container").innerHTML = xhr.responseText;
-                }
-            };
-
-            // Enviar la solicitud
-            xhr.send();
-        }
-
-        // Cargar los préstamos al cargar la página
-        cargarPrestamos();
-
-        // Actualizar los préstamos cada cierto intervalo de tiempo (por ejemplo, cada 30 segundos)
-        setInterval(cargarPrestamos, 300); // 30000 milisegundos = 30 segundos
-    </script>
 </body>
 </html>
