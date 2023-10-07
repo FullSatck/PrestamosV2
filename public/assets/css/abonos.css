@@ -76,15 +76,17 @@ body {
 /* Estilo para los botones */
 .btn {
   background-color: #007bff;
+  text-align: center;
   color: #fff;
   border: none;
-  padding: 12px 24px;
+  padding: 10px 20px;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.2s;
-  font-size: 18px;
-  margin-top: 15px;
-  text-transform: uppercase;
+  transition: background-color 0.2s; 
+  margin-top: 10px;
+  font-size: 14px;
+  text-transform: uppercase; 
+  text-align: right;
 }
 
 .btn:hover {
@@ -130,3 +132,4 @@ body {
   margin-top: 15px;
   font-size: 16px;
 }
+ 
