@@ -33,17 +33,20 @@ if (isset($_GET['mensaje'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <title>Zona: <?= $nombreZona ?></title>
-  
 </head>
 <body>
     <!-- Botón para volver a la página anterior -->
-    <h1 class="text-center">Listado de Préstamos en Zona: <?= $nombreZona ?></h1>
+    <h1 class="text-center">Listado de Préstamos en Zona: <?= $nombreZona ?></h1> 
+
+
+    <a href="cobradores.php?zona=Puebla">Ver Cobradores de Puebla</a>
+
 
     <div class="container-fluid">
         <div class="row">
             
             <div class="col-md-9">
-                <!-- Resto del código de la tabla -->
+                <!-- Tabla de préstamos -->
                 <table class="table">
                     <thead>
                         <tr>
@@ -52,13 +55,14 @@ if (isset($_GET['mensaje'])) {
                             <th scope="col">Monto</th> 
                             <th scope="col">Tasa de Interés</th>
                             <th scope="col">Plazo</th> 
+                            <th scope="col">Frecuencia</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         include("../../../../controllers/conexion.php");
                         // Consulta para obtener los préstamos en la zona especificada
-                        $sql = $conexion->prepare("SELECT ID, IDCliente, Monto, TasaInteres, Plazo FROM prestamos WHERE Zona = ?");
+                        $sql = $conexion->prepare("SELECT ID, IDCliente, Monto, TasaInteres, Plazo, FrecuenciaPago FROM prestamos WHERE Zona = ?");
                         $sql->bind_param("s", $nombreZona);
                         $sql->execute();
                         $result = $sql->get_result();
@@ -71,6 +75,7 @@ if (isset($_GET['mensaje'])) {
                                 <td><?= $datos['Monto'] ?></td>
                                 <td><?= $datos['TasaInteres'] ?></td>
                                 <td><?= $datos['Plazo'] ?></td>
+                                <td><?= $datos['FrecuenciaPago'] ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -78,5 +83,6 @@ if (isset($_GET['mensaje'])) {
             </div>
         </div>
     </div> 
+
 </body>
 </html>
