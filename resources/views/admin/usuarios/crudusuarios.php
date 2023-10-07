@@ -26,7 +26,6 @@ if (isset($_GET['mensaje'])) {
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/cruduser.css">
     <title>CRUD de Usuarios</title>
-  
 </head>
 <body>
     <!-- Botón para volver a la página anterior -->
@@ -79,22 +78,35 @@ if (isset($_GET['mensaje'])) {
                         <tbody>
                             <?php
                             include("../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, ZonaID.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID");
-                            $rowCount = 0; // Contador de filas
-                            while ($datos = $sql->fetch_object()) { 
-                                $rowCount++; // Incrementar el contador de filas
-                                ?>
-                                <tr class="row<?= $rowCount ?>">
-                                    <td><?= "REC 100" .$datos->ID ?></td>
-                                    <td><?= $datos->Nombre ?></td>
-                                    <td><?= $datos->Apellido ?></td>
-                                    <td><?= $datos->Email ?></td>
-                                    <td><?= $datos->Zona ?></td>
-                                    <td><?= $datos->Rol ?></td>
-                                    <td><a href="/resources/views/admin/usuarios/modificarUser.php $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
-                                    <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
-                                </tr>
-                            <?php } ?>
+                            $sql = $conexion->query("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID");
+
+
+                            // Verificar si la consulta se realizó con éxito
+                            if ($sql === false) {
+                                die("Error en la consulta SQL: " . $conexion->error);
+                            }
+
+                            // Verificar si la consulta devolvió resultados
+                            if ($sql->num_rows > 0) {
+                                $rowCount = 0; // Contador de filas
+                                while ($datos = $sql->fetch_object()) { 
+                                    $rowCount++; // Incrementar el contador de filas
+                                    ?>
+                                    <tr class="row<?= $rowCount ?>">
+                                        <td><?= "REC 100" .$datos->ID ?></td>
+                                        <td><?= $datos->Nombre ?></td>
+                                        <td><?= $datos->Apellido ?></td>
+                                        <td><?= $datos->Email ?></td>
+                                        <td><?= $datos->Zona ?></td>
+                                        <td><?= $datos->Rol ?></td>
+                                        <td><a href="/resources/views/admin/usuarios/modificarUser.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
+                                        <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
+                                    </tr>
+                                <?php } 
+                            } else {
+                                echo "No se encontraron resultados.";
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
@@ -179,6 +191,6 @@ if (isset($_GET['mensaje'])) {
                 showPage(currentPage);
             });
         });
-    </script> 
+    </script>
 </body>
 </html>

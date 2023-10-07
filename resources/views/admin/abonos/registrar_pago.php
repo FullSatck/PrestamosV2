@@ -6,7 +6,9 @@ include '../../../../controllers/conexion.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $clienteId = $_POST['clienteId'];
     $montoPagado = $_POST['cantidadPago'];
-    $fechaPago = $_POST['fechaPago'];
+
+    // Obtener la fecha actual en formato YYYY-MM-DD
+    $fechaPago = date('Y-m-d');
 
     // Consulta SQL para obtener el monto actual del préstamo
     $sqlMontoPendiente = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = '$clienteId' AND Estado = 'pendiente'";
