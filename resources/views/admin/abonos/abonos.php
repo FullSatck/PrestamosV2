@@ -23,34 +23,34 @@
         
         <!-- Información del cliente -->
         <div id="cliente-info" class="mt-4">
-            <h2>Información del Cliente</h2>
+            <h2>Información del Cliente</h2> <br>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="cliente-id">ID del Cliente:</label>
+                    <label for="cliente-id"><strong>ID del Cliente: </strong></label>
                     <span id="cliente-id"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente-nombre">Nombre:</label>
+                    <label for="cliente-nombre"><strong>Nombre: </strong></label>
                     <span id="cliente-nombre"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente-apellido">Apellido:</label>
+                    <label for="cliente-apellido"><strong>Apellido: </strong></label>
                     <span id="cliente-apellido"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente-domicilio">Domicilio:</label>
+                    <label for="cliente-domicilio"><strong>Domicilio:</strong></label>
                     <span id="cliente-domicilio"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente-telefono">Teléfono:</label>
+                    <label for="cliente-telefono"><strong>Teléfono:</strong></label>
                     <span id="cliente-telefono"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente-curp">Identificación CURP:</label>
+                    <label for="cliente-curp"><strong>Identificación CURP:</strong></label>
                     <span id="cliente-curp"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente-zona">Zona Asignada:</label>
+                    <label for="cliente-zona"><strong>Zona Asignada:</strong></label>
                     <span id="cliente-zona"></span>
                 </div>
             </div>
@@ -58,34 +58,34 @@
         
         <!-- Información del préstamo -->
         <div id="prestamo-info" class="mt-4">
-            <h2>Información del Préstamo</h2>
+            <h2>Información del Préstamo</h2> <br>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="prestamo-id">ID de Préstamo:</label>
+                    <label for="prestamo-id"><strong>ID de Préstamo:</strong></label>
                     <span id="prestamo-id"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="prestamo-tasa">Tasa de Interés:</label>
+                    <label for="prestamo-tasa"><strong>Tasa de Interés:</strong></label>
                     <span id="prestamo-tasa"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="prestamo-fecha-inicio">Fecha de Inicio:</label>
+                    <label for="prestamo-fecha-inicio"><strong>Fecha de Inicio:</strong></label>
                     <span id="prestamo-fecha-inicio"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="prestamo-fecha-vencimiento">Fecha de Vencimiento:</label>
+                    <label for="prestamo-fecha-vencimiento"><strong>Fecha de Vencimiento:</strong></label>
                     <span id="prestamo-fecha-vencimiento"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="prestamo-zona">Zona:</label>
+                    <label for="prestamo-zona"><strong>Zona:</strong></label>
                     <span id="prestamo-zona"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="prestamo-monto-pagar">Deuda:</label>
+                    <label for="prestamo-monto-pagar"><strong>Deuda:</strong></label>
                     <span id="prestamo-monto-pagar"></span>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="prestamo-cuota">Cuota:</label>
+                    <label for="prestamo-cuota"><strong>Cuota:</strong></label>
                     <span id="prestamo-cuota"></span>
                 </div>
             </div>
