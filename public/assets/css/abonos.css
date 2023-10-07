@@ -1,25 +1,28 @@
+/* Estilo para el cuerpo de la página */
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 30px;
-  background-color: #f0f0f0;
-} 
+  background-color: #ffffff;
+}
+
+/* Estilo para los campos de entrada de fecha */
 date-input {
   border: 1px solid #ccc;
   padding: 1px;
   color: #0056b3;
-  display: inline-block; /* Para que se comporte como un elemento en línea */
-  min-width: 140px; /* Ancho mínimo deseado */
-  text-align: center; /* Para centrar el texto */
+  display: inline-block;
+  min-width: 140px;
+  text-align: center;
 }
- 
-/* Barra de navegación */
+
+/* Estilo para la barra de navegación */
 .navbar {
   background-color: #70aee9;
   color: white;
   padding: 10px;
   display: flex;
-  align-items: center; /* Alinea verticalmente los elementos */
+  align-items: center;
 }
 
 .navbar button {
@@ -28,144 +31,80 @@ date-input {
   border: none;
   padding: 5px 8px;
   cursor: pointer;
-  margin-right: 5px; /* Espacio a la derecha solo entre los botones */
-  font-size: 24px; /* Tamaño del texto/icono */
+  margin-right: 5px;
+  font-size: 24px;
 }
 
-.boton-menu{
-  background-color: #0074d9; /* Color de fondo azul */
-  color: #fff; /* Color de texto blanco */
-  font-size: 18px; /* Tamaño de fuente */
-  border: none; /* Sin borde */
-  padding: 10px 20px; /* Espaciado interno (ajústalo según tus necesidades) */
-  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-  border-radius: 4px; /* Bordes redondeados */
+/* Estilo para los botones del menú */
+.boton-menu {
+  background-color: #0074d9;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 .boton-menu:hover {
-  background-color: #0056b3; /* Color de fondo azul más oscuro al pasar el mouse */
+  background-color: #0056b3;
 }
 
+/* Estilo para los botones de flecha */
 .boton-flecha {
-  background-color: #0074d9; /* Color de fondo azul */
-  color: #fff; /* Color de texto blanco */
-  font-size: 18px; /* Tamaño de fuente */
-  border: none; /* Sin borde */
-  padding: 10px 20px; /* Espaciado interno (ajústalo según tus necesidades) */
-  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-  border-radius: 4px; /* Bordes redondeados */
+  background-color: #0074d9;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 .boton-flecha:hover {
-  background-color: #0056b3; /* Color de fondo azul más oscuro al pasar el mouse */
+  background-color: #0056b3;
 }
-
-
 
 /* Estilo para el botón separado */
 .separated-button {
-  margin-left: 70%;/* Ajusta el margen derecho para separar este botón */
+  margin-left: 70%;
 }
 
+/* Estilo para el contenedor de campos */
 .field-container {
   display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva línea si no caben en el ancho actual */
-  margin: 10px 10px 0 10px; /* Espacio entre campos y hacia arriba */
-  padding: 10px; /* Espacio interno del recuadro */
-  border: 1px solid #ccc; /* Borde del recuadro */
+  flex-wrap: wrap;
+  margin: 10px 10px 0 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
 }
 
-/* Estilos para las columnas */
+/* Estilo para las columnas */
 .column {
-  flex: 1; /* Las columnas ocupan un espacio igual */
-  padding: 10px; /* Espacio interno de las columnas */
+  flex: 1;
+  padding: 10px;
 }
 
-/* Estilos para los campos de texto con ancho reducido en dos columnas */
-.column input[type="text"] {
-  width: 100%; /* Ancho completo dentro de las columnas */
+/* Estilo para las etiquetas de campo */
+.column label {
+  display: block;
+  font-weight: bold;
 }
 
-
-
-/* Estilos para el contenedor principal */
-.outer-container {
-  display: flex;
-  flex-direction: row; /* Cambiamos a fila horizontal */
-  align-items: center; /* Alineación vertical al centro */
-  justify-content: center; /* Alineación horizontal al centro */
-  height: 50vh;
-}
-
- /* Estilos para la barra larga de cobro */
- .cobro-bar {
-  background-color: #8888887b; /* Color de fondo gris */
-  text-align: center; /* Centra el texto horizontalmente */
-  padding: 5px 0; /* Espaciado interno de la barra */
-}
-
-.cobro-text {
-  color: #000; /* Color del texto negro */
-  font-weight: bold; /* Negrita */
-}
-
-/* Estilos para el recuadro de campos */
-.field-container {
-  margin: 10px 10px 0 10px; /* Espacio entre campos y hacia arriba */
-  padding: 10px; /* Espacio interno del recuadro */
-  border: 1px solid #ccc; /* Borde del recuadro */
-}
-
-/* Estilos para los campos de texto con ancho reducido */
-input[type="text"] {
-  width: 100%; /* Ancho completo */
+/* Estilo para los campos de texto */
+.column input[type="text"],
+.column input[type="date"] {
+  width: 100%;
   padding: 5px;
-  margin-bottom: 10px; /* Espacio entre campos de respuesta */
+  margin-bottom: 10px;
 }
 
-/* Estilos para el botón de guardar */
+/* Estilo para el botón de guardar */
 .btn-guardar {
   background-color: #337ab7;
   color: #fff;
   border: none;
   padding: 10px 20px;
   margin-top: 10px;
-  float: left; /* Alinea el botón a la izquierda */
-}
-
-/* Estilo para el contenedor de la tabla */
-.table-container {
-  position: fixed; /* Posicionamiento fijo */
-  bottom: 0; /* Alinea la tabla en la parte inferior */
-  left: 100px; /* Alinea la tabla a la izquierda */
-  width: 100%; /* Ancho al 100% de la ventana */
-  background-color: rgba(255, 255, 255, 0.285); /* Color de fondo para la tabla */
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); /* Sombra para separar de la página */
-  z-index: 1; /* Coloca la tabla sobre otros elementos */
-}
-
-/* Estilo para la tabla */
-table {
-  width: 100%; /* Ancho de la tabla al 100% del contenedor */
-  margin-top: 20px; /* Margen superior para separarla del contenido anterior */
-  border-collapse: collapse; /* Colapsar bordes de celdas para eliminar cuadriculas */
-}
-
-/* Estilo para las filas de encabezado */
-thead th {
-  background-color: #333; /* Color de fondo del encabezado */
-  color: white; /* Color del texto en el encabezado */
-  text-align: left; /* Alineación del texto a la izquierda */
-  padding: 10px; /* Espaciado interno en celdas de encabezado */
-}
-
-/* Estilo para las filas de datos */
-tbody td {
-  padding: 10px; /* Espaciado interno en celdas de datos */
-  border-bottom: 1px solid #0004ff43; /* Línea horizontal para separar filas */
-}
-
-/* Estilo para las últimas filas de datos (eliminar borde inferior) */
-tbody tr:last-child td {
-  border-bottom: none; /* Eliminar borde inferior en la última fila de datos */
+  float: left;
 }
