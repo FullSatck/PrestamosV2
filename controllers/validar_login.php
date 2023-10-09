@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST['contrasena'];
 
     // Utiliza consultas preparadas para prevenir ataques de SQL injection
-    $consulta = "SELECT ID, Email, Password, RolID, Nombre FROM Usuarios WHERE Email = ?";
+    $consulta = "SELECT ID, Email, Password, Rol, Nombre FROM usuarios WHERE Email = ?";
     $stmt = mysqli_prepare($conexion, $consulta);
 
     if ($stmt) {
@@ -21,18 +21,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hash_contrasena = $fila['Password'];
             if (password_verify($contrasena, $hash_contrasena)) {
                 $_SESSION['logged_in'] = true;
-                $_SESSION['IDrol'] = $fila['RolID']; // Leer rol de BD
+                $_SESSION['IDrol'] = $fila['Rol']; // Leer rol de BD
                 $_SESSION['Email'] = $fila['Email']; // Guardar el email del usuario
                 $_SESSION['NombreUsuario'] = $fila['Nombre']; // Guardar el nombre del usuario
 
-                switch ($fila['RolID']) {
-                    case 1:
+                switch ($fila['Rol']) {
+                    case 'admin':
                         header("location: ../resources/views/admin/inicio/inicio.php"); // Redirigir al inicio de administrador
                         break;
-                    case 2:
+                    case 'supervisor':
                         header("location: ../resources/views/supervisor/inicio/inicio.php"); // Redirigir al inicio de supervisor
                         break;
-                    case 3:
+                    case 'cobrador':
                         header("location: ../resources/views/cobrador/inicio/inicio.php"); // Redirigir al inicio de cobrador
                         break;
                     default:
