@@ -59,7 +59,7 @@ if (isset($_GET['mensaje'])) {
                     // Incluye el archivo de conexión a la base de datos
                     include("../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
-                    $consultaZonas = "SELECT ID, Nombre FROM Zonas";
+                    $consultaZonas = "SELECT ID, Nombre FROM zonas";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
                     // Genera las opciones del menú desplegable para Zona
                     while ($row = mysqli_fetch_assoc($resultZonas)) {
