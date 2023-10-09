@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST['contrasena'];
 
     // Utiliza consultas preparadas para prevenir ataques de SQL injection
-    $consulta = "SELECT ID, Email, Password, RolID, Nombre FROM Usuarios WHERE Email = ?";
+    $consulta = "SELECT ID, Email, Password, Rol, Nombre FROM usuarios WHERE Email = ?";
     $stmt = mysqli_prepare($conexion, $consulta);
 
     if ($stmt) {
