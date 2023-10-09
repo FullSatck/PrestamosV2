@@ -1,4 +1,5 @@
 <?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtiene los valores del formulario
     $nombre = $_POST['nombre'];
@@ -30,35 +31,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Ejecuta la consulta para insertar en la tabla "usuarios"
             if ($stmtUsuarios->execute()) {
-                // Si el rol es "cobrador", inserta también en la tabla "zona_cobrador"
-                if ($rol == 3) {
-                    // Obtiene el ID del usuario recién insertado
-                    $nuevoUsuarioID = $stmtUsuarios->insert_id;
+                // Obtiene el ID del usuario recién insertado
+                $nuevoUsuarioID = $stmtUsuarios->insert_id;
 
-                    // Prepara la consulta SQL para insertar en la tabla "zona_cobrador"
-                    $sqlZonaCobrador = "INSERT INTO zona_cobrador (ZonaID, CobradorID) VALUES (?, ?)";
+                if ($rol == 2) {
+                    // Si el rol es "supervisor", inserta también en la tabla "usuario_supervisor"
+                    $sqlUsuarioSupervisor = "INSERT INTO usuario_supervisor (SupervisorID, UsuarioID) VALUES (?, ?)";
 
-                    $stmtZonaCobrador = $conexion->prepare($sqlZonaCobrador);
+                    $stmtUsuarioSupervisor = $conexion->prepare($sqlUsuarioSupervisor);
 
-                    if ($stmtZonaCobrador) {
+                    if ($stmtUsuarioSupervisor) {
                         // Asigna los valores a los marcadores de posición en la consulta preparada
-                        $stmtZonaCobrador->bind_param("ii", $zona, $nuevoUsuarioID);
+                        $stmtUsuarioSupervisor->bind_param("ii", $nuevoUsuarioID, $nuevoUsuarioID);
 
-                        // Ejecuta la consulta para insertar en la tabla "zona_cobrador"
-                        if ($stmtZonaCobrador->execute()) {
+                        // Ejecuta la consulta para insertar en la tabla "usuario_supervisor"
+                        if ($stmtUsuarioSupervisor->execute()) {
                             // Redirige al usuario a una página de éxito o muestra un mensaje
                             header("Location: ../resources/views/admin/usuarios/crudusuarios.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
                             exit();
                         } else {
-                            echo "Error al registrar en la tabla zona_cobrador: " . $stmtZonaCobrador->error;
+                            echo "Error al registrar en la tabla usuario_supervisor: " . $stmtUsuarioSupervisor->error;
                         }
 
-                        $stmtZonaCobrador->close();
+                        $stmtUsuarioSupervisor->close();
                     } else {
-                        echo "Error de consulta preparada para zona_cobrador: " . $conexion->error;
+                        echo "Error de consulta preparada para usuario_supervisor: " . $conexion->error;
+                    }
+                } elseif ($rol == 3) {
+                    // Si el rol es "cobrador", inserta también en la tabla "usuarios_cobrador"
+                    $sqlUsuariosCobrador = "INSERT INTO usuarios_cobrador (CobradorID, UsuarioID) VALUES (?, ?)";
+
+                    $stmtUsuariosCobrador = $conexion->prepare($sqlUsuariosCobrador);
+
+                    if ($stmtUsuariosCobrador) {
+                        // Asigna los valores a los marcadores de posición en la consulta preparada
+                        $stmtUsuariosCobrador->bind_param("ii", $nuevoUsuarioID, $nuevoUsuarioID);
+
+                        // Ejecuta la consulta para insertar en la tabla "usuarios_cobrador"
+                        if ($stmtUsuariosCobrador->execute()) {
+                            // Redirige al usuario a una página de éxito o muestra un mensaje
+                            header("Location: ../resources/views/admin/usuarios/crudusuarios.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
+                            exit();
+                        } else {
+                            echo "Error al registrar en la tabla usuarios_cobrador: " . $stmtUsuariosCobrador->error;
+                        }
+
+                        $stmtUsuariosCobrador->close();
+                    } else {
+                        echo "Error de consulta preparada para usuarios_cobrador: " . $conexion->error;
                     }
                 } else {
-                    // Si el rol no es "cobrador", solo redirige al usuario a la página de éxito
+                    // Si el rol no es "supervisor" ni "cobrador", solo redirige al usuario a la página de éxito
                     header("Location: ../resources/views/admin/usuarios/crudusuarios.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
                     exit();
                 }
@@ -77,4 +100,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Redirecciona o muestra un mensaje de error si se accede directamente a este archivo sin enviar el formulario.
     echo "Acceso no autorizado.";
 }
-?>
