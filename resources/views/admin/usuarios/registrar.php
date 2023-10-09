@@ -13,9 +13,7 @@
 
 <body>
     <!-- Código para mostrar el mensaje emergente -->
-    <div id="mensaje-emergente" class="mensaje-emergente">
-        <?php echo htmlspecialchars($mensaje); ?>
-    </div>
+   
 
     <div class="registro-container">
         <h2>Registro de Usuario</h2>

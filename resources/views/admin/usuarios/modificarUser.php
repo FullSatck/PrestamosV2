@@ -32,7 +32,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             // Obtiene el ID del usuario a modificar
             $usuario_id = $_GET['id'];
             // Consulta SQL para obtener los datos del usuario por su ID
-            $consultaUsuario = "SELECT * FROM Usuarios WHERE ID = $usuario_id";
+            $consultaUsuario = "SELECT * FROM usuarios WHERE ID = $usuario_id";
             $resultUsuario = mysqli_query($conexion, $consultaUsuario);
             // Verifica si se encontró el usuario
             if ($row = mysqli_fetch_assoc($resultUsuario)) {
