@@ -31,6 +31,14 @@ $resultado = $conexion->query($sql);
 </head>
 <body>
     <h1>Listado de Clientes</h1>
+
+    <div id="mensaje">
+            <?php
+            if (isset($_GET['mensaje'])) {
+                echo htmlspecialchars($_GET['mensaje']);
+            }
+            ?>
+        </div>
     
     <div class="search-container">
         <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
@@ -55,7 +63,7 @@ $resultado = $conexion->query($sql);
             </tr>
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
                 <tr>
-                    <td><?= $fila["ID"] ?></td>
+                    <td><?= "REC 100" .$fila["ID"] ?></td>
                     <td><?= $fila["Nombre"] ?></td>
                     <td><?= $fila["Apellido"] ?></td>
                     <td><?= $fila["Domicilio"] ?></td>
@@ -92,6 +100,6 @@ $resultado = $conexion->query($sql);
                 }
             });
         });
-    </script>
+    </script> 
 </body>
 </html>

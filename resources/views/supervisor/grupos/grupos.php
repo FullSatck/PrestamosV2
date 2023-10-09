@@ -59,8 +59,7 @@ if (!$result) {
     }
     ?>
 </ul>
-
-
+ 
 </body>
 
 </html>

@@ -1,20 +1,4 @@
 <?php
-
-session_start();
-
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
-    header("location: ../../../../index.php");
-    exit();
-}
-
-// Verificar si se ha pasado un mensaje en la URL
-$mensaje = "";
-if (isset($_GET['mensaje'])) {
-    $mensaje = $_GET['mensaje'];
-}
-
 // Incluye el archivo de conexión a la base de datos
 include '../../../../controllers/conexion.php';
 
@@ -28,15 +12,21 @@ $clienteId = $_GET['clienteId'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/crudHpsgod.css">
     <title>CRUD de Historial de Pagos</title>
 </head>
 <body>
     <h1>Historial de Pagos</h1>
 
     <!-- Formulario para agregar un nuevo pago -->
-
-
+    <h2>Agregar Pago</h2>
+    <form action="registrar_pago.php" method="post">
+        <input type="hidden" name="clienteId" value="<?php echo $clienteId; ?>">
+        <label for="fecha">Fecha:</label>
+        <input type="date" name="fecha" required>
+        <label for="monto">Monto:</label>
+        <input type="text" name="monto" required>
+        <button type="submit">Registrar Pago</button>
+    </form>
 
     <!-- Listado de pagos -->
     <h2>Historial de Pagos</h2>
@@ -45,7 +35,7 @@ $clienteId = $_GET['clienteId'];
             <th>ID</th>
             <th>Fecha</th>
             <th>Monto Pagado</th>
-           
+            <th>Acciones</th>
         </tr>
         <?php
         // PHP para consultar y mostrar el historial de pagos
@@ -58,7 +48,7 @@ $clienteId = $_GET['clienteId'];
                 echo "<td>" . $row['ID'] . "</td>";
                 echo "<td>" . $row['FechaPago'] . "</td>";
                 echo "<td>" . $row['MontoPagado'] . "</td>";
-              
+                echo "<td><a href='editar_pago.php?id=" . $row['ID'] . "'>Editar</a> | <a href='eliminar_pago.php?id=" . $row['ID'] . "'>Eliminar</a></td>";
                 echo "</tr>";
             }
         } else {

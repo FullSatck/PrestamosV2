@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
+    header("location: ../../../../index.php");
+    exit();
+}
+
+// Verificar si se ha pasado un mensaje en la URL
+$mensaje = "";
+if (isset($_GET['mensaje'])) {
+    $mensaje = $_GET['mensaje'];
+}
+?>
 
 <!DOCTYPE html>
 <html>
@@ -11,6 +27,11 @@
 </head>
 
 <body>
+    <!-- Código para mostrar el mensaje emergente -->
+    <div id="mensaje-emergente" class="mensaje-emergente">
+        <?php echo htmlspecialchars($mensaje); ?>
+    </div>
+
     <div class="registro-container">
         <h2>Registro de Usuario</h2>
         <form action="/controllers/validar_registro.php" method="post">
@@ -64,9 +85,25 @@
             </div>
             <div class="btn-container">
                 <button type="submit">Registrar</button>
+                <a href="/resources/views/admin/inicio/inicio.php" class="a">Volver</a>
             </div>
         </form>
     </div>
+
+    <!-- Resto de tu código HTML y JavaScript aquí -->
+
+    <script>
+        // JavaScript para mostrar el mensaje emergente
+        window.onload = function() {
+            var mensajeEmergente = document.getElementById('mensaje-emergente');
+            if (mensajeEmergente.innerHTML !== "") {
+                mensajeEmergente.style.display = 'block';
+                setTimeout(function() {
+                    mensajeEmergente.style.display = 'none';
+                }, 5000); // El mensaje se ocultará después de 5 segundos (puedes ajustar el tiempo)
+            }
+        };
+    </script> 
 </body>
 
 </html>

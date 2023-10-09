@@ -8,46 +8,45 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Agregar Zona</title>
+    <title>Formulario para Agregar estado</title>
     <link rel="stylesheet" href="/public/assets/css/agregar_cobro.css">
 </head>
+
 <body>
-    <h2>Agregar Zona</h2>
-   <center><form action="validar_cobro.php" method="post">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
+    <div class="container">
+        <h2>Formulario para Agregar estado</h2>
         
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion" required></textarea>
-        
-        <label for="cobrador_asignado">Cobrador Asignado:</label>
-        <select id="cobrador_asignado" name="cobrador_asignado" required>
+        <!-- Mostrar el mensaje de confirmación aquí -->
+        <div id="mensaje">
             <?php
-            // Realiza la conexión a la base de datos (ajusta los detalles de conexión según tu configuración)
-            include("../../../../controllers/conexion.php");
-
-            // Query SQL para obtener la lista de usuarios disponibles como cobradores
-            $sql = "SELECT ID, Nombre FROM usuarios WHERE RolID = 'Cobrador'";
-            $result = mysqli_query($conexion, $sql);
-
-            // Muestra la lista de usuarios en un menú desplegable
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo '<option value="' . $row["ID"] . '">' . $row["Nombre"] . '</option>';
+            if (isset($_GET['mensaje'])) {
+                echo htmlspecialchars($_GET['mensaje']);
             }
-
-            // Cierra la conexión a la base de datos
-            mysqli_close($conexion);
             ?>
-        </select>
-        
-        <button type="submit">Agregar Zona</button>
-    </form></center> 
-</body>
+        </div>
+
+        <form action="/controllers/guardarZona.php" method="POST">
+            <label for="nombre">Nombre de la estado:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            
+            <label for="capital">Capital de la estado:</label>
+            <input type="text" id="capital" name="capital" required>
+            
+            <label for="codigo_postal">Código Postal:</label>
+            <input type="text" id="codigo_postal" name="codigo_postal">
+            
+            <input type="submit" value="Agregar Zona">
+        </form>
+    </div>
+
+    <script src="/public/assets/js/mensaje.js"></script>  
+</body
 </html>

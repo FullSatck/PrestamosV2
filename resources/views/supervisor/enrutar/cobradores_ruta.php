@@ -78,7 +78,7 @@ if ($stmt) {
         }
         ?>
 
-    </table>
+    </table> 
 </body>
 
 </html>

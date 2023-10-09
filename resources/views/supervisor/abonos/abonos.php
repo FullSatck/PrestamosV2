@@ -1,205 +1,309 @@
-<?php
-session_start();
-
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
-    header("location: ../../../../index.php");
-    exit();
-}
-
-// Incluye la configuración de conexión a la base de datos
-include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
-
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
-    header("location: ../../../../index.php");
-    exit();
-}
-
-// Obtener todos los clientes de la base de datos
-$sql = "SELECT * FROM clientes";
-$resultado = $conexion->query($sql);
-
-if ($resultado->num_rows > 0) {
-    $clientes = $resultado->fetch_all(MYSQLI_ASSOC);
-    // Liberar el resultado
-    $resultado->free();
-} else {
-    // No se encontraron clientes en la base de datos, puedes manejar esto de acuerdo a tus necesidades
-    echo "No se encontraron clientes en la base de datos.";
-    exit();
-}
-
-// Obtener el cliente actual
-$clienteActual = 0;
-
-if (isset($_GET['cliente_id']) && is_numeric($_GET['cliente_id'])) {
-    $clienteID = $_GET['cliente_id'];
-
-    // Buscar el índice del cliente en el array
-    $clienteIndex = array_search($clienteID, array_column($clientes, 'ID'));
-
-    if ($clienteIndex !== false) {
-        $clienteActual = $clienteIndex;
-    } else {
-        // El cliente no se encontró en el array, puedes manejar esto de acuerdo a tus necesidades
-        echo "Cliente no encontrado.";
-    }
-}
-
-// Obtener el cliente actual
-$cliente = $clientes[$clienteActual];
-
-// Obtener Plazo y Cuota de la tabla Prestamos
-$sqlPrestamo = "SELECT Plazo, Cuota FROM Prestamos WHERE IDCliente = {$cliente['ID']}";
-$resultadoPrestamo = $conexion->query($sqlPrestamo);
-
-if ($resultadoPrestamo->num_rows > 0) {
-    $prestamo = $resultadoPrestamo->fetch_assoc();
-    // Liberar el resultado
-    $resultadoPrestamo->free();
-} else {
-    // No se encontraron datos de préstamo para este cliente, puedes manejar esto de acuerdo a tus necesidades
-    echo "No se encontraron datos de préstamo para este cliente.";
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abonos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Formulario de Pago de Préstamos</title>
+    <!-- Agrega aquí tus enlaces a las bibliotecas CSS y JavaScript necesarias -->
+    <!-- Por ejemplo, jQuery y Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/public/assets/css/abonos.css">
 </head>
+
 <body>
-    <!-- Barra de navegación -->
-    <div class="navbar">
-    <button id="fecha-izquierda" class="boton-flecha">&larr;</button> <!-- Flecha hacia la izquierda -->
-    <button id="menu" class="boton-menu" onclick="redireccionar()">&#8801;</button> <!-- Menu -->
-    <button id="fecha-derecha" class="boton-flecha">&rarr;</button> <!-- Flecha hacia la derecha -->
-    </div><br>
+    <div class="container">
+        <h1 class="mt-5">Formulario de Pago de Préstamos</h1>
 
-    <div class="cobro-bar">
-        <span class="cobro-text">Cobro</span>
+        <div class="botone">
+            <a href="">mas tarde</a>
+        </div>
+
+        <!-- Información del cliente -->
+        <div id="cliente-info" class="mt-4">
+            <h2>Información del Cliente</h2> <br>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="cliente-id"><strong>ID del Cliente: </strong></label>
+                    <span id="cliente-id"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente-nombre"><strong>Nombre: </strong></label>
+                    <span id="cliente-nombre"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente-apellido"><strong>Apellido: </strong></label>
+                    <span id="cliente-apellido"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente-domicilio"><strong>Domicilio:</strong></label>
+                    <span id="cliente-domicilio"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente-telefono"><strong>Teléfono:</strong></label>
+                    <span id="cliente-telefono"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente-curp"><strong>Identificación CURP:</strong></label>
+                    <span id="cliente-curp"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente-zona"><strong>Zona Asignada:</strong></label>
+                    <span id="cliente-zona"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información del préstamo -->
+        <div id="prestamo-info" class="mt-4">
+            <h2>Información del Préstamo</h2> <br>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="prestamo-id"><strong>ID de Préstamo:</strong></label>
+                    <span id="prestamo-id"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="prestamo-tasa"><strong>Tasa de Interés:</strong></label>
+                    <span id="prestamo-tasa"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="prestamo-fecha-inicio"><strong>Fecha de Inicio:</strong></label>
+                    <span id="prestamo-fecha-inicio"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="prestamo-fecha-vencimiento"><strong>Fecha de Vencimiento:</strong></label>
+                    <span id="prestamo-fecha-vencimiento"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="prestamo-zona"><strong>Zona:</strong></label>
+                    <span id="prestamo-zona"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="prestamo-monto-pagar"><strong>Deuda:</strong></label>
+                    <span id="prestamo-monto-pagar"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="prestamo-cuota"><strong>Cuota:</strong></label>
+                    <span id="prestamo-cuota"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de pago -->
+        <div id="pago-form" class="mt-4">
+            <h2>Registrar Pago</h2>
+            <form id="formulario-pago">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="cantidad-pago">Cantidad a Pagar:</label>
+                        <input type="number" id="cantidad-pago" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="fecha-pago">Fecha del Pago:</label>
+                        <input type="date" id="fecha-pago" class="form-control" value="<?php echo date('Y-m-d'); ?>"
+                            readonly>
+                    </div>
+                </div>
+                <button type="button" id="registrarPago" class="btn btn-primary">Registrar Pago</button>
+            </form>
+        </div>
+
+        <!-- Botones para navegar entre clientes -->
+        <div class="mt-4">
+            <button id="anteriorCliente" class="btn btn-secondary mr-2">Anterior</button>
+            <button id="siguienteCliente" class="btn btn-secondary">Siguiente</button>
+        </div>
     </div>
 
-    <!-- Recuadro para campos en dos columnas -->
-    <div class="field-container">
-        <!-- Columna 1: Nombre y Apellido del Cliente -->
-        <div class="column">
-            <label for="nombre" style="color: blue;">Nombre: </label> <br>
-            <span id="nombre"><?php echo $cliente['Nombre']; ?></span>
-        </div>
-
-        <!-- Columna 2: Domicilio, Tel/Cel, Fecha y Plazo -->
-        <div class="column">
-            <label for="domicilio" style="color: blue;">Domicilio: </label> <br>
-            <span id="domicilio"><?php echo $cliente['Domicilio']; ?></span>
-        </div>
-
-        <div class="column">
-            <label for="tel_cel" style="color: blue;">Tel/Cel: </label> <br>
-            <span id="tel_cel"><?php echo $cliente['Telefono']; ?></span>
-        </div>
-
-        <div class="column">
-            <label for="cuota" style="color: blue;">Cuota: </label> 
-            <span id="cuota"><?php echo $prestamo['Cuota']; ?></span>
-        </div>
-
-        <div class="column">
-            <label for="plazo" style="color: blue;">Plazo: </label> <br>
-            <span id="plazo"><?php echo $prestamo['Plazo']; ?></span>
+    <!-- Modal para confirmar el pago -->
+    <div class="modal fade" id="confirmarPagoModal" tabindex="-1" role="dialog"
+        aria-labelledby="confirmarPagoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmarPagoModalLabel">Confirmar Pago</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Desea agregar este pago?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="confirmarPago" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="field-container">
-        <!-- Fila 3: Pagar y Cuota -->
-        <div class="column">
-            <label for="pagar" style="color: blue;">Pagar: </label>
-            <input type="text" id="pagar" placeholder="Ingrese la cantidad a pagar">
-        </div>
-
-        <div class="column">
-            <label for="fecha" style="color: blue;">Fecha: </label>
-            <input type="text" id="fecha" placeholder="28/09/2023 6:52 p.m">
-            <button id="calendarioBtn" onclick="mostrarCalendario()">Calendario</button>
+    <!-- Modal para pago confirmado -->
+    <div class="modal fade" id="pagoConfirmadoModal" tabindex="-1" role="dialog"
+        aria-labelledby="pagoConfirmadoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pagoConfirmadoModalLabel">Pago Confirmado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    El pago ha sido confirmado exitosamente.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- Botón de guardar -->
-    <button class="btn-guardar">Guardar</button>
 
     <script>
-        // Datos de los clientes
-        var clientes = <?php echo json_encode($clientes); ?>;
+    // Variables globales para llevar un registro del ID del cliente actual
+    var clienteActualId = 1; // Empieza con el primer cliente (puedes cambiarlo si deseas)
 
-        // Índice del cliente actual
-        var clienteActual = <?php echo $clienteActual; ?>;
+    // Función para cargar los datos del cliente
+    function cargarDatosCliente(clienteId) {
+        $.ajax({
+            url: "consulta.php?clienteId=" + clienteId,
+            dataType: "json",
+            success: function(data) {
+                // Rellenar los campos con los datos obtenidos
+                $("#cliente-id").text(data.ID);
+                $("#cliente-nombre").text(data.Nombre);
+                $("#cliente-apellido").text(data.Apellido);
+                $("#cliente-domicilio").text(data.Domicilio);
+                $("#cliente-telefono").text(data.Telefono);
+                $("#cliente-curp").text(data.IdentificacionCURP);
+                $("#cliente-zona").text(data.ZonaAsignada);
 
-        // Mostrar cliente actual
-        function mostrarCliente(clienteIndex) {
-            var cliente = clientes[clienteIndex];
-            document.getElementById("nombre").textContent = cliente.Nombre;
-            document.getElementById("domicilio").textContent = cliente.Domicilio;
-            document.getElementById("tel_cel").textContent = cliente.Telefono;
-            document.getElementById("plazo").textContent = cliente.Plazo;
-            document.getElementById("pagar").value = ""; // Limpia el campo de pagar
-            document.getElementById("cuota").textContent = cliente.Cuota;
-        }
-
-        mostrarCliente(clienteActual);
-
-        // Función para actualizar el plazo y la cuota según el cliente actual
-        function actualizarPlazoYCuota(clienteIndex) {
-            var cliente = clientes[clienteIndex];
-            document.getElementById("plazo").textContent = cliente.Plazo;
-            document.getElementById("cuota").textContent = cliente.Cuota;
-        }
-
-        document.getElementById("fecha-izquierda").addEventListener("click", function () {
-            if (clienteActual > 0) {
-                clienteActual--;
-                mostrarCliente(clienteActual);
-                actualizarPlazoYCuota(clienteActual); // Llama a la función para actualizar plazo y cuota
+                $("#prestamo-id").text(data.IDPrestamo);
+                $("#prestamo-tasa").text(data.TasaInteres);
+                $("#prestamo-fecha-inicio").text(data.FechaInicio);
+                $("#prestamo-fecha-vencimiento").text(data.FechaVencimiento);
+                $("#prestamo-zona").text(data.Zona);
+                $("#prestamo-monto-pagar").text(data.MontoAPagar);
+                $("#prestamo-cuota").text(data.Cuota);
+            },
+            error: function() {
+                alert("No hay más clientes que mostrar");
             }
         });
+    }
 
-        document.getElementById("fecha-derecha").addEventListener("click", function () {
-            if (clienteActual < clientes.length - 1) {
-                clienteActual++;
-                mostrarCliente(clienteActual);
-                actualizarPlazoYCuota(clienteActual); // Llama a la función para actualizar plazo y cuota
+    // Función para registrar el pago
+    // Variables globales para llevar un registro del ID del cliente actual
+    var clienteActualId = 1; // Empieza con el primer cliente (puedes cambiarlo si deseas)
+
+    // Variable para mantener un registro de si se ha ingresado la cantidad de pago
+    var cantidadPagoIngresada = false;
+
+    // Función para cargar los datos del cliente
+    function cargarDatosCliente(clienteId) {
+        $.ajax({
+            url: "consulta.php?clienteId=" + clienteId,
+            dataType: "json",
+            success: function(data) {
+                // Rellenar los campos con los datos obtenidos
+                $("#cliente-id").text(data.ID);
+                $("#cliente-nombre").text(data.Nombre);
+                $("#cliente-apellido").text(data.Apellido);
+                $("#cliente-domicilio").text(data.Domicilio);
+                $("#cliente-telefono").text(data.Telefono);
+                $("#cliente-curp").text(data.IdentificacionCURP);
+                $("#cliente-zona").text(data.ZonaAsignada);
+
+                $("#prestamo-id").text(data.IDPrestamo);
+                $("#prestamo-tasa").text(data.TasaInteres);
+                $("#prestamo-fecha-inicio").text(data.FechaInicio);
+                $("#prestamo-fecha-vencimiento").text(data.FechaVencimiento);
+                $("#prestamo-zona").text(data.Zona);
+                $("#prestamo-monto-pagar").text(data.MontoAPagar);
+                $("#prestamo-cuota").text(data.Cuota);
+            },
+            error: function() {
+                alert("No hay más clientes que mostrar");
             }
         });
+    }
 
-        function mostrarCalendario() {
-            $("#fecha").datepicker({
-                dateFormat: "dd/mm/yy hh:mm tt", // Formato de fecha y hora deseado
-                showTimepicker: true, // Permite seleccionar la hora
-                timeFormat: "hh:mm tt", // Formato de hora
+    // Función para registrar el pago
+    function registrarPago() {
+        if (cantidadPagoIngresada) {
+            var cantidadPago = $("#cantidad-pago").val();
+            var fechaPago = $("#fecha-pago").val();
+            $.ajax({
+                url: "registrar_pago.php",
+                method: "POST",
+                data: {
+                    clienteId: $("#cliente-id").text(),
+                    cantidadPago: cantidadPago,
+                    fechaPago: fechaPago
+                },
+                success: function(response) {
+                    // Actualiza el monto a pagar en la página
+                    $("#prestamo-monto-pagar").text(response);
+
+                    // Limpiar los campos de cantidad de pago
+                    $("#cantidad-pago").val("");
+                    // Cierra el modal de confirmación
+                    $("#confirmarPagoModal").modal("hide");
+                    // Abre el modal de pago confirmado
+                    $("#pagoConfirmadoModal").modal("show");
+
+                    // Cambia automáticamente al siguiente cliente después de 2 segundos
+                    setTimeout(function() {
+                        cambiarCliente(1);
+                    }, 2000);
+                },
+                error: function() {
+                    alert("Error al registrar el pago");
+                }
             });
+        } else {
+            alert("Por favor, ingrese la cantidad de pago antes de registrarlo.");
         }
+    }
 
-        function redireccionar() {
-        // Aquí debes proporcionar la URL del archivo al que deseas redirigir
-        var nuevaURL = "../clientes/lista_clientes.php";
-    
-        // Redirige a la nueva URL
-        window.location.href = nuevaURL;
-}
+    // Función para cambiar al cliente anterior o siguiente
+    function cambiarCliente(delta) {
+        clienteActualId += delta;
+        cargarDatosCliente(clienteActualId);
+    }
 
+    // Llama a la función para cargar los datos del cliente actual al cargar la página
+    cargarDatosCliente(clienteActualId);
+
+    // Asocia el evento click del botón "Registrar Pago" a la función que muestra el modal de confirmación
+    $("#registrarPago").click(function() {
+        // Verifica si se ha ingresado una cantidad de pago
+        if ($("#cantidad-pago").val() !== "") {
+            cantidadPagoIngresada = true;
+            // Abre el modal de confirmación
+            $("#confirmarPagoModal").modal("show");
+        } else {
+            alert("Por favor, ingrese la cantidad de pago antes de registrarlo.");
+        }
+    });
+
+    // Asocia el evento click del botón "Confirmar" en el modal de confirmación a la función para registrar el pago
+    $("#confirmarPago").click(function() {
+        registrarPago(); // Registra el pago
+    });
+
+    // Asocia el evento clic a los botones de navegación
+    $("#anteriorCliente").click(function() {
+        cambiarCliente(-1); // Cambiar al cliente anterior
+    });
+
+    $("#siguienteCliente").click(function() {
+        cambiarCliente(1); // Cambiar al siguiente cliente
+    });
     </script>
 </body>
+
 </html>

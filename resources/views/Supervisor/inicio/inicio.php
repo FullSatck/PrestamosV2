@@ -26,32 +26,30 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <div class="navbar navbar-default">
         <div class="navbar-inner">
             <div class="navbar-header">
-                <span class="navbar-brand">Supervisor | Inicio</span>
+                <span class="navbar-brand">Administrador Recaudo</span>
                 <div class="button-container">
-                <button><a href="../../../../../index.php" class="aa"><strong>Cerrar Sesion</strong></a></button>
+                    <button><a href="/controllers/cerrar_sesion.php" class="aa"><strong>Cerrar
+                                Sesion</strong></a></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <h2 class="h22">Cobradores</h2>
+    <h2 class="h22">Usuarios</h2>
 
-    <table class="table table-striped table-bordered"> 
+    <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
-                <a href="/resources/views/admin/usuarios/crudusuarios.php">Lista de Cobradores</a>
+                <a href="/resources/views/admin/usuarios/crudusuarios.php">Usuarios </a>
                 <div class="button-container">
                     <button><a href="/admin/auth/user/add/">Añadir</a></button>
                     <button><a href="/admin/auth/user/">Modificar</a></button>
                 </div>
             </th>
         </tr>
-    </table>
-
-    <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
-                <a href="/resources/views/admin/usuarios/registrar.php">Registrar Cobrador</a>
+                <a href="/resources/views/admin/usuarios/registrar.php">Registrar Usuario</a>
                 <div class="button-container">
                     <button><a href="/admin/empresa/cliente/add/">Añadir</a></button>
                     <button><a href="/admin/empresa/cliente/">Modificar</a></button>
@@ -63,18 +61,15 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <h2 class="h22">Clientes</h2>
 
     <table class="table table-striped table-bordered">
-    <tr>
+        <tr>
             <th scope="row">
-                <a href="/resources/views/admin/clientes/lista_clientes.php">Lista de Clientes </a>
+                <a href="/resources/views/admin/clientes/lista_clientes.php">Clientes </a>
                 <div class="button-container">
                     <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
                     <button><a href="/admin/recaudo/abono/">Modificar</a></button>
                 </div>
             </th>
         </tr>
-        </table>
-    
-    <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
                 <a href="/resources/views/admin/clientes/agregar_clientes.php">Registrar Clientes </a>
@@ -88,10 +83,19 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
     <h2 class="h22">Prestamos</h2>
 
-    <table class="table table-striped table-bordered"> 
-    <tr>
+    <table class="table table-striped table-bordered">
+        <tr>
             <th scope="row">
-                <a href="/resources/views/admin/creditos/crudPrestamos.php">Lista de Prestamos </a>
+                <a href="/resources/views/admin/creditos/crudPrestamos.php">Prestamos</a>
+                <div class="button-container">
+                    <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
+                    <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a href="/resources/views/admin/creditos/prestamos.php">Registrar Prestamos</a>
                 <div class="button-container">
                     <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
                     <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
@@ -100,23 +104,18 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </tr>
     </table>
 
+    <h2 class="h22">Empresa</h2>
+
     <table class="table table-striped table-bordered">
-    <tr>
+        <tr>
             <th scope="row">
-                <a href="/resources/views/admin/creditos/prestamos.php">Agregar Prestamos </a>
+                <a href="/resources/views/admin/grupos/grupos.php">Roles </a>
                 <div class="button-container">
-                    <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
-                    <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
+                    <button><a href="/admin/auth/group/add/">Añadir</a></button>
+                    <button><a href="/admin/auth/group/">Modificar</a></button>
                 </div>
             </th>
         </tr>
-    </table>
-
-    <h2 class="h22">Recaudo</h2>
-    <table class="table table-striped table-bordered">
-         
-        
-
         <tr>
             <th scope="row">
                 <a href="/resources/views/admin/cobros/cobros.php">Zona de cobros </a>
@@ -126,34 +125,41 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 </div>
             </th>
         </tr>
-
         <tr>
             <th scope="row">
-                <a href="/admin/recaudo/codeudor/">Codeudores </a>
-                <div class="button-container">
-                    <button><a href="/admin/recaudo/codeudor/add/">Añadir</a></button>
-                    <button><a href="/admin/recaudo/codeudor/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
- 
-        
-
-        
-
-        <tr>
-            <th scope="row">
-                <a href="/admin/recaudo/gasto/">Gastos </a>
+                <a href="/resources/views/admin/gastos/gastos.php">Gastos </a>
                 <div class="button-container">
                     <button><a href="/admin/recaudo/gasto/add/">Añadir</a></button>
                     <button><a href="/admin/recaudo/gasto/">Modificar</a></button>
                 </div>
             </th>
         </tr>
+    </table>
 
+    <h2 class="h22">Recaudo</h2>
+
+    <table class="table table-striped table-bordered">
         <tr>
             <th scope="row">
-                <a href="/admin/recaudo/retiro/">Retiros </a>
+                <a href="/resources/views/admin/abonos/lista_super.php">Abonos </a>
+                <div class="button-container">
+                    <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
+                    <button><a href="/admin/recaudo/abono/">Modificar</a></button>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a href="/admin/recaudo/codeudor/">Codeudores</a>
+                <div class="button-container">
+                    <button><a href="/admin/recaudo/codeudor/add/">Añadir</a></button>
+                    <button><a href="/admin/recaudo/codeudor/">Modificar</a></button>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a href="/resources/views/admin/retiros/retiros.php">Retiros </a>
                 <div class="button-container">
                     <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
                     <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
@@ -161,7 +167,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             </th>
         </tr>
     </table>
-    <footer id="footer">Derechos reservados</footer>
+
 </body>
 
 </html>

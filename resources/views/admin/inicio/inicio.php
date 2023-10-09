@@ -150,6 +150,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </tr>
         <tr>
             <th scope="row">
+                <a href="/resources/views/admin/abonos/abonos.php">Abonos1 </a>
+                <div class="button-container">
+                    <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
+                    <button><a href="/admin/recaudo/abono/">Modificar</a></button>
+                </div>
+            </th>
+        </tr>
+        <tr>
+        <tr>
+            <th scope="row">
                 <a href="/admin/recaudo/codeudor/">Codeudores</a>
                 <div class="button-container">
                     <button><a href="/admin/recaudo/codeudor/add/">Añadir</a></button>

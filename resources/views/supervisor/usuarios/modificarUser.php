@@ -100,7 +100,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             echo "Falta el ID del usuario a modificar.";
         }
         ?>
-    </div>
+    </div> 
 </body>
 
 </html>

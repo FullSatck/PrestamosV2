@@ -45,6 +45,7 @@ $resultado = $conexion->query($sql);
     </div>
     <div class="div">
         <a href="/resources/views/admin/clientes/agregar_clientes.php">Agregar Cliente</a>
+       
         <a href="/resources/views/admin/inicio/inicio.php">Volver</a>
     </div> <br><br>
 
@@ -72,6 +73,7 @@ $resultado = $conexion->query($sql);
                     <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
                     <td><?= $fila["ZonaAsignada"] ?></td>
                     <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Ver Perfil</a></td>
+                    <td><a href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a></td>
                 </tr>
             <?php } ?>
         </table>
