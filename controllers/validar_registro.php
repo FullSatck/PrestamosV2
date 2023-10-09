@@ -1,5 +1,4 @@
 <?php
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtiene los valores del formulario
     $nombre = $_POST['nombre'];
@@ -34,8 +33,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Obtiene el ID del usuario recién insertado
                 $nuevoUsuarioID = $stmtUsuarios->insert_id;
 
-                if ($rol == 2) {
-                    // Si el rol es "supervisor", inserta también en la tabla "usuario_supervisor"
+                // Inserta en la tabla correspondiente según el rol
+                if ($rol == 1) {
+                    // Si el rol es "admin", no se necesita insertar en las otras tablas
+                    // Redirige al usuario a una página de éxito o muestra un mensaje
+                    header("Location: ../resources/views/admin/usuarios/crudusuarios.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
+                    exit();
+                } elseif ($rol == 2) {
+                    // Si el rol es "supervisor", inserta en la tabla "usuario_supervisor"
                     $sqlUsuarioSupervisor = "INSERT INTO usuario_supervisor (SupervisorID, UsuarioID) VALUES (?, ?)";
 
                     $stmtUsuarioSupervisor = $conexion->prepare($sqlUsuarioSupervisor);
@@ -58,32 +63,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo "Error de consulta preparada para usuario_supervisor: " . $conexion->error;
                     }
                 } elseif ($rol == 3) {
-                    // Si el rol es "cobrador", inserta también en la tabla "usuarios_cobrador"
-                    $sqlUsuariosCobrador = "INSERT INTO usuarios_cobrador (CobradorID, UsuarioID) VALUES (?, ?)";
+                    // Si el rol es "cobrador", inserta en la tabla "usuario_cobrador"
+                    $sqlUsuarioCobrador = "INSERT INTO usuario_cobrador (CobradorID, UsuarioID) VALUES (?, ?)";
 
-                    $stmtUsuariosCobrador = $conexion->prepare($sqlUsuariosCobrador);
+                    $stmtUsuarioCobrador = $conexion->prepare($sqlUsuarioCobrador);
 
-                    if ($stmtUsuariosCobrador) {
+                    if ($stmtUsuarioCobrador) {
                         // Asigna los valores a los marcadores de posición en la consulta preparada
-                        $stmtUsuariosCobrador->bind_param("ii", $nuevoUsuarioID, $nuevoUsuarioID);
+                        $stmtUsuarioCobrador->bind_param("ii", $nuevoUsuarioID, $nuevoUsuarioID);
 
-                        // Ejecuta la consulta para insertar en la tabla "usuarios_cobrador"
-                        if ($stmtUsuariosCobrador->execute()) {
+                        // Ejecuta la consulta para insertar en la tabla "usuario_cobrador"
+                        if ($stmtUsuarioCobrador->execute()) {
                             // Redirige al usuario a una página de éxito o muestra un mensaje
                             header("Location: ../resources/views/admin/usuarios/crudusuarios.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
                             exit();
                         } else {
-                            echo "Error al registrar en la tabla usuarios_cobrador: " . $stmtUsuariosCobrador->error;
+                            echo "Error al registrar en la tabla usuario_cobrador: " . $stmtUsuarioCobrador->error;
                         }
 
-                        $stmtUsuariosCobrador->close();
+                        $stmtUsuarioCobrador->close();
                     } else {
-                        echo "Error de consulta preparada para usuarios_cobrador: " . $conexion->error;
+                        echo "Error de consulta preparada para usuario_cobrador: " . $conexion->error;
                     }
-                } else {
-                    // Si el rol no es "supervisor" ni "cobrador", solo redirige al usuario a la página de éxito
-                    header("Location: ../resources/views/admin/usuarios/crudusuarios.php"); // Reemplaza 'registro_exitoso.php' con la página que desees mostrar después del registro exitoso
-                    exit();
                 }
             } else {
                 echo "Error al registrar el usuario: " . $stmtUsuarios->error;
@@ -100,3 +101,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Redirecciona o muestra un mensaje de error si se accede directamente a este archivo sin enviar el formulario.
     echo "Acceso no autorizado.";
 }
+?>
