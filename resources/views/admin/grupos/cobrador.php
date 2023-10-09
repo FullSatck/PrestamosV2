@@ -12,7 +12,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 include("../../../../controllers/conexion.php"); // Asegúrate de que este archivo contiene tu conexión a la base de datos
 
 // Realizar la consulta para obtener todos los cobradores
-$query = "SELECT * FROM Usuarios WHERE RolID = 3"; // Suponiendo que el ID de rol para los cobradores es 3
+$query = "SELECT * FROM Usuarios WHERE Rol = 3"; // Suponiendo que el ID de rol para los cobradores es 3
 $result = mysqli_query($conexion, $query);
 
 if (!$result) {
