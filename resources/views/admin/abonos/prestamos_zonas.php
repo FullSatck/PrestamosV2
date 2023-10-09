@@ -62,7 +62,7 @@ if (isset($_GET['mensaje'])) {
                         <?php
                         include("../../../../controllers/conexion.php");
                         // Consulta para obtener los préstamos en la zona especificada
-                        $sql = $conexion->prepare("SELECT ID, IDCliente, Monto, TasaInteres, Plazo, FrecuenciaPago FROM prestamos WHERE Zona = ?");
+                        $sql = $conexion->prepare("SELECT ID, IDCliente, Monto, TasaInteres, Plazo, FrecuenciaPago FROM prestamos WHERE zona = ?");
                         $sql->bind_param("s", $nombreZona);
                         $sql->execute();
                         $result = $sql->get_result();
