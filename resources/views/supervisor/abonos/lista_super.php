@@ -20,9 +20,9 @@ if (isset($_GET['mensaje'])) {
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
-    <title>Abonos</title>
+    <title>Listado de Supervisores</title>
 </head>
 <body>
     <!-- Botón para volver a la página anterior -->
@@ -54,7 +54,7 @@ if (isset($_GET['mensaje'])) {
                 <tbody>
                     <?php
                     include("../../../../controllers/conexion.php");
-                    $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 2"); // Filtra por el ID del rol de supervisor (2)
+                    $sql = $conexion->prepare("SELECT * FROM Usuarios WHERE Rol = supervisor"); // Filtra por el ID del rol de supervisor (2)
                     
                     // Verificar si la preparación de la consulta fue exitosa
                     if ($sql === false) {
@@ -80,8 +80,6 @@ if (isset($_GET['mensaje'])) {
                             <td>
                                 <!-- Botón para ver los cobradores de la zona -->
                                 <a href="ver_cobradores.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Cobradores</a>
-                                <!-- Botón para editar la zona (puedes crear esta página si aún no existe) -->
-                                
                             </td>
                         </tr>
                     <?php } ?>
