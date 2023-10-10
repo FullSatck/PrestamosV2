@@ -78,8 +78,7 @@ if (isset($_GET['mensaje'])) {
                         <tbody>
                             <?php
                             include("../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT usuarios.ID, usuarios.Nombre, usuarios.Apellido, usuarios.Email, zonas.Nombre AS Zona, roles.Nombre AS Rol FROM usuarios JOIN zonas ON usuarios.Zona = zonas.ID JOIN roles ON usuarios.RolID = roles.ID");
-
+                            $sql = $conexion->query("SELECT * FROM usuarios");
 
                             // Verificar si la consulta se realizó con éxito
                             if ($sql === false) {
