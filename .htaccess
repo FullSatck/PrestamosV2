@@ -1,0 +1,6 @@
+
+RewriteRule ^([a-zA-Z0-9/ñÑ]+)$ index.php?views=$1
+Options +FollowSymLinks
+Options All -Indexes
+RewriteEngine on
+ErrorDocument 403 
