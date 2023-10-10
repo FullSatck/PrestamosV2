@@ -105,13 +105,13 @@ INSERT INTO `roles` (`ID`, `Nombre`) VALUES
 --
 
 CREATE TABLE `usuarios` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `Nombre` varchar(255) DEFAULT NULL,
   `Apellido` varchar(255) DEFAULT NULL,
   `Email` varchar(255) DEFAULT NULL,
   `Password` varchar(255) DEFAULT NULL,
   `Zona` varchar(255) DEFAULT NULL,
-  `RolID` int DEFAULT NULL
+  `Rol` enum('admin', 'supervisor', 'cobrador') DEFAULT 'cobrador'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
