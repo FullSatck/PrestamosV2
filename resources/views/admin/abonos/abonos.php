@@ -275,7 +275,7 @@ if (isset($_GET['mensaje'])) {
                     // Cambia automáticamente al siguiente cliente después de 2 segundos
                     setTimeout(function() {
                         cambiarCliente(1);
-                    }, 2000);
+                    }, 3000);
                 },
                 error: function() {
                     alert("Error al registrar el pago");

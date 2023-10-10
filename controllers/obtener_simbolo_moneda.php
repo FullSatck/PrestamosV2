@@ -6,7 +6,7 @@ include 'conexion.php';
 $moneda_id = $_GET['moneda_id'];
 
 // Consulta SQL para obtener el símbolo de la moneda
-$sql_moneda = "SELECT Simbolo FROM Monedas WHERE ID = $moneda_id";
+$sql_moneda = "SELECT Simbolo FROM monedas WHERE ID = $moneda_id";
 $resultado_moneda = $conexion->query($sql_moneda);
 
 if ($resultado_moneda->num_rows > 0) {

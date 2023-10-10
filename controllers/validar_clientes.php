@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Consulta SQL para obtener el nombre de la zona
-    $consultaZona = "SELECT Nombre FROM Zonas WHERE ID = $zona_id";
+    $consultaZona = "SELECT Nombre FROM zonas WHERE ID = $zona_id";
     $resultZona = mysqli_query($conexion, $consultaZona);
 
     if ($rowZona = mysqli_fetch_assoc($resultZona)) {
