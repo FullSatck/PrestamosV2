@@ -29,41 +29,8 @@ function cargarDatosCliente(clienteId) {
     });
 }
 
-// Función para registrar el pago
-// Variables globales para llevar un registro del ID del cliente actual
-var clienteActualId = 1; // Empieza con el primer cliente (puedes cambiarlo si deseas)
-
 // Variable para mantener un registro de si se ha ingresado la cantidad de pago
 var cantidadPagoIngresada = false;
-
-// Función para cargar los datos del cliente
-function cargarDatosCliente(clienteId) {
-    $.ajax({
-        url: "consulta.php?clienteId=" + clienteId,
-        dataType: "json",
-        success: function(data) {
-            // Rellenar los campos con los datos obtenidos
-            $("#cliente-id").text(data.ID);
-            $("#cliente-nombre").text(data.Nombre);
-            $("#cliente-apellido").text(data.Apellido);
-            $("#cliente-domicilio").text(data.Domicilio);
-            $("#cliente-telefono").text(data.Telefono);
-            $("#cliente-curp").text(data.IdentificacionCURP);
-            $("#cliente-zona").text(data.ZonaAsignada);
-
-            $("#prestamo-id").text(data.IDPrestamo);
-            $("#prestamo-tasa").text(data.TasaInteres);
-            $("#prestamo-fecha-inicio").text(data.FechaInicio);
-            $("#prestamo-fecha-vencimiento").text(data.FechaVencimiento);
-            $("#prestamo-zona").text(data.Zona);
-            $("#prestamo-monto-pagar").text(data.MontoAPagar);
-            $("#prestamo-cuota").text(data.Cuota);
-        },
-        error: function() {
-            alert("No hay más clientes que mostrar");
-        }
-    });
-}
 
 // Función para registrar el pago
 function registrarPago() {
@@ -138,7 +105,6 @@ $("#generarFacturaBtn").click(function() {
     // Redirigir a la página de generación de factura con los parámetros en la URL
     window.location.href = "generar_factura.php?clienteId=" + clienteId + "&monto=" + cantidadPago;
 });
-
 
 // Asocia el evento clic a los botones de navegación
 $("#anteriorCliente").click(function() {

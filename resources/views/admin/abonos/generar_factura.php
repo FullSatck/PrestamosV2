@@ -1,73 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            border: 1px solid #ddd;
-        }
+<?php
+// Verificar si se pasaron los parámetros esperados en la URL
+if (isset($_GET['clienteId']) && isset($_GET['monto'])) {
+    $clienteId = $_GET['clienteId'];
+    $monto = $_GET['monto'];
 
-        th, td {
-            text-align: left;
-            padding: 8px;
-        }
+    // Aquí podrías agregar lógica adicional para obtener información adicional del cliente, por ejemplo, desde una base de datos
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+    // Generar la factura
+    $fechaFactura = date('Y-m-d');
+    $nombreCliente = "Cliente"; // Reemplaza esto con el nombre real del cliente
+    $direccionCliente = "Dirección del Cliente"; // Reemplaza esto con la dirección real del cliente
 
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-    <?php
-    // Incluye el archivo de conexión a la base de datos
-    include '../../../../controllers/conexion.php';
+    // Generar el contenido de la factura
+    $contenidoFactura = "Fecha: $fechaFactura\n";
+    $contenidoFactura .= "Cliente: $nombreCliente\n";
+    $contenidoFactura .= "Dirección: $direccionCliente\n";
+    $contenidoFactura .= "Monto: $monto\n";
 
-    // Consulta SQL para obtener los datos
-    $query = "SELECT c.Nombre, c.Apellido, fp.FechaPago, p.Monto, p.MontoCuota, c.IdentificacionCURP
-              FROM clientes c
-              JOIN prestamos p ON c.ID = p.IDCliente
-              JOIN fechas_pago fp ON p.ID = fp.IDPrestamo
-              WHERE fp.EstadoPago = 'pendiente'";
+    // Descargar la factura como un archivo PDF
+    header("Content-Type: application/pdf");
+    header("Content-Disposition: attachment; filename=Factura_Cliente$clienteId.pdf");
+    echo $contenidoFactura; // En un sistema real, aquí se generarían archivos PDF más elaborados
 
-    // Ejecuta la consulta
-    $result = $conexion->query($query);
-
-    if ($result) {
-        echo "<table>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Fecha de Pago</th>
-                    <th>Monto Pagado</th>
-                    <th>Monto que Debe</th>
-                    <th>Identificación CURP</th>
-                </tr>";
-
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row['Nombre'] . "</td>";
-            echo "<td>" . $row['Apellido'] . "</td>";
-            echo "<td>" . $row['FechaPago'] . "</td>";
-            echo "<td>" . $row['Monto'] . "</td>";
-            echo "<td>" . $row['MontoCuota'] . "</td>";
-            echo "<td>" . $row['IdentificacionCURP'] . "</td>";
-            echo "</tr>";
-        }
-
-        echo "</table>";
-
-        $result->free();
-    } else {
-        echo "Error al ejecutar la consulta: " . $conexion->error;
-    }
-
-    $conexion->close();
-    ?>
-</body>
-</html>
+    // Terminar el script
+    exit();
+} else {
+    // Redirigir o mostrar un mensaje de error si no se proporcionaron los parámetros esperados
+    echo "Error: Parámetros incorrectos.";
+}
+?>
