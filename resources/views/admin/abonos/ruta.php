@@ -40,7 +40,7 @@
 <html>
 <head>
     <title>Lista de Fechas de Pago</title>
-    <link rel="stylesheet" href="ruta.css">
+    <link rel="stylesheet" href="/public/assets/css/ruta.css">
 </head>
 <body>
     <h1>Lista de Fechas de Pago</h1>
