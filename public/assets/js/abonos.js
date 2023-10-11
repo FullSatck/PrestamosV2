@@ -98,12 +98,20 @@ $("#confirmarPago").click(function() {
 
 // Agregar un controlador de eventos al botón "Generar Factura"
 $("#generarFacturaBtn").click(function() {
-    // Obtener el ID del cliente y el monto del pago
+    // Obtener el ID del cliente, el monto del pago y otros datos del cliente
     var clienteId = $("#cliente-id").text();
     var cantidadPago = $("#cantidad-pago").val();
+    var nombre = $("#cliente-nombre").text();
+    var direccion = $("#cliente-domicilio").text();
+    var identificacion = $("#cliente-curp").text();
+    var montoPagado = parseFloat($("#prestamo-monto-pagar").text());
+    var cuota = parseFloat($("#prestamo-cuota").text());
+
+    // Calcular el monto que debe
+    var montoDeuda = montoPagado - cantidadPago;
 
     // Redirigir a la página de generación de factura con los parámetros en la URL
-    window.location.href = "generar_factura.php?clienteId=" + clienteId + "&monto=" + cantidadPago;
+    window.location.href = "generar_factura.php?clienteId=" + clienteId + "&monto=" + cantidadPago + "&nombre=" + nombre + "&direccion=" + direccion + "&identificacion=" + identificacion + "&montoPagado=" + montoPagado + "&montoDeuda=" + montoDeuda + "&cuota=" + cuota;
 });
 
 // Asocia el evento clic a los botones de navegación
