@@ -59,7 +59,12 @@
                     }
                     ?>
                 </select>
-            </div> 
+            </div>
+
+            <div class="input-container" id="saldo-inicial-container" style="display: none;">
+                <label for="saldo-inicial">Saldo Inicial:</label>
+                <input type="text" id="saldo-inicial" name="saldo-inicial" placeholder="Por favor ingrese el saldo inicial">
+            </div>
 
             <div class="btn-container">
                 <button type="submit">Registrar</button>
@@ -69,6 +74,23 @@
     </div>
 
     <script>
+        // Agrega un evento para detectar cambios en la selección del rol
+        $(document).ready(function() {
+            $("#RolID").on("change", function() {
+                var selectedRole = $(this).val(); // Obtiene el valor del rol seleccionado
+
+                // Obtén el contenedor del campo "Saldo Inicial"
+                var saldoInicialContainer = $("#saldo-inicial-container");
+
+                // Si el rol seleccionado es "2" (Supervisor), muestra el campo "Saldo Inicial", de lo contrario, ocúltalo
+                if (selectedRole === "2") { // Asegúrate de que el valor "2" sea el ID del rol "Supervisor" en tu base de datos
+                    saldoInicialContainer.show();
+                } else {
+                    saldoInicialContainer.hide();
+                }
+            });
+        });
+
         // JavaScript para mostrar el mensaje emergente
         window.onload = function() {
             var mensajeEmergente = document.getElementById('mensaje-emergente');
