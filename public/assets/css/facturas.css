@@ -5,7 +5,7 @@
     border: 1px solid #ddd;
     margin: 20px 0;
     font-family: Arial, sans-serif;
-    max-width: 400px;
+    max-width: 100%; /* Ajuste al ancho de la pantalla */
     margin: 0 auto;
 }
 
@@ -56,4 +56,27 @@
     font-weight: bold;
 }
 
-/* Otros estilos personalizados según tus necesidades */
+/* Media query para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .invoice {
+        padding: 10px; /* Reducción adicional del relleno para pantallas más pequeñas */
+    }
+
+    .invoice h1 {
+        margin-bottom: 10px;
+    }
+
+    .invoice p {
+        font-size: 14px; /* Reducción del tamaño de fuente para pantallas más pequeñas */
+    }
+
+    .invoice-header,
+    .invoice-footer {
+        padding: 8px;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 6px;
+    }
+}

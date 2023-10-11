@@ -3,15 +3,14 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
     margin: 0;
-    padding: 40px;
+    padding: 20px; /* Reducción del relleno para pantallas más pequeñas */
 }
-
 
 /* Estilos para la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 10px 0; /* Reducción del margen para pantallas más pequeñas */
     background: rgb(219, 218, 218);
 }
 
@@ -19,20 +18,15 @@ table, th, td {
     border: 1px solid #ccc;
 }
 
-table, th, td {
-    border: 1px solid #ccc;
-}
-
 th, td {
-    padding: 10px;
-    text-align: left; 
+    padding: 8px; /* Reducción del relleno para pantallas más pequeñas */
+    text-align: left;
 }
-
 
 /* Estilos para los botones */
 .btn {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 10px 15px; /* Reducción del relleno para pantallas más pequeñas */
     margin: 5px;
     background-color: #007bff;
     color: #fff;
@@ -49,14 +43,14 @@ th, td {
 /* Estilos para el encabezado */
 h1.text-center {
     text-align: center;
-    margin: 20px 0;
+    margin: 10px 0; /* Reducción del margen para pantallas más pequeñas */
     background-color: #007bff;
-    padding: 20px;
+    padding: 10px; /* Reducción del relleno para pantallas más pequeñas */
 }
 
 /* Estilos para la paginación */
 #pagination {
-    margin-top: 20px;
+    margin: 10px 0; /* Reducción del margen para pantallas más pequeñas */
     text-align: center;
 }
 
@@ -83,3 +77,31 @@ h1.text-center {
     margin-bottom: 10px;
 }
 
+/* Media query para pantallas más pequeñas */
+@media (max-width: 768px) {
+    /* Redefinir estilos para pantallas más pequeñas aquí */
+    body {
+        padding: 10px; /* Reducción adicional del relleno para pantallas muy pequeñas */
+    }
+
+    table {
+        margin: 5px 0;
+    }
+
+    th, td {
+        padding: 5px;
+    }
+
+    .btn {
+        padding: 8px 12px;
+    }
+
+    h1.text-center {
+        margin: 5px 0;
+        padding: 8px;
+    }
+
+    #pagination {
+        margin: 5px 0;
+    }
+}

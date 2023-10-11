@@ -15,7 +15,7 @@ h1 {
 /* Estilo para la tabla */
 table {
     border-collapse: collapse;
-    width: 80%;
+    width: 100%; /* Cambiamos el ancho al 100% para que la tabla se ajuste al contenedor */
     margin: 20px auto;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -44,4 +44,11 @@ tr:nth-child(even) {
 /* Estilo para las filas impares */
 tr:nth-child(odd) {
     background-color: #fff;
+}
+
+/* Media query para pantallas más pequeñas */
+@media (max-width: 768px) {
+    table {
+        width: 100%; /* Hacemos que la tabla ocupe todo el ancho de la pantalla */
+    }
 }

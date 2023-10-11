@@ -19,6 +19,7 @@ body {
 h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: #007BFF; /* Cambiar el color del título para que sea más destacado */
 }
 
 /* Estilos para etiquetas y campos de formulario */
@@ -30,7 +31,7 @@ label {
 
 input[type="text"],
 input[type="number"] {
-    width: 95%;
+    width: 100%; /* Asegura que los campos se ajusten al contenedor */
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -45,6 +46,12 @@ input[type="submit"] {
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    font-weight: bold; /* Hace que el texto del botón sea más claro */
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Cambiar el color al pasar el mouse */
 }
 
 /* Estilos para el mensaje de confirmación */
@@ -59,13 +66,3 @@ input[type="submit"] {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
-
-/* Estilos para el pie de página */
-#footer {
-    text-align: center; /* Alineación de texto al centro para el pie de página */
-    background-color: #f0f0f0; /* Color de fondo del pie de página */
-    padding: 10px 0; /* Relleno en el pie de página */
-    color: #333; /* Color del texto en el pie de página */
-    font-size: 14px; /* Tamaño de fuente en el pie de página */
-  }
-  

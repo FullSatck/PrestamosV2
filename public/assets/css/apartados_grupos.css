@@ -2,7 +2,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
-    padding: 40px 120px 40px 40px;
+    padding: 20px 10px; /* Reducción del relleno para pantallas más pequeñas */
 }
 
 h1 {
@@ -23,9 +23,9 @@ li {
     border: 1px solid #ccc;
     border-radius: 5px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-} 
+    flex-direction: column; /* Cambio de dirección en dispositivos más pequeños */
+    justify-content: center; /* Alineación vertical al centro */
+}
 
 /* Estilos específicos para los botones y enlaces */
 button, a {
@@ -36,7 +36,7 @@ button, a {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 10px;
+    margin: 5px 0; /* Espaciado vertical entre botones y enlaces */
     font-weight: bold;
     transition: background-color 0.3s;
 }
@@ -48,16 +48,7 @@ button:hover, a:hover {
 /* Alineación de los botones al final de la página */
 .button-container {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
+    flex-direction: column; /* Cambio de dirección en dispositivos más pequeños */
+    justify-content: center; /* Alineación vertical al centro */
+    margin-top: 20px; /* Espaciado superior en dispositivos más pequeños */
 }
-
-/* Estilos para el pie de página */
-#footer {
-    text-align: center; /* Alineación de texto al centro para el pie de página */
-    background-color: #f0f0f0; /* Color de fondo del pie de página */
-    padding: 10px 0; /* Relleno en el pie de página */
-    color: #333; /* Color del texto en el pie de página */
-    font-size: 14px; /* Tamaño de fuente en el pie de página */
-  }
-  
