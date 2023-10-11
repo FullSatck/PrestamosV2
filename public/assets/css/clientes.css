@@ -1,10 +1,9 @@
-
-
 /* Reset de estilos */
 html, body, div, h1, h2, h3, p, ul, li, table, th, td, form, input, button {
     margin: 0;
     padding: 0;
     border: 0;
+    box-sizing: border-box; /* Añade la propiedad box-sizing para un mejor manejo de márgenes y rellenos */
 }
 
 /* Estilos generales */
@@ -13,10 +12,11 @@ body {
     background-color: #f4f4f4;
     color: #333;
     line-height: 1.6;
+    padding: 20px; /* Reducción del relleno para pantallas más pequeñas */
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 100%; /* Ajuste al ancho de la pantalla */
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -29,12 +29,13 @@ body {
     background-color: #9e9fa0;
     color: #fff;
     padding: 10px 0;
+    text-align: center; /* Centra el texto en dispositivos más pequeños */
 }
 
 .navbar a {
     color: #fff;
     text-decoration: none;
-    margin: 0 15px;
+    margin: 0 10px; /* Reducción del margen entre elementos */
     font-weight: bold;
 }
 
@@ -123,12 +124,4 @@ body {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-}
-
-/* Estilos para el pie de página */
-#footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-top: 1px solid #ddd;
 }

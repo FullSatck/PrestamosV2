@@ -3,42 +3,42 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
-    padding: 40px;
+    padding: 20px; /* Reducción del relleno para pantallas más pequeñas */
 }
- 
-h1{
+
+h1 {
     background-color: #70aee9;
-  color: #000000;
-  padding: 20px;
+    color: #000000;
+    padding: 15px; /* Reducción del relleno para pantallas más pequeñas */
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 100%; /* Ajuste al ancho de la pantalla */
     margin: 0 auto;
-    padding: 20px; 
+    padding: 20px;
 }
 
 /* Estilos para el contenedor del enlace "volver" */
 .div {
-    margin-top: 20px; /* Agrega espacio superior */
+    margin-top: 10px; /* Reducción del espacio superior para pantallas más pequeñas */
 }
 
 /* Estilos para el enlace "volver" */
 .div a {
-    text-decoration: none; /* Quita la decoración de subrayado */
-    background-color: #007bff; /* Color de fondo */
-    color: #fff; /* Color del texto */
-    padding: 10px 20px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-    font-size: 16px; /* Tamaño de fuente */
-    transition: background-color 0.3s ease; /* Transición de color de fondo */
+    text-decoration: none;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px; /* Reducción del espaciado interno para pantallas más pequeñas */
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
 }
 
 /* Estilos para el enlace "volver" al pasar el mouse */
 .div a:hover {
-    background-color: #0056b3; /* Cambia el color de fondo al pasar el mouse */
+    background-color: #0056b3;
 }
-
 
 /* Estilos para el encabezado */
 .header {
@@ -54,10 +54,8 @@ h1{
 /* Estilos para la barra de búsqueda */
 .search-container {
     display: flex;
-    justify-content: flex-end;
-    margin-right: 900px;
-    margin-bottom: 20px;
-    margin-left: 0px;
+    justify-content: center; /* Centra la barra de búsqueda en pantallas pequeñas */
+    margin: 20px 0;
 }
 
 .search-input {
@@ -71,20 +69,20 @@ h1{
 /* Estilos para la tabla */
 .table-container {
     margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
 }
 
 /* Estilos para la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
 }
 
 th, td {
-    padding: 12px;
+    padding: 10px; /* Reducción del relleno para pantallas más pequeñas */
     text-align: left;
     border-bottom: 1px solid #ccc;
 }
@@ -111,6 +109,8 @@ td a {
     transition: color 0.3s ease;
     padding: 7px;
     border-radius: 8px;
+    display: inline-block;
+    text-align: center;
 }
 
 td a:hover {
@@ -118,11 +118,10 @@ td a:hover {
     color: #fff;
 }
 
-
 /* Estilos para los botones */
 .return-button,
 .add-button {
-    padding: 12px 20px;
+    padding: 10px 15px;
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -149,13 +148,3 @@ td a:hover {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
-
-/* Estilos para el pie de página */
-#footer {
-    text-align: center; /* Alineación de texto al centro para el pie de página */
-    background-color: #f0f0f0; /* Color de fondo del pie de página */
-    padding: 10px 0; /* Relleno en el pie de página */
-    color: #333; /* Color del texto en el pie de página */
-    font-size: 14px; /* Tamaño de fuente en el pie de página */
-  }
-  

@@ -3,13 +3,13 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f7f7f7;
     margin: 0;
-    padding: 40px 120px 40px 40px;
+    padding: 20px; /* Reducción del relleno para pantallas más pequeñas */
 }
- 
+
 h1 {
     background-color: #70aee9;
     color: #000000;
-    padding: 20px;
+    padding: 15px; /* Reducción del relleno para pantallas más pequeñas */
 }
 
 ul {
@@ -60,12 +60,21 @@ button:hover {
     color: black;
 }
 
-/* Estilos para el pie de página */
-#footer {
-    text-align: center; /* Alineación de texto al centro para el pie de página */
-    background-color: #f0f0f0; /* Color de fondo del pie de página */
-    padding: 10px 0; /* Relleno en el pie de página */
-    color: #333; /* Color del texto en el pie de página */
-    font-size: 14px; /* Tamaño de fuente en el pie de página */
-  }
-  
+/* Media query para pantallas más pequeñas */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Reducción adicional del relleno para pantallas muy pequeñas */
+    }
+
+    h1 {
+        padding: 10px; /* Reducción adicional del relleno para pantallas muy pequeñas */
+    }
+
+    li {
+        font-size: 14px; /* Reducción del tamaño de fuente para pantallas más pequeñas */
+    }
+
+    button {
+        padding: 8px 16px; /* Reducción del relleno para pantallas más pequeñas */
+    }
+}
