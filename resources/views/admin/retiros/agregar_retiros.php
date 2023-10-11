@@ -30,7 +30,7 @@ if (isset($_POST['agregar_retiro'])) {
     $monto = $_POST['monto'];
 
     // Validar que el usuario seleccionado existe en la base de datos y es un supervisor
-    $sqlValidarUsuario = "SELECT ID FROM usuarios WHERE ID = $idUsuario AND RolID = 2";
+    $sqlValidarUsuario = "SELECT ID FROM usuarios WHERE ID = $idUsuario AND RolID = 3";
     $resultadoValidacion = $conexion->query($sqlValidarUsuario);
 
     if ($resultadoValidacion->num_rows === 0) {
