@@ -8,9 +8,9 @@ if (isset($_GET['clienteId']) && isset($_GET['monto']) && isset($_GET['nombre'])
     $nombre = $_GET['nombre'];
     $direccion = $_GET['direccion'];
     $identificacion = $_GET['identificacion'];
-   
-   
-   
+    $montoPagado = $_GET['montoPagado'];
+    $montoDeuda = $_GET['montoDeuda'];
+    $cuota = $_GET['cuota'];
 
     // Crear un nuevo objeto PDF
     $pdf = new FPDF();
