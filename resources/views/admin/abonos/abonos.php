@@ -37,7 +37,8 @@ if (isset($_GET['mensaje'])) {
         <h1 class="mt-5">Formulario de Pago de Préstamos</h1>
 
         <div class="botone">
-            <a href="">mas tarde</a>
+            <a href="">mas tarde</a>&nbsp;&nbsp;
+            <a href="">pagar todo</a>
         </div>
 
         <!-- Información del cliente -->

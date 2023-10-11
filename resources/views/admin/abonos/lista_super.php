@@ -48,7 +48,7 @@ if (isset($_GET['mensaje'])) {
                         <th scope="col">Apellido</th> 
                         <th scope="col">Zona</th>
                         <th scope="col">Rol</th> 
-                        <th scope="col">Acciones</th> <!-- Nueva columna para los botones -->
+                        <th scope="col">Acciones</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -80,6 +80,8 @@ if (isset($_GET['mensaje'])) {
                             <td>
                                 <!-- Botón para ver los cobradores de la zona -->
                                 <a href="ver_cobradores.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Cobradores</a>
+                                <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Prestamos</a>
+                                <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
                                 <!-- Botón para editar la zona (puedes crear esta página si aún no existe) -->
                                 
                             </td>

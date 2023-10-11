@@ -1,5 +1,6 @@
 <?php
 session_start();
+include("../../../../controllers/conexion.php");
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
@@ -58,10 +59,13 @@ if (isset($_GET['mensaje'])) {
                         <div class="alert alert-success">
                             <?php echo htmlspecialchars($mensaje); ?>
                         </div>
-                    <?php endif; ?>
+                    <?php endif; ?><br><br>
                     <!-- Fin del código para mostrar el mensaje emergente -->
 
                     <!-- Resto del código de la tabla -->
+
+
+                    <h2>Administradores</h2>
                     <table class="table">
                         <thead>
                             <tr>
@@ -77,8 +81,55 @@ if (isset($_GET['mensaje'])) {
                         </thead>
                         <tbody>
                             <?php
-                            include("../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT * FROM usuarios");
+                            $sql = $conexion->query("SELECT * FROM usuarios WHERE RolID = 1");
+
+                            // Verificar si la consulta se realizó con éxito
+                            if ($sql === false) {
+                                die("Error en la consulta SQL: " . $conexion->error);
+                            }
+
+                            // Verificar si la consulta devolvió resultados
+                            if ($sql->num_rows > 0) {
+                                $rowCount = 0; // Contador de filas
+                                while ($datos = $sql->fetch_object()) { 
+                                    $rowCount++; // Incrementar el contador de filas
+                                    ?>
+                                    
+                                    <tr class="row<?= $rowCount ?>">
+                                        <td><?= "REC 100" .$datos->ID ?></td>
+                                        <td><?= $datos->Nombre ?></td>
+                                        <td><?= $datos->Apellido ?></td>
+                                        <td><?= $datos->Email ?></td>
+                                        <td><?= $datos->Zona ?></td>
+                                        <td><?= $datos->RolID ?></td>
+                                        <td><a href="/resources/views/admin/usuarios/modificarUser.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
+                                        <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
+                                    </tr>
+                                <?php } 
+                            } else {
+                                echo "No se encontraron resultados.";
+                            }
+                            ?>
+                        </tbody>
+                    </table><br><br>
+
+                    <h2>Supervisores</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Zona</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Borrar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = $conexion->query("SELECT * FROM usuarios WHERE RolID = 2");
 
                             // Verificar si la consulta se realizó con éxito
                             if ($sql === false) {
@@ -97,7 +148,7 @@ if (isset($_GET['mensaje'])) {
                                         <td><?= $datos->Apellido ?></td>
                                         <td><?= $datos->Email ?></td>
                                         <td><?= $datos->Zona ?></td>
-                                        <td><?= $datos->Rol ?></td>
+                                        <td><?= $datos->RolID ?></td>
                                         <td><a href="/resources/views/admin/usuarios/modificarUser.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
                                         <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
                                     </tr>
@@ -107,7 +158,55 @@ if (isset($_GET['mensaje'])) {
                             }
                             ?>
                         </tbody>
-                    </table>
+                    </table><br><br>
+
+                    <h2>Cobradores</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Zona</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Borrar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php                             
+                            $sql = $conexion->query("SELECT * FROM usuarios WHERE RolID = 3");
+
+                            // Verificar si la consulta se realizó con éxito
+                            if ($sql === false) {
+                                die("Error en la consulta SQL: " . $conexion->error);
+                            }
+
+                            // Verificar si la consulta devolvió resultados
+                            if ($sql->num_rows > 0) {
+                                $rowCount = 0; // Contador de filas
+                                while ($datos = $sql->fetch_object()) { 
+                                    $rowCount++; // Incrementar el contador de filas
+                                    ?>
+                                    <tr class="row<?= $rowCount ?>">
+                                        <td><?= "REC 100" .$datos->ID ?></td>
+                                        <td><?= $datos->Nombre ?></td>
+                                        <td><?= $datos->Apellido ?></td>
+                                        <td><?= $datos->Email ?></td>
+                                        <td><?= $datos->Zona ?></td>
+                                        <td><?= $datos->RolID ?></td>
+                                        <td><a href="/resources/views/admin/usuarios/modificarUser.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
+                                        <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
+                                    </tr>
+                                <?php } 
+                            } else {
+                                echo "No se encontraron resultados.";
+                            }
+                            ?>
+                        </tbody>
+                    </table><br><br>
+
                 </div>
 
                 <!-- Paginación -->

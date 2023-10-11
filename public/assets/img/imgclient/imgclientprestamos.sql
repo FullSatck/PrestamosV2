@@ -1,3 +1,32 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: localhost:3306
+-- Tiempo de generación: 07-10-2023 a las 12:37:05
+-- Versión del servidor: 8.0.30
+-- Versión de PHP: 7.3.0
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `prestamos`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clientes`
+--
+
 CREATE TABLE `clientes` (
   `ID` int NOT NULL,
   `Nombre` varchar(255) DEFAULT NULL,
@@ -11,8 +40,10 @@ CREATE TABLE `clientes` (
   `IdentificacionCURP` varchar(255) DEFAULT NULL,
   `ImagenCliente` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
- 
 
+--
+-- Volcado de datos para la tabla `clientes`
+--
 
 INSERT INTO `clientes` (`ID`, `Nombre`, `Apellido`, `Domicilio`, `Telefono`, `HistorialCrediticio`, `ReferenciasPersonales`, `MonedaPreferida`, `ZonaAsignada`, `IdentificacionCURP`, `ImagenCliente`) VALUES
 (1, 'Juan', 'Pérez', 'Calle #123', '(123) 456-7890', 'bueno', 'bien', 1, 'Coahuila', 'ABCD123456EFGHJKL', '../public/assets/img/imgclient/imgclientperfil1.png'),
@@ -22,7 +53,11 @@ INSERT INTO `clientes` (`ID`, `Nombre`, `Apellido`, `Domicilio`, `Telefono`, `Hi
 (5, 'kevin', 'alvarez', 'Avenida #451', '(123) 456-7890', 'biennn', 'stiven delgado', 2, 'Durango', 'WXYZ987654ABCD1234', '../public/assets/img/imgclient/imgclientperfil1.png'),
 (7, 'samuel', 'Duarte', 'cr43 cl32', '(123) 456-7890', 'malo', 'nadie confia en el', 2, 'Colima', 'WXYZ987654ABCD1234', '../public/assets/img/imgclient/imgclientperfil2.png');
 
- 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `gastos`
+--
 
 CREATE TABLE `gastos` (
   `ID` int NOT NULL,
@@ -31,8 +66,10 @@ CREATE TABLE `gastos` (
   `Descripcion` varchar(255) DEFAULT NULL,
   `Valor` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
- 
 
+--
+-- Volcado de datos para la tabla `gastos`
+--
 
 INSERT INTO `gastos` (`ID`, `IDZona`, `Fecha`, `Descripcion`, `Valor`) VALUES
 (1, 29, '2023-10-04', 'Comida', 15000.00),
@@ -42,8 +79,12 @@ INSERT INTO `gastos` (`ID`, `IDZona`, `Fecha`, `Descripcion`, `Valor`) VALUES
 (5, 20, '2023-04-10', 'Comida2', 15000.00),
 (6, 19, '2023-05-10', 'comida', 5000.00),
 (7, 20, '2023-05-10', 'Mecato', 35000.00);
- 
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historial_pagos`
+--
 
 CREATE TABLE `historial_pagos` (
   `ID` int NOT NULL,
@@ -52,13 +93,18 @@ CREATE TABLE `historial_pagos` (
   `MontoPagado` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
- 
-
+--
+-- Volcado de datos para la tabla `historial_pagos`
+--
 
 INSERT INTO `historial_pagos` (`ID`, `IDCliente`, `FechaPago`, `MontoPagado`) VALUES
 (27, 1, '2023-10-07', 1.00);
 
- 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `monedas`
+--
 
 CREATE TABLE `monedas` (
   `ID` int NOT NULL,
@@ -66,14 +112,21 @@ CREATE TABLE `monedas` (
   `Simbolo` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
- 
+--
+-- Volcado de datos para la tabla `monedas`
+--
 
 INSERT INTO `monedas` (`ID`, `Nombre`, `Simbolo`) VALUES
 (1, 'Pesos_mexicanos', 'MNX'),
 (2, 'pesos_colombianos', 'COP'),
 (3, 'dolares', 'USD');
 
- 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestamos`
+--
+
 CREATE TABLE `prestamos` (
   `ID` int NOT NULL,
   `IDCliente` int DEFAULT NULL,
@@ -92,7 +145,10 @@ CREATE TABLE `prestamos` (
   `Cuota` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
- 
+--
+-- Volcado de datos para la tabla `prestamos`
+--
+
 INSERT INTO `prestamos` (`ID`, `IDCliente`, `Monto`, `TasaInteres`, `Plazo`, `MonedaID`, `FechaInicio`, `FechaVencimiento`, `Estado`, `CobradorAsignado`, `Zona`, `MontoAPagar`, `FrecuenciaPago`, `MontoCuota`, `Cuota`) VALUES
 (1, 1, 10000.00, 20.00, 20, 1, '2023-10-04', '2024-02-21', 'pendiente', NULL, 'Colima', 11969.00, 'semanal', 600.00, 600.00),
 (2, 2, 1000.00, 20.00, 20, 1, '2023-10-04', '2024-07-30', 'pendiente', NULL, 'Oaxaca', 1199.00, 'quincenal', 60.00, 60.00),
@@ -103,7 +159,11 @@ INSERT INTO `prestamos` (`ID`, `IDCliente`, `Monto`, `TasaInteres`, `Plazo`, `Mo
 (7, 5, 20000.00, 20.00, 15, 3, '2023-10-06', '2023-10-21', 'pendiente', NULL, 'Morelos', 24000.00, 'diario', 1600.00, 1600.00),
 (8, 7, 20000.00, 20.00, 15, 2, '2023-10-06', '2024-05-18', 'pendiente', NULL, 'Puebla', 24000.00, 'quincenal', 1600.00, 1600.00);
 
- 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `retiros`
+--
 
 CREATE TABLE `retiros` (
   `ID` int NOT NULL,
@@ -113,27 +173,39 @@ CREATE TABLE `retiros` (
   `Valor` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
- 
+--
+-- Volcado de datos para la tabla `retiros`
+--
 
 INSERT INTO `retiros` (`ID`, `IDZona`, `Fecha`, `Descripcion`, `Valor`) VALUES
 (1, 1, '2023-10-05', 'Retiro para gastos de comida', 5000.00),
 (2, 2, '2023-10-05', 'Retiro para gastos de transporte', 7500.00);
 
- 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `roles`
+--
 
 CREATE TABLE `roles` (
   `ID` int NOT NULL,
   `Nombre` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
- 
+--
+-- Volcado de datos para la tabla `roles`
+--
 
 INSERT INTO `roles` (`ID`, `Nombre`) VALUES
 (1, 'admin'),
 (2, 'supervisor'),
 (3, 'cobrador');
 
- 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
 
 CREATE TABLE `usuarios` (
   `ID` int NOT NULL,
@@ -145,7 +217,9 @@ CREATE TABLE `usuarios` (
   `RolID` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
- 
+--
+-- Volcado de datos para la tabla `usuarios`
+--
 
 INSERT INTO `usuarios` (`ID`, `Nombre`, `Apellido`, `Email`, `Password`, `Zona`, `RolID`) VALUES
 (1, 'admin', 'admin', 'admin@admin.com', '$2y$10$KUgTKdmckTNWlVdemdO21umorBtl5w0u/6odNECG3HkU/cmpOGaDm', '2', 1),
@@ -155,7 +229,11 @@ INSERT INTO `usuarios` (`ID`, `Nombre`, `Apellido`, `Email`, `Password`, `Zona`,
 (7, 'Stiven', 'vilvilyiv', 'stiven2@gmail.com', '$2y$10$ThfWsg1lnIW0joOtZ7i6OOGwcfBSLbrgKIo6vu9dHCA3QN016wPGq', '19', 3),
 (8, 'ppppplnjl', 'jadbjcvscs', 'sdbvsfbvs@gmail.com', '$2y$10$M5.0Lo57WlSFOLycfITfOOm1TvxkybwzQsFXvZh5jr6C0h1IL30bi', '20', 3);
 
- 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `zonas`
+--
 
 CREATE TABLE `zonas` (
   `ID` int NOT NULL,
@@ -165,7 +243,9 @@ CREATE TABLE `zonas` (
   `CodigoPostal` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
- 
+--
+-- Volcado de datos para la tabla `zonas`
+--
 
 INSERT INTO `zonas` (`ID`, `Nombre`, `Capital`, `CobradorAsignado`, `CodigoPostal`) VALUES
 (1, 'Aguascalientes', 'Aguascalientes', NULL, '20000'),
@@ -200,7 +280,11 @@ INSERT INTO `zonas` (`ID`, `Nombre`, `Capital`, `CobradorAsignado`, `CodigoPosta
 (30, 'Yucatán', 'Mérida', NULL, '97000'),
 (31, 'Zacatecas', 'Zacatecas', NULL, '98000');
 
- 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `zona_cobrador`
+--
 
 CREATE TABLE `zona_cobrador` (
   `ID` int NOT NULL,
@@ -208,32 +292,48 @@ CREATE TABLE `zona_cobrador` (
   `CobradorID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
- 
+--
+-- Volcado de datos para la tabla `zona_cobrador`
+--
 
 INSERT INTO `zona_cobrador` (`ID`, `ZonaID`, `CobradorID`) VALUES
 (1, 20, 8);
 
- 
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `clientes`
+--
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `MonedaPreferida` (`MonedaPreferida`),
   ADD KEY `ZonaAsignada` (`ZonaAsignada`);
 
- 
+--
+-- Indices de la tabla `gastos`
+--
 ALTER TABLE `gastos`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `IDZona` (`IDZona`);
 
- 
+--
+-- Indices de la tabla `historial_pagos`
+--
 ALTER TABLE `historial_pagos`
   ADD PRIMARY KEY (`ID`);
 
- 
+--
+-- Indices de la tabla `monedas`
+--
 ALTER TABLE `monedas`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `Nombre` (`Nombre`);
 
- 
+--
+-- Indices de la tabla `prestamos`
+--
 ALTER TABLE `prestamos`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `IDCliente` (`IDCliente`),
@@ -241,100 +341,152 @@ ALTER TABLE `prestamos`
   ADD KEY `CobradorAsignado` (`CobradorAsignado`),
   ADD KEY `Zona` (`Zona`);
 
- 
+--
+-- Indices de la tabla `retiros`
+--
 ALTER TABLE `retiros`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `fk_retiros_zonas` (`IDZona`);
 
- 
+--
+-- Indices de la tabla `roles`
+--
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`ID`);
 
- 
+--
+-- Indices de la tabla `usuarios`
+--
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `Email` (`Email`),
   ADD KEY `RolID` (`RolID`);
 
- 
+--
+-- Indices de la tabla `zonas`
+--
 ALTER TABLE `zonas`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `Nombre` (`Nombre`),
   ADD KEY `CobradorAsignado` (`CobradorAsignado`);
 
- 
+--
+-- Indices de la tabla `zona_cobrador`
+--
 ALTER TABLE `zona_cobrador`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `ZonaID` (`ZonaID`),
   ADD KEY `CobradorID` (`CobradorID`);
 
- 
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `clientes`
+--
 ALTER TABLE `clientes`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `gastos`
+--
 ALTER TABLE `gastos`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `historial_pagos`
+--
 ALTER TABLE `historial_pagos`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `monedas`
+--
 ALTER TABLE `monedas`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `prestamos`
+--
 ALTER TABLE `prestamos`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `retiros`
+--
 ALTER TABLE `retiros`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `roles`
+--
 ALTER TABLE `roles`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
 ALTER TABLE `usuarios`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `zonas`
+--
 ALTER TABLE `zonas`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
- 
+--
+-- AUTO_INCREMENT de la tabla `zona_cobrador`
+--
 ALTER TABLE `zona_cobrador`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
- 
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `clientes`
+--
 ALTER TABLE `clientes`
   ADD CONSTRAINT `clientes_ibfk_2` FOREIGN KEY (`ZonaAsignada`) REFERENCES `zonas` (`Nombre`);
- 
 
+--
+-- Filtros para la tabla `gastos`
+--
 ALTER TABLE `gastos`
   ADD CONSTRAINT `gastos_ibfk_1` FOREIGN KEY (`IDZona`) REFERENCES `zonas` (`ID`);
 
- 
+--
+-- Filtros para la tabla `prestamos`
+--
 ALTER TABLE `prestamos`
   ADD CONSTRAINT `prestamos_ibfk_1` FOREIGN KEY (`IDCliente`) REFERENCES `clientes` (`ID`),
   ADD CONSTRAINT `prestamos_ibfk_2` FOREIGN KEY (`MonedaID`) REFERENCES `monedas` (`ID`),
   ADD CONSTRAINT `prestamos_ibfk_3` FOREIGN KEY (`CobradorAsignado`) REFERENCES `usuarios` (`ID`),
   ADD CONSTRAINT `prestamos_ibfk_4` FOREIGN KEY (`Zona`) REFERENCES `zonas` (`Nombre`);
 
- 
+--
+-- Filtros para la tabla `retiros`
+--
 ALTER TABLE `retiros`
   ADD CONSTRAINT `fk_retiros_zonas` FOREIGN KEY (`IDZona`) REFERENCES `zonas` (`ID`);
 
- 
+--
+-- Filtros para la tabla `usuarios`
+--
 ALTER TABLE `usuarios`
   ADD CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`RolID`) REFERENCES `roles` (`ID`);
 
- 
+--
+-- Filtros para la tabla `zona_cobrador`
+--
 ALTER TABLE `zona_cobrador`
   ADD CONSTRAINT `zona_cobrador_ibfk_1` FOREIGN KEY (`ZonaID`) REFERENCES `zonas` (`ID`),
   ADD CONSTRAINT `zona_cobrador_ibfk_2` FOREIGN KEY (`CobradorID`) REFERENCES `usuarios` (`ID`);
 COMMIT;
 
- 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

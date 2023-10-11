@@ -49,7 +49,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <input type="text" name="monto" id="monto" required><br>
 
             <label for="tasa_interes">Tasa de Interés (%):</label>
-            <input type="text" name="tasa_interes" id="tasa_interes" required><br>
+            <input type="text" name "tasa_interes" id="tasa_interes" required><br>
 
             <label for="plazo">Plazo:</label>
             <input type="text" name="plazo" id="plazo" required><br>

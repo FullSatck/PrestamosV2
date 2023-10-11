@@ -46,7 +46,7 @@ if (isset($_GET['zona'])) {
 </head>
 <body>
     <!-- Botón para volver a la página anterior -->
-    <h1 class="text-center">Listado de Supervisores en Zona: <?= $nombreZona ?></h1>
+    <h1 class="text-center">Listado de Cobradores en Zona: <?= $nombreZona ?></h1>
 
     <div class="container-fluid">
         <div class="row">

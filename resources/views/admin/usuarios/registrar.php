@@ -53,8 +53,8 @@
             </div>
         
             <div class="input-container">
-                <label for="rol">Rol:</label>
-                <select id="rol" name="rol" required>
+                <label for="RolID">Rol:</label>
+                <select id="RolID" name="RolID" required>
                     <?php
                     // Consulta SQL para obtener las opciones de roles
                     $consultaRoles = "SELECT ID, Nombre FROM Roles";
