@@ -28,7 +28,7 @@ if (isset($_POST['agregar_retiro'])) {
     $idZona = $_POST['idZona'];
     $fecha = $_POST['fecha'];
     $valor = $_POST['valor'];
-    $descripcion = $_POST['descripcion'];
+    $monto = $_POST['Monto'];
 
     // Validar que la zona seleccionada existe en la base de datos
     $sqlValidarZona = "SELECT ID FROM zonas WHERE ID = $idZona";
@@ -39,7 +39,7 @@ if (isset($_POST['agregar_retiro'])) {
         $error = "La zona seleccionada no es válida.";
     } else {
         // La zona es válida, proceder a insertar el retiro
-        $sql = "INSERT INTO retiros (IDZona, Fecha, Valor, Descripcion) VALUES ('$idZona', '$fecha', '$valor', '$descripcion')";
+        $sql = "INSERT INTO retiros (IDZona, Fecha, Valor, Monto) VALUES ('$idZona', '$fecha', '$valor', '$monto')";
 
         if ($conexion->query($sql) === TRUE) {
             // Retiro creado con éxito
@@ -83,12 +83,16 @@ if (isset($_POST['agregar_retiro'])) {
             }
             ?>
         </select><br>
+
         <label>Fecha: </label>
         <input type="date" name="fecha"><br>
+
         <label>Valor: </label>
         <input type="number" step="0.01" name="valor"><br>
-        <label>Descripción: </label>
-        <textarea name="descripcion"></textarea><br>
+
+        <label>Monto: </label>
+        <input type="number" step="0.01" name="monto"><br>
+        
         <input type="submit" name="agregar_retiro" value="Agregar Retiro">
         <a href="retiros.php">Volver</a>
     </form>

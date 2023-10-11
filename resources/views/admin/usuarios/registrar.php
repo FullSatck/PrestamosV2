@@ -1,20 +1,15 @@
-
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Asegúrate de incluir esta línea para hacer tu sitio web responsive -->
     <title>Registro de Usuario</title>
     <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar_usuarios.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-    <!-- Código para mostrar el mensaje emergente -->
-   
-
     <div class="registro-container">
         <h2>Registro de Usuario</h2>
         <form action="/controllers/validar_registro.php" method="post">
@@ -24,7 +19,7 @@
             </div>
             <div class="input-container">
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido" required>
+                <input type="text" id="apellido" name "apellido" placeholder="Por favor ingrese su apellido" required>
             </div>
             <div class="input-container">
                 <label for="email">Correo Electrónico:</label>
@@ -32,8 +27,7 @@
             </div>
             <div class="input-container">
                 <label for="contrasena">Contraseña:</label>
-                <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave"
-                    required>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
             </div>
             <div class="input-container">
                 <label for="zona">Zona:</label>
@@ -65,15 +59,14 @@
                     }
                     ?>
                 </select>
-            </div>
+            </div> 
+
             <div class="btn-container">
                 <button type="submit">Registrar</button>
                 <a href="/resources/views/admin/inicio/inicio.php" class="a">Volver</a>
             </div>
         </form>
     </div>
-
-    <!-- Resto de tu código HTML y JavaScript aquí -->
 
     <script>
         // JavaScript para mostrar el mensaje emergente
@@ -86,7 +79,6 @@
                 }, 5000); // El mensaje se ocultará después de 5 segundos (puedes ajustar el tiempo)
             }
         };
-    </script> 
+    </script>
 </body>
-
 </html>
