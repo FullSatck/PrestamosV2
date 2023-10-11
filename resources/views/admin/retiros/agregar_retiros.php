@@ -26,7 +26,7 @@ $exito = "";
 if (isset($_POST['agregar_retiro'])) {
     // Recoger los datos del formulario
     $idUsuario = $_POST['idUsuario'];
-    $valor = $_POST['valor'];
+    $fecha = $_POST['fecha'];
     $monto = $_POST['monto'];
 
     // Validar que el usuario seleccionado existe en la base de datos y es un supervisor
@@ -38,7 +38,7 @@ if (isset($_POST['agregar_retiro'])) {
         $error = "El usuario seleccionado no es un supervisor válido.";
     } else {
         // El usuario es válido, proceder a insertar el retiro
-        $sql = "INSERT INTO retiros (IDUsuario, Valor, Monto) VALUES ('$idUsuario', '$valor', '$monto')";
+        $sql = "INSERT INTO retiros (IDUsuario, Fecha, Monto) VALUES ('$idUsuario', '$fecha', '$monto')";
 
         if ($conexion->query($sql) === TRUE) {
             // Retiro creado con éxito
@@ -51,7 +51,7 @@ if (isset($_POST['agregar_retiro'])) {
         }
     }
 }
-?>  
+?>
 
 <!DOCTYPE html>
 <html>
@@ -82,8 +82,8 @@ if (isset($_POST['agregar_retiro'])) {
             ?>
         </select><br>
 
-        <label>Valor: </label>
-        <input type="number" step="0.01" name="valor"><br>
+        <label>Fecha: </label>
+        <input type="date" name="fecha"><br>
 
         <label>Monto: </label>
         <input type="number" step="0.01" name="monto"><br>
