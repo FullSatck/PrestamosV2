@@ -103,7 +103,7 @@ h2 a {
   }
 
   .table button {
-    font-size: 12px; /* Tamaño de fuente reducido para los botones en dispositivos pequeños */
+    font-size: 11px; /* Tamaño de fuente reducido para los botones en dispositivos pequeños */
     padding: 3px 6px; /* Relleno reducido para los botones en dispositivos pequeños */
   }
 }
