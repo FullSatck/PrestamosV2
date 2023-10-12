@@ -75,8 +75,7 @@ if (isset($_GET['mensaje'])) {
                                 <th scope="col">Email</th>
                                 <th scope="col">Zona</th>
                                 <th scope="col">Rol</th>
-                                <th scope="col">Editar</th>
-                                <th scope="col">Borrar</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -102,8 +101,7 @@ if (isset($_GET['mensaje'])) {
                                         <td><?= $datos->Email ?></td>
                                         <td><?= $datos->Zona ?></td>
                                         <td><?= $datos->RolID ?></td>
-                                        <td><a href="/resources/views/admin/usuarios/modificarUser.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
-                                        <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
+                                       
                                     </tr>
                                 <?php } 
                             } else {
@@ -123,8 +121,7 @@ if (isset($_GET['mensaje'])) {
                                 <th scope="col">Email</th>
                                 <th scope="col">Zona</th>
                                 <th scope="col">Rol</th>
-                                <th scope="col">Editar</th>
-                                <th scope="col">Borrar</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -149,8 +146,7 @@ if (isset($_GET['mensaje'])) {
                                         <td><?= $datos->Email ?></td>
                                         <td><?= $datos->Zona ?></td>
                                         <td><?= $datos->RolID ?></td>
-                                        <td><a href="/resources/views/admin/usuarios/modificarUser.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
-                                        <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
+                                        
                                     </tr>
                                 <?php } 
                             } else {
@@ -170,8 +166,7 @@ if (isset($_GET['mensaje'])) {
                                 <th scope="col">Email</th>
                                 <th scope="col">Zona</th>
                                 <th scope="col">Rol</th>
-                                <th scope="col">Editar</th>
-                                <th scope="col">Borrar</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -196,8 +191,7 @@ if (isset($_GET['mensaje'])) {
                                         <td><?= $datos->Email ?></td>
                                         <td><?= $datos->Zona ?></td>
                                         <td><?= $datos->RolID ?></td>
-                                        <td><a href="/resources/views/admin/usuarios/modificarUser.php?id=<?= $datos->ID ?>"><i class="fas fa-user-pen fa-lg"></i></a></td>
-                                        <td><a href="/lognprin/admi/instructor/eliminar_instru.php?id=<?= $datos->ID ?>" onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fas fa-trash fa-lg"></i></a></td>
+                                        
                                     </tr>
                                 <?php } 
                             } else {
