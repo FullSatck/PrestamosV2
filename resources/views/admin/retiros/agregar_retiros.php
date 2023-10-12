@@ -51,7 +51,7 @@ if (isset($_POST['agregar_retiro'])) {
         }
     }
 }
-?>
+?>  
 
 <!DOCTYPE html>
 <html>
