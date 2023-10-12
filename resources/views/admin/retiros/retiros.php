@@ -48,7 +48,6 @@ include("../../../../controllers/conexion.php");
         // Realizar consulta SQL para obtener los datos de los retiros y el nombre de la zona
         $sql = "SELECT retiros.ID, zonas.Nombre AS NombreZona, retiros.Fecha, retiros.Valor FROM retiros INNER JOIN zonas ON retiros.IDZona = zonas.ID";
         $result = $conexion->query($sql);
-
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
