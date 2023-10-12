@@ -56,7 +56,7 @@ if (isset($_POST['agregar_retiro'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Agregar Retiro</title>
+    <title>Agregar Retiro00</title>
     <link rel="stylesheet" href="/public/assets/css/agregar_retiro.css">
 </head>
 <body>
