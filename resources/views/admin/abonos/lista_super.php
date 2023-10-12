@@ -38,8 +38,7 @@ if (isset($_GET['mensaje'])) {
                 </div>
             </div>
 
-            <!-- Resto del código de la tabla -->
-            <a href="/resources/views/admin/enrutar/abonos_hoy.php">Enrutar</a>
+            <!-- Resto del código de la tabla --> 
             <table class="table">
                 <thead>
                     <tr>
