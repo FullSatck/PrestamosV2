@@ -64,7 +64,7 @@ include("../../../../controllers/conexion.php");
     </table>
     <script>
 function buscarRetiros() {
-    var input = document.getElementById("busqueda");
+    var input = document.getElementById("busqueda"); 
     var filtro = input.value.toLowerCase();
     var tabla = document.querySelector("table");
     var filas = tabla.getElementsByTagName("tr");
