@@ -44,22 +44,7 @@ include("../../../../controllers/conexion.php");
             <th>Fecha</th>
             <th>Valor</th>
         </tr>
-        <?php
-        // Realizar consulta SQL para obtener los datos de los retiros y el nombre de la zona
-        $sql = "SELECT retiros.ID, zonas.Nombre AS NombreZona, retiros.Fecha, retiros.Valor FROM retiros INNER JOIN zonas ON retiros.IDZona = zonas.ID";
-        $result = $conexion->query($sql);
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td><a href='editar_retiro.php?id=" . $row["ID"] . "'>" . $row["NombreZona"] . "</a></td>";
-                echo "<td>" . $row["Fecha"] . "</td>";
-                echo "<td>" . $row["Valor"] . "</td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='3'>No se encontraron retiros.</td></tr>";
-        }
-        ?>
+       
     </table>
     <script>
 function buscarRetiros() {
