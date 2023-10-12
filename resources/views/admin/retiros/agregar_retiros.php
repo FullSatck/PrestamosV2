@@ -94,7 +94,7 @@ if (isset($_POST['agregar_retiro'])) {
         <input type="number" step="0.01" name="monto"><br>
         
         <input type="submit" name="agregar_retiro" value="Agregar Retiro">
-        <a href="retiros.php">Volver</a>
+        <a href="retiros.php"> Volver</a>
     </form>
     <br>
 </body>
