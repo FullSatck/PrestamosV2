@@ -9,8 +9,29 @@ $fecha_actual = date('Y-m-d');
 if (isset($_GET['zona'])) {
     $nombreZona = $_GET['zona'];
 
+    // Manejar la solicitud POST para guardar el nuevo orden
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["nuevoOrden"])) {
+        $nuevoOrden = $_POST["nuevoOrden"];
+        $guardarOrdenSQL = "UPDATE fechas_pago SET Orden = ? WHERE Zona = ?";
+        $stmt = $conexion->prepare($guardarOrdenSQL);
+
+        if ($stmt) {
+            $stmt->bind_param("ss", $nuevoOrden, $nombreZona);
+            if ($stmt->execute()) {
+                // Éxito al guardar el nuevo orden
+                echo "Nuevo orden actualizado con éxito.";
+            } else {
+                echo "Error al actualizar el nuevo orden: " . $stmt->error;
+            }
+
+            $stmt->close();
+        } else {
+            echo "Error en la preparación de la consulta para guardar el nuevo orden: " . $conexion->error;
+        }
+    }
+
     // Consulta SQL para seleccionar las filas de la tabla fechas_pago solo para la zona especificada y la fecha actual
-    $sql = "SELECT * FROM fechas_pago WHERE Zona = '$nombreZona' AND FechaPago = '$fecha_actual'";
+    $sql = "SELECT * FROM fechas_pago WHERE Zona = '$nombreZona' AND FechaPago = '$fecha_actual' ORDER BY Orden";
     $resultado = $conexion->query($sql);
 
     $fechas_pago = array();
@@ -27,12 +48,10 @@ if (isset($_GET['zona'])) {
 
 $conexion->close();
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Lista de Fechas de Pago</title>
-    <link rel="stylesheet" href="ruta.css">
 </head>
 <body>
     <h1>Lista de Fechas de Pago para la Zona: <?= $nombreZona ?></h1>
@@ -57,6 +76,8 @@ $conexion->close();
         </tbody>
     </table>
 
+    <button id="guardarCambios">Guardar Cambios</button>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -74,7 +95,22 @@ $conexion->close();
                 }
             });
             $("#lista-pagos tbody").disableSelection();
+
+            // Manejar el clic en el botón "Guardar Cambios"
+            $("#guardarCambios").on("click", function() {
+                // Obtener el nuevo orden de las filas y enviarlo al servidor
+                var nuevoOrden = $("#lista-pagos tbody").sortable("toArray");
+                $.ajax({
+                    url: 'cargar_fechas_pago.php?zona=<?= $nombreZona; ?>',
+                    method: 'POST',
+                    data: { nuevoOrden: nuevoOrden },
+                    success: function(response) {
+                        // Manejar la respuesta del servidor (éxito o error)
+                        alert(response);
+                    }
+                });
+            });
         });
-    </script> 
+    </script>
 </body>
 </html>

@@ -42,8 +42,7 @@ if ($sql === false) {
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <title>Listado de Préstamos</title>
 </head>
-<body>
-    <!-- Botón para volver a la página anterior -->
+<body> 
     <h1 class="text-center">Listado de Prestamos en Zona: <?= $nombreZona ?></h1>
 
     <div class="container-fluid">

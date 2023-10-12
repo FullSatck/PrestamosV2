@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     margin: 0;
-    padding: 0;
+    padding: 30px;
 }
 
 /* Estilo para el título */
@@ -23,8 +23,8 @@ table {
 
 /* Estilo para los encabezados de columna */
 th {
-    background-color: #333;
-    color: #fff;
+    background-color: #007BFF;
+    color: #000000;
     font-weight: bold;
     padding: 10px;
     text-align: left;
