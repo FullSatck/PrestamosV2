@@ -37,10 +37,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <div class="search-container">
                     <div class="search-input">
                         <input type="text" id="search-input" class="form-control" placeholder="Buscar...">
-                        <button type="button" id="search-button" class="btn btn-primary"><i
-                                class="fas fa-search"></i></button>
+                        <a href="/resources/views/admin/inicio/inicio.php">
+                            <button type="button" id="search-button" class="btn btn-primary">Volver</button>
+                        </a>
                     </div>
-                </div>
+                    
                 <!-- Tabla de préstamos en un contenedor con scroll horizontal -->
                 <div class="table-container">
                     <div class="table-scroll">

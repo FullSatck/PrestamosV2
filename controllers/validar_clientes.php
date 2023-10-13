@@ -29,24 +29,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($rowZona = mysqli_fetch_assoc($resultZona)) {
         $nombre_zona = $rowZona['Nombre'];
-    
+
         // Insertar los datos en la tabla de clientes
         $sql = "INSERT INTO clientes (Nombre, Apellido, IdentificacionCURP, Domicilio, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada, ImagenCliente)
                 VALUES ('$nombre', '$apellido', '$curp', '$domicilio', '$telefono', '$historial', '$referencias', '$moneda', '$nombre_zona', '$ruta_imagen')";
-    
+
         if (mysqli_query($conexion, $sql)) {
-            echo "Registro exitoso.";
+            // Redirige al usuario a la página de agregar zona con un mensaje de confirmación
+            header('Location: ../resources/views/admin/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
+            exit;
         } else {
             echo "Error al registrar el cliente: " . mysqli_error($conexion);
         }
-    }
-
-    if ($conexion->query($sql) === TRUE) {
-        // Redirige al usuario a la página de agregar zona con un mensaje de confirmación
-        header('Location: ../resources/views/admin/clientes/lista_clientes.php?mensaje=Cliente guardada exitosamente');
-        exit;
     } else {
-        echo "Error al agregar el registro: " . $conexion->error;
+        echo "Error al obtener el nombre de la zona.";
     }
     // Cerrar la conexión
     mysqli_close($conexion);
