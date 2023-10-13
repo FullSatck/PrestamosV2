@@ -61,6 +61,7 @@ $resultado = $conexion->query($sql);
                 <th>Moneda Preferida</th>
                 <th>Zona Asignada</th>
                 <th>Acciones</th>
+                <th>Pagos</th>
             </tr>
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
                 <tr>

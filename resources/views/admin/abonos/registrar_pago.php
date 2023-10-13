@@ -28,7 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Actualizar el monto pendiente en la tabla 'prestamos'
             $sqlActualizarMonto = "UPDATE prestamos SET MontoAPagar = '$nuevoMonto' WHERE IDCliente = '$clienteId' AND Estado = 'pendiente'";
             if ($conexion->query($sqlActualizarMonto) === TRUE) {
-                echo $nuevoMonto; // Devolver el nuevo monto pendiente al JavaScript
+                // Crear una nueva factura
+                $sqlCrearFactura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES ('$clienteId', '$montoPagado', '$fechaPago', '$montoPagado', '$nuevoMonto')";
+                if ($conexion->query($sqlCrearFactura) === TRUE) {
+                    echo $nuevoMonto; // Devolver el nuevo monto pendiente al JavaScript
+                } else {
+                    echo "Error al crear la factura: " . $conexion->error;
+                }
             } else {
                 echo "Error al actualizar el monto pendiente: " . $conexion->error;
             }

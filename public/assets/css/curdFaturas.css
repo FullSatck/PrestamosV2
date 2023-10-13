@@ -1,0 +1,77 @@
+/* Estilo para el cuerpo de la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo para el encabezado */
+h1 {
+    text-align: center;
+    background-color: #3498db; /* Azul */
+    color: #fff;
+    padding: 20px 0;
+}
+
+/* Estilo para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+}
+
+/* Estilo para las filas pares de la tabla */
+table tr:nth-child(even) {
+    background-color: #ecf0f1; /* Azul claro */
+}
+
+/* Estilo para las filas impares de la tabla */
+table tr:nth-child(odd) {
+    background-color: #d5dbdb; /* Azul medio */
+}
+
+/* Estilo para las celdas de la tabla */
+table td, table th {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Estilo para los enlaces en las celdas de la tabla */
+table a {
+    text-decoration: none;
+    color: #3498db; /* Azul */
+    font-weight: bold;
+}
+
+/* Estilo al pasar el ratón por encima de los enlaces */
+table a:hover {
+    text-decoration: underline;
+}
+
+/* Hacer que la tabla sea responsive */
+@media (max-width: 768px) {
+    table {
+        display: block;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table tr {
+        margin-bottom: 10px;
+    }
+
+    table td {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+    }
+}

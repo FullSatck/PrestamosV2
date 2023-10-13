@@ -1,4 +1,8 @@
+// Variables globales para llevar un registro del ID del cliente actual
 var clienteActualId = 1; // Empieza con el primer cliente (puedes cambiarlo si deseas)
+
+// Variable para mantener un registro de si se ha ingresado la cantidad de pago
+var cantidadPagoIngresada = false;
 
 // Función para cargar los datos del cliente
 function cargarDatosCliente(clienteId) {
@@ -29,9 +33,6 @@ function cargarDatosCliente(clienteId) {
     });
 }
 
-// Variable para mantener un registro de si se ha ingresado la cantidad de pago
-var cantidadPagoIngresada = false;
-
 // Función para registrar el pago
 function registrarPago() {
     if (cantidadPagoIngresada) {
@@ -59,7 +60,7 @@ function registrarPago() {
                 // Cambia automáticamente al siguiente cliente después de 2 segundos
                 setTimeout(function() {
                     cambiarCliente(1);
-                }, 4000);
+                }, 3000);
             },
             error: function() {
                 alert("Error al registrar el pago");
@@ -75,9 +76,6 @@ function cambiarCliente(delta) {
     clienteActualId += delta;
     cargarDatosCliente(clienteActualId);
 }
-
-// Llama a la función para cargar los datos del cliente actual al cargar la página
-cargarDatosCliente(clienteActualId);
 
 // Asocia el evento click del botón "Registrar Pago" a la función que muestra el modal de confirmación
 $("#registrarPago").click(function() {
@@ -96,24 +94,6 @@ $("#confirmarPago").click(function() {
     registrarPago(); // Registra el pago
 });
 
-// Agregar un controlador de eventos al botón "Generar Factura"
-$("#generarFacturaBtn").click(function() {
-    // Obtener el ID del cliente, el monto del pago y otros datos del cliente
-    var clienteId = $("#cliente-id").text();
-    var cantidadPago = $("#cantidad-pago").val();
-    var nombre = $("#cliente-nombre").text();
-    var direccion = $("#cliente-domicilio").text();
-    var identificacion = $("#cliente-curp").text();
-    var montoPagado = parseFloat($("#prestamo-monto-pagar").text());
-    var cuota = parseFloat($("#prestamo-cuota").text());
-
-    // Calcular el monto que debe
-    var montoDeuda = montoPagado - cantidadPago;
-
-    // Redirigir a la página de generación de factura con los parámetros en la URL
-    window.location.href = "generar_factura.php?clienteId=" + clienteId + "&monto=" + cantidadPago + "&nombre=" + nombre + "&direccion=" + direccion + "&identificacion=" + identificacion + "&montoPagado=" + montoPagado + "&montoDeuda=" + montoDeuda + "&cuota=" + cuota;
-});
-
 // Asocia el evento clic a los botones de navegación
 $("#anteriorCliente").click(function() {
     cambiarCliente(-1); // Cambiar al cliente anterior
@@ -122,3 +102,30 @@ $("#anteriorCliente").click(function() {
 $("#siguienteCliente").click(function() {
     cambiarCliente(1); // Cambiar al siguiente cliente
 });
+
+// Nueva función para cargar la factura más reciente del cliente actual
+function cargarFacturaReciente(clienteId) {
+    $.ajax({
+        url: "factura_reciente.php?clienteId=" + clienteId,
+        dataType: "json",
+        success: function(data) {
+            // Rellenar los campos con los datos de la factura más reciente
+            $("#factura-id").text(data.id);
+            $("#factura-monto").text(data.monto);
+            $("#factura-fecha").text(data.fecha);
+            $("#factura-monto-pagado").text(data.monto_pagado);
+            $("#factura-monto-deuda").text(data.monto_deuda);
+        },
+        error: function() {
+            alert("No se encontraron facturas para este cliente.");
+        }
+    });
+}
+
+// Asocia el evento click del botón "Generar Factura" a la función para cargar la factura más reciente
+$("#generarFactura").click(function() {
+    cargarFacturaReciente(clienteActualId);
+});
+
+// Llama a la función para cargar los datos del cliente actual al cargar la página
+cargarDatosCliente(clienteActualId);
