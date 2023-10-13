@@ -11,25 +11,25 @@
 <body>
     <div class="registro-container">
         <h2>Registro de Usuario</h2>
-        <form action="/controllers_USU/validar_registro.php" method="post">
+        <form action="/controllers/validar_registro.php" method="post">
             <div class="input-container">
-                <label for="nombre"><Strong>Nombre:</Strong></label>
+                <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese su nombre" required>
             </div>
             <div class="input-container">
-                <label for="apellido"><Strong>Apellido:</Strong></label>
+                <label for "apellido">Apellido:</label>
                 <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido" required>
             </div>
             <div class="input-container">
-                <label for="email"><Strong>Correo Electrónico:</Strong></label>
+                <label for="email">Correo Electrónico:</label>
                 <input type="email" id="email" name="email" placeholder="Por favor ingrese su correo" required>
             </div>
             <div class="input-container">
-                <label for="contrasena"><Strong>Contraseña:</Strong></label>
+                <label for="contrasena">Contraseña:</label>
                 <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
             </div>
             <div class="input-container">
-                <label for="zona"><Strong>Zona:</Strong></label>
+                <label for="zona">Zona:</label>
                 <select id="zona" name="zona" required>
                     <?php
                     // Incluye el archivo de conexión a la base de datos
@@ -46,21 +46,19 @@
             </div>
         
             <div class="input-container">
-                <label for="RolID"><Strong>Rol:</Strong></label>
-                <?php
-                // Consulta SQL para obtener el nombre del rol
-                $consultaRol = "SELECT Nombre FROM Roles WHERE ID = 3";
-                $resultRol = mysqli_query($conexion, $consultaRol);
-    
-                if ($row = mysqli_fetch_assoc($resultRol)) {
-                    // Imprime el nombre del rol
-                    echo $row['Nombre'];
-                } else {
-                    echo "Rol no encontrado"; // Puedes mostrar un mensaje si el rol no se encuentra
-                }
-                ?>
+                <label for="RolID">Rol:</label>
+                <select id="RolID" name="RolID" required>
+                    <?php
+                    // Consulta SQL para obtener las opciones de roles
+                    $consultaRoles = "SELECT ID, Nombre FROM Roles";
+                    $resultRoles = mysqli_query($conexion, $consultaRoles);
+                    // Genera las opciones del menú desplegable para Rol
+                    while ($row = mysqli_fetch_assoc($resultRoles)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    }
+                    ?>
+                </select>
             </div>
-
 
             <div class="input-container" id="saldo-inicial-container" style="display: none;">
                 <label for="saldo-inicial">Saldo Inicial:</label>

@@ -48,10 +48,10 @@ if (isset($_GET['mensaje'])) {
                 </div>
             </div>
             <div class="col-md-9">
-
-                <!-- <div class="return-button">
+                <!-- Botón para volver a la página anterior -->
+                <div class="return-button">
                     <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
-                </div> -->
+                </div>
 
                 <div class="table-container">
                     <!-- Código para mostrar el mensaje emergente -->
@@ -63,6 +63,98 @@ if (isset($_GET['mensaje'])) {
                     <!-- Fin del código para mostrar el mensaje emergente -->
 
                     <!-- Resto del código de la tabla -->
+
+
+                    <h2>Administradores</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Zona</th>
+                                <th scope="col">Rol</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = $conexion->query("SELECT * FROM usuarios WHERE RolID = 1");
+
+                            // Verificar si la consulta se realizó con éxito
+                            if ($sql === false) {
+                                die("Error en la consulta SQL: " . $conexion->error);
+                            }
+
+                            // Verificar si la consulta devolvió resultados
+                            if ($sql->num_rows > 0) {
+                                $rowCount = 0; // Contador de filas
+                                while ($datos = $sql->fetch_object()) { 
+                                    $rowCount++; // Incrementar el contador de filas
+                                    ?>
+                                    
+                                    <tr class="row<?= $rowCount ?>">
+                                        <td><?= "REC 100" .$datos->ID ?></td>
+                                        <td><?= $datos->Nombre ?></td>
+                                        <td><?= $datos->Apellido ?></td>
+                                        <td><?= $datos->Email ?></td>
+                                        <td><?= $datos->Zona ?></td>
+                                        <td><?= $datos->RolID ?></td>
+                                       
+                                    </tr>
+                                <?php } 
+                            } else {
+                                echo "No se encontraron resultados.";
+                            }
+                            ?>
+                        </tbody>
+                    </table><br><br>
+
+                    <h2>Supervisores</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Zona</th>
+                                <th scope="col">Rol</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = $conexion->query("SELECT * FROM usuarios WHERE RolID = 2");
+
+                            // Verificar si la consulta se realizó con éxito
+                            if ($sql === false) {
+                                die("Error en la consulta SQL: " . $conexion->error);
+                            }
+
+                            // Verificar si la consulta devolvió resultados
+                            if ($sql->num_rows > 0) {
+                                $rowCount = 0; // Contador de filas
+                                while ($datos = $sql->fetch_object()) { 
+                                    $rowCount++; // Incrementar el contador de filas
+                                    ?>
+                                    <tr class="row<?= $rowCount ?>">
+                                        <td><?= "REC 100" .$datos->ID ?></td>
+                                        <td><?= $datos->Nombre ?></td>
+                                        <td><?= $datos->Apellido ?></td>
+                                        <td><?= $datos->Email ?></td>
+                                        <td><?= $datos->Zona ?></td>
+                                        <td><?= $datos->RolID ?></td>
+                                        
+                                    </tr>
+                                <?php } 
+                            } else {
+                                echo "No se encontraron resultados.";
+                            }
+                            ?>
+                        </tbody>
+                    </table><br><br>
 
                     <h2>Cobradores</h2>
                     <table class="table">
