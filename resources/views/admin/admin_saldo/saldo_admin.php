@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Saldo Inicial</title>
     <link rel="stylesheet" href="/public/assets/css/saldo_admin.css">
 </head>
+
 <body>
-    <h2>Asignar Saldo Inicial al Administrador</h2>
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <label for="monto">Monto:</label>
-        <input type="number" step="0.01" id="monto" name="monto" required>
-        <button type="submit" name="guardar_saldo">Guardar</button>
-    </form>
+<div class="container">
+        <h2>Asignar Saldo Inicial al Administrador</h2>
+        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <div class="form-group">
+                <label for="monto">Monto:</label>
+                <input type="number" step="0.01" id="monto" name="monto" required>
+            </div>
+            <button type="submit" name="guardar_saldo">Guardar</button>
+        </form>
+    </div>
+
 
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['guardar_saldo'])) {
@@ -47,4 +54,5 @@
     }
     ?>
 </body>
+
 </html>

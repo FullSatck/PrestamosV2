@@ -11,7 +11,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin: 10px 0; /* Reducción del margen para pantallas más pequeñas */
-    background: rgb(219, 218, 218);
+    background: rgb(247, 244, 244);
 }
 
 table, th, td {
@@ -37,7 +37,7 @@ th, td {
 }
 
 .btn-secondary {
-    background-color: #6c757d;
+    background-color: #f2f4f7;
 }
 
 /* Estilos para el encabezado */

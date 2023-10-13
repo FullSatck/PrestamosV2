@@ -12,6 +12,38 @@ h1 {
     background-color: #3498db; /* Azul */
     color: #fff;
     padding: 20px 0;
+    margin: 0;
+}
+
+/* Estilo para la barra de búsqueda */
+.search-container {
+    text-align: center; /* Centrar el contenido en la barra de búsqueda */
+    margin: 20px 0;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Estilo para el botón de búsqueda (si tienes uno) */
+.search-button {
+    background-color: #3498db; /* Color del botón de búsqueda */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Estilo al pasar el ratón por encima del botón de búsqueda */
+.search-button:hover {
+    background-color: #2980b9; /* Cambia el color al pasar el ratón por encima */
 }
 
 /* Estilo para la tabla */
@@ -21,6 +53,7 @@ table {
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
+    margin: 20px 0;
 }
 
 /* Estilo para las filas pares de la tabla */
@@ -51,27 +84,35 @@ table a:hover {
     text-decoration: underline;
 }
 
-/* Hacer que la tabla sea responsive */
+/* Media query para hacer la tabla responsiva */
 @media (max-width: 768px) {
     table {
-        display: block;
+        font-size: 14px; /* Reducir el tamaño de fuente en dispositivos pequeños */
     }
-
-    table thead {
-        display: none;
-    }
-
-    table tr {
-        margin-bottom: 400px;
-    }
-
-    table td {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    table td::before {
-        content: attr(data-label);
-        font-weight: bold;
+    table td, table th {
+        padding: 8px; /* Reducir el espacio entre celdas en dispositivos pequeños */
     }
 }
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px; /* Reducir el tamaño del encabezado en dispositivos móviles */
+    }
+    table {
+        border-radius: 0; /* Eliminar el borde redondeado en dispositivos móviles */
+    }
+    table td, table th {
+        padding: 6px; /* Reducir aún más el espacio entre celdas en dispositivos móviles */
+    }
+}
+
+/* Estilo para los nuevos campos agregados */
+/* Ajusta los selectores y estilos según tus necesidades */
+table th.new-field {
+    background-color: #3498db;
+    color: #fff;
+    font-weight: bold;
+}
+
+

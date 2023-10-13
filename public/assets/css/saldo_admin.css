@@ -1,76 +1,70 @@
-/* Estilo para el cuerpo de la página */
 body {
     font-family: Arial, sans-serif;
+    font-size: 1rem; /* Relative font size */
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
 }
 
-/* Estilo para el contenedor del formulario */
-h2 {
-    text-align: center;
-    margin: 20px 0;
-}
-
-form {
-    max-width: 400px;
+.container {
+    max-width: 600px;
     margin: 0 auto;
+    background: #fff;
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo para las etiquetas y campos de entrada */
+h2 {
+    font-size: 1.5rem; /* Relative font size */
+}
+
+/* Formulario */
+form {
+    text-align: center;
+}
+
 label {
-    display: block;
-    margin-bottom: 8px;
+    font-weight: bold;
 }
 
 input[type="number"] {
     width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
+    margin: 10px 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-/* Estilo para el botón */
-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
+button[type="submit"] {
     background-color: #007BFF;
     color: #fff;
+    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
+button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* Alineación del botón al centro */
-button[type="submit"] {
-    margin: 0 auto;
-}
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
 
-/* Estilo para mensajes de éxito o error */
-.message {
-    text-align: center;
-    margin: 20px 0;
-    padding: 10px;
-    border-radius: 5px;
-}
+    h2 {
+        font-size: 1.2rem; /* Relative font size */
+    }
 
-.message.success {
-    background-color: #4CAF50;
-    color: #fff;
-}
+    input[type="number"] {
+        font-size: 1rem; /* Relative font size */
+    }
 
-.message.error {
-    background-color: #f44336;
-    color: #fff;
+    button[type="submit"] {
+        font-size: 1rem; /* Relative font size */
+    }
 }

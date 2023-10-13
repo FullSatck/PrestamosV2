@@ -1,0 +1,60 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 28px;
+}
+
+/* Tabla de supervisores */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.table th {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+/* Mensaje de no se encontraron supervisores */
+.no-supervisors {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px;
+    }
+}
