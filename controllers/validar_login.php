@@ -1,13 +1,12 @@
 <?php
 session_start();
-include("conexion.php"); // Asegúrate de que este archivo contiene tu conexión a la base de datos
+include("conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $contrasena = $_POST['contrasena'];
 
-    // Utiliza consultas preparadas para prevenir ataques de SQL injection
-    $consulta = "SELECT ID, Email, Password, RolID, Nombre FROM usuarios WHERE Email = ?";
+    $consulta = "SELECT ID, Email, Password, Zona, RolID, Nombre FROM usuarios WHERE Email = ?";
     $stmt = mysqli_prepare($conexion, $consulta);
 
     if ($stmt) {
@@ -17,47 +16,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fila = mysqli_fetch_assoc($resultado);
 
         if ($fila) {
-            // Verificar la contraseña con password_verify
             $hash_contrasena = $fila['Password'];
+
             if (password_verify($contrasena, $hash_contrasena)) {
                 $_SESSION['logged_in'] = true;
-                $_SESSION['IDrol'] = $fila['RolId']; // Leer rol de BD
-                $_SESSION['Email'] = $fila['Email']; // Guardar el email del usuario
-                $_SESSION['NombreUsuario'] = $fila['Nombre']; // Guardar el nombre del usuario
+                $_SESSION['IDrol'] = $fila['RolID'];
+                $_SESSION['Zona'] = $fila['Zona'];
+                $_SESSION['Email'] = $fila['Email'];
+                $_SESSION['NombreUsuario'] = $fila['Nombre'];
 
                 switch ($fila['RolID']) {
-                    case 1: // 1 podría representar el rol 'admin'
+                    case 1: // rol 'admin'
                         header("location: ../resources/views/admin/inicio/inicio.php");
                         break;
-                    case 2: // 2 podría representar el rol 'supervisor'
+                    case 2: // rol 'supervisor'
                         header("location: ../resources/views/supervisor/inicio/inicio.php");
                         break;
-                    case 3: // 3 podría representar el rol 'cobrador'
+                    case 3: // rol 'cobrador'
                         header("location: ../resources/views/cobrador/inicio/inicio.php");
                         break;
                     default:
+                        // Agregar mensaje de registro para identificar el valor inesperado
+                        error_log("Valor inesperado en RolID: " . $fila['RolID']);
                         header("location: pagina_error.php");
                         break;
                 }
-                
 
                 exit();
             } else {
                 // Contraseña incorrecta
                 $_SESSION['logged_in'] = false;
-                header("location: pagina_errorcontra.php1"); // Redirigir a página de error
+                // Agregar mensaje de registro para identificar problemas con la contraseña
+                error_log("Contraseña incorrecta para el usuario: " . $email); 
+                header("location: pagina_errorcontra.php");
                 exit();
             }
         } else {
             // Usuario no encontrado
             $_SESSION['logged_in'] = false;
-            header("location: pagina_erroruser.php2"); // Usuario no encontrado (página de error)
+            // Agregar mensaje de registro para usuarios no encontrados
+            error_log("Usuario no encontrado para el correo: " . $email);
+            header("location: pagina_erroruser.php");
             exit();
         }
     } else {
         // Error de consulta preparada
         $_SESSION['logged_in'] = false;
-        header("location: pagina_errorns.php"); // Error de consulta preparada (página de error)
+        // Agregar mensaje de registro para identificar errores de consulta preparada
+        error_log("Error de consulta preparada");
+        header("location: pagina_errorns.php");
         exit();
     }
 }

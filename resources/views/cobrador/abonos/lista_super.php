@@ -26,14 +26,15 @@ if (isset($_GET['mensaje'])) {
 </head>
 <body>
     <!-- Botón para volver a la página anterior -->
-    <h1 class="text-center">Listado de Cobradores</h1>
+    <h1 class="text-center">Listado de Supervisores</h1>
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
                 <!-- Botón para registrar trabajadores -->
                 <div class="register-button">
-                    <a href="###" class="btn btn-success"><i class="fas fa-user-plus"></i> Registrar Trabajador</a> 
+                    <a href="registrar.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Registrar Trabajador</a>
+                    <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
                 </div>
             </div>
 
@@ -52,7 +53,7 @@ if (isset($_GET['mensaje'])) {
                 <tbody>
                     <?php
                     include("../../../../controllers/conexion.php");
-                    $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 3"); // Filtra por el ID del rol de supervisor (2)
+                    $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 2"); // Filtra por el ID del rol de supervisor (2)
                     
                     // Verificar si la preparación de la consulta fue exitosa
                     if ($sql === false) {
@@ -76,8 +77,12 @@ if (isset($_GET['mensaje'])) {
                             <td><?= $datos->Zona ?></td>
                             <td><?= $datos->Rol ?></td> 
                             <td>
+                                <!-- Botón para ver los cobradores de la zona -->
+                                <a href="ver_cobradores.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Cobradores</a>
                                 <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Prestamos</a>
-                                <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>    
+                                <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
+                                <!-- Botón para editar la zona (puedes crear esta página si aún no existe) -->
+                                
                             </td>
                         </tr>
                     <?php } ?>

@@ -11,8 +11,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 // Incluir el archivo de conexión a la base de datos
 include("../../../../controllers/conexion.php"); // Asegúrate de que este archivo contiene tu conexión a la base de datos
 
-// Realizar la consulta para obtener todos los cobradores
-$query = "SELECT * FROM Usuarios WHERE RolID = 3"; // Suponiendo que el ID de rol para los cobradores es 3
+// Realizar la consulta para obtener todos los supervisores
+$query = "SELECT * FROM Usuarios WHERE Rol = 2"; // Suponiendo que el ID de rol para los supervisores es 2
 $result = mysqli_query($conexion, $query);
 
 if (!$result) {
@@ -28,15 +28,15 @@ if (!$result) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/apartados_grupos.css">
-    <title>Cobradores</title>
+    <title>Supervisores</title>
     <!-- Agrega aquí tus estilos CSS si es necesario -->
 </head>
 
 <body>
-    <h1>Cobradores</h1>
+    <h1>Supervisores</h1>
     <button><a href="/resources/views/admin/grupos/grupos.php">Volver</a></button>
 
-    <!-- Mostrar la lista de cobradores -->
+    <!-- Mostrar la lista de supervisores -->
     <ul>
         <?php
         while ($row = mysqli_fetch_assoc($result)) {
