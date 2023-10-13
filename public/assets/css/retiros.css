@@ -3,38 +3,87 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
-    padding: 0;
+    padding: 20px; /* Reduje el relleno para pantallas más pequeñas */
 }
 
 h1 {
+    background-color: #70aee9;
+    color: #000;
+    padding: 10px; /* Reduje el relleno para pantallas más pequeñas */
     text-align: center;
-    margin: 20px 0;
-    font-size: 28px;
+}
+
+/* Estilos para los cuadros de saldo */
+.saldo-box {
+    display: flex;
+    flex-wrap: wrap; /* Ajusta a nuevas líneas cuando no cabe en la pantalla */
+    justify-content: space-around;
+    background-color: #f0f0f0;
+    padding: 10px; /* Reduje el relleno para pantallas más pequeñas */
+    border-radius: 5px;
+    margin-bottom: 10px; /* Reduje el margen para pantallas más pequeñas */
+}
+
+.saldo-item {
+    text-align: center;
+    flex: 1; /* Ocupa todo el ancho disponible en pantallas pequeñas */
+}
+
+.saldo-item h2 {
+    font-size: 16px; /* Reduce el tamaño de fuente para pantallas más pequeñas */
+    margin-bottom: 5px;
+}
+
+.saldo-item p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
 }
 
 .container {
-    max-width: 100%;
+    max-width: 100%; /* Ajusta al ancho de la pantalla */
     margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
+    padding: 10px; /* Reduzca el relleno para pantallas más pequeñas */
 }
 
-/* Estilos para la tabla de saldos */
+/* Estilos para la barra de búsqueda */
+#busqueda {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px; /* Reduzca el margen para pantallas más pequeñas */
+}
+
+/* Estilos para la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 10px; /* Reduzca el margen para pantallas más pequeñas */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
-table th, table td {
-    padding: 10px;
-    border: 1px solid #ccc;
+th, td {
+    padding: 8px; /* Reduzca el relleno para pantallas más pequeñas */
     text-align: left;
+    border-bottom: 1px solid #ccc;
 }
 
-table th {
-    background-color: #007BFF;
-    color: #fff;
+th {
+    background-color: #70aee9;
+    color: #000;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #dcdcdc;
 }
 
 /* Estilos para los enlaces en la última columna */
@@ -42,6 +91,7 @@ td a {
     background: #f2f2f2;
     text-decoration: none;
     color: #0056b3;
+    transition: color 0.3s ease;
     padding: 7px;
     border-radius: 8px;
     display: inline-block;
@@ -50,15 +100,15 @@ td a {
 
 /* Estilos para los botones */
 .button {
-    padding: 10px 20px;
-    background-color: #007BFF;
+    padding: 10px 15px; /* Reduzca el relleno para pantallas más pequeñas */
+    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     text-decoration: none;
-    margin-right: 5px;
+    margin-right: 5px; /* Reduzca el margen para pantallas más pequeñas */
     display: inline-block;
 }
 
@@ -66,48 +116,14 @@ td a {
     background-color: #0056b3;
 }
 
-/* Estilos para el encabezado de los cuadros de saldo */
-.saldo-box h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
+.aa{
+    color: #ff0000;
 }
 
-.saldo-box p {
-    font-size: 24px;
-    font-weight: bold;
-    color: #007BFF;
-}
-
-/* Estilos responsivos */
+/* Media query para pantallas más pequeñas */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 24px;
-    }
-
-    .container {
-        padding: 10px;
-    }
-
-    table th, table td {
-        padding: 8px;
-    }
-
-    td a {
-        font-size: 14px;
-    }
-
-    .button {
-        padding: 8px 16px;
-        font-size: 14px;
-        margin-right: 3px;
-    }
-
-    .saldo-box h2 {
-        font-size: 16px;
-        margin-bottom: 8px;
-    }
-
-    .saldo-box p {
-        font-size: 20px;
-    }
+    .saldo-box {
+        flex-direction: column; /* Apila los elementos verticalmente */
+        align-items: center; /* Centra los elementos */
+    }
 }
