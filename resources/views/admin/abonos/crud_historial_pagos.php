@@ -21,6 +21,9 @@ if (isset($_GET['clienteId'])) {
 </head>
 <body>
     <h1>Historial de Pagos del Cliente</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+    </div>
 
     <table>
         <tr>
@@ -45,6 +48,30 @@ if (isset($_GET['clienteId'])) {
         <?php } ?>
     </table>
 </body>
+<script>
+        // JavaScript para la búsqueda en tiempo real
+        const searchInput = document.getElementById('search-input');
+        const table = document.querySelector('table');
+        const rows = table.querySelectorAll('tbody tr');
+
+        searchInput.addEventListener('input', function () {
+            const searchTerm = searchInput.value.toLowerCase();
+
+            rows.forEach((row) => {
+                const rowData = Array.from(row.children)
+                    .map((cell) => cell.textContent.toLowerCase())
+                    .join('');
+
+                if (rowData.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script> 
+</body>
+
 </html>
 <?php
 } else {
