@@ -42,8 +42,7 @@
     <title>Lista de Fechas de Pago</title>
     <link rel="stylesheet" href="/public/assets/css/ruta.css">
 </head>
-<body>
-    <h1>Lista de Fechas de Pago</h1> 
+<body> 
 
     <div id="fechasPagoContainer">
         <!-- Aquí se mostrará la lista de fechas de pago en tiempo real -->

@@ -35,6 +35,20 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </div>
     </div>
 
+    <h2 class="h22">Administrador</h2>
+
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th scope="row">
+                <a href="/resources/views/admin/admin_saldo/saldo_admin.php">Saldo Inicial </a>
+                <div class="button-container">
+                    <button><a href="/admin/auth/user/add/">Añadir</a></button>
+                    <button><a href="/admin/auth/user/">Modificar</a></button>
+                </div>
+            </th>
+        </tr> 
+    </table>
+
     <h2 class="h22">Usuarios</h2>
 
     <table class="table table-striped table-bordered">

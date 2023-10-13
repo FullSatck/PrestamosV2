@@ -25,17 +25,27 @@ if (isset($_GET['zona'])) {
     echo "Zona no especificada.";
 }
 
-$conexion->close();
+// Manejar la solicitud POST para guardar el nuevo orden
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["nuevoOrden"])) {
+    // Obtén el nuevo orden y guárdalo en la base de datos
+    $nuevoOrden = $_POST["nuevoOrden"];
+    guardarNuevoOrden($nombreZona, $nuevoOrden);
+    // Redirigir después de guardar
+    header("Location: ruta.php?zona=$nombreZona");
+    exit();
+}
+
+$conexion->close(); 
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Lista de Fechas de Pago</title>
-    <link rel="stylesheet" href="ruta.css">
 </head>
 <body>
     <h1>Lista de Fechas de Pago para la Zona: <?= $nombreZona ?></h1>
+    <button onclick="guardarCambios()">Guardar Cambios</button>
     <table id="lista-pagos">
         <thead>
             <tr>
@@ -61,20 +71,36 @@ $conexion->close();
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script>
+        // Agrega el arrastre y suelte a las filas
         $(document).ready(function() {
-            // Agrega el arrastre y suelte a las filas
             $("#lista-pagos tbody").sortable({
                 handle: ".drag-handle", // El elemento de arrastre
                 cursor: "move", // El cursor se convierte en una mano
-                update: function(event, ui) {
-                    // Aquí puedes manejar las actualizaciones necesarias en tu base de datos
-                    // para reflejar el nuevo orden
-                    var nuevaOrden = $(this).sortable("toArray");
-                    // Envía la nueva orden al servidor con AJAX o como lo prefieras
+            });
+        });
+
+        function guardarCambios() {
+            var nuevoOrden = obtenerNuevoOrden();
+            guardarNuevoOrdenEnServidor(nuevoOrden);
+        }
+
+        function obtenerNuevoOrden() {
+            var nuevoOrden = $("#lista-pagos tbody").sortable("toArray");
+            return nuevoOrden;
+        }
+
+        function guardarNuevoOrdenEnServidor(nuevoOrden) {
+            $.ajax({
+                url: 'cargar_fechas_pago.php?zona=<?= $nombreZona ?>',
+                method: 'POST',
+                data: {
+                    nuevoOrden: nuevoOrden
+                },
+                success: function(data) {
+                    // Aquí puedes manejar la respuesta del servidor si es necesario
                 }
             });
-            $("#lista-pagos tbody").disableSelection();
-        });
+        }
     </script> 
 </body>
 </html>
