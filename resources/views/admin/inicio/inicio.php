@@ -19,7 +19,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrador Recaudo</title>
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
-
+    <link rel="stylesheet" href="/public/assets/css/menu_despegable.css">
 </head>
 
 <body class="dashboard">
