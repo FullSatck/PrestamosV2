@@ -121,6 +121,7 @@ if (isset($_GET['mensaje'])) {
                     <div class="form-group col-md-6">
                         <label for="cantidad-pago">Cantidad a Pagar:</label>
                         <input type="number" id="cantidad-pago" class="form-control" required>
+
                     </div>
                     <div class="form-group col-md-6">
                         <label for="fecha-pago">Fecha del Pago:</label>
@@ -179,16 +180,33 @@ if (isset($_GET['mensaje'])) {
                     <!-- Agregar el botón para generar la factura -->
                     <button id="generarFacturaButton" class="btn btn-primary">Generar Factura</button>
 
+                    <!-- Agregar un botón para compartir la factura por WhatsApp -->
+                    <button id="compartirPorWhatsAppButton" class="btn btn-success">Compartir por WhatsApp</button>
+
+
+
+
+
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+    <!-- scripts -->
+    
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
-
-
     <script src="/public/assets/js/abonos.js"></script>
+
+
+
+
+
 
 
 </body>
