@@ -7,7 +7,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header("location: ../../../../index.php");
     exit();
 }
-
+ 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
@@ -17,180 +17,138 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrador Recaudo</title>
+    <link rel="stylesheet" href="/menu/menu.css">
+    <title>Recaudo</title>
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
-    <link rel="stylesheet" href="/public/assets/css/menu_despegable.css">
 </head>
 
-<body class="dashboard">
-    <div class="navbar navbar-default">
-        <div class="navbar-inner">
-            <div class="navbar-header">
-                <span class="navbar-brand">Administrador</span>
-                <div class="button-container">
-                    <button><a href="/controllers/cerrar_sesion.php" class="aa"><strong>Cerrar
-                                Sesion</strong></a></button>
+<body>
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-circle-outline"></ion-icon>
+    </div>
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina"> 
+                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
+                <span>Recaudo</span>
+            </div> 
+        </div>
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
+                        <ion-icon name="push-outline"></ion-icon>
+                        <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/registrar.php">
+                        <ion-icon name="person-add-outline"></ion-icon>
+                        <span>Registrar Usuario</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                        <ion-icon name="people-circle-outline"></ion-icon>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <span>Registrar Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                        <ion-icon name="list-outline"></ion-icon>
+                        <span>Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/prestamos.php">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <span>Registrar Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/grupos/grupos.php">
+                        <ion-icon name="eye-outline"></ion-icon>
+                        <span>Roles</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/cobros/cobros.php">
+                        <ion-icon name="planet-outline"></ion-icon>
+                        <span>Zonas de cobro</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/gastos/gastos.php">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Gastos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/lista_super.php">
+                        <ion-icon name="map-outline"></ion-icon>
+                        <span>Ruta</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/abonos.php">
+                        <ion-icon name="cloud-download-outline"></ion-icon>
+                        <span>Abonos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/retiros/retiros.php">
+                        <ion-icon name="cloud-done-outline"></ion-icon>
+                        <span>Retiros</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="linea"></div>
+
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="moon-outline"></ion-icon>
+                    <span>Dark Mode</span>
+                </div>
+                <div class="switch">
+                    <div class="base">
+                        <div class="circulo">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-    <h2 class="h22">Administrador</h2>
 
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/admin_saldo/saldo_admin.php">Saldo Inicial </a>
-                <div class="button-container">
-                    <button><a href="/admin/auth/user/add/">Añadir</a></button>
-                    <button><a href="/admin/auth/user/">Modificar</a></button>
-                </div>
-            </th>
-        </tr> 
-    </table>
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <h2 class="h22">Usuarios</h2>
+    <main>  
+    </main>
 
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/usuarios/crudusuarios.php">Usuarios </a>
-                <div class="button-container">
-                    <button><a href="/admin/auth/user/add/">Añadir</a></button>
-                    <button><a href="/admin/auth/user/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/usuarios/registrar.php">Registrar Usuario</a>
-                <div class="button-container">
-                    <button><a href="/admin/empresa/cliente/add/">Añadir</a></button>
-                    <button><a href="/admin/empresa/cliente/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-    </table>
 
-    <h2 class="h22">Clientes</h2>
 
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/clientes/lista_clientes.php">Clientes </a>
-                <div class="button-container">
-                    <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
-                    <button><a href="/admin/recaudo/abono/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/clientes/agregar_clientes.php">Registrar Clientes </a>
-                <div class="button-container">
-                    <button><a href="/admin/empresa/cliente/add/">Añadir</a></button>
-                    <button><a href="/admin/empresa/cliente/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-    </table>
 
-    <h2 class="h22">Prestamos</h2>
-
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/creditos/crudPrestamos.php">Prestamos</a>
-                <div class="button-container">
-                    <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
-                    <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/creditos/prestamos.php">Registrar Prestamos</a>
-                <div class="button-container">
-                    <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
-                    <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-    </table>
-
-    <h2 class="h22">Empresa</h2>
-
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/grupos/grupos.php">Roles </a>
-                <div class="button-container">
-                    <button><a href="/admin/auth/group/add/">Añadir</a></button>
-                    <button><a href="/admin/auth/group/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/cobros/cobros.php">Zona de cobros </a>
-                <div class="button-container">
-                    <button><a href="/admin/recaudo/cobro/add/">Añadir</a></button>
-                    <button><a href="/admin/recaudo/cobro/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/gastos/gastos.php">Gastos </a>
-                <div class="button-container">
-                    <button><a href="/admin/recaudo/gasto/add/">Añadir</a></button>
-                    <button><a href="/admin/recaudo/gasto/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-    </table>
-
-    <h2 class="h22">Recaudo</h2>
-
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/abonos/lista_super.php">Ruta </a>
-                <div class="button-container">
-                    <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
-                    <button><a href="/admin/recaudo/abono/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/abonos/abonos.php">Abonos </a>
-                <div class="button-container">
-                    <button><a href="/admin/recaudo/abono/add/">Añadir</a></button>
-                    <button><a href="/admin/recaudo/abono/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-        <tr>
-        <tr>
-            <th scope="row">
-                <a href="/admin/recaudo/codeudor/">Codeudores</a>
-                <div class="button-container">
-                    <button><a href="/admin/recaudo/codeudor/add/">Añadir</a></button>
-                    <button><a href="/admin/recaudo/codeudor/">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-        <tr>
-            <th scope="row">
-                <a href="/resources/views/admin/retiros/retiros.php">Retiros </a>
-                <div class="button-container">
-                    <button><a href="##"><span class="glyphicon glyphicon-plus">Añadir</a></button>
-                    <button><a href="##"><span class="glyphicon glyphicon-edit">Modificar</a></button>
-                </div>
-            </th>
-        </tr>
-    </table>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/menu/main.js"></script>
 
 </body>
 
