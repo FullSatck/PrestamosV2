@@ -52,6 +52,15 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <label for="tasa_interes">Tasa de Interés (%):</label>
             <input type="text" name ="TasaInteres" id="TasaInteres" required><br>
+            
+            <label for="frecuencia_pago">Frecuencia de Pago:</label>
+            <select name="frecuencia_pago" id="frecuencia_pago" required onchange="calcularMontoPagar()">
+                <option value="diario">Diario</option>
+                <option value="semanal">Semanal</option>
+                <option value="quincenal">Quincenal</option>
+                <option value="mensual">Mensual</option>
+            </select><br>
+
 
             <label for="plazo">Plazo:</label>
             <input type="text" name="plazo" id="plazo" required><br>
@@ -68,18 +77,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <!-- Reemplaza el campo de fecha de inicio con un campo de texto readonly -->
             <label for="fecha_inicio">Fecha de Inicio:</label>
-            <input type="date" name="fecha_inicio" required><br>
-                <br>
+            
+            <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d '); ?>"
+                readonly><br>
 
 
-            <label for="frecuencia_pago">Frecuencia de Pago:</label>
-            <select name="frecuencia_pago" id="frecuencia_pago" required onchange="calcularMontoPagar()">
-                <option value="diario">Diario</option>
-                <option value="semanal">Semanal</option>
-                <option value="quincenal">Quincenal</option>
-                <option value="mensual">Mensual</option>
-            </select><br>
-
+           
             <label for="zona">Zona:</label>
             <select name="zona" required>
                 <?php

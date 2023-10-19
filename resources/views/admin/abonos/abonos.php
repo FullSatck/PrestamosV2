@@ -161,34 +161,36 @@ if (isset($_GET['mensaje'])) {
         </div>
     </div>
 
-<!-- Modal para pago confirmado -->
-<div class="modal fade" id="pagoConfirmadoModal" tabindex="-1" role="dialog"
-    aria-labelledby="pagoConfirmadoModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="pagoConfirmadoModalLabel">Pago Confirmado</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                El pago ha sido confirmado exitosamente.
-            </div>
-            <div class="modal-footer">
-                <!-- Agregar el botón para generar la factura -->
-                <button id="generarFactura" class="btn btn-primary">Generar Factura</button>
+    <!-- Modal para pago confirmado -->
+    <div class="modal fade" id="pagoConfirmadoModal" tabindex="-1" role="dialog"
+        aria-labelledby="pagoConfirmadoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pagoConfirmadoModalLabel">Pago Confirmado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    El pago ha sido confirmado exitosamente.
+                </div>
+                <div class="modal-footer">
+                    <!-- Agregar el botón para generar la factura -->
+                    <button id="generarFacturaButton" class="btn btn-primary">Generar Factura</button>
 
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
 
-   <script src="/public/assets/js/abonos.js"></script>
 
-    
+    <script src="/public/assets/js/abonos.js"></script>
+
+
 </body>
 
 </html>
