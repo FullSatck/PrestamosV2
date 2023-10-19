@@ -6,7 +6,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     // El usuario no ha iniciado sesión, redirigir al inicio de sesión
     header("location: ../../../../index.php");
     exit();
-}
+} 
  
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
@@ -16,8 +16,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/menu/menu.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Recaudo</title>
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
 </head>
@@ -77,13 +76,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <ion-icon name="cloud-upload-outline"></ion-icon>
                         <span>Registrar Prestamos</span>
                     </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/grupos/grupos.php">
-                        <ion-icon name="eye-outline"></ion-icon>
-                        <span>Roles</span>
-                    </a>
-                </li>
+                </li> 
                 <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
@@ -140,7 +133,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>  
+    <main>   
     </main>
 
 
