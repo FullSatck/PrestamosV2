@@ -53,7 +53,7 @@
 body{
     height: 100vh;
     width: 100%;
-    background-color: aqua;
+    padding: 20px;
 }
 
 /* ESTILOS PARA EL MENU */
@@ -175,7 +175,7 @@ body{
     list-style: none;
     display: flex;
     margin-bottom: 5px;
-}
+} 
 
 .barra-lateral .navegacion a{
     width: 100%;
@@ -264,18 +264,6 @@ body{
     left: 15px;
 }
 
-/* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
-
-main{
-    margin-left: 250px;
-    padding: 20px;
-    transition: margin-left 0.5s ease;
-}
-
-main.min-main{
-    margin-left: 80px;
-}
-
 /* RESPONSIVE */
 
 @media (max-height: 660px){
@@ -304,71 +292,75 @@ main.min-main{
     }
 }
 
-/* Estilos generales */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+/* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
+  
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para el contenedor principal */
-.main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-/* Estilos para el menú desplegable */
-.menu {
-  position: fixed;
-  width: 50px;
-  height: 50px;
-  font-size: 30px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  cursor: pointer;
-  background-color: var(--color-barra-lateral); /* Utiliza el color del menú */
-  color: var(--color-boton-texto); /* Utiliza el color de texto del botón del menú */
-  right: 15px;
-  top: 15px;
-}
-
-/* Estilos para la barra lateral del menú (puedes mantener los estilos originales) */
-
-/* Estilos para el contenedor del formulario */
-.container {
-  width: 90%;
-  max-width: 400px;
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-  color: #007bff; /* Cambia el color del encabezado del formulario */
-}
-
-/* Estilos específicos para el formulario y sus elementos */
 h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #007bff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-/* (Continúa con los estilos originales para el formulario y sus elementos) */
+.form-container label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
 
-/* Media Queries y estilos para dispositivos móviles (puedes mantener los estilos originales) */
+.form-container select,
+.form-container input[type="text"],
+.form-container input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-/* Estilos para el pie de página */
-#footer {
-  text-align: center;
-  background-color: #f0f0f0;
-  padding: 10px 0;
-  color: #333;
-  font-size: 14px;
+.form-container select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent url('arrow.png') no-repeat scroll right center;
+}
+
+.result-container {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.result-container h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.result-container p {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.calcular-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.calcular-button:hover {
+    background-color: #0056b3;
 }

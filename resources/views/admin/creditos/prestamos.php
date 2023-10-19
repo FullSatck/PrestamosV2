@@ -10,9 +10,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
-
+ 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Solicitud de Préstamo</title>
@@ -22,7 +22,118 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </head>
 
 <body>
-    <div class="container">
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-circle-outline"></ion-icon>
+    </div>
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
+                <span>Recaudo</span>
+            </div>
+        </div>
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
+                        <ion-icon name="push-outline"></ion-icon>
+                        <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/registrar.php">
+                        <ion-icon name="person-add-outline"></ion-icon>
+                        <span>Registrar Usuario</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                        <ion-icon name="people-circle-outline"></ion-icon>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <span>Registrar Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                        <ion-icon name="list-outline"></ion-icon>
+                        <span>Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/prestamos.php">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <span>Registrar Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/cobros/cobros.php">
+                        <ion-icon name="planet-outline"></ion-icon>
+                        <span>Zonas de cobro</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/gastos/gastos.php">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Gastos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/lista_super.php">
+                        <ion-icon name="map-outline"></ion-icon>
+                        <span>Ruta</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/abonos.php">
+                        <ion-icon name="cloud-download-outline"></ion-icon>
+                        <span>Abonos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/retiros/retiros.php">
+                        <ion-icon name="cloud-done-outline"></ion-icon>
+                        <span>Retiros</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="linea"></div>
+
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="moon-outline"></ion-icon>
+                    <span>Dark Mode</span>
+                </div>
+                <div class="switch">
+                    <div class="base">
+                        <div class="circulo">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+
+    <main>
         <h1>Solicitud de Préstamo</h1><br><br>
         <form action="/controllers/procesar_prestamo.php" method="POST" class="form-container">
             <?php
@@ -51,8 +162,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <input type="text" name="monto" id="monto" required><br>
 
             <label for="tasa_interes">Tasa de Interés (%):</label>
-            <input type="text" name ="TasaInteres" id="TasaInteres" required><br>
-            
+            <input type="text" name="TasaInteres" id="TasaInteres" required><br>
+
             <label for="frecuencia_pago">Frecuencia de Pago:</label>
             <select name="frecuencia_pago" id="frecuencia_pago" required onchange="calcularMontoPagar()">
                 <option value="diario">Diario</option>
@@ -77,12 +188,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <!-- Reemplaza el campo de fecha de inicio con un campo de texto readonly -->
             <label for="fecha_inicio">Fecha de Inicio:</label>
-            
-            <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d '); ?>"
-                readonly><br>
+
+            <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d '); ?>" readonly><br>
 
 
-           
+
             <label for="zona">Zona:</label>
             <select name="zona" required>
                 <?php
@@ -103,8 +213,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <input type="submit" value="Hacer préstamo" class="calcular-button">
         </form>
-    </div>
-
+    </main>
+    <script src="/menu/main.js"></script>
     <script>
     function calcularMontoPagar() {
         // Obtener los valores ingresados por el usuario
@@ -145,6 +255,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         }
     }
     </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+
 </body>
 
 </html>

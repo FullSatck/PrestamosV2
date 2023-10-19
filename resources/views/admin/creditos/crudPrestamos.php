@@ -152,10 +152,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <!-- Barra de búsqueda y botón de registro -->
             <div class="search-container">
                 <div class="search-input">
-                    <input type="text" id="search-input" class="form-control" placeholder="Buscar...">
-                    <a href="/resources/views/admin/inicio/inicio.php">
-                        <button type="button" id="search-button" class="btn btn-primary">Volver</button>
-                    </a>
+                    <input type="text" id="search-input" class="form-control" placeholder="Buscar..."> 
                 </div>
                 
             <!-- Tabla de préstamos en un contenedor con scroll horizontal -->
@@ -253,43 +250,4 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </html>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-
-
-<body>
-   
-
-  
-    
-</body> 
-
-</html>
+ 
