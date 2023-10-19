@@ -5,7 +5,7 @@ include 'conexion.php';
 // Recuperar los datos del formulario
 $id_cliente = $_POST['id_cliente'];
 $monto = $_POST['monto'];
-$tasa_interes = isset($_POST['tasa_interes']) ? floatval($_POST['tasa_interes']) : 0; // Validar tasa_interes
+$tasa_interes = isset($_POST['TasaInteres']) ? floatval($_POST['TasaInteres']) : 0; // Validar tasa_interes
 $plazo = $_POST['plazo'];
 $moneda_id = $_POST['moneda_id'];
 $fecha_inicio = $_POST['fecha_inicio'];
@@ -28,9 +28,9 @@ $monto_total = $monto + ($monto * $tasa_interes / 100);
 // Calcular el monto de cada cuota
 $cuota = $monto_total / $plazo;
 
-// Insertar la solicitud de préstamo en la base de datos
-$sql = "INSERT INTO Prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona, FrecuenciaPago, MontoAPagar, Cuota, MontoCuota) 
-VALUES ('$id_cliente', '$monto', '$tasa_interes', '$plazo', '$moneda_id', '$fecha_inicio', '$fecha_vencimiento', 'pendiente', NULL, '$zona', '$frecuencia_pago', '$monto_total', '$cuota', '$cuota')";
+$sql = "INSERT INTO prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona, FrecuenciaPago, MontoAPagar, Cuota, MontoCuota) 
+        VALUES ('$id_cliente', '$monto', '$tasa_interes', '$plazo', '$moneda_id', '$fecha_inicio', '$fecha_vencimiento', 'pendiente', NULL, '$zona', '$frecuencia_pago', '$monto_total', '$cuota', '$cuota')";
+
 
 if ($conexion->query($sql) === TRUE) {
     $id_prestamo = $conexion->insert_id; // Obtener el ID del préstamo recién insertado

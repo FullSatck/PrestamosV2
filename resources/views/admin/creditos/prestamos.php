@@ -51,7 +51,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <input type="text" name="monto" id="monto" required><br>
 
             <label for="tasa_interes">Tasa de Interés (%):</label>
-            <input type="text" name "tasa_interes" id="tasa_interes" required><br>
+            <input type="text" name ="TasaInteres" id="TasaInteres" required><br>
 
             <label for="plazo">Plazo:</label>
             <input type="text" name="plazo" id="plazo" required><br>
@@ -68,8 +68,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <!-- Reemplaza el campo de fecha de inicio con un campo de texto readonly -->
             <label for="fecha_inicio">Fecha de Inicio:</label>
-            <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d H:i:s'); ?>"
-                readonly><br>
+            <input type="date" name="fecha_inicio" required><br>
+                <br>
 
 
             <label for="frecuencia_pago">Frecuencia de Pago:</label>
@@ -106,7 +106,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     function calcularMontoPagar() {
         // Obtener los valores ingresados por el usuario
         var monto = parseFloat(document.getElementById('monto').value);
-        var tasa_interes = parseFloat(document.getElementById('tasa_interes').value);
+        var tasa_interes = parseFloat(document.getElementById('TasaInteres').value);
         var plazo = parseFloat(document.getElementById('plazo').value);
         var frecuencia_pago = document.getElementById('frecuencia_pago').value;
         var moneda_select = document.getElementById('moneda_id');

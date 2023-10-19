@@ -1,5 +1,6 @@
 // Variables globales para llevar un registro del ID del cliente actual
-var clienteActualId = 1; // Empieza con el primer cliente (puedes cambiarlo si deseas)
+var clienteIds = [];
+var clienteActualIndex = 0;
 
 // Variable para mantener un registro de si se ha ingresado la cantidad de pago
 var cantidadPagoIngresada = false;
@@ -73,8 +74,13 @@ function registrarPago() {
 
 // Función para cambiar al cliente anterior o siguiente
 function cambiarCliente(delta) {
-    clienteActualId += delta;
-    cargarDatosCliente(clienteActualId);
+    clienteActualIndex += delta;
+    if (clienteActualIndex < 0) {
+        clienteActualIndex = 0;
+    } else if (clienteActualIndex >= clienteIds.length) {
+        clienteActualIndex = clienteIds.length - 1;
+    }
+    cargarDatosCliente(clienteIds[clienteActualIndex]);
 }
 
 // Asocia el evento click del botón "Registrar Pago" a la función que muestra el modal de confirmación
@@ -103,29 +109,29 @@ $("#siguienteCliente").click(function() {
     cambiarCliente(1); // Cambiar al siguiente cliente
 });
 
-// Nueva función para cargar la factura más reciente del cliente actual
-function cargarFacturaReciente(clienteId) {
+// Función para cargar la lista de IDs de clientes desde el servidor
+function cargarListaDeClientes() {
     $.ajax({
-        url: "factura_reciente.php?clienteId=" + clienteId,
+        url: "obtener_lista_clientes.php",
         dataType: "json",
         success: function(data) {
-            // Rellenar los campos con los datos de la factura más reciente
-            $("#factura-id").text(data.id);
-            $("#factura-monto").text(data.monto);
-            $("#factura-fecha").text(data.fecha);
-            $("#factura-monto-pagado").text(data.monto_pagado);
-            $("#factura-monto-deuda").text(data.monto_deuda);
+            clienteIds = data;
+            if (clienteIds.length > 0) {
+                cargarDatosCliente(clienteIds[0]);
+            } else {
+                alert("No hay clientes en la base de datos.");
+            }
         },
         error: function() {
-            alert("No se encontraron facturas para este cliente.");
+            alert("Error al cargar la lista de clientes.");
         }
     });
 }
 
-// Asocia el evento click del botón "Generar Factura" a la función para cargar la factura más reciente
+// Asocia el evento click del botón "Generar Factura" a la función para cargar la lista de clientes
 $("#generarFactura").click(function() {
-    cargarFacturaReciente(clienteActualId);
+    cargarListaDeClientes();
 });
 
-// Llama a la función para cargar los datos del cliente actual al cargar la página
-cargarDatosCliente(clienteActualId);
+// Llama a la función para cargar la lista de IDs de clientes al cargar la página
+cargarListaDeClientes();
