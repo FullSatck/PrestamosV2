@@ -43,7 +43,7 @@ if ($resultadoMontoTotalRetiros && $resultadoMontoTotalRetiros->num_rows > 0) {
 // Calcular el saldo total
 $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
 
-?>
+?> 
  
 <!DOCTYPE html>
 <html lang="en">
