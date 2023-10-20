@@ -46,24 +46,18 @@ function cargarDatosCliente(clienteId) {
 // Función para registrar el pago
 function registrarPago() {
     if (cantidadPagoIngresada) {
-        var fechaHoraPago = new Date().toLocaleString(); // Obtiene la fecha y hora actual
+        var fechaPago = $("#fecha-pago").val();
         $.ajax({
             url: "registrar_pago.php",
             method: "POST",
             data: {
                 clienteId: $("#cliente-id").text(),
                 cantidadPago: cantidadPago,
-                fechaPago: fechaHoraPago // Envía la fecha y hora del pago
+                fechaPago: fechaPago
             },
             success: function(response) {
                 // Actualiza el monto a pagar en la página
                 $("#prestamo-monto-pagar").text(response);
-
-                // Muestra la cantidad de pago en el modal de "Pago Confirmado"
-                $("#cantidad-pago-confirmado").text(cantidadPago);
-
-                // Muestra la fecha y hora del pago en el modal de "Pago Confirmado"
-                $("#fecha-hora-pago").text(fechaHoraPago);
 
                 // Limpiar los campos de cantidad de pago
                 $("#cantidad-pago").val("");
@@ -161,10 +155,7 @@ $("#compartirPorWhatsAppButton").click(function() {
     // Obtener los datos necesarios para compartir por WhatsApp
     var clienteNombre = $("#cliente-nombre").text();
     var clienteApellido = $("#cliente-apellido").text();
-    var cantidadPago = $("#cantidad-pago").val();
-    var fechaHoraPago = $("#fecha-hora-pago").text(); // Obtiene la fecha y hora del pago del modal
-
-    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, pagaste ${cantidadPago} el ${fechaHoraPago}. ¡Gracias!`;
+    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, has pagado ${cantidadPago} de tu préstamo. gracias por se una puta!`;
 
     // Obtener el número de teléfono del cliente desde la variable global
     var numeroTelefonoCliente = window.numeroTelefonoCliente;
