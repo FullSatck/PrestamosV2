@@ -161,9 +161,10 @@ $("#compartirPorWhatsAppButton").click(function() {
     // Obtener los datos necesarios para compartir por WhatsApp
     var clienteNombre = $("#cliente-nombre").text();
     var clienteApellido = $("#cliente-apellido").text();
-    var cantidadPago = $("#cantidad-pago-confirmado").text();
-    var fechaHoraPago = $("#fecha-hora-pago").text();
-    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, has pagado ${cantidadPago} a las ${fechaHoraPago}. ¡Gracias!`;
+    var cantidadPago = $("#cantidad-pago").val();
+    var fechaHoraPago = $("#fecha-hora-pago").text(); // Obtiene la fecha y hora del pago del modal
+
+    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, pagaste ${cantidadPago} a las ${fechaHoraPago}. ¡Gracias!`;
 
     // Obtener el número de teléfono del cliente desde la variable global
     var numeroTelefonoCliente = window.numeroTelefonoCliente;
