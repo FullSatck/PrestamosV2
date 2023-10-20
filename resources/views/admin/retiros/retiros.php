@@ -51,7 +51,6 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/menu/menu.css">
     <title>Administrador Recaudo</title>
     <link rel="stylesheet" href="/public/assets/css/retiros.css">
 </head>
@@ -171,19 +170,21 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
     <main>
         <main>
             <h1>Lista de Retiros</h1>
-            <div class="saldo-box">
+            <div class="saldo-box"> 
                 <div class="saldo-item">
-                    <h2>Saldo Inicial del Administrador</h2>
+                    <h2>Saldo Inicial</h2>
                     <p>$<?php echo $saldoAdmin; ?></p>
                 </div>
                 <div class="saldo-item">
-                    <h2>Monto Neto del Administrador</h2>
-                    <p>$<?php echo $montoNetoAdmin; ?></p>
+                    <h2>Monto Neto</h2>
+                    <p class="p">$<?php echo $montoNetoAdmin; ?></p>
                 </div>
             </div>
             <table>
-                <input type="text" id="busqueda" placeholder="Buscar en la lista" onkeyup="buscarRetiros()">
-                <a href="/resources/views/admin/inicio/inicio.php" class="button">Volver</a>
+
+                <div class="search-container">
+                    <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+                </div>
                 <tr>
                     <th>Nombre del Usuario</th>
                     <th>Zona</th>

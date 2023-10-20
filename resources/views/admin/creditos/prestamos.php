@@ -42,17 +42,17 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </a>
                 </li>
                 <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/usuarios/crudusuarios.php">
                         <ion-icon name="people-outline"></ion-icon>
                         <span>Usuarios</span>
                     </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/usuarios/registrar.php">
-                        <ion-icon name="person-add-outline"></ion-icon>
-                        <span>Registrar Usuario</span>
-                    </a>
-                </li>
+                </li> 
                 <li>
                     <a href="/resources/views/admin/clientes/lista_clientes.php">
                         <ion-icon name="people-circle-outline"></ion-icon>
@@ -70,13 +70,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <ion-icon name="list-outline"></ion-icon>
                         <span>Prestamos</span>
                     </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/creditos/prestamos.php">
-                        <ion-icon name="cloud-upload-outline"></ion-icon>
-                        <span>Registrar Prestamos</span>
-                    </a>
-                </li>
+                </li> 
                 <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>

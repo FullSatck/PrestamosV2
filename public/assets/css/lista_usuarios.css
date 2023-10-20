@@ -47,6 +47,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
 }
 
 body{
@@ -70,7 +71,6 @@ body{
     color: var(--color-boton-texto);
     right: 15px;
     top: 15px;
-    font-family: 'Outfit', sans-serif;
 }
 
 /* ESTILOS PARA LA BARRA LATERAL */
@@ -86,7 +86,6 @@ body{
     padding: 20px 15px;
     background-color: var(--color-barra-lateral);
     transition: width 0.5s ease,background-color 0.3s ease,left 0.5s ease;
-    font-family: 'Outfit', sans-serif;
 }
 
 .mini-barra-lateral{
@@ -101,7 +100,6 @@ body{
     text-align: left;
     opacity: 1;
     transition: opacity 0.5s ease, width 0.5s ease;
-    font-family: 'Outfit', sans-serif;
 }
 
 .barra-lateral span.oculto{
@@ -117,7 +115,6 @@ body{
     margin-bottom: 40PX;
     display: flex;
     align-items: center;
-    font-family: 'Outfit', sans-serif;
 }
 
 .barra-lateral .nombre-pagina ion-icon{
@@ -129,7 +126,6 @@ body{
 .barra-lateral .nombre-pagina span{
     margin-left: 5px;
     font-size: 25px;
-    font-family: 'Outfit', sans-serif;
 }
 
 /* ESTILOS PARA EL BOTON */
@@ -178,7 +174,7 @@ body{
     list-style: none;
     display: flex;
     margin-bottom: 5px;
-}
+} 
 
 .barra-lateral .navegacion a{
     width: 100%;
@@ -307,25 +303,36 @@ main.min-main{
     }
 }
 
+
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
-    padding: 20px;
+    padding: 20px; /* Reducción del relleno para pantallas más pequeñas */
 }
 
-h1 { 
-    text-align: center;
-    margin: 20px 0;
-    font-size: 28px;
-} 
+h1 {
+    background-color: #f4f4f4;
+    color: #000000;
+    padding: 15px; /* Reducción del relleno para pantallas más pequeñas */
+}
 
 .container {
-    max-width: 100%;
+    max-width: 100%; /* Ajuste al ancho de la pantalla */
     margin: 0 auto;
     padding: 20px;
-    box-sizing: border-box;
+}
+ 
+/* Estilos para el encabezado */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
 }
 
 /* Estilos para la barra de búsqueda */
@@ -341,23 +348,56 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+} 
+
+/* Estilos para la tabla */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
 }
 
-/* Estilos para la tabla de saldos */
+/* Estilos para la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
-table th, table td {
-    padding: 10px; 
+th, td {
+    padding: 10px; /* Reducción del relleno para pantallas más pequeñas */
     text-align: left;
+    border-bottom: 1px solid #ccc;
 }
- 
 
-table th {
+th {
     background-color: #747474;
     color: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #dcdcdc;
+}
+
+/* Estilos para los enlaces en la última columna */
+td a {
+    background: #adadad;
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.3s ease;
+    padding: 7px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+}
+
+td a:hover {
+    background: #707070;
+    color: #000000;
 }

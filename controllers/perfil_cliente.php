@@ -50,53 +50,169 @@ if ($resultado->num_rows === 1) {
 $sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
 $resultado_prestamos = $conexion->query($sql_prestamos);
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/perfil_cliente.css"> <!-- Asegúrate de incluir tu hoja de estilos CSS -->
+    <link rel="stylesheet" href="/public/assets/css/perfil_cliente.css">
+    <!-- Asegúrate de incluir tu hoja de estilos CSS -->
     <title>Perfil del Cliente</title>
 </head>
+
 <body>
-   
-    <div class="profile-container">
-        <div class="profile-image"><br><br><br>
-            <!-- Mostrar la foto del cliente -->
-            <img src="<?= $imagen_cliente ?>" alt="Foto del Cliente">
-        </div>
-        <div class="profile-details">
-            <!-- Mostrar los datos del cliente -->
-            <h1><strong><?= $fila["Nombre"] ?></strong></h1>
-            <p>Apellido: <strong><?= $fila["Apellido"] ?></strong></p>
-            <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
-            <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
-            <p>Historial Crediticio: <strong><?= $fila["HistorialCrediticio"] ?></strong> </p>
-            <p>Referencias Personales: <strong><?= $fila["ReferenciasPersonales"] ?></strong> </p>
-            <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
-            <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
-        </div>
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-circle-outline"></ion-icon>
     </div>
-    
-    <!-- Agregar una sección para mostrar los préstamos del cliente -->
-    <div class="profile-loans">
-        <h2>Préstamos del Cliente</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID del Préstamo</th>
-                    <th>Monto</th>
-                    <th>Tasa de Interés</th>
-                    <th>Plazo</th>
-                    <th>Frecuencia de Pago</th> <!-- Agregar Frecuencia de Pago -->
-                    <th>Fecha de Inicio</th>
-                    <th>Fecha de Vencimiento</th>
-                    <th>Estado</th>
-                    <th>Pagos</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
+                <span>Recaudo</span>
+            </div>
+        </div>
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
+                        <ion-icon name="push-outline"></ion-icon>
+                        <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/registrar.php">
+                        <ion-icon name="person-add-outline"></ion-icon>
+                        <span>Registrar Usuario</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                        <ion-icon name="people-circle-outline"></ion-icon>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <span>Registrar Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                        <ion-icon name="list-outline"></ion-icon>
+                        <span>Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/prestamos.php">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <span>Registrar Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/cobros/cobros.php">
+                        <ion-icon name="planet-outline"></ion-icon>
+                        <span>Zonas de cobro</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/gastos/gastos.php">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Gastos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/lista_super.php">
+                        <ion-icon name="map-outline"></ion-icon>
+                        <span>Ruta</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/abonos.php">
+                        <ion-icon name="cloud-download-outline"></ion-icon>
+                        <span>Abonos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/retiros/retiros.php">
+                        <ion-icon name="cloud-done-outline"></ion-icon>
+                        <span>Retiros</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="linea"></div>
+
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="moon-outline"></ion-icon>
+                    <span>Dark Mode</span>
+                </div>
+                <div class="switch">
+                    <div class="base">
+                        <div class="circulo">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+
+    <main>
+        <div class="profile-container">
+            <div class="profile-image"><br><br><br>
+                <!-- Mostrar la foto del cliente -->
+                <img src="<?= $imagen_cliente ?>" alt="Foto del Cliente">
+            </div>
+            <div class="profile-details">
+                <!-- Mostrar los datos del cliente -->
+                <h1><strong><?= $fila["Nombre"] ?></strong></h1>
+                <p>Apellido: <strong><?= $fila["Apellido"] ?></strong></p>
+                <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
+                <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
+                <p>Historial Crediticio: <strong><?= $fila["HistorialCrediticio"] ?></strong> </p>
+                <p>Referencias Personales: <strong><?= $fila["ReferenciasPersonales"] ?></strong> </p>
+                <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
+                <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
+            </div>
+        </div>
+
+        <!-- Agregar una sección para mostrar los préstamos del cliente -->
+        <div class="profile-loans">
+            <h2>Préstamos del Cliente</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID del Préstamo</th>
+                        <th>Monto</th>
+                        <th>Tasa de Interés</th>
+                        <th>Plazo</th>
+                        <th>Frecuencia de Pago</th> <!-- Agregar Frecuencia de Pago -->
+                        <th>Fecha de Inicio</th>
+                        <th>Fecha de Vencimiento</th>
+                        <th>Estado</th>
+                        <th>Pagos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
                     <tr>
                         <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
                         <td><?= $fila_prestamo["Monto"] ?></td>
@@ -106,27 +222,32 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                         <td><?= $fila_prestamo["FechaInicio"] ?></td>
                         <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
                         <td><?= $fila_prestamo["Estado"] ?></td>
-                        <td><a href="dias_pago.php?id=<?= $fila_prestamo["ID"]; ?>">Ir</a></td>
+                        <td><a href="dias_pago.php?id=<?= $fila_prestamo["ID"]; ?>">Pagos</a></td>
                     </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-    
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
     <!-- Agregar un enlace para gestionar los préstamos -->
     <!-- <div class="manage-loans">
         <a href="gestion_prestamos.php?id_cliente=<?= $id_cliente ?>">Gestionar Préstamos</a>
     </div> -->
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const profileImage = document.querySelector('.profile-image img');
-    
-    // Agrega un controlador de eventos para hacer clic en la imagen
-    profileImage.addEventListener('click', function () {
-        profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileImage = document.querySelector('.profile-image img');
+
+        // Agrega un controlador de eventos para hacer clic en la imagen
+        profileImage.addEventListener('click', function() {
+            profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
+        });
     });
-});
-</script>
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/menu/main.js"></script>
 
 </body>
+
 </html>

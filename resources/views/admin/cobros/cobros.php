@@ -27,10 +27,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     </div>
     <div class="barra-lateral">
         <div>
-            <div class="nombre-pagina"> 
+            <div class="nombre-pagina">
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
-            </div> 
+            </div>
         </div>
         <nav class="navegacion">
             <ul>
@@ -40,6 +40,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <span>Saldo Inicial</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
+                    </a>
+                </li>   
                 <li>
                     <a href="/resources/views/admin/usuarios/crudusuarios.php">
                         <ion-icon name="people-outline"></ion-icon>
@@ -77,12 +83,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </a>
                 </li> 
                 <li>
-                    <a href="/resources/views/admin/cobros/cobros.php">
-                        <ion-icon name="planet-outline"></ion-icon>
-                        <span>Zonas de cobro</span>
-                    </a>
-                </li>
-                <li>
                     <a href="/resources/views/admin/gastos/gastos.php">
                         <ion-icon name="alert-circle-outline"></ion-icon>
                         <span>Gastos</span>
@@ -105,7 +105,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
                     </a>
-                </li> 
+                </li>
             </ul>
         </nav>
 
@@ -132,16 +132,19 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>  
-    <h2>Listado de Zonas</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Capital</th> 
-            <th>CD Postal</th>  
-        </tr>
-        <?php
+    <main>
+        <h2>Listado de Zonas</h2>
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+        </div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Capital</th>
+                <th>CD Postal</th>
+            </tr>
+            <?php
         // Realiza la conexión a la base de datos (ajusta los detalles de conexión según tu configuración)
         include("../../../../controllers/conexion.php");
 
@@ -162,7 +165,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         // Cierra la conexión a la base de datos
         mysqli_close($conexion);
         ?>
-    </table>
+        </table>
     </main>
 
 
