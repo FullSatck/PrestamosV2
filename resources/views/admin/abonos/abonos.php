@@ -181,7 +181,8 @@ if (isset($_GET['mensaje'])) {
                     <button id="generarFacturaButton" class="btn btn-primary">Generar Factura</button>
 
                     <!-- Agregar un botón para compartir la factura por WhatsApp -->
-                    <button id="compartirPorWhatsAppButton" class="btn btn-success">Compartir por WhatsApp</button>
+                    <button id="compartirPorWhatsAppButton" class="btn btn-success">mandar mensaje por WhatsApp</button>
+
 
 
 

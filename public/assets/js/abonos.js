@@ -8,6 +8,9 @@ var cantidadPagoIngresada = false;
 // Variable global para la cantidad de pago
 var cantidadPago;
 
+// Variable global para el número de teléfono del cliente
+var numeroTelefonoCliente; // Nueva variable
+
 // Función para cargar los datos del cliente
 function cargarDatosCliente(clienteId) {
     $.ajax({
@@ -30,6 +33,9 @@ function cargarDatosCliente(clienteId) {
             $("#prestamo-zona").text(data.Zona);
             $("#prestamo-monto-pagar").text(data.MontoAPagar);
             $("#prestamo-cuota").text(data.Cuota);
+
+            // Almacena el número de teléfono del cliente en una variable global
+            numeroTelefonoCliente = data.Telefono; // Asegúrate de que el nombre del campo sea correcto
         },
         error: function() {
             alert("No hay más clientes que mostrar");
@@ -40,18 +46,24 @@ function cargarDatosCliente(clienteId) {
 // Función para registrar el pago
 function registrarPago() {
     if (cantidadPagoIngresada) {
-        var fechaPago = $("#fecha-pago").val();
+        var fechaHoraPago = new Date().toLocaleString(); // Obtiene la fecha y hora actual
         $.ajax({
             url: "registrar_pago.php",
             method: "POST",
             data: {
                 clienteId: $("#cliente-id").text(),
                 cantidadPago: cantidadPago,
-                fechaPago: fechaPago
+                fechaPago: fechaHoraPago // Envía la fecha y hora del pago
             },
             success: function(response) {
                 // Actualiza el monto a pagar en la página
                 $("#prestamo-monto-pagar").text(response);
+
+                // Muestra la cantidad de pago en el modal de "Pago Confirmado"
+                $("#cantidad-pago-confirmado").text(cantidadPago);
+
+                // Muestra la fecha y hora del pago en el modal de "Pago Confirmado"
+                $("#fecha-hora-pago").text(fechaHoraPago);
 
                 // Limpiar los campos de cantidad de pago
                 $("#cantidad-pago").val("");
@@ -59,6 +71,11 @@ function registrarPago() {
                 $("#confirmarPagoModal").modal("hide");
                 // Abre el modal de pago confirmado
                 $("#pagoConfirmadoModal").modal("show");
+
+                // Cambia automáticamente al siguiente cliente después de 2 segundos
+                setTimeout(function() {
+                    cambiarCliente(1);
+                }, 3000);
             },
             error: function() {
                 alert("Error al registrar el pago");
@@ -139,41 +156,24 @@ $("#generarFacturaButton").click(function() {
     window.location.href = "facturacionAbonos.php?clienteId=" + clienteId + "&clienteNombre=" + clienteNombre + "&clienteApellido=" + clienteApellido + "&prestamoId=" + prestamoId + "&cantidadPago=" + cantidadPago;
 });
 
-// Llama a la función para cargar la lista de IDs de clientes al cargar la página
-cargarListaDeClientes();
-
-// Asociar la función de generación de factura al botón "Generar Factura"
-$("#generarFacturaButton").click(function() {
-    generarFactura(); // Generar factura
-
-    // Agregar un enlace de compartir por WhatsApp
-    var whatsappLink = "whatsapp://send?text=¡Mira esta factura! Puedes descargarla aquí: [URL_DEL_PDF]";
-    $("#compartirPorWhatsAppButton").attr("href", whatsappLink).show();
-});
-
-// Función para generar la factura en PDF
-function generarFactura() {
-    var doc = new jsPDF();
+// Asocia el evento click del botón "Compartir por WhatsApp" al enlace de WhatsApp
+$("#compartirPorWhatsAppButton").click(function() {
+    // Obtener los datos necesarios para compartir por WhatsApp
     var clienteNombre = $("#cliente-nombre").text();
     var clienteApellido = $("#cliente-apellido").text();
-    var prestamoId = $("#prestamo-id").text();
-    var cantidadPago = $("#cantidad-pago").val();
+    var cantidadPago = $("#cantidad-pago-confirmado").text();
+    var fechaHoraPago = $("#fecha-hora-pago").text();
+    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, has pagado ${cantidadPago} a las ${fechaHoraPago}. ¡Gracias!`;
 
-    // Agregar contenido a la factura
-    doc.text("Factura de Pago", 10, 10);
-    doc.text("Cliente: " + clienteNombre + " " + clienteApellido, 10, 20);
-    doc.text("ID de Préstamo: " + prestamoId, 10, 30);
-    doc.text("Cantidad Pagada: $" + cantidadPago, 10, 40);
+    // Obtener el número de teléfono del cliente desde la variable global
+    var numeroTelefonoCliente = window.numeroTelefonoCliente;
 
-    // Obtener la representación en base64 del PDF generado
-    var pdfOutput = doc.output('datauristring');
+    // Construye la URL de WhatsApp con el número de teléfono y el mensaje
+    var whatsappURL = `https://wa.me/${numeroTelefonoCliente}?text=${encodeURIComponent(mensaje)}`;
 
-    // Agregar el enlace para descargar el PDF
-    $("#descargarPDFButton").attr("href", pdfOutput).show();
-}
-
-// Asociar la función de compartir por WhatsApp al botón correspondiente
-$("#compartirPorWhatsAppButton").click(function() {
-    // No es necesario hacer nada aquí, ya que el enlace se encarga de compartir el PDF.
+    // Abre la URL en una nueva ventana o pestaña
+    window.open(whatsappURL, '_blank');
 });
 
+// Llama a la función para cargar la lista de IDs de clientes al cargar la página
+cargarListaDeClientes();
