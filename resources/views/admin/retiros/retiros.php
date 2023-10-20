@@ -43,8 +43,8 @@ if ($resultadoMontoTotalRetiros && $resultadoMontoTotalRetiros->num_rows > 0) {
 // Calcular el saldo total
 $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
 
-?> 
- 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,7 +66,7 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
             <div class="nombre-pagina">
                 <ion-icon id="cloud" name="cloudy-outline"></ion-icon>
                 <span>Recaudo</span>
-            </div> 
+            </div>
         </div>
         <nav class="navegacion">
             <ul>
@@ -119,12 +119,6 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/grupos/grupos.php">
-                        <ion-icon name="eye-outline"></ion-icon>
-                        <span>Roles</span>
-                    </a>
-                </li>
-                <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
                         <span>Zonas de cobro</span>
@@ -174,76 +168,75 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main> 
-    <h1>Lista de Retiros</h1>
-    <div class="saldo-box">
-        <div class="saldo-item">
-            <h2>Saldo Inicial del Administrador</h2>
-            <p>$<?php echo $saldoAdmin; ?></p>
-        </div>
-        <div class="saldo-item">
-            <h2>Monto Neto del Administrador</h2>
-            <p>$<?php echo $montoNetoAdmin; ?></p>
-        </div>
-         
-    </div>
-    <table> 
-        <input type="text" id="busqueda" placeholder="Buscar en la lista" onkeyup="buscarRetiros()"> 
-        <a href="/resources/views/admin/inicio/inicio.php" class="button">Volver</a>
-        <tr>
-            <th>Nombre del Usuario</th>
-            <th>Zona</th>
-            <th>Monto</th>
-        </tr>
-        <?php
-        if ($resultadoRetiros) {
-            while ($fila = $resultadoRetiros->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $fila['UsuarioNombre'] . "</td>";
-                echo "<td>" . $fila['Zona'] . "</td>";
-                echo "<td>" . $fila['Monto'] . "</td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "Error en la consulta de retiros: " . $conexion->error;
-        }
-        ?>
-    </table>
-    <script>
-        function buscarRetiros() {
-            var input = document.getElementById("busqueda"); 
-            var filtro = input.value.toLowerCase();
-            var tabla = document.querySelector("table");
-            var filas = tabla.getElementsByTagName("tr");
+    <main>
+        <main>
+            <h1>Lista de Retiros</h1>
+            <div class="saldo-box">
+                <div class="saldo-item">
+                    <h2>Saldo Inicial del Administrador</h2>
+                    <p>$<?php echo $saldoAdmin; ?></p>
+                </div>
+                <div class="saldo-item">
+                    <h2>Monto Neto del Administrador</h2>
+                    <p>$<?php echo $montoNetoAdmin; ?></p>
+                </div>
+            </div>
+            <table>
+                <input type="text" id="busqueda" placeholder="Buscar en la lista" onkeyup="buscarRetiros()">
+                <a href="/resources/views/admin/inicio/inicio.php" class="button">Volver</a>
+                <tr>
+                    <th>Nombre del Usuario</th>
+                    <th>Zona</th>
+                    <th>Monto</th>
+                </tr>
+                <?php
+    if ($resultadoRetiros) {
+      while ($fila = $resultadoRetiros->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $fila['UsuarioNombre'] . "</td>";
+        echo "<td>" . $fila['Zona'] . "</td>";
+        echo "<td>" . $fila['Monto'] . "</td>";
+        echo "</tr>";
+      }
+    } else {
+      echo "Error en la consulta de retiros: " . $conexion->error;
+    }
+    ?>
+            </table>
+        </main>
 
-            for (var i = 1; i < filas.length; i++) { // Empezamos desde 1 para omitir la fila de encabezados
-                var celdas = filas[i].getElementsByTagName("td");
-                var filaCoincide = false;
-
-                for (var j = 0; j < celdas.length; j++) {
-                    var celda = celdas[j];
-                    if (celda) {
-                        var textoCelda = celda.textContent || celda.innerText;
-                        if (textoCelda.toLowerCase().indexOf(filtro) > -1) {
-                            filaCoincide = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (filaCoincide) {
-                    filas[i].style.display = "";
-                } else {
-                    filas[i].style.display = "none";
-                }
-            }
-        }
-    </script>
     </main>
 
+    <script>
+    function buscarRetiros() {
+        var input = document.getElementById("busqueda");
+        var filtro = input.value.toLowerCase();
+        var tabla = document.querySelector("table");
+        var filas = tabla.getElementsByTagName("tr");
 
+        for (var i = 1; i < filas.length; i++) { // Empezamos desde 1 para omitir la fila de encabezados
+            var celdas = filas[i].getElementsByTagName("td");
+            var filaCoincide = false;
 
+            for (var j = 0; j < celdas.length; j++) {
+                var celda = celdas[j];
+                if (celda) {
+                    var textoCelda = celda.textContent || celda.innerText;
+                    if (textoCelda.toLowerCase().indexOf(filtro) > -1) {
+                        filaCoincide = true;
+                        break;
+                    }
+                }
+            }
 
+            if (filaCoincide) {
+                filas[i].style.display = "";
+            } else {
+                filas[i].style.display = "none";
+            }
+        }
+    }
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>
@@ -275,10 +268,13 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    
+
 </head>
+
 <body>
-    
+
 </body>
+
 </html>

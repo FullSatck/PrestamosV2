@@ -1,52 +1,350 @@
-/* Estilos Generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap');
+
+:root{
+    --color-barra-lateral: rgb(255,255,255);
+
+    --color-texto: rgb(0,0,0);
+    --color-texto-menu: rgb(134,136,144);
+
+    --color-menu-hover: rgb(238,238,238);
+    --color-menu-hover-texto: rgb(0,0,0);
+
+    --color-boton:rgb(0,0,0);
+    --color-boton-texto: rgb(255,255,255);
+
+    --color-linea: rgb(180, 180, 180);
+
+    --color-switch-base: rgb(201,202,206);
+    --color-switch-circulo: rgb(241,241,241);
+
+    --color-scroll: rgb(192,192,192);
+    --color-scroll-hover: rgb(134,134,134);
+}
+
+.dark-mode{
+    --color-barra-lateral: rgb(44,45,49);
+
+    --color-texto: rgb(255,255,255);
+    --color-texto-menu: rgb(110,110,117);
+
+    --color-menu-hover: rgb(0,0,0);
+    --color-menu-hover-texto: rgb(238,238,238);
+
+    --color-boton:rgb(255,255,255);
+    --color-boton-texto: rgb(0,0,0);
+
+    --color-linea: rgb(90,90,90);
+
+    --color-switch-base: rgb(39,205,64);
+    --color-switch-circulo: rgb(255,255,255);
+
+    --color-scroll: rgb(68,69,74);
+    --color-scroll-hover: rgb(85,85,85);
+}
+
+/* ESTILOS EN GENERALL */
+*{
     margin: 0;
     padding: 0;
-    color: #333;
-    display: flex;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body{
+    height: 100vh;
+    width: 100%;
+    background-color: rgb(221, 221, 221);
+    padding: 20px;
+}
+
+/* ESTILOS PARA EL MENU */
+
+.menu{
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    display: none;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: var(--color-boton);
+    color: var(--color-boton-texto);
+    right: 15px;
+    top: 15px;
 }
 
-/* Contenedor del Registro */
-.registro-container {
-    max-width: 500px;
-    width: 100%;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-   
-}
+/* ESTILOS PARA LA BARRA LATERAL */
 
-
-/* Estilos para los Inputs y Selects */
-.input-container {
+.barra-lateral{
+    position: fixed;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    width: 250px;
+    height: 100%;
+    overflow: hidden;
+    padding: 20px 15px;
+    background-color: var(--color-barra-lateral);
+    transition: width 0.5s ease,background-color 0.3s ease,left 0.5s ease;
+}
+
+.mini-barra-lateral{
+    width: 80px;
+
+}
+
+.barra-lateral span{
+    width: 100px;
+    white-space: nowrap;
+    font-size: 18px;
+    text-align: left;
+    opacity: 1;
+    transition: opacity 0.5s ease, width 0.5s ease;
+}
+
+.barra-lateral span.oculto{
+    opacity: 0;
+    width: 0;
+}
+
+/* ESTILOS PARA NOMBRE DE LA PAGINA */
+.barra-lateral .nombre-pagina{
+    width: 100%;
+    height: 45px;
+    color: var(--color-texto);
+    margin-bottom: 40PX;
+    display: flex;
+    align-items: center;
+}
+
+.barra-lateral .nombre-pagina ion-icon{
+    min-width: 50px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.barra-lateral .nombre-pagina span{
+    margin-left: 5px;
+    font-size: 25px;
+}
+
+/* ESTILOS PARA EL BOTON */
+
+.barra-lateral .boton{
+    width: 100%;
+    height: 45px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-boton);
+    color: var(--color-boton-texto);
+}
+
+.barra-lateral .boton ico-icon{
+    min-width: 50px;
+    font-size: 25px;
+}
+
+/* ESTILOS PARA EL MENU DE NAVEGACION */
+
+.barra-lateral .navegacion{
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.barra-lateral .navegacion::-webkit-scrollbar{
+    width: 5px;
+}
+
+.barra-lateral .navegacion::-webkit-scrollbar-thumb{
+    background-color: var(--color-scroll);
+    border-radius: 5px;
+}
+
+.barra-lateral .navegacion::-webkit-scrollbar-thumb:hover{
+    background-color: var(--color-scroll-hover);
+    border-radius: 5px;
+}
+
+.barra-lateral .navegacion li{
+    list-style: none;
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.barra-lateral .navegacion a{
+    width: 100%;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 10px;
+    color: var(--color-texto-menu);
+}
+
+.barra-lateral .navegacion a:hover{
+    background-color: var(--color-menu-hover);
+    color: var(--color-menu-hover-texto);
+}
+
+.barra-lateral .navegacion ion-icon{
+    min-width: 50px;
+    font-size: 20px;
+}
+
+/* ESTILOS PARA LA LINEA */
+
+.barra-lateral .linea{
+    width: 100%;
+    height: 1px;
+    margin-top: 15px;
+    background-color: var(--color-linea);
+}
+
+/* ESTILOS PARA EL MODO OSCURO */
+
+.barra-lateral .modo-oscuro{
+    width: 100%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.barra-lateral .modo-oscuro .info{
+    width: 150px;
+    height: 45px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    color: var(--color-texto-menu);
+}
+
+.barra-lateral .modo-oscuro ion-icon{
+    width: 50px;
+    font-size: 20px;
+}
+
+/* ESTILOS PARA CAMBIOS A MODO OSCURO */
+
+.barra-lateral .modo-oscuro .switch{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.barra-lateral .modo-oscuro .base{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 35px;
+    height: 20px;
+    background-color: var(--color-switch-base);
+    border-radius: 50px;
+}
+
+.barra-lateral .modo-oscuro .circulo{
+    position: absolute;
+    width: 18px;
+    height: 90%;
+    background-color: var(--color-switch-circulo);
+    border-radius: 50%;
+    left: 2px;
+    transition: left 0.5s ease;
+}
+
+.barra-lateral .modo-oscuro .circulo.prendido{
+    left: 15px;
+}
+
+/* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
+
+main{
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.5s ease;
+}
+
+main.min-main{
+    margin-left: 80px;
+}
+
+/* RESPONSIVE */
+
+@media (max-height: 660px){
+    .barra-lateral .nombre-pagina{
+        margin-bottom: 5px;
+    }
+
+    .barra-lateral .modo-oscuro{
+        margin-bottom: 3px;
+    }
+}
+
+@media (max-width: 660px){
+    .barra-lateral{
+        position: absolute;
+        left: -250px;
+    }
+    .max-barra-lateral{
+        left: 0;
+    }
+    .menu{
+        display: flex;
+    }
+    .menu ion-icon:nth-child(2){
+        display: none;
+    }
+}
+
+
+/* Estilos para el formulario de registro */
+.registro-container {
+    max-width: 60%; /* Ajusta el ancho del formulario según tus necesidades */
+    background-color: var(--color-barra-lateral); /* Usa el color de fondo del menú */ 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    color: var(--color-texto); /* Usa el color de texto del menú */
+}
+
+.registro-container h2 {
+    font-size: 24px; /* Ajusta el tamaño del título según tus necesidades */
+}
+
+/* Estilos para las etiquetas y campos de formulario */
+.input-container {
     margin-bottom: 15px;
 }
 
 .input-container label {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    color: var(--color-texto); /* Usa el color de texto del menú */ 
 }
+ 
+ 
 
 .input-container input,
 .input-container select {
     padding: 10px;
     font-size: 16px;
-    border-radius: 40px;
+    border-radius: 5px;
     border: none;
-    box-shadow: 7px 5px 5px rgba(0,0,0,0.1);
+    box-shadow: 7px 5px 5px rgba(0, 0, 0, 0.1); 
 }
 
-/* Botón de Registro */
+/* Estilos para el botón de registro */
 .btn-container button {
-    background-color: #3498db;
-    color: #fff;
+    background-color: var(--color-boton);
+    color: var(--color-boton-texto);
     padding: 10px 15px;
     border-radius: 5px;
     border: none;
@@ -55,14 +353,15 @@ body {
 }
 
 .btn-container button:hover {
-    background-color: #2980b9;
+    background-color: var(--color-menu-hover);
+    color: var(--color-menu-hover-texto);
 }
 
-/* Botón de Volver */
+/* Estilos para el botón de volver */
 .a {
     text-decoration: none;
-    background-color: #3498db;
-    color: #fff;
+    background-color: var(--color-boton);
+    color: var(--color-boton-texto);
     padding: 9px 14px;
     border-radius: 5px;
     border: none;
@@ -71,24 +370,30 @@ body {
 }
 
 .a:hover {
-    background-color: #2980b9;
+    background-color: var(--color-menu-hover);
+    color: var(--color-menu-hover-texto);
+}
+
+/* Estilos para el contenedor del saldo inicial */
+#saldo-inicial-container {
+    display: none;
+    /* Agrega estilos personalizados para el contenedor de saldo inicial si es necesario */
 }
 
 /* Media Queries para Responsividad */
 @media (max-width: 600px) {
-   .registro-container {
-       padding: 20px;
-   }
+    .registro-container {
+        padding: 20px;
+    }
 
-   .input-container input,
-   .input-container select {
-       font-size: 14px;
-       padding: 8px;
-   }
+    .input-container input,
+    .input-container select {
+        font-size: 14px;
+        padding: 8px;
+    }
 
-   .btn-container button {
-       padding: 8px 12px;
-       font-size: 14px;
-   }
+    .btn-container button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 }
- 

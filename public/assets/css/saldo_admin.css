@@ -3,8 +3,8 @@ body {
     font-size: 1rem; /* Relative font size */
     background-color: #f4f4f4;
     margin: 0;
-    padding: 0;
-}
+    padding: 20px;
+} 
 
 .container {
     max-width: 600px;
@@ -17,6 +17,8 @@ body {
 
 h2 {
     font-size: 1.5rem; /* Relative font size */
+    text-align: center;
+    padding-bottom: 10px;
 }
 
 /* Formulario */
@@ -38,7 +40,7 @@ input[type="number"] {
 }
 
 button[type="submit"] {
-    background-color: #007BFF;
+    background-color: #747474;
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -47,8 +49,22 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
+    background: #505050;
+    color: #ffffff;
 }
+
+.success-message {
+    color: #009900; /* Color de texto verde para mensajes de éxito */
+    font-weight: bold;
+    text-align: center;
+}
+
+.error-message {
+    color: #FF0000; /* Color de texto rojo para mensajes de error */
+    font-weight: bold;
+    text-align: center;
+}
+
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
