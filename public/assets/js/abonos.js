@@ -164,7 +164,7 @@ $("#compartirPorWhatsAppButton").click(function() {
     var cantidadPago = $("#cantidad-pago").val();
     var fechaHoraPago = $("#fecha-hora-pago").text(); // Obtiene la fecha y hora del pago del modal
 
-    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, pagaste ${cantidadPago} a las ${fechaHoraPago}. ¡Gracias!`;
+    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, pagaste ${cantidadPago} el ${fechaHoraPago}. ¡Gracias!`;
 
     // Obtener el número de teléfono del cliente desde la variable global
     var numeroTelefonoCliente = window.numeroTelefonoCliente;
