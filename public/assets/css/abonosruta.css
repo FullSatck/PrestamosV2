@@ -1,13 +1,5 @@
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    text-align: center;
+ 
+h1 { 
     margin: 20px 0;
     font-size: 28px;
 }
@@ -20,14 +12,14 @@ h1 {
 
 #lista-pagos th,
 #lista-pagos td {
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 10px; 
     text-align: left;
 }
 
 #lista-pagos th {
-    background-color: #007BFF;
-    color: #fff;
+    background-color: #747474;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .drag-handle {
@@ -38,7 +30,19 @@ h1 {
 button {
     display: block;
     margin: 20px auto;
-    background-color: #007BFF;
+    background-color: #ADADAD;
+    color: #000000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    display: block;
+    margin: 20px auto;
+    background-color: #747474;
     color: #fff;
     padding: 10px 20px;
     border: none;
