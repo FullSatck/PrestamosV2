@@ -32,7 +32,7 @@ if ($sql === false) {
     die("Error en la consulta SQL: " . $conexion->error);
 }
  
-?>
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>

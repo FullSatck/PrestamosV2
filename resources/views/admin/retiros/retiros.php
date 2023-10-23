@@ -141,6 +141,12 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
                         <span>Abonos</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/resources/views/admin/retiros/retiros.php" class="hola">
+                        <ion-icon name="cloud-done-outline"></ion-icon>
+                        <span>Retiros</span>
+                    </a>
+                </li>
             </ul>
         </nav>
 
