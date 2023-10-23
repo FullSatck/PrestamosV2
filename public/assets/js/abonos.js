@@ -43,6 +43,15 @@ function cargarDatosCliente(clienteId) {
     });
 }
 
+// Función para enviar un mensaje automático a través de WhatsApp
+function enviarMensajeAutomatico() {
+    var mensaje = `Hola, has pagado ${cantidadPago} de tu préstamo. Gracias por tu pago.`;
+    var numeroTelefonoCliente = window.numeroTelefonoCliente;
+
+    var whatsappURL = `https://wa.me/${numeroTelefonoCliente}?text=${encodeURIComponent(mensaje)}`;
+    window.open(whatsappURL, '_blank');
+}
+
 // Función para registrar el pago
 function registrarPago() {
     if (cantidadPagoIngresada) {
@@ -66,10 +75,13 @@ function registrarPago() {
                 // Abre el modal de pago confirmado
                 $("#pagoConfirmadoModal").modal("show");
 
+                // Envía un mensaje automático a través de WhatsApp
+                enviarMensajeAutomatico();
+
                 // Cambia automáticamente al siguiente cliente después de 2 segundos
                 setTimeout(function() {
                     cambiarCliente(1);
-                }, 3000);
+                }, 2000);
             },
             error: function() {
                 alert("Error al registrar el pago");
@@ -155,7 +167,7 @@ $("#compartirPorWhatsAppButton").click(function() {
     // Obtener los datos necesarios para compartir por WhatsApp
     var clienteNombre = $("#cliente-nombre").text();
     var clienteApellido = $("#cliente-apellido").text();
-    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, has pagado ${cantidadPago} de tu préstamo. gracias por se una puta!`;
+    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, has pagado ${cantidadPago} de tu préstamo. Gracias por tu pago!`;
 
     // Obtener el número de teléfono del cliente desde la variable global
     var numeroTelefonoCliente = window.numeroTelefonoCliente;
