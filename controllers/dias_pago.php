@@ -32,6 +32,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div> 
+            <button class="boton" id="volverAtras"> 
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
         </div>
         <nav class="navegacion">
             <ul>
@@ -39,6 +43,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
                         <ion-icon name="push-outline"></ion-icon>
                         <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
                     </a>
                 </li>
                 <li>
@@ -54,7 +64,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="hola">
                         <ion-icon name="people-circle-outline"></ion-icon>
                         <span>Clientes</span>
                     </a>
@@ -220,9 +230,12 @@ $conexion->close();
 ?>
     </main>
 
-
-
-
+    <script>
+        // Agregar un evento clic al botón
+        document.getElementById("volverAtras").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>

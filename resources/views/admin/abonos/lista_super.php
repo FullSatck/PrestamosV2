@@ -101,6 +101,12 @@ if (isset($_GET['mensaje'])) {
                     </a>
                 </li>
                 <li>
+                    <a href="/resources/views/admin/abonos/lista_super.php" class="hola">
+                        <ion-icon name="map-outline"></ion-icon>
+                        <span>Ruta</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/abonos/abonos.php">
                         <ion-icon name="cloud-download-outline"></ion-icon>
                         <span>Abonos</span>

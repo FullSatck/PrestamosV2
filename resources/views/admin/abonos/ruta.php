@@ -71,6 +71,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/usuarios/crudusuarios.php">
                         <ion-icon name="people-outline"></ion-icon>
                         <span>Usuarios</span>
@@ -119,7 +125,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/abonos/lista_super.php">
+                    <a href="/resources/views/admin/abonos/lista_super.php" class="hola">
                         <ion-icon name="map-outline"></ion-icon>
                         <span>Ruta</span>
                     </a>
@@ -134,7 +140,7 @@
                     <a href="/resources/views/admin/retiros/retiros.php">
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
-                    </a>
+                    </a> 
                 </li>
             </ul>
         </nav>

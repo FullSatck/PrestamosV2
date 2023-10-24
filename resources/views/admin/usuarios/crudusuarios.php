@@ -57,6 +57,12 @@ if (isset($_GET['mensaje'])) {
                     </a>
                 </li>
                 <li>
+                    <a href="/resources/views/admin/usuarios/crudusuarios.php" class="hola">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/usuarios/registrar.php">
                         <ion-icon name="person-add-outline"></ion-icon>
                         <span>Registrar Usuario</span>

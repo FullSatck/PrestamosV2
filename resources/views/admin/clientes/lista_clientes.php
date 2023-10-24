@@ -70,6 +70,12 @@ $resultado = $conexion->query($sql);
                     </a>
                 </li>
                 <li>
+                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="hola">
+                        <ion-icon name="people-circle-outline"></ion-icon>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/clientes/agregar_clientes.php">
                         <ion-icon name="person-circle-outline"></ion-icon>
                         <span>Registrar Clientes</span>

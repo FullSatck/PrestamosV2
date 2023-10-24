@@ -42,6 +42,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </a>
                 </li>
                 <li>
+                    <a href="/resources/views/admin/inicio/inicio.php" class="hola">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/usuarios/crudusuarios.php">
                         <ion-icon name="people-outline"></ion-icon>
                         <span>Usuarios</span>
@@ -86,7 +92,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <li>
                     <a href="/resources/views/admin/gastos/gastos.php">
                         <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span>Gastos</span>
+                        <span>Gastos</span> 
                     </a>
                 </li>
                 <li>

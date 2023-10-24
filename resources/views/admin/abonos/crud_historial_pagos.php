@@ -42,6 +42,10 @@ if (isset($_GET['clienteId'])) {
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div>
+            <button class="boton" id="volverAtras"> 
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
         </div>
         <nav class="navegacion">
             <ul>
@@ -49,6 +53,12 @@ if (isset($_GET['clienteId'])) {
                     <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
                         <ion-icon name="push-outline"></ion-icon>
                         <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
                     </a>
                 </li>
                 <li>
@@ -64,7 +74,7 @@ if (isset($_GET['clienteId'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="hola">
                         <ion-icon name="people-circle-outline"></ion-icon>
                         <span>Clientes</span>
                     </a>
@@ -172,6 +182,13 @@ if (isset($_GET['clienteId'])) {
             <?php } ?>
         </table>
     </main>
+
+    <script>
+        // Agregar un evento clic al botón
+        document.getElementById("volverAtras").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
 
     <script>
     // JavaScript para la búsqueda en tiempo real

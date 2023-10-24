@@ -17,7 +17,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/menu/menu.css">
     <title>Saldo Inicial</title>
     <link rel="stylesheet" href="/public/assets/css/saldo_admin.css">
 </head>
@@ -29,13 +28,19 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     </div>
     <div class="barra-lateral">
         <div>
-            <div class="nombre-pagina"> 
+            <div class="nombre-pagina">
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
-            </div> 
+            </div>
         </div>
         <nav class="navegacion">
             <ul>
+                <li>
+                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php" class="hola">
+                        <ion-icon name="push-outline"></ion-icon>
+                        <span>Saldo Inicial</span>
+                    </a>
+                </li>
                 <li>
                     <a href="/resources/views/admin/inicio/inicio.php">
                         <ion-icon name="home-outline"></ion-icon>
@@ -77,7 +82,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <ion-icon name="cloud-upload-outline"></ion-icon>
                         <span>Registrar Prestamos</span>
                     </a>
-                </li> 
+                </li>
                 <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
@@ -107,7 +112,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
                     </a>
-                </li> 
+                </li>
             </ul>
         </nav>
 
@@ -134,8 +139,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>  
-    <?php
+    <main>
+        <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['guardar_saldo'])) {
         // Obtén el monto del formulario
         $monto = isset($_POST['monto']) ? floatval($_POST['monto']) : 0; // Asegúrate de tener un valor válido
@@ -169,16 +174,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         $conexion->close();
     }
     ?>
-    <div class="container">
-        <h2>Asignar Saldo Inicial al Administrador</h2>
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-            <div class="form-group">
-                <label for="monto">Monto:</label>
-                <input type="number" step="0.01" id="monto" name="monto" required>
-            </div>
-            <button type="submit" name="guardar_saldo">Guardar</button>
-        </form>
-    </div>
+        <div class="container">
+            <h2>Asignar Saldo Inicial al Administrador</h2>
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <div class="form-group">
+                    <label for="monto">Monto:</label>
+                    <input type="number" step="0.01" id="monto" name="monto" required>
+                </div>
+                <button type="submit" name="guardar_saldo">Guardar</button>
+            </form>
+        </div>
     </main>
 
 

@@ -83,6 +83,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </a>
                 </li> 
                 <li>
+                    <a href="/resources/views/admin/cobros/cobros.php" class="hola">
+                        <ion-icon name="planet-outline"></ion-icon>
+                        <span>Zonas de cobro</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/gastos/gastos.php">
                         <ion-icon name="alert-circle-outline"></ion-icon>
                         <span>Gastos</span>

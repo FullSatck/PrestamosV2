@@ -68,12 +68,16 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
         <ion-icon name="menu-outline"></ion-icon>
         <ion-icon name="close-circle-outline"></ion-icon>
     </div>
-    <div class="barra-lateral">
+    <div class="barra-lateral"> 
         <div>
             <div class="nombre-pagina">
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div>
+            <button class="boton" id="volverAtras"> 
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
         </div>
         <nav class="navegacion">
             <ul>
@@ -81,6 +85,12 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
                         <ion-icon name="push-outline"></ion-icon>
                         <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
                     </a>
                 </li>
                 <li>
@@ -96,7 +106,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="hola">
                         <ion-icon name="people-circle-outline"></ion-icon>
                         <span>Clientes</span>
                     </a>
@@ -230,10 +240,12 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
         </div>
     </main>
 
-    <!-- Agregar un enlace para gestionar los préstamos -->
-    <!-- <div class="manage-loans">
-        <a href="gestion_prestamos.php?id_cliente=<?= $id_cliente ?>">Gestionar Préstamos</a>
-    </div> -->
+    <script>
+        // Agregar un evento clic al botón
+        document.getElementById("volverAtras").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const profileImage = document.querySelector('.profile-image img');

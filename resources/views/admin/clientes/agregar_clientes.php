@@ -60,7 +60,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                    <a href="/resources/views/admin/clientes/agregar_clientes.php" class="hola">
                         <ion-icon name="person-circle-outline"></ion-icon>
                         <span>Registrar Clientes</span>
                     </a>
