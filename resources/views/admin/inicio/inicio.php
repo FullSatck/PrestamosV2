@@ -32,6 +32,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div> 
+            <a href="/controllers/cerrar_sesion.php" class="boton">
+                <ion-icon name="arrow-back-circle-outline"></ion-icon>
+                <span>Cerrar Sesion</span>
+            </a>
         </div>
         <nav class="navegacion">
             <ul>

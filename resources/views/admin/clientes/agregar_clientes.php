@@ -19,6 +19,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/registrar_cliente.css">
     <title>Registro de Clientes</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 
 <body>
@@ -39,6 +41,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
                         <ion-icon name="push-outline"></ion-icon>
                         <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
                     </a>
                 </li>
                 <li>
@@ -134,48 +142,52 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
+        <div id="mensaje-emergente" style="display: none;">
+            <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
+            <a href="" id="enlace-perfil">Ir al perfil</a>
+        </div>
 
-            <h1>Registro de Clientes</h1>
-            <form action="/controllers/validar_clientes.php" method="POST" enctype="multipart/form-data">
-                <div class="input-container">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                </div>
+        <h1>Registro de Clientes</h1>
+        <form action="/controllers/validar_clientes.php" method="POST" enctype="multipart/form-data">
+            <div class="input-container">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
 
-                <div class="input-container">
-                    <label for="apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" required>
-                </div>
+            <div class="input-container">
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required>
+            </div>
 
-                <div class="input-container">
-                    <label for="curp">Identificación CURP:</label>
-                    <input type="text" id="curp" name="curp" required>
-                </div>
+            <div class="input-container">
+                <label for="curp">Identificación CURP:</label>
+                <input type="text" id="curp" name="curp" required>
+            </div>
 
-                <div class="input-container">
-                    <label for="domicilio">Domicilio:</label>
-                    <input type="text" id="domicilio" name="domicilio" required>
-                </div>
+            <div class="input-container">
+                <label for="domicilio">Domicilio:</label>
+                <input type="text" id="domicilio" name="domicilio" required>
+            </div>
 
-                <div class="input-container">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono" required>
-                </div>
+            <div class="input-container">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" required>
+            </div>
 
-                <div class="input-container">
-                    <label for="historial">Historial Crediticio:</label>
-                    <textarea id="historial" name="historial" rows="4"></textarea>
-                </div>
+            <div class="input-container">
+                <label for="historial">Historial Crediticio:</label>
+                <textarea id="historial" name="historial" rows="4"></textarea>
+            </div>
 
-                <div class="input-container">
-                    <label for="referencias">Referencias Personales:</label>
-                    <textarea id="referencias" name "referencias" rows="4"></textarea>
-                </div>
+            <div class="input-container">
+                <label for="referencias">Referencias Personales:</label>
+                <textarea id="referencias" name "referencias" rows="4"></textarea>
+            </div>
 
-                <div class="input-container">
-                    <label for="moneda">Moneda Preferida:</label>
-                    <select id="moneda" name="moneda">
-                        <?php
+            <div class="input-container">
+                <label for="moneda">Moneda Preferida:</label>
+                <select id="moneda" name="moneda">
+                    <?php
                 require_once("../../../../controllers/conexion.php");
 
                 $query = "SELECT * FROM monedas";
@@ -187,13 +199,13 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
                 mysqli_close($conexion);
                 ?>
-                    </select>
-                </div>
+                </select>
+            </div>
 
-                <div class="input-container">
-                    <label for="zona">Zona:</label>
-                    <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
-                        <?php
+            <div class="input-container">
+                <label for="zona">Zona:</label>
+                <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
+                    <?php
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
@@ -204,24 +216,67 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                 }
                 ?>
-                    </select>
-                </div>
+                </select>
+            </div>
 
-                <div class="input-container">
-                    <label for="imagen">Imagen del Cliente:</label>
-                    <input type="file" id="imagen" name="imagen">
-                </div>
+            <div class="input-container">
+                <label for="imagen">Imagen del Cliente:</label>
+                <input type="file" id="imagen" name="imagen">
+            </div>
 
-                <div class="btn-container">
-                    <input class="btn-container" type="submit" value="Registrar">
-                </div>
-            </form>
-        
+            <div class="btn-container">
+                <input class="btn-container" type="submit" value="Registrar">
+            </div>
+        </form>
+
 
     </main>
 
+    <script>
+    document.getElementById("curp").addEventListener("input", function() {
+        const curp = this.value;
+        const mensajeEmergente = document.getElementById("mensaje-emergente");
+        const mensajeError = document.getElementById("mensaje-error");
+        const enlacePerfil = document.getElementById("enlace-perfil");
 
+        if (curp) {
+            // Crear una nueva solicitud AJAX
+            const xhr = new XMLHttpRequest();
 
+            // Definir el método y la URL del archivo PHP
+            xhr.open("POST", "/controllers/verificar_cliente.php", true);
+
+            // Establecer el encabezado necesario para el envío de datos POST
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            // Definir la función de respuesta
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const respuesta = JSON.parse(xhr.responseText);
+
+                    if (respuesta.existe) {
+                        // Si el cliente ya existe, muestra un mensaje de error
+                        mensajeEmergente.style.display = "block";
+                        mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
+                        // Configura el enlace para ir al perfil con el ID
+                        enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta.cliente_id;
+                    } else {
+                        // Si el cliente no existe, oculta el mensaje de error y restablece el enlace
+                        mensajeEmergente.style.display = "none";
+                        enlacePerfil.href = "";
+                    }
+                }
+            };
+
+            // Enviar la solicitud con el CURP como datos POST
+            xhr.send("curp=" + curp);
+        } else {
+            // Si el campo CURP está vacío, oculta el mensaje de error y restablece el enlace
+            mensajeEmergente.style.display = "none";
+            enlacePerfil.href = "";
+        }
+    });
+    </script>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

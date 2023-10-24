@@ -315,7 +315,21 @@ main.min-main{
     }
 }
 
- 
+/* Estilos para el mensaje emergente */
+#mensaje-emergente {
+    background-color: #ffcccc; /* Fondo rojo claro */
+    padding: 10px;
+    border: 1px solid #ff0000; /* Borde rojo */
+    border-radius: 5px;
+    display: none; /* Inicialmente oculto */
+}
+
+/* Estilos para el enlace de perfil */
+#enlace-perfil {
+    text-decoration: none; /* Elimina el subrayado */
+    color: #ff0000; /* Color de texto rojo */
+    margin-left: 5px; /* Espacio entre el mensaje y el enlace */
+}
 
 .container {
     max-width: 480px;

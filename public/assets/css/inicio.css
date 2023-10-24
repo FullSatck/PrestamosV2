@@ -57,6 +57,27 @@ body{
     background-color: rgb(238, 238, 238);
 }
 
+/* ESTILOS PARA EL BOTON */
+
+.barra-lateral .boton{
+    width: 100%;
+    height: 45px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-boton);
+    color: var(--color-boton-texto);
+}
+
+.barra-lateral .boton ico-icon{
+    min-width: 50px;
+    font-size: 25px;
+}
+
 /* ESTILOS PARA EL MENU */
 
 .menu{
