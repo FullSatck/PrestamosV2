@@ -43,15 +43,6 @@ function cargarDatosCliente(clienteId) {
     });
 }
 
-// Función para enviar un mensaje automático a través de WhatsApp
-function enviarMensajeAutomatico() {
-    var mensaje = `Hola, has pagado ${cantidadPago} de tu préstamo. Gracias por tu pago.`;
-    var numeroTelefonoCliente = window.numeroTelefonoCliente;
-
-    var whatsappURL = `https://wa.me/${numeroTelefonoCliente}?text=${encodeURIComponent(mensaje)}`;
-    window.open(whatsappURL, '_blank');
-}
-
 // Función para registrar el pago
 function registrarPago() {
     if (cantidadPagoIngresada) {
@@ -75,13 +66,10 @@ function registrarPago() {
                 // Abre el modal de pago confirmado
                 $("#pagoConfirmadoModal").modal("show");
 
-                // Envía un mensaje automático a través de WhatsApp
-                enviarMensajeAutomatico();
-
                 // Cambia automáticamente al siguiente cliente después de 2 segundos
                 setTimeout(function() {
                     cambiarCliente(1);
-                }, 2000);
+                }, 3000);
             },
             error: function() {
                 alert("Error al registrar el pago");
@@ -167,7 +155,20 @@ $("#compartirPorWhatsAppButton").click(function() {
     // Obtener los datos necesarios para compartir por WhatsApp
     var clienteNombre = $("#cliente-nombre").text();
     var clienteApellido = $("#cliente-apellido").text();
-    var mensaje = `Hola ${clienteNombre} ${clienteApellido}, has pagado ${cantidadPago} de tu préstamo. Gracias por tu pago!`;
+    var mensaje = `Hola *${clienteNombre} ${clienteApellido}*, has pagado *${cantidadPago}* de tu préstamo.\nDetalles del préstamo:\n`;
+
+    // Agregar detalles del préstamo al mensaje
+    mensaje += `*ID del Préstamo:* ${$("#prestamo-id").text()}\n`;
+    mensaje += `*Tasa de Interés:* % ${$("#prestamo-tasa").text()}\n`;
+    mensaje += `*Fecha de Inicio:* ${$("#prestamo-fecha-inicio").text()}\n`;
+    mensaje += `*Fecha de Vencimiento:* ${$("#prestamo-fecha-vencimiento").text()}\n`;
+    mensaje += `*Monto Total del Préstamo:* ${$("#prestamo-monto-pagar").text()}\n`;  // Agregar el monto total del préstamo aquí
+
+    // Obtener otros detalles del cliente y agregarlos al mensaje
+    mensaje += `*Domicilio:* ${$("#cliente-domicilio").text()}\n`;
+    mensaje += `*Teléfono:* ${$("#cliente-telefono").text()}\n`;
+    mensaje += `*Identificación CURP:* ${$("#cliente-curp").text()}\n`;
+    mensaje += `*Zona Asignada:* ${$("#cliente-zona").text()}\n`;
 
     // Obtener el número de teléfono del cliente desde la variable global
     var numeroTelefonoCliente = window.numeroTelefonoCliente;
@@ -178,6 +179,8 @@ $("#compartirPorWhatsAppButton").click(function() {
     // Abre la URL en una nueva ventana o pestaña
     window.open(whatsappURL, '_blank');
 });
+
+
 
 // Llama a la función para cargar la lista de IDs de clientes al cargar la página
 cargarListaDeClientes();
