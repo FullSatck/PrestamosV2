@@ -56,6 +56,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </a>
                 </li> 
                 <li>
+                    <a href="/resources/views/admin/usuarios/registrar.php" class="hola">
+                        <ion-icon name="person-add-outline"></ion-icon>
+                        <span>Registrar Usuario</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/clientes/lista_clientes.php">
                         <ion-icon name="people-circle-outline"></ion-icon>
                         <span>Clientes</span>

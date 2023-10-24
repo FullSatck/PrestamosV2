@@ -22,8 +22,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/assets/css/cruduser.css">
-    <link rel="stylesheet" href="/public/assets/css/custom.css">
+    <link rel="stylesheet" href="/public/assets/css/cruduser.css"> 
     <title>CRUD de Préstamos</title>
 </head>
 
@@ -75,6 +74,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     <a href="/resources/views/admin/clientes/agregar_clientes.php">
                         <ion-icon name="person-circle-outline"></ion-icon>
                         <span>Registrar Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/crudPrestamos.php" class="hola">
+                        <ion-icon name="list-outline"></ion-icon>
+                        <span>Prestamos</span>
                     </a>
                 </li>
                 <li>
@@ -195,12 +200,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                    <!-- Paginación -->
-                    <div id="pagination" class="text-center">
-                        <ul class="pagination">
-                            <!-- Los botones de paginación se generarán aquí -->
-                        </ul>
                     </div>
                 </div>
             </div>

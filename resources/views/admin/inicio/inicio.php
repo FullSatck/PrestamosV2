@@ -32,6 +32,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div> 
+            <a href="/controllers/cerrar_sesion.php" class="boton">
+                <ion-icon name="arrow-back-circle-outline"></ion-icon>
+                <span>Cerrar Sesion</span>
+            </a>
         </div>
         <nav class="navegacion">
             <ul>
@@ -39,6 +43,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
                         <ion-icon name="push-outline"></ion-icon>
                         <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php" class="hola">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
                     </a>
                 </li>
                 <li>
@@ -86,7 +96,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <li>
                     <a href="/resources/views/admin/gastos/gastos.php">
                         <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span>Gastos</span>
+                        <span>Gastos</span> 
                     </a>
                 </li>
                 <li>

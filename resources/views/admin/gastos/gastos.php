@@ -95,7 +95,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <span>Zonas de cobro</span>
                     </a>
                 </li>
-                <li> 
+                <li>
+                    <a href="/resources/views/admin/gastos/gastos.php" class="hola">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Gastos</span> 
+                    </a>
+                </li>
                 <li>
                     <a href="/resources/views/admin/abonos/lista_super.php">
                         <ion-icon name="map-outline"></ion-icon>

@@ -72,6 +72,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </a>
                 </li> 
                 <li>
+                    <a href="/resources/views/admin/creditos/prestamos.php" class="hola">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <span>Registrar Prestamos</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
                         <span>Zonas de cobro</span>
