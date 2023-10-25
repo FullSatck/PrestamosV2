@@ -115,16 +115,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <div class="modo-oscuro">
                 <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Dark Mode</span>
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
                 </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
 
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -206,7 +200,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <option value="no">No</option>
             </select><br>
 
-          
+
 
             <div class="result-container">
                 <h2>Resultados</h2>
@@ -224,58 +218,58 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <script src="/menu/main.js"></script>
 
     <script>
-function calcularMontoPagar() {
-    // Obtener los valores ingresados por el usuario
-    var monto = parseFloat(document.getElementById('monto').value);
-    var tasa_interes = parseFloat(document.getElementById('TasaInteres').value);
-    var plazo = parseFloat(document.getElementById('plazo').value);
-    var frecuencia_pago = document.getElementById('frecuencia_pago').value;
-    var moneda_select = document.getElementById('moneda_id');
-    var moneda_option = moneda_select.options[moneda_select.selectedIndex];
-    var simbolo_moneda = moneda_option.getAttribute('data-simbolo');
+    function calcularMontoPagar() {
+        // Obtener los valores ingresados por el usuario
+        var monto = parseFloat(document.getElementById('monto').value);
+        var tasa_interes = parseFloat(document.getElementById('TasaInteres').value);
+        var plazo = parseFloat(document.getElementById('plazo').value);
+        var frecuencia_pago = document.getElementById('frecuencia_pago').value;
+        var moneda_select = document.getElementById('moneda_id');
+        var moneda_option = moneda_select.options[moneda_select.selectedIndex];
+        var simbolo_moneda = moneda_option.getAttribute('data-simbolo');
 
-    // Calcular el monto total, incluyendo el interés
-    var monto_total = monto + (monto * (tasa_interes / 100));
+        // Calcular el monto total, incluyendo el interés
+        var monto_total = monto + (monto * (tasa_interes / 100));
 
-    // Calcular la cantidad a pagar por cuota
-    var cantidad_por_cuota = monto_total / plazo;
+        // Calcular la cantidad a pagar por cuota
+        var cantidad_por_cuota = monto_total / plazo;
 
-    // Obtener el valor de la comisión seleccionada
-    var comision = document.getElementById('comision').value;
+        // Obtener el valor de la comisión seleccionada
+        var comision = document.getElementById('comision').value;
 
-    // Calcular la comisión (10% del monto total) si se selecciona "Sí"
-    var comision_vendedor = comision === 'si' ? (monto_total * 0.10) : 0;
+        // Calcular la comisión (10% del monto total) si se selecciona "Sí"
+        var comision_vendedor = comision === 'si' ? (monto_total * 0.10) : 0;
 
-    // Restar la comisión del monto total si es aplicable
-    monto_total -= comision_vendedor;
+        // Restar la comisión del monto total si es aplicable
+        monto_total -= comision_vendedor;
 
-    // Actualizar los elementos HTML para mostrar los resultados en tiempo real
-    document.getElementById('monto_a_pagar').textContent = monto_total.toFixed(2);
-    document.getElementById('plazo_mostrado').textContent = plazo + ' ' + getPlazoText(frecuencia_pago);
-    document.getElementById('frecuencia_pago_mostrada').textContent = frecuencia_pago;
-    document.getElementById('cantidad_por_cuota').textContent = cantidad_por_cuota.toFixed(2);
-    document.getElementById('moneda_simbolo').textContent = simbolo_moneda;
-    document.getElementById('comision_vendedor').textContent = comision_vendedor.toFixed(2);
-}
-
-function getPlazoText(frecuencia_pago) {
-    switch (frecuencia_pago) {
-        case 'diario':
-            return 'día(s)';
-        case 'semanal':
-            return 'semana(s)';
-        case 'quincenal':
-            return 'quincena(s)';
-        case 'mensual':
-            return 'mes(es)';
-        default:
-            return 'día(s)';
+        // Actualizar los elementos HTML para mostrar los resultados en tiempo real
+        document.getElementById('monto_a_pagar').textContent = monto_total.toFixed(2);
+        document.getElementById('plazo_mostrado').textContent = plazo + ' ' + getPlazoText(frecuencia_pago);
+        document.getElementById('frecuencia_pago_mostrada').textContent = frecuencia_pago;
+        document.getElementById('cantidad_por_cuota').textContent = cantidad_por_cuota.toFixed(2);
+        document.getElementById('moneda_simbolo').textContent = simbolo_moneda;
+        document.getElementById('comision_vendedor').textContent = comision_vendedor.toFixed(2);
     }
-}
 
-// Llama a la función de cálculo al cargar la página
-calcularMontoPagar();
-</script>
+    function getPlazoText(frecuencia_pago) {
+        switch (frecuencia_pago) {
+            case 'diario':
+                return 'día(s)';
+            case 'semanal':
+                return 'semana(s)';
+            case 'quincenal':
+                return 'quincena(s)';
+            case 'mensual':
+                return 'mes(es)';
+            default:
+                return 'día(s)';
+        }
+    }
+
+    // Llama a la función de cálculo al cargar la página
+    calcularMontoPagar();
+    </script>
 
 
 

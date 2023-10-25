@@ -148,16 +148,9 @@ if ($sql === false) {
             <div class="linea"></div>
 
             <div class="modo-oscuro">
-                <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Dark Mode</span>
-                </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-
-                        </div>
-                    </div>
+            <div class="info">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
                 </div>
             </div>
         </div>
