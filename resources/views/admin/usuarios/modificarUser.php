@@ -1,5 +1,6 @@
 <?php
 session_start();
+include("../../../../controllers/conexion.php");
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
@@ -8,99 +9,135 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
+// Verificar si se ha proporcionado un ID de usuario para modificar
+if (isset($_GET['id'])) {
+    $usuario_id = $_GET['id'];
+
+    // Verificar si se ha enviado un formulario de modificación
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Recuperar los datos del formulario
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $email = $_POST['email'];
+        $zona = $_POST['zona'];
+        $rolID = $_POST['rolID'];
+        $nuevaContrasena = $_POST['contrasena'];
+
+        // Verificar si se ha proporcionado una nueva contraseña
+        if (!empty($nuevaContrasena)) {
+            // Cifrar la nueva contraseña (puedes usar password_hash o tu algoritmo preferido)
+            $contrasenaCifrada = password_hash($nuevaContrasena, PASSWORD_BCRYPT);
+        }
+
+        // Preparar la consulta SQL
+        $sql = "UPDATE usuarios SET Nombre = ?, Apellido = ?, Email = ?, Zona = ?, RolID = ?";
+        
+        // Agregar la contraseña cifrada a la consulta si se proporcionó
+        if (!empty($nuevaContrasena)) {
+            $sql .= ", Password = ?";
+        }
+        
+        $sql .= " WHERE ID = ?";
+        
+        $stmt = $conexion->prepare($sql);
+
+        if (!$stmt) {
+            // Error en la preparación de la consulta
+            die("Error en la consulta SQL: " . $conexion->error);
+        }
+
+        // Vincular los parámetros y ejecutar la consulta
+        if (!empty($nuevaContrasena)) {
+            if (!$stmt->bind_param("sssssi", $nombre, $apellido, $email, $zona, $rolID, $usuario_id, $contrasenaCifrada)) {
+                // Error en la vinculación de parámetros
+                die("Error en la vinculación de parámetros: " . $stmt->error);
+            }
+        } else {
+            if (!$stmt->bind_param("ssssi", $nombre, $apellido, $email, $zona, $rolID, $usuario_id)) {
+                // Error en la vinculación de parámetros
+                die("Error en la vinculación de parámetros: " . $stmt->error);
+            }
+        }
+
+        if ($stmt->execute()) {
+            // Redirigir de regreso a la lista de usuarios con un mensaje de éxito
+            header("location: crudusuarios.php?mensaje=Usuario modificado con éxito");
+            exit();
+        } else {
+            // Error en la ejecución de la consulta
+            die("Error en la ejecución de la consulta: " . $stmt->error);
+        }
+    } else {
+        // Consultar la información del usuario para mostrarla en el formulario de modificación
+        $sql = "SELECT * FROM usuarios WHERE ID = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $usuario_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $usuario = $result->fetch_assoc();
+        } else {
+            // Usuario no encontrado, redirigir a la lista de usuarios
+            header("location: crudusuarios.php?mensaje=Usuario no encontrado");
+            exit();
+        }
+    }
+} else {
+    // ID de usuario no proporcionado, redirigir a la lista de usuarios
+    header("location: crudusuarios.php?mensaje=ID de usuario no proporcionado");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modificar Usuario</title>
-    <link rel="stylesheet" type="text/css" href="/public/assets/css/registrar_usuarios.css">
+    <!-- Añade tus etiquetas meta, títulos y enlaces CSS aquí -->
 </head>
-
 <body>
-    <div class="registro-container">
-        <h2>Modificar Usuario</h2>
-        <?php
-        // Verifica si se ha pasado un ID de usuario a modificar por GET
-        if (isset($_GET['id'])) {
-            // Incluye el archivo de conexión a la base de datos
-            include("../../../../controllers/conexion.php");
-            // Obtiene el ID del usuario a modificar
-            $usuario_id = $_GET['id'];
-            // Consulta SQL para obtener los datos del usuario por su ID
-            $consultaUsuario = "SELECT * FROM usuarios WHERE ID = $usuario_id";
-            $resultUsuario = mysqli_query($conexion, $consultaUsuario);
-            // Verifica si se encontró el usuario
-            if ($row = mysqli_fetch_assoc($resultUsuario)) {
-                // Rellena el formulario con los datos actuales del usuario
-                ?>
-                <form action="/controllers/validar_modificacion.php" method="post">
-                    <input type="hidden" name="id" value="<?php echo $usuario_id; ?>">
-                    <div class="input-container">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" value="<?php echo $row['Nombre']; ?>" required>
-                    </div>
-                    <div class="input-container">
-                        <label for="apellido">Apellido:</label>
-                        <input type="text" id="apellido" name="apellido" value="<?php echo $row['Apellido']; ?>" required>
-                    </div>
-                    <div class="input-container">
-                        <label for="email">Correo Electrónico:</label>
-                        <input type="email" id="email" name="email" value="<?php echo $row['Email']; ?>" required>
-                    </div>
-                    <div class="input-container">
-                        <label for="contrasena">Contraseña:</label>
-                        <input type="password" id="contrasena" name="contrasena" placeholder="Nueva contraseña">
-                    </div>
-                    <div class="input-container">
-                        <label for="zona">Zona:</label>
-                        <select id="zona" name="zona" required>
-                            <?php
-                            // Consulta SQL para obtener las zonas
-                            $consultaZonas = "SELECT ID, Nombre FROM Zonas";
-                            $resultZonas = mysqli_query($conexion, $consultaZonas);
-                            // Genera las opciones del menú desplegable para Zona
-                            while ($zona = mysqli_fetch_assoc($resultZonas)) {
-                                $selected = ($zona['ID'] == $row['ZonaID']) ? 'selected' : '';
-                                echo '<option value="' . $zona['ID'] . '" ' . $selected . '>' . $zona['Nombre'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="input-container">
-                        <label for="rol">Rol:</label>
-                        <select id="rol" name="rol" required>
-                            <?php
-                            // Consulta SQL para obtener las opciones de roles
-                            $consultaRoles = "SELECT ID, Nombre FROM Roles";
-                            $resultRoles = mysqli_query($conexion, $consultaRoles);
-                            // Genera las opciones del menú desplegable para Rol
-                            while ($rol = mysqli_fetch_assoc($resultRoles)) {
-                                $selected = ($rol['ID'] == $row['RolID']) ? 'selected' : '';
-                                echo '<option value="' . $rol['ID'] . '" ' . $selected . '>' . $rol['Nombre'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <!-- Otros campos de usuario -->
-                    <!-- ... -->
-                    <div class="btn-container">
-                        <button type="submit">Guardar Cambios</button>
-                    </div>
-                </form>
-                <?php
-            } else {
-                echo "Usuario no encontrado.";
-            }
-        } else {
-            echo "Falta el ID del usuario a modificar.";
-        }
-        ?>
-    </div> 
-</body>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/assets/css/registrar_usuarios.css">
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <h1>Modificar Usuario</h1>
 
+    <!-- Muestra un mensaje de error si hay alguno -->
+    <?php if (isset($mensaje)) { echo "<p>$mensaje</p>"; } ?>
+
+    <form method="post">
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" value="<?= $usuario['Nombre'] ?>" required>
+        </div>
+        <div>
+            <label for="apellido">Apellido:</label>
+            <input type="text" name="apellido" value="<?= $usuario['Apellido'] ?>" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" value="<?= $usuario['Email'] ?>" required>
+        </div>
+        <div>
+            <label for="zona">Zona:</label>
+            <input type="text" name="zona" value="<?= $usuario['Zona'] ?>" required>
+        </div>
+        <div>
+            <label for="rolID">Rol:</label>
+            <input type="text" name="rolID" value="<?= $usuario['RolID'] ?>" required>
+        </div>
+        <div>
+            <label for="contrasena">Nueva Contraseña (dejar en blanco para no cambiar):</label>
+            <input type="password" name="contrasena">
+        </div>
+        <div>
+            <input type="submit" value="Guardar Cambios">
+        </div>
+    </form>
+
+    <!-- Añade tus enlaces JavaScript y otros elementos HTML aquí si es necesario -->
+
+</body>
 </html>
+

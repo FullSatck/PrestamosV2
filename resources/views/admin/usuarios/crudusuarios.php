@@ -162,6 +162,7 @@ if (isset($_GET['mensaje'])) {
                 <th>Email</th>
                 <th>Zona</th>
                 <th>Rol</th>
+                <th>Acciones</th>
             </tr>
             <?php
             $sql = $conexion->query("SELECT * FROM usuarios");
@@ -185,9 +186,12 @@ if (isset($_GET['mensaje'])) {
                 <td><?= $datos->Email ?></td>
                 <td><?= $datos->Zona ?></td>
                 <td><?= $datos->RolID ?></td>
-
-            </tr>
-            <?php } 
+                <td>
+                    <a href="modificarUser.php?id=<?= $datos->ID ?>">
+                        <i class="fas fa-pencil-alt"></i> Modificar
+                    </a>
+                </td </tr>
+                <?php } 
                         } else {
                             echo "No se encontraron resultados.";
                         }
@@ -224,43 +228,6 @@ if (isset($_GET['mensaje'])) {
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>
-
-</body>
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<body>
 
 </body>
 
