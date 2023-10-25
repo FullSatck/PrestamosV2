@@ -83,11 +83,7 @@ mysqli_close($conexion);
             <div class="nombre-pagina">
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
-            </div>
-            <a href="/controllers/cerrar_sesion.php" class="boton">
-                <ion-icon name="arrow-back-circle-outline"></ion-icon>
-                <span>Cerrar Sesion</span>
-            </a>
+            </div> 
         </div>
         <nav class="navegacion">
             <ul>
@@ -177,16 +173,9 @@ mysqli_close($conexion);
 
             <div class="modo-oscuro">
                 <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Dark Mode</span>
-                </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-
-                        </div>
-                    </div>
-                </div>
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
+                </div> 
             </div>
         </div>
 

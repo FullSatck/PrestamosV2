@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conexion->close();
 }
 ?>
- 
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -90,9 +90,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/agregar_gasto.css">
-    <title>Agregar Gasto</title> 
+    <title>Agregar Gasto</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 
@@ -103,11 +103,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <div class="barra-lateral">
         <div>
-            <div class="nombre-pagina"> 
+            <div class="nombre-pagina">
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
-            </div> 
-            <button class="boton" id="volverAtras"> 
+            </div>
+            <button class="boton" id="volverAtras">
                 <ion-icon name="arrow-undo-outline"></ion-icon>
                 <span>&nbsp;Volver</span>
             </button>
@@ -161,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <ion-icon name="cloud-upload-outline"></ion-icon>
                         <span>Registrar Prestamos</span>
                     </a>
-                </li> 
+                </li>
                 <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
@@ -171,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <li>
                     <a href="/resources/views/admin/gastos/gastos.php" class="hola">
                         <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span>Gastos</span> 
+                        <span>Gastos</span>
                     </a>
                 </li>
                 <li>
@@ -191,7 +191,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
                     </a>
-                </li> 
+                </li>
             </ul>
         </nav>
 
@@ -200,15 +200,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="modo-oscuro">
                 <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Dark Mode</span>
-                </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-
-                        </div>
-                    </div>
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
                 </div>
             </div>
         </div>
@@ -218,24 +211,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>   
-    <h1>Agregar Gasto</h1>
-    
-    <div id="mensaje">
+    <main>
+        <h1>Agregar Gasto</h1>
+
+        <div id="mensaje">
             <?php
             if (isset($_GET['mensaje'])) {
                 echo htmlspecialchars($_GET['mensaje']);
             }
             ?>
         </div>
-    
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-        <div class="form-group">
-            <label for="id_zona">Zona:</label>
-            <select name="id_zona" id="id_zona" class="zona">
-                <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
-                <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
-                <?php
+
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <div class="form-group">
+                <label for="id_zona">Zona:</label>
+                <select name="id_zona" id="id_zona" class="zona">
+                    <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
+                    <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
+                    <?php
                 $sql_zonas = "SELECT * FROM Zonas";
                 $result_zonas = $conexion->query($sql_zonas);
 
@@ -246,29 +239,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 }
                 ?>
-            </select>
-            <span class="help-block"><?php echo $id_zona_err; ?></span>
-        </div>
-        <div class="form-group">
-            <label for="fecha">Fecha:</label>
-            <input type="text" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
-            <span class="help-block"><?php echo $fecha_err; ?></span>
-        </div>
-        <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" name="descripcion" id="descripcion" class="form-control" value="<?php echo $descripcion; ?>">
-            <span class="help-block"><?php echo $descripcion_err; ?></span>
-        </div>
-        <div class="form-group">
-            <label for="valor">Valor:</label>
-            <input type="number" name="valor" id="valor" class="form-control" value="<?php echo $valor; ?>">
-            <span class="help-block"><?php echo $valor_err; ?></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Agregar Gasto">
-            <a href="gastos.php" class="btn btn-secondary">Cancelar</a>
-        </div>
-    </form>
+                </select>
+                <span class="help-block"><?php echo $id_zona_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="text" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
+                <span class="help-block"><?php echo $fecha_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" name="descripcion" id="descripcion" class="form-control"
+                    value="<?php echo $descripcion; ?>">
+                <span class="help-block"><?php echo $descripcion_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label for="valor">Valor:</label>
+                <input type="number" name="valor" id="valor" class="form-control" value="<?php echo $valor; ?>">
+                <span class="help-block"><?php echo $valor_err; ?></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Agregar Gasto">
+                <a href="gastos.php" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
     </main>
 
     <script>
@@ -279,12 +273,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 
     <script>
-        $(function () {
-            $("#fecha").datepicker({
-                dateFormat: "dd/mm/yy", // Formato de fecha deseado
-                showButtonPanel: true, // Muestra botones de "Hoy" y "Limpiar"
-            });
+    $(function() {
+        $("#fecha").datepicker({
+            dateFormat: "dd/mm/yy", // Formato de fecha deseado
+            showButtonPanel: true, // Muestra botones de "Hoy" y "Limpiar"
         });
+    });
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -292,4 +286,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 
-</html> 
+</html>

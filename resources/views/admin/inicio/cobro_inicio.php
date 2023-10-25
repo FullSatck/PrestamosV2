@@ -21,7 +21,7 @@ if ($sql === false) {
 }
 
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +43,7 @@ if ($sql === false) {
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div>
-            <button class="boton" id="volverAtras"> 
+            <button class="boton" id="volverAtras">
                 <ion-icon name="arrow-undo-outline"></ion-icon>
                 <span>&nbsp;Volver</span>
             </button>
@@ -136,15 +136,8 @@ if ($sql === false) {
 
             <div class="modo-oscuro">
                 <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Dark Mode</span>
-                </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-
-                        </div>
-                    </div>
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
                 </div>
             </div>
         </div>

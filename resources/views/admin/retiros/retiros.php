@@ -155,15 +155,8 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
 
             <div class="modo-oscuro">
                 <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Dark Mode</span>
-                </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-
-                        </div>
-                    </div>
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
                 </div>
             </div>
         </div>
@@ -176,7 +169,7 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
     <main>
         <main>
             <h1>Lista de Retiros</h1>
-            <div class="saldo-box"> 
+            <div class="saldo-box">
                 <div class="saldo-item">
                     <h2>Saldo Inicial</h2>
                     <p>$<?php echo $saldoAdmin; ?></p>

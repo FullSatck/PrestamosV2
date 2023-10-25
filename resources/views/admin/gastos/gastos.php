@@ -98,7 +98,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <li>
                     <a href="/resources/views/admin/gastos/gastos.php" class="hola">
                         <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span>Gastos</span> 
+                        <span>Gastos</span>
                     </a>
                 </li>
                 <li>
@@ -127,15 +127,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <div class="modo-oscuro">
                 <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Dark Mode</span>
-                </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-
-                        </div>
-                    </div>
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
                 </div>
             </div>
         </div>
@@ -146,7 +139,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Lista de Gastos</h1> 
+        <h1>Lista de Gastos</h1>
         <?php
 // Incluye la configuración de conexión a la base de datos
 include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta

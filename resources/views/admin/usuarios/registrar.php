@@ -19,7 +19,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/registrar_usuarios.css">
-    <title>Registro de Usuario</title> 
+    <title>Registro de Usuario</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -54,7 +54,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <ion-icon name="people-outline"></ion-icon>
                         <span>Usuarios</span>
                     </a>
-                </li> 
+                </li>
                 <li>
                     <a href="/resources/views/admin/usuarios/registrar.php" class="hola">
                         <ion-icon name="person-add-outline"></ion-icon>
@@ -129,15 +129,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <div class="modo-oscuro">
                 <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Dark Mode</span>
-                </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-
-                        </div>
-                    </div>
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
                 </div>
             </div>
         </div>
@@ -174,7 +167,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     <div class="input-container">
                         <label for="zona">Zona:</label>
                         <select id="zona" name="zona" required>
-                    <?php
+                            <?php
                     // Incluye el archivo de conexión a la base de datos
                     include("../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
@@ -185,13 +178,13 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                     }
                     ?>
-                </select>
+                        </select>
                     </div>
 
                     <div class="input-container">
                         <label for="RolID">Rol:</label>
-                        <select id="RolID" name="RolID" required> 
-                        <?php
+                        <select id="RolID" name="RolID" required>
+                            <?php
                     // Consulta SQL para obtener las opciones de roles
                     $consultaRoles = "SELECT ID, Nombre FROM Roles";
                     $resultRoles = mysqli_query($conexion, $consultaRoles);
@@ -199,7 +192,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     while ($row = mysqli_fetch_assoc($resultRoles)) {
                         echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                     }
-                    ?> 
+                    ?>
                         </select>
                     </div>
 
