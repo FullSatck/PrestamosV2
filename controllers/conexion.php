@@ -11,10 +11,10 @@ $conexion = new mysqli($servidor, $usuario, $contrasena, $dbnombre);
 
 // // //comprobar la conexion 
 
-//     if ($conexion->connect_error) {
-//         echo" error de conexion";
-//    }
-//    else { 
+//      if ($conexion->connect_error) {
+//          echo" error de conexion";
+//     }
+//   else { 
 //          echo" conexion efectiva ";
 //     }
 

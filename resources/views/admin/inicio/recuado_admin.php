@@ -6,62 +6,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     // El usuario no ha iniciado sesión, redirigir al inicio de sesión
     header("location: ../../../../index.php");
     exit();
-}
+} 
 
-// Incluye el archivo de conexión
+// Conectar a la base de datos
 include("../../../../controllers/conexion.php");
-
-// COBROS
-try {
-    // Consulta SQL para obtener la suma de MontoAPagar
-    $sqlCobros = "SELECT SUM(MontoAPagar) AS TotalMonto FROM prestamos";
-
-    // Realizar la consulta
-    $resultCobros = mysqli_query($conexion, $sqlCobros);
-
-    if ($resultCobros) {
-        $rowCobros = mysqli_fetch_assoc($resultCobros);
-
-        // Obtener el total de cobros
-        $totalMonto = $rowCobros['TotalMonto'];
-
-        // Cierra la consulta de cobros
-        mysqli_free_result($resultCobros);
-    } else {
-        echo "Error en la consulta de cobros: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (cobros): " . $e->getMessage();
-}
-
-// INGRESOS
-try {
-    // Consulta SQL para obtener la suma de MontoPagado
-    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos";
-
-    // Realizar la consulta
-    $resultIngresos = mysqli_query($conexion, $sqlIngresos);
-
-    if ($resultIngresos) {
-        $rowIngresos = mysqli_fetch_assoc($resultIngresos);
-
-        // Obtener el total de ingresos
-        $totalIngresos = $rowIngresos['TotalIngresos'];
-
-        // Cierra la consulta de ingresos
-        mysqli_free_result($resultIngresos);
-    } else {
-        echo "Error en la consulta de ingresos: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
-}
-
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
+ 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +20,7 @@ mysqli_close($conexion);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recaudo</title>
-    <link rel="stylesheet" href="/public/assets/css/inicio.css">
+    <link rel="stylesheet" href="/public/assets/css/recaudo_admin.css">
 </head>
 
 <body>
@@ -84,10 +34,10 @@ mysqli_close($conexion);
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div>
-            <a href="/controllers/cerrar_sesion.php" class="boton">
-                <ion-icon name="arrow-back-circle-outline"></ion-icon>
-                <span>Cerrar Sesion</span>
-            </a>
+            <button class="boton" id="volverAtras">
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
         </div>
         <nav class="navegacion">
             <ul>
@@ -194,39 +144,71 @@ mysqli_close($conexion);
 
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
- 
+
     <main>
-        <h1>Inicio Administrador</h1>
-        <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Cobros</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'> $ $totalMonto </span>" ?></p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $  $totalIngresos </span>" ?></p>
-                </div>  
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Contabilidad</a> 
-                </div>
-            </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Otros</a>
-                </div>
-            </div>
-        </div>
+        <h1>Recaudos totales</h1>
+        <?php
+// Incluye el archivo de conexión a la base de datos
+include("../../../../controllers/conexion.php");
+
+// Consulta SQL para obtener todos los campos de la tabla historial_pagos en orden descendente
+$sql = "SELECT * FROM historial_pagos ORDER BY ID DESC";
+
+// Ejecutar la consulta
+$result = mysqli_query($conexion, $sql);
+
+if ($result) {
+    // Crear un arreglo para almacenar los nombres de los clientes
+    $nombresClientes = array();
+
+    echo "<table>";
+    echo "<tr>";
+    echo "<th>ID</th>";
+    echo "<th>Nombre del Cliente</th>";
+    echo "<th>FechaPago</th>";
+    echo "<th>MontoPagado</th>";
+    echo "</tr>";
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Almacena los IDs de cliente en el arreglo
+        $clienteID = $row['IDCliente'];
+        // Verifica si el nombre del cliente ya se obtuvo previamente
+        if (!array_key_exists($clienteID, $nombresClientes)) {
+            // Si no se ha obtenido, realiza una consulta para obtener el nombre
+            $consultaCliente = "SELECT Nombre FROM clientes WHERE ID = $clienteID";
+            $resultCliente = mysqli_query($conexion, $consultaCliente);
+            if ($rowCliente = mysqli_fetch_assoc($resultCliente)) {
+                // Almacena el nombre del cliente en el arreglo
+                $nombresClientes[$clienteID] = $rowCliente['Nombre'];
+            }
+        }
+        // Muestra los resultados en la tabla
+        $nombreCliente = $nombresClientes[$clienteID];
+        echo "<tr>";
+        echo "<td>" . "Recaudo REC-10" . $row['ID'] . "</td>";
+        echo "<td>" . $nombreCliente . "</td>";
+        echo "<td>" . $row['FechaPago'] . "</td>";
+        echo "<td>" . $row['MontoPagado'] . "</td>";
+        echo "</tr>";
+    }
+
+    echo "</table>";
+} else {
+    echo "Error en la consulta: " . mysqli_error($conexion);
+}
+
+// Cierra la conexión a la base de datos
+mysqli_close($conexion);
+?>
+
     </main>
 
-
-
-
-
+    <script>
+    // Agregar un evento clic al botón
+    document.getElementById("volverAtras").addEventListener("click", function() {
+        window.history.back();
+    });
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>
