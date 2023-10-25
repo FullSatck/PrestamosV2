@@ -174,7 +174,7 @@ mysqli_close($conexion);
             <div class="modo-oscuro">
                 <div class="info">
                     <ion-icon name="arrow-back-outline"></ion-icon>
-                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
+                    <a href="/controllers/cerrar_sesion.php"><span class="hola">Cerrar Sesion</span></a>
                 </div> 
             </div>
         </div>
