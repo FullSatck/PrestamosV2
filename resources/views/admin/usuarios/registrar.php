@@ -88,13 +88,7 @@ if (isset($_SESSION["usuario_id"])) {
                         <ion-icon name="cloud-upload-outline"></ion-icon>
                         <span>Registrar Prestamos</span>
                     </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/grupos/grupos.php">
-                        <ion-icon name="eye-outline"></ion-icon>
-                        <span>Roles</span>
-                    </a>
-                </li>
+                </li> 
                 <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
