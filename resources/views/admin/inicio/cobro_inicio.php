@@ -149,6 +149,11 @@ if ($sql === false) {
 
     <main>
         <h1>Cobros totales</h1>
+
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+        </div>
+
         <div class="container-fluid">
             <div class="row">
 
@@ -193,6 +198,39 @@ if ($sql === false) {
         window.history.back();
     });
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("search-input");
+        const rows = document.querySelectorAll(".table tbody tr");
+
+        searchInput.addEventListener("input", function() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            rows.forEach(function(row) {
+                const columns = row.querySelectorAll("td");
+                let found = false;
+
+                columns.forEach(function(column, index) {
+                    const text = column.textContent.toLowerCase();
+                    if (index === 0 && text.includes(searchTerm)) {
+                        found = true; // Search only in the first (ID) column
+                    } else if (index !== 0 && text.includes(searchTerm)) {
+                        found = true; // Search in other columns
+                    }
+                });
+
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    });
+    </script>
+
+
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>

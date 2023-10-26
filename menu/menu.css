@@ -15,33 +15,16 @@
     --color-linea: rgb(180, 180, 180);
 
     --color-switch-base: rgb(201,202,206);
-    --color-switch-circulo: rgb(241,241,241);
+    --color-switch-circulo: rgb(241,241,241); 
 
     --color-scroll: rgb(192,192,192);
     --color-scroll-hover: rgb(134,134,134);
-}
 
-.dark-mode{
-    --color-barra-lateral: rgb(44,45,49);
-
-    --color-texto: rgb(255,255,255);
-    --color-texto-menu: rgb(110,110,117);
-
-    --color-menu-hover: rgb(0,0,0);
-    --color-menu-hover-texto: rgb(238,238,238);
-
-    --color-boton:rgb(255,255,255);
-    --color-boton-texto: rgb(0,0,0);
-
-    --color-linea: rgb(90,90,90);
-
-    --color-switch-base: rgb(39,205,64);
-    --color-switch-circulo: rgb(255,255,255);
-
-    --color-scroll: rgb(68,69,74);
-    --color-scroll-hover: rgb(85,85,85);
-}
-
+    --color-fondo: rgb(238, 238, 238);
+    --color-fondo-texto: rgb(0,0,0);
+    --color-cuadros: rgb(199, 199, 199);
+} 
+ 
 /* ESTILOS EN GENERALL */
 *{
     margin: 0;
@@ -52,8 +35,30 @@
 
 body{
     height: 100vh;
-    width: 100%;
+    width: 100%; 
     padding: 20px;
+    background-color: var(--color-fondo);
+}
+
+/* ESTILOS PARA EL BOTON */
+
+.barra-lateral .boton{
+    width: 100%;
+    height: 45px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-boton);
+    color: var(--color-boton-texto);
+}
+
+.barra-lateral .boton ico-icon{
+    min-width: 50px;
+    font-size: 25px;
 }
 
 /* ESTILOS PARA EL MENU */
@@ -175,7 +180,7 @@ body{
     list-style: none;
     display: flex;
     margin-bottom: 5px;
-} 
+}
 
 .barra-lateral .navegacion a{
     width: 100%;
@@ -228,51 +233,20 @@ body{
 
 .barra-lateral .modo-oscuro .info{
     width: 150px;
-    height: 45px;
+    height: 45px; 
     overflow: hidden;
     display: flex;
     align-items: center;
-    color: var(--color-texto-menu);
+    color: var(--color-texto-menu); 
+}
+
+span .hola{
+    background-color: yellow;
 }
 
 .barra-lateral .modo-oscuro ion-icon{
     width: 50px;
     font-size: 20px;
-}
-
-/* ESTILOS PARA CAMBIOS A MODO OSCURO */
-
-.barra-lateral .modo-oscuro .switch{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 50px;
-    height: 45px;
-    cursor: pointer;
-}
-
-.barra-lateral .modo-oscuro .base{
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 35px;
-    height: 20px;
-    background-color: var(--color-switch-base);
-    border-radius: 50px;
-}
-
-.barra-lateral .modo-oscuro .circulo{
-    position: absolute;
-    width: 18px;
-    height: 90%;
-    background-color: var(--color-switch-circulo);
-    border-radius: 50%;
-    left: 2px;
-    transition: left 0.5s ease;
-}
-
-.barra-lateral .modo-oscuro .circulo.prendido{
-    left: 15px;
 }
 
 /* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
@@ -281,6 +255,7 @@ main{
     margin-left: 250px;
     padding: 20px;
     transition: margin-left 0.5s ease;
+    color: var(--color-fondo-texto);
 }
 
 main.min-main{
