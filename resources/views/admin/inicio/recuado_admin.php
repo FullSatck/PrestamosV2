@@ -207,6 +207,44 @@ mysqli_close($conexion);
         window.history.back();
     });
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("search-input");
+        const rows = document.querySelectorAll("table tr");
+
+        searchInput.addEventListener("input", function() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            rows.forEach(function(row, index) {
+                if (index === 0) {
+                    // Salta la primera fila que contiene encabezados de la tabla
+                    return;
+                }
+
+                const columns = row.querySelectorAll("td");
+                let found = false;
+
+                columns.forEach(function(column, columnIndex) {
+                    const text = column.textContent.toLowerCase();
+                    if (columnIndex === 0 && text.includes(searchTerm)) {
+                        // Busca el término en la primera columna (ID)
+                        found = true;
+                    } else if (text.includes(searchTerm)) {
+                        // Busca el término en otras columnas
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    });
+    </script>
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>

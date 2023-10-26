@@ -206,7 +206,7 @@ mysqli_close($conexion);
             </div>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Otros</a>
+                    <a href="##" class="titulo">Comision</a>
                 </div>
             </div>
         </div>
