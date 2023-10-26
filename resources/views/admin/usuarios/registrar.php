@@ -152,7 +152,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </div>
                     <div class="input-container">
                         <label for "apellido">Apellido:</label>
-                        <input type="text" id="apellido" name "apellido" placeholder="Por favor ingrese su apellido"
+                        <input type="text" id="apellido" name ="apellido" placeholder="Por favor ingrese su apellido"
                             required>
                     </div>
                     <div class="input-container">

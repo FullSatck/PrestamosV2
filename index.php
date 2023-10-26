@@ -22,7 +22,7 @@
                 <div class="input-container">
                     <label for="password" class="label">Contraseña:</label>
                     <div class="password-container">
-                        <input type="password" id="password" name="contrasena" placeholder="Ingresa tu contraseña" required>
+                        <input type="password" id="password" name="Password" placeholder="Ingresa tu contraseña" required>
                         <button type="button" id="togglePassword" class="toggle-password">
                             <i class="fas fa-eye"></i>
                         </button>
