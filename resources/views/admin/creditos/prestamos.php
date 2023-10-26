@@ -12,7 +12,7 @@ if (isset($_SESSION["usuario_id"])) {
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +54,7 @@ if (isset($_SESSION["usuario_id"])) {
                         <ion-icon name="people-outline"></ion-icon>
                         <span>Usuarios</span>
                     </a>
-                </li>
+                </li> 
                 <li>
                     <a href="/resources/views/admin/clientes/lista_clientes.php">
                         <ion-icon name="people-circle-outline"></ion-icon>
@@ -72,7 +72,7 @@ if (isset($_SESSION["usuario_id"])) {
                         <ion-icon name="list-outline"></ion-icon>
                         <span>Prestamos</span>
                     </a>
-                </li>
+                </li> 
                 <li>
                     <a href="/resources/views/admin/creditos/prestamos.php" class="hola">
                         <ion-icon name="cloud-upload-outline"></ion-icon>
@@ -117,10 +117,16 @@ if (isset($_SESSION["usuario_id"])) {
 
             <div class="modo-oscuro">
                 <div class="info">
-                    <ion-icon name="arrow-back-outline"></ion-icon>
-                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
+                    <ion-icon name="moon-outline"></ion-icon>
+                    <span>Dark Mode</span>
                 </div>
+                <div class="switch">
+                    <div class="base">
+                        <div class="circulo">
 
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -157,7 +163,7 @@ if (isset($_SESSION["usuario_id"])) {
             <label for="monto">Monto:</label>
             <input type="text" name="monto" id="monto" required><br>
 
-            <label for="TasaInteres">Tasa de Interés (%):</label>
+            <label for="tasa_interes">Tasa de Interés (%):</label>
             <input type="text" name="TasaInteres" id="TasaInteres" required><br>
 
             <label for="frecuencia_pago">Frecuencia de Pago:</label>
@@ -167,6 +173,7 @@ if (isset($_SESSION["usuario_id"])) {
                 <option value="quincenal">Quincenal</option>
                 <option value="mensual">Mensual</option>
             </select><br>
+
 
             <label for="plazo">Plazo:</label>
             <input type="text" name="plazo" id="plazo" required><br>
@@ -186,6 +193,8 @@ if (isset($_SESSION["usuario_id"])) {
 
             <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d '); ?>" readonly><br>
 
+
+
             <label for="zona">Zona:</label>
             <select name="zona" required>
                 <?php
@@ -195,15 +204,6 @@ if (isset($_SESSION["usuario_id"])) {
                 ?>
             </select><br>
 
-            <!-- Agrega un campo de selección para la comisión en el formulario -->
-            <label for="comision">¿Desea agregar una comisión al préstamo?</label>
-            <select name="comision" id="comision" onchange="calcularMontoPagar()">
-                <option value="si">Sí</option>
-                <option value="no">No</option>
-            </select><br>
-
-
-
             <div class="result-container">
                 <h2>Resultados</h2>
                 <p>Monto Total a Pagar: <span id="monto_a_pagar">0.00</span></p>
@@ -211,14 +211,12 @@ if (isset($_SESSION["usuario_id"])) {
                 <p>Frecuencia de Pago: <span id="frecuencia_pago_mostrada">Diario</span></p>
                 <p>Cantidad a Pagar por Cuota: <span id="cantidad_por_cuota">0.00</span></p>
                 <p>Moneda: <span id="moneda_simbolo">USD</span></p>
-                <p>Comisión del vendedor: <span id="comision_vendedor">0.00</span></p>
             </div>
 
             <input type="submit" value="Hacer préstamo" class="calcular-button">
         </form>
     </main>
     <script src="/menu/main.js"></script>
-
     <script>
     function calcularMontoPagar() {
         // Obtener los valores ingresados por el usuario
@@ -236,22 +234,12 @@ if (isset($_SESSION["usuario_id"])) {
         // Calcular la cantidad a pagar por cuota
         var cantidad_por_cuota = monto_total / plazo;
 
-        // Obtener el valor de la comisión seleccionada
-        var comision = document.getElementById('comision').value;
-
-        // Calcular la comisión (10% del monto total) si se selecciona "Sí"
-        var comision_vendedor = comision === 'si' ? (monto_total * 0.10) : 0;
-
-        // Restar la comisión del monto total si es aplicable
-        monto_total -= comision_vendedor;
-
         // Actualizar los elementos HTML para mostrar los resultados en tiempo real
         document.getElementById('monto_a_pagar').textContent = monto_total.toFixed(2);
         document.getElementById('plazo_mostrado').textContent = plazo + ' ' + getPlazoText(frecuencia_pago);
         document.getElementById('frecuencia_pago_mostrada').textContent = frecuencia_pago;
         document.getElementById('cantidad_por_cuota').textContent = cantidad_por_cuota.toFixed(2);
         document.getElementById('moneda_simbolo').textContent = simbolo_moneda;
-        document.getElementById('comision_vendedor').textContent = comision_vendedor.toFixed(2);
     }
 
     function getPlazoText(frecuencia_pago) {
@@ -268,18 +256,11 @@ if (isset($_SESSION["usuario_id"])) {
                 return 'día(s)';
         }
     }
-
-    // Llama a la función de cálculo al cargar la página
-    calcularMontoPagar();
     </script>
-
-
-
-
-
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-</body>
+    
+
 </body>
 
 </html>
