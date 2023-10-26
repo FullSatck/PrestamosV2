@@ -166,7 +166,7 @@ mysqli_close($conexion);
                     </a>
                 </li>
             </ul>
-        </nav>
+        </nav> 
 
         <div>
             <div class="linea"></div>

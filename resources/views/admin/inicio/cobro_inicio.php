@@ -143,12 +143,17 @@ if ($sql === false) {
         </div>
 
     </div>
-
+ 
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
         <h1>Cobros totales</h1>
+
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+        </div>
+
         <div class="container-fluid">
             <div class="row">
 

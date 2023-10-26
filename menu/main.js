@@ -18,12 +18,6 @@ menu.addEventListener("click",()=>{
     }
 })
 
-palanca.addEventListener("click",()=>{
-    let body = document.body;
-    body.classList.toggle("dark-mode");
-    circulo.classList.toggle("prendido");
-});
-
 cloud.addEventListener("click", ()=>{
     barraLateral.classList.toggle("mini-barra-lateral");
     main.classList.toggle("min-main");    

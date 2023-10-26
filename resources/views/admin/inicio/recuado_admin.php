@@ -140,6 +140,11 @@ include("../../../../controllers/conexion.php");
 
     <main>
         <h1>Recaudos totales</h1>
+
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+        </div>
+
         <?php
 // Incluye el archivo de conexión a la base de datos
 include("../../../../controllers/conexion.php");

@@ -354,7 +354,20 @@ h1{
     margin-bottom: 20px;
 }
  
+/* Estilos para la barra de búsqueda */
+.search-container {
+    display: flex;
+    justify-content: center; /* Centra la barra de búsqueda en pantallas pequeñas */
+    margin: 20px 0;
+}
 
+.search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
 
 /* Estilos generales */
 body {
