@@ -1,54 +1,46 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['contrasena'];
+// Asegúrate de que la sesión esté iniciada
+session_start();
 
 // Incluye el archivo de conexión a la base de datos
 include("conexion.php");
 
-    // Consulta para verificar el correo electrónico, obtener la contraseña hash y el ID del rol
-    $consultaUsuario = "SELECT ID, Password, RolID FROM usuarios WHERE Email = ?";
-    $stmtUsuario = $conexion->prepare($consultaUsuario);
+// Obtiene los datos del formulario
+$email = $_POST["email"];
+$contrasena = $_POST["contrasena"];
 
-    if ($stmtUsuario) {
-        $stmtUsuario->bind_param("s", $email);
-        $stmtUsuario->execute();
-        $stmtUsuario->store_result();
+// Realiza la consulta a la base de datos
+$query = "SELECT * FROM usuarios WHERE Email = '$email' AND Password = '$contrasena'";
+$result = mysqli_query($conexion, $query);
 
-        if ($stmtUsuario->num_rows == 1) {
-            $stmtUsuario->bind_result($userID, $hashedPassword, $userRoleID);
-            $stmtUsuario->fetch();
+// Comprueba si la consulta devuelve algún registro
+if (mysqli_num_rows($result) > 0) {
+    // La consulta devuelve un registro
+    $row = mysqli_fetch_assoc($result);
 
-            // Verificar la contraseña ingresada con la contraseña almacenada en la base de datos
-            if (password_verify($password, $hashedPassword)) {
-                // Inicio de sesión exitoso
+    // Comprueba si el usuario existe
+    if ($row) {
+        // Guarda los datos del usuario en la sesión
+        $_SESSION["usuario_id"] = $row["ID"];
+        $_SESSION["nombre"] = $row["Nombre"];
+        $_SESSION["rol"] = $row["RolID"];
 
-                session_start();
-                $_SESSION['user_id'] = $userID;
-                $_SESSION['user_role_id'] = $userRoleID; // Almacena el ID del rol en la sesión
-
-                // Redireccionar según el ID del rol (ajusta las URL según tu estructura de carpetas)
-                if ($userRoleID == 1) {
-                    // Redirige al panel de "admin"
-                    header("Location: ../resources/views/admin_panel.php");
-                } elseif ($userRoleID == 2) {
-                    // Redirige al panel de "supervisor"
-                    header("Location: ../resources/views/supervisor_panel.php");
-                } elseif ($userRoleID == 3) {
-                    // Redirige al panel de "cobrador"
-                    header("Location: ../resources/views/cobrador_panel.php");
-                } else {
-                    echo "Rol desconocido.";
-                }
-                exit();
-            } else {
-                echo "La contraseña es incorrecta.";
-            }
-        } else {
-            echo "El correo electrónico no está registrado.";
+        // Redirige a la página correspondiente según el rol del usuario
+        switch ($_SESSION["rol"]) {
+            case 1: // Rol de administrador
+                header("Location: /resources/views/admin/inicio/inicio.php");
+                break;
+            case 2: // Rol de supervisor
+                header("Location: supervisor_dashboard.php");
+                break;
+            case 3: // Rol de cobrador
+                header("Location: cobrador_dashboard.php");
+                break;
+            default:
+                // Redirige a una página por defecto si el rol no se encuentra
+                header("Location: default_dashboard.php");
+                break;
         }
-
-        $stmtUsuario->close();
     } else {
         // Mensaje de error si el usuario no existe
         $error_message = "Credenciales incorrectas. Por favor, inténtelo de nuevo.";
