@@ -290,8 +290,57 @@ main.min-main{
     }
 }
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-fondo);
+}
 
-h1{
+h1 {
     text-align: center;
-    color: var(--color-texto);
+    margin-bottom: 15px;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form label {
+    display: block;
+    margin: 10px 0;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form input[type="submit"] {
+    background-color: #747474;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form input[type="submit"]:hover {
+    background-color: #585858;
+}
+
+/* Optional: Style error message */
+form p {
+    color: #a0a0a0;
+    font-size: 14px;
+    margin: 10px 0;
 }

@@ -15,7 +15,7 @@
     --color-linea: rgb(180, 180, 180);
 
     --color-switch-base: rgb(201,202,206);
-    --color-switch-circulo: rgb(241,241,241);
+    --color-switch-circulo: rgb(241,241,241); 
 
     --color-scroll: rgb(192,192,192);
     --color-scroll-hover: rgb(134,134,134);
@@ -24,7 +24,7 @@
     --color-fondo-texto: rgb(0,0,0);
     --color-cuadros: rgb(199, 199, 199);
 } 
-
+ 
 /* ESTILOS EN GENERALL */
 *{
     margin: 0;
@@ -35,9 +35,30 @@
 
 body{
     height: 100vh;
-    width: 100%;
-    background-color: var(--color-fondo);
+    width: 100%; 
     padding: 20px;
+    background-color: var(--color-fondo);
+}
+
+/* ESTILOS PARA EL BOTON */
+
+.barra-lateral .boton{
+    width: 100%;
+    height: 45px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-boton);
+    color: var(--color-boton-texto);
+}
+
+.barra-lateral .boton ico-icon{
+    min-width: 50px;
+    font-size: 25px;
 }
 
 /* ESTILOS PARA EL MENU */
@@ -154,7 +175,7 @@ body{
     background-color: var(--color-scroll-hover);
     border-radius: 5px;
 }
- 
+
 .barra-lateral .navegacion li{
     list-style: none;
     display: flex;
@@ -180,7 +201,7 @@ body{
     border-radius: 10px;
     background-color: #c7c7c7;
     color: rgb(0, 0, 0);
-  }
+}
 
 .barra-lateral .navegacion a:hover{
     background-color: var(--color-menu-hover);
@@ -212,11 +233,15 @@ body{
 
 .barra-lateral .modo-oscuro .info{
     width: 150px;
-    height: 45px;
+    height: 45px; 
     overflow: hidden;
     display: flex;
     align-items: center;
-    color: var(--color-texto-menu);
+    color: var(--color-texto-menu); 
+}
+
+span .hola{
+    background-color: yellow;
 }
 
 .barra-lateral .modo-oscuro ion-icon{
@@ -224,47 +249,12 @@ body{
     font-size: 20px;
 }
 
-/* ESTILOS PARA CAMBIOS A MODO OSCURO */
-
-.barra-lateral .modo-oscuro .switch{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 50px;
-    height: 45px;
-    cursor: pointer;
-}
-
-.barra-lateral .modo-oscuro .base{
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 35px;
-    height: 20px;
-    background-color: var(--color-switch-base);
-    border-radius: 50px;
-}
-
-.barra-lateral .modo-oscuro .circulo{
-    position: absolute;
-    width: 18px;
-    height: 90%;
-    background-color: var(--color-switch-circulo);
-    border-radius: 50%;
-    left: 2px;
-    transition: left 0.5s ease;
-}
-
-.barra-lateral .modo-oscuro .circulo.prendido{
-    left: 15px;
-}
-
 /* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
 
-main{
-    margin-left: 250px;
+main{ 
     padding: 20px;
     transition: margin-left 0.5s ease;
+    color: var(--color-fondo-texto);
 }
 
 main.min-main{
@@ -300,92 +290,78 @@ main.min-main{
 }
 
 
-/* Estilos para el formulario de registro */
-.registro-container {
-    max-width: 60%; /* Ajusta el ancho del formulario según tus necesidades */
-    background-color: var(--color-barra-lateral); /* Usa el color de fondo del menú */ 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    background: #ffffff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    color: var(--color-texto); /* Usa el color de texto del menú */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: left;
 }
 
-.registro-container h2 {
-    font-size: 24px; /* Ajusta el tamaño del título según tus necesidades */
-}
-
-/* Estilos para las etiquetas y campos de formulario */
 .input-container {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-.input-container label {
-    margin-bottom: 10px;
-    color: var(--color-texto); /* Usa el color de texto del menú */ 
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
-.input-container input,
-.input-container select {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
     padding: 10px;
-    font-size: 16px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    border: none;
-    box-shadow: 7px 5px 5px rgba(0, 0, 0, 0.1); 
+    margin-top: 5px;
+    font-size: 14px;
 }
 
-/* Estilos para el botón de registro */
-.btn-container button {
-    background-color: var(--color-boton);
-    color: var(--color-boton-texto);
-    padding: 10px 15px;
-    border-radius: 5px;
+select {
+    height: 40px;
+}
+
+.btn-container {
+    margin-top: 20px;
+}
+
+button {
+    background-color: #747474;
+    color: #fff;
+    padding: 10px 20px;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.3s;
+    font-size: 14px;
 }
 
-.btn-container button:hover {
-    background-color: var(--color-menu-hover);
-    color: var(--color-menu-hover-texto);
+button:hover {
+    background-color: #444444;
 }
 
-/* Estilos para el botón de volver */
-.a {
-    text-decoration: none;
-    background-color: var(--color-boton);
-    color: var(--color-boton-texto);
-    padding: 9px 14px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-}
-
-.a:hover {
-    background-color: var(--color-menu-hover);
-    color: var(--color-menu-hover-texto);
-}
-
-/* Estilos para el contenedor del saldo inicial */
 #saldo-inicial-container {
     display: none;
-    /* Agrega estilos personalizados para el contenedor de saldo inicial si es necesario */
 }
 
-/* Media Queries para Responsividad */
+/* Media query to adjust styles for smaller screens */
 @media (max-width: 600px) {
-    .registro-container {
-        padding: 20px;
-    }
-
-    .input-container input,
-    .input-container select {
-        font-size: 14px;
-        padding: 8px;
-    }
-
-    .btn-container button {
-        padding: 8px 12px;
-        font-size: 14px;
+    .form-container {
+        width: 90%;
     }
 }

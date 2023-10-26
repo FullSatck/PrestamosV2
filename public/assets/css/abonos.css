@@ -297,3 +297,137 @@ main.min-main{
     }
 }
  
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.botone {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.botone a {
+    text-decoration: none;
+    margin-right: 20px;
+    padding: 10px 20px;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 5px;
+}
+
+.botone a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+#cliente-info,
+#prestamo-info,
+#pago-form,
+form,
+.form-group {
+    margin-top: 20px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 0 0 50%;
+    padding: 5px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="number"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.btn-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn {
+    margin-right: 10px;
+}
+
+.modal {
+    text-align: center;
+}
+
+.modal-dialog {
+    max-width: 400px;
+    margin: 10% auto;
+}
+
+.modal-content {
+    border-radius: 5px;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-body,
+.modal-footer {
+    text-align: center;
+}
+
+/* Add more specific styles for buttons inside modals */
+.modal-footer button {
+    margin-right: 10px;
+}
+
+/* Custom style for "Generar Factura" button */
+#generarFacturaButton {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+#generarFacturaButton:hover {
+    background-color: #45a049;
+}
+
+/* Custom style for "Compartir por WhatsApp" button */
+#compartirPorWhatsAppButton {
+    background-color: #25d366;
+    border-color: #25d366;
+}
+
+#compartirPorWhatsAppButton:hover {
+    background-color: #128c7e;
+}

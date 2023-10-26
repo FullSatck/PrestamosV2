@@ -96,6 +96,7 @@ if (isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Modificar Usuario</title>
     <link rel="stylesheet" href="/public/assets/css/modificarUSER.css">
 </head>
@@ -111,6 +112,10 @@ if (isset($_GET['id'])) {
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div> 
+            <button class="boton" id="volverAtras"> 
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
         </div>
         <nav class="navegacion">
             <ul>
@@ -213,11 +218,6 @@ if (isset($_GET['id'])) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
  
     <main>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/registrar_usuarios.css">
-   
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <h1>Modificar Usuario</h1>
 
     <!-- Muestra un mensaje de error si hay alguno -->
@@ -245,7 +245,7 @@ if (isset($_GET['id'])) {
             <input type="text" name="rolID" value="<?= $usuario['RolID'] ?>" required>
         </div>
         <div>
-            <label for="contrasena">Nueva Contraseña (dejar en blanco para no cambiar):</label>
+            <label for="contrasena">Nueva Contraseña: <br><p>(dejar en blanco para no cambiar)</p></label>
             <input type="password" name="contrasena">
         </div>
         <div>
@@ -254,6 +254,12 @@ if (isset($_GET['id'])) {
     </form>
     </main>
 
+    <script>
+        // Agregar un evento clic al botón
+        document.getElementById("volverAtras").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>

@@ -20,9 +20,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <link rel="stylesheet" href="/public/assets/css/registrar_cliente.css">
     <title>Registro de Clientes</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
 </head>
-
+ 
 <body>
     <div class="menu">
         <ion-icon name="menu-outline"></ion-icon>
@@ -174,7 +173,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <div class="input-container">
                 <label for="referencias">Referencias Personales:</label>
-                <textarea id="referencias" name "referencias" rows="4"></textarea>
+                <textarea id="referencias" name="referencias" rows="4"></textarea>
             </div>
 
             <div class="input-container">
