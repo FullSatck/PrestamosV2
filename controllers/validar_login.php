@@ -10,7 +10,7 @@ if (isset($_SESSION['user_id'])) {
     if ($_SESSION['user_role'] == 1) {
         header("Location: ../resources/views/admin/inicio/inicio.php");
     } elseif ($_SESSION['user_role'] == 2) {
-        header("Location: user_page.php");
+        header("Location: ../resources/views/cobrador/inicio/inicio.php");
     } else {
         header("Location: otro_page.php");
     }
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     header("Location: ../resources/views/admin/inicio/inicio.php");
                 } elseif ($userRole == 2) {
                     // Rol 2: Redirige a la página de usuario normal
-                    header("Location: user_page.php");
+                    header("Location: ../resources/views/cobrador/inicio/inicio.php");
                 } else {
                     // Otros roles o manejo personalizado
                     header("Location: otro_page.php");
@@ -69,3 +69,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+

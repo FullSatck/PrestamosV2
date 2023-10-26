@@ -14,20 +14,31 @@
     <title>Iniciar Sesión</title>
 </head>
 <body>
-    <h2>Iniciar Sesión</h2>
-    <form action="/controllers/validar_login.php" method="post">
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" name="email" required>
-        <br>
-        <label for="password">Contraseña:</label>
-        <input type="password" name="password" required>
-        <br>
-        <input type="submit" value="Iniciar Sesión">
-    </form>
-</body>
-</html>
-
-
+<div class="container">
+        <div class="login-box">
+            <div class="logo">
+                <img src="/public/assets/img/logo.png" alt="Logo" class="logo-image">
+            </div>
+            <h1 class="title">¡Bienvenido!</h1>
+            <form action="/controllers/validar_login.php" method="post">
+                <div class="input-container">
+                    <label for="email" class="label">Correo electrónico:</label>
+                    <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
+                </div>
+                <div class="input-container">
+                    <label for="password" class="label">Contraseña:</label>
+                    <div class="password-container">
+                        <input type="Password" id="Password" name="Password" placeholder="Ingresa tu contraseña" required>
+                        <button type="button" id="togglePassword" class="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="login-button">Iniciar sesión</button>
+            </form>
+            <p class="signup-link">Si olvidastes tu contraseña comunicate con un administrador</p>
+        </div>
+    </div>
     <script>
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('Password');
