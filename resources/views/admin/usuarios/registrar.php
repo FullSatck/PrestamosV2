@@ -10,7 +10,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
  
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
-
+ 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -142,8 +142,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
     <main>
         <!-- Contenido principal -->
-        <main>
-            <div class="registro-container">
+        <main> 
                 <h2>Registro de Usuario</h2><br>
                 <form action="/controllers/validar_registro.php" method="post">
                     <div class="input-container">
@@ -203,11 +202,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     </div>
 
                     <div class="btn-container">
-                        <button type="submit" name="registrar_usuario">Registrar</button>
-                        <a href="/resources/views/admin/inicio/inicio.php" class="a">Volver</a>
+                        <button type="submit" name="registrar_usuario">Registrar</button> 
                     </div>
                 </form>
-            </div>
         </main>
 
     </main>
