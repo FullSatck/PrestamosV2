@@ -193,18 +193,19 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
                     <th>Monto</th>
                 </tr>
                 <?php
-    if ($resultadoRetiros) {
-      while ($fila = $resultadoRetiros->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . $fila['UsuarioNombre'] . "</td>";
-        echo "<td>" . $fila['Zona'] . "</td>";
-        echo "<td>" . $fila['Monto'] . "</td>";
-        echo "</tr>";
-      }
-    } else {
-      echo "Error en la consulta de retiros: " . $conexion->error;
-    }
-    ?>
+if ($resultadoRetiros) {
+  while ($fila = $resultadoRetiros->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td>" . $fila['UsuarioNombre'] . "</td>";
+    echo "<td>" . $fila['Zona'] . "</td>";
+    echo "<td>" . number_format($fila['Monto'], 0, '.', '.') . "</td>"; // Formatear el monto
+    echo "</tr>";
+  }
+} else {
+  echo "Error en la consulta de retiros: " . $conexion->error;
+}
+?>
+
             </table>
         </main>
 

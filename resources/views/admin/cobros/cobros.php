@@ -156,7 +156,7 @@ if (isset($_SESSION["usuario_id"])) {
         // Muestra los datos en una tabla
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr>";
-            echo "<td>" . $row["ID"] . "</td>";
+            echo "<td>" . "REC-10". $row["ID"] . "</td>";
             echo "<td>" . $row["Nombre"] . "</td>";
             echo "<td>" . $row["Capital"] . "</td>";
             echo "<td>" . $row["CodigoPostal"] . "</td>";  
