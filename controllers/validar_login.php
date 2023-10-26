@@ -1,71 +1,71 @@
 <?php
 session_start();
-include("conexion.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Incluir el archivo de conexión a la base de datos
+require_once 'conexion.php';
+
+// Verificar si el usuario ya está autenticado
+if (isset($_SESSION['user_id'])) {
+    // El usuario ya ha iniciado sesión, redirigir a la página correspondiente
+    if ($_SESSION['user_role'] == 1) {
+        header("Location: ../resources/views/admin/inicio/inicio.php");
+    } elseif ($_SESSION['user_role'] == 2) {
+        header("Location: user_page.php");
+    } else {
+        header("Location: otro_page.php");
+    }
+    exit();
+}
+
+// Recuperar los datos del formulario
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'];
-    $Password = $_POST['contrasena'];
+    $password = $_POST['password'];
 
-    $consulta = "SELECT ID, Email, Password, Zona, RolID, Nombre FROM usuarios WHERE Email = ?";
-    $stmt = mysqli_prepare($conexion, $consulta);
+    // Consulta SQL para buscar al usuario en la base de datos
+    $sql = "SELECT ID, Nombre, Password, RolID FROM usuarios WHERE Email = ?";
+    $stmt = $conexion->prepare($sql);
 
     if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "s", $email);
-        mysqli_stmt_execute($stmt);
-        $resultado = mysqli_stmt_get_result($stmt);
-        $fila = mysqli_fetch_assoc($resultado);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
 
-        if ($fila) {
-            $hash_Password = $fila['Password'];
+        if ($stmt->num_rows == 1) {
+            // Vincula las columnas de resultado
+            $stmt->bind_result($userID, $userName, $hashedPassword, $userRole);
+            $stmt->fetch();
 
-            if (password_verify($Password, $hash_Password)) {
-                $_SESSION['logged_in'] = true;
-                $_SESSION['IDrol'] = $fila['RolID'];
-                $_SESSION['Zona'] = $fila['Zona'];
-                $_SESSION['Email'] = $fila['Email'];
-                $_SESSION['NombreUsuario'] = $fila['Nombre'];
+            // Verifica la contraseña hash
+            if (password_verify($password, $hashedPassword)) {
+                // Contraseña válida, establece la sesión del usuario
+                $_SESSION['user_id'] = $userID;
+                $_SESSION['user_name'] = $userName;
+                $_SESSION['user_role'] = $userRole;
 
-                switch ($fila['RolID']) {
-                    case 1: // rol 'admin'
-                        header("location: ../resources/views/admin/inicio/inicio.php");
-                        break;
-                    case 2: // rol 'supervisor'
-                        header("location: ../resources/views/supervisor/inicio/inicio.php");
-                        break;
-                    case 3: // rol 'cobrador'
-                        header("location: ../resources/views/cobrador/inicio/inicio.php");
-                        break;
-                    default:
-                        // Agregar mensaje de registro para identificar el valor inesperado
-                        error_log("Valor inesperado en RolID: " . $fila['RolID']);
-                        header("location: pagina_error.php");
-                        break;
+                // Redirige según el rol del usuario
+                if ($userRole == 1) {
+                    // Rol 1: Redirige a la página de administrador
+                    header("Location: ../resources/views/admin/inicio/inicio.php");
+                } elseif ($userRole == 2) {
+                    // Rol 2: Redirige a la página de usuario normal
+                    header("Location: user_page.php");
+                } else {
+                    // Otros roles o manejo personalizado
+                    header("Location: otro_page.php");
                 }
-
                 exit();
             } else {
-                // Contraseña incorrecta
-                $_SESSION['logged_in'] = false;
-                // Agregar mensaje de registro para identificar problemas con la contraseña
-                error_log("Contraseña incorrecta para el usuario: " . $email); 
-                header("location: pagina_errorcontra.php");
-                exit();
+                $loginError = "Contraseña incorrecta.";
             }
         } else {
-            // Usuario no encontrado
-            $_SESSION['logged_in'] = false;
-            // Agregar mensaje de registro para usuarios no encontrados
-            error_log("Usuario no encontrado para el correo: " . $email);
-            header("location: pagina_erroruser.php");
-            exit();
+            $loginError = "Usuario no encontrado.";
         }
+
+        $stmt->close();
     } else {
-        // Error de consulta preparada
-        $_SESSION['logged_in'] = false;
-        // Agregar mensaje de registro para identificar errores de consulta preparada
-        error_log("Error de consulta preparada");
-        header("location: pagina_errorns.php");
-        exit();
+        // Error en la consulta preparada
+        $loginError = "Error en el inicio de sesión. Por favor, inténtelo de nuevo.";
     }
 }
 ?>

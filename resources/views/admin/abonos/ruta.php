@@ -1,4 +1,13 @@
-<?php 
+<?php
+session_start();
+
+// Verificar si el usuario no está autenticado
+if (!isset($_SESSION['user_id'])) {
+    // Redirigir a la página de inicio de sesión o mostrar un mensaje de error
+    header("Location: ../../../../index.php");
+    exit();
+}
+
   // Incluye tu archivo de conexión a la base de datos
   include("../../../../controllers/conexion.php");
 
