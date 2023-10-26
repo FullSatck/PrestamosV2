@@ -8,7 +8,7 @@ require_once 'conexion.php';
 if (isset($_SESSION['user_id'])) {
     // El usuario ya ha iniciado sesión, redirigir a la página correspondiente
     if ($_SESSION['user_role'] == 1) {
-        header("Location: admin_page.php");
+        header("Location: ../resources/views/admin/inicio/inicio.php");
     } elseif ($_SESSION['user_role'] == 2) {
         header("Location: user_page.php");
     } else {
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 // Redirige según el rol del usuario
                 if ($userRole == 1) {
                     // Rol 1: Redirige a la página de administrador
-                    header("Location: admin_page.php");
+                    header("Location: ../resources/views/admin/inicio/inicio.php");
                 } elseif ($userRole == 2) {
                     // Rol 2: Redirige a la página de usuario normal
                     header("Location: user_page.php");

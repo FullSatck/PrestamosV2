@@ -169,22 +169,24 @@ if ($sql === false) {
                         </thead>
                         <tbody>
                             <?php
-                    $result = $sql->get_result();
-                    $rowCount = 0; // Contador de filas
-                    while ($datos = $result->fetch_assoc()) { 
-                        $rowCount++; // Incrementar el contador de filas
-                        ?>
+$result = $sql->get_result();
+$rowCount = 0; // Contador de filas
+while ($datos = $result->fetch_assoc()) { 
+    $rowCount++; // Incrementar el contador de filas
+    $montoFormateado = number_format($datos['Monto'], 0, '.', '.'); // Formatear Monto
+    ?>
                             <tr class="row<?= $rowCount ?>">
                                 <td><?= "Cobro REC-10" . $datos['ID'] ?></td>
                                 <td><?= $datos['NombreCliente'] ?></td>
                                 <td><?= $datos['Zona'] ?></td>
-                                <td><?= $datos['Monto'] ?></td>
+                                <td><?= $montoFormateado ?></td> <!-- Mostrar Monto formateado -->
                             </tr>
                             <?php } 
-                    // Cerrar la consulta y la conexión a la base de datos
-                    $sql->close();
-                    $conexion->close();
-                    ?>
+// Cerrar la consulta y la conexión a la base de datos
+$sql->close();
+$conexion->close();
+?>
+
                         </tbody>
                     </table>
                 </div>

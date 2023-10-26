@@ -168,8 +168,8 @@ if ($resultado->num_rows > 0) {
         echo '<td>' . $fila['ID'] . '</td>';
         echo '<td>' . $fila['NombreZona'] . '</td>';
         echo '<td>' . $fila['Fecha'] . '</td>';
-        echo '<td>' . $fila['Descripcion'] . '</td>';
-        echo '<td>' . $fila['Valor'] . '</td>';
+        echo '<td>' . $fila['Descripcion'] . '</td>'; 
+        echo "<td>" . number_format($fila['Valor'], 0, '.', '.') . "</td>"; // Formatear el monto
         echo '</tr>';
     }
 } else {

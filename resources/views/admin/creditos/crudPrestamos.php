@@ -184,7 +184,7 @@ if (!isset($_SESSION['user_id'])) {
                                         <td><?= $datos->Zona ?></td>
                                         <td><?= $datos->MontoAPagar ?></td>
                                         <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
-                                        <td><?= $datos->MontoCuota ?></td>
+                                        <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td> <!-- Formatear MontoCuota -->
                                         <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>"><ion-icon name="help-circle-outline"></ion-icon></a></td>
                                     </tr>
                                     <?php } ?>

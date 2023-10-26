@@ -181,13 +181,14 @@ if ($result) {
                 $nombresClientes[$clienteID] = $rowCliente['Nombre'];
             }
         }
-        // Muestra los resultados en la tabla
+        // Muestra los resultados en la tabla con el formato de MontoPagado
         $nombreCliente = $nombresClientes[$clienteID];
+        $montoPagado = number_format($row['MontoPagado'], 0, ',', '.'); // Formatea con puntos de mil
         echo "<tr>";
         echo "<td>" . "Recaudo REC-10" . $row['ID'] . "</td>";
         echo "<td>" . $nombreCliente . "</td>";
         echo "<td>" . $row['FechaPago'] . "</td>";
-        echo "<td>" . $row['MontoPagado'] . "</td>";
+        echo "<td>" . $montoPagado . "</td>";
         echo "</tr>";
     }
 
@@ -199,6 +200,7 @@ if ($result) {
 // Cierra la conexión a la base de datos
 mysqli_close($conexion);
 ?>
+
 
     </main>
 
