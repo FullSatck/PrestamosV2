@@ -4,7 +4,7 @@ include("conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
-    $contrasena = $_POST['contrasena'];
+    $Password = $_POST['contrasena'];
 
     $consulta = "SELECT ID, Email, Password, Zona, RolID, Nombre FROM usuarios WHERE Email = ?";
     $stmt = mysqli_prepare($conexion, $consulta);
@@ -16,9 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fila = mysqli_fetch_assoc($resultado);
 
         if ($fila) {
-            $hash_contrasena = $fila['Password'];
+            $hash_Password = $fila['Password'];
 
-            if (password_verify($contrasena, $hash_contrasena)) {
+            if (password_verify($Password, $hash_Password)) {
                 $_SESSION['logged_in'] = true;
                 $_SESSION['IDrol'] = $fila['RolID'];
                 $_SESSION['Zona'] = $fila['Zona'];

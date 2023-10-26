@@ -21,24 +21,26 @@ if (isset($_GET['id'])) {
         $email = $_POST['email'];
         $zona = $_POST['zona'];
         $rolID = $_POST['rolID'];
-        $nuevaContrasena = $_POST['contrasena'];
+        $nuevaContrasena = $_POST['Password'];
+
+        // Preparar la consulta SQL
+        $sql = "UPDATE usuarios SET Nombre = ?, Apellido = ?, Email = ?, Zona = ?, RolID = ?";
+        $params = "ssssi";
+        $values = array($nombre, $apellido, $email, $zona, $rolID);
 
         // Verificar si se ha proporcionado una nueva contraseña
         if (!empty($nuevaContrasena)) {
             // Cifrar la nueva contraseña (puedes usar password_hash o tu algoritmo preferido)
-            $contrasenaCifrada = password_hash($nuevaContrasena, PASSWORD_BCRYPT);
+            $contrasenaCifrada = password_hash($nuevaContrasena, PASSWORD_DEFAULT);
+            $sql .= ", Password = ?";
+            $params .= "s";
+            $values[] = $contrasenaCifrada;
         }
 
-        // Preparar la consulta SQL
-        $sql = "UPDATE usuarios SET Nombre = ?, Apellido = ?, Email = ?, Zona = ?, RolID = ?";
-        
-        // Agregar la contraseña cifrada a la consulta si se proporcionó
-        if (!empty($nuevaContrasena)) {
-            $sql .= ", Password = ?";
-        }
-        
         $sql .= " WHERE ID = ?";
-        
+        $params .= "i";
+        $values[] = $usuario_id;
+
         $stmt = $conexion->prepare($sql);
 
         if (!$stmt) {
@@ -47,16 +49,9 @@ if (isset($_GET['id'])) {
         }
 
         // Vincular los parámetros y ejecutar la consulta
-        if (!empty($nuevaContrasena)) {
-            if (!$stmt->bind_param("sssssi", $nombre, $apellido, $email, $zona, $rolID, $usuario_id, $contrasenaCifrada)) {
-                // Error en la vinculación de parámetros
-                die("Error en la vinculación de parámetros: " . $stmt->error);
-            }
-        } else {
-            if (!$stmt->bind_param("ssssi", $nombre, $apellido, $email, $zona, $rolID, $usuario_id)) {
-                // Error en la vinculación de parámetros
-                die("Error en la vinculación de parámetros: " . $stmt->error);
-            }
+        if (!$stmt->bind_param($params, ...$values)) {
+            // Error en la vinculación de parámetros
+            die("Error en la vinculación de parámetros: " . $stmt->error);
         }
 
         if ($stmt->execute()) {
@@ -246,7 +241,7 @@ if (isset($_GET['id'])) {
         </div>
         <div>
             <label for="contrasena">Nueva Contraseña (dejar en blanco para no cambiar):</label>
-            <input type="password" name="contrasena">
+            <input type="password" name="Password">
         </div>
         <div>
             <input type="submit" value="Guardar Cambios">
