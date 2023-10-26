@@ -20,7 +20,7 @@ if (isset($_SESSION['user_id'])) {
 // Recuperar los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $password = $_POST['Password'];
 
     // Consulta SQL para buscar al usuario en la base de datos
     $sql = "SELECT ID, Nombre, Password, RolID FROM usuarios WHERE Email = ?";
