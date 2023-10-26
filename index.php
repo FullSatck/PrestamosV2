@@ -1,21 +1,19 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Iniciar Sesión</title>
 </head>
 <body>
-    <?php
-    if (isset($loginError)) {
-        echo '<p>' . $loginError . '</p>';
-    }
-    ?>
-    <form method="post" action="/controllers/validar_login.php">
+    <h2>Iniciar Sesión</h2>
+    <form action="/controllers/validar_login.php" method="POST">
         <label for="email">Correo Electrónico:</label>
-        <input type="text" id="email" name="email" required><br>
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required><br>
-        <input type="submit" value="Iniciar Sesión">
+        <input type="email" name="email" id="email" required>
+        <br>
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" name="contrasena" id="contrasena" required>
+
+        <br>
+        <button type="submit">Iniciar Sesión</button>
     </form>
 </body>
 </html>
