@@ -1,12 +1,4 @@
 <?php
-session_start();
-
-// Verificar si el usuario no está autenticado
-if (!isset($_SESSION['user_id'])) {
-    // Redirigir a la página de inicio de sesión o mostrar un mensaje de error
-    header("Location: ../../../../index.php");
-    exit();
-}
 
  
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
