@@ -1,13 +1,24 @@
 <?php
 
  
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
+session_start();
+include("../../../../controllers/conexion.php");
+
+// Verifica si el usuario está autenticado
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../index.php");
+    exit();
+}
+
 ?>
- 
+
 
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -135,31 +146,31 @@
 
     <main>
         <!-- Contenido principal -->
-        <main> 
-                <h2>Registro de Usuario</h2><br>
-                <form action="/controllers/validar_registro.php" method="post">
-                    <div class="input-container">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese su nombre" required>
-                    </div>
-                    <div class="input-container">
-                        <label for "apellido">Apellido:</label>
-                        <input type="text" id="apellido" name ="apellido" placeholder="Por favor ingrese su apellido"
-                            required>
-                    </div>
-                    <div class="input-container">
-                        <label for="email">Correo Electrónico:</label>
-                        <input type="email" id="email" name="email" placeholder="Por favor ingrese su correo" required>
-                    </div>
-                    <div class="input-container">
-                        <label for="contrasena">Contraseña:</label>
-                        <input type="password" id="contrasena" name="contrasena"
-                            placeholder="Por favor ingrese su clave" required>
-                    </div>
-                    <div class="input-container">
-                        <label for="zona">Zona:</label>
-                        <select id="zona" name="zona" required>
-                            <?php
+        <main>
+            <h2>Registro de Usuario</h2><br>
+            <form action="/controllers/validar_registro.php" method="post">
+                <div class="input-container">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese su nombre" required>
+                </div>
+                <div class="input-container">
+                    <label for "apellido">Apellido:</label>
+                    <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido"
+                        required>
+                </div>
+                <div class="input-container">
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" placeholder="Por favor ingrese su correo" required>
+                </div>
+                <div class="input-container">
+                    <label for="contrasena">Contraseña:</label>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave"
+                        required>
+                </div>
+                <div class="input-container">
+                    <label for="zona">Zona:</label>
+                    <select id="zona" name="zona" required>
+                        <?php
                     // Incluye el archivo de conexión a la base de datos
                     include("../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
@@ -170,13 +181,13 @@
                         echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                     }
                     ?>
-                        </select>
-                    </div>
+                    </select>
+                </div>
 
-                    <div class="input-container">
-                        <label for="RolID">Rol:</label>
-                        <select id="RolID" name="RolID" required>
-                            <?php
+                <div class="input-container">
+                    <label for="RolID">Rol:</label>
+                    <select id="RolID" name="RolID" required>
+                        <?php
                     // Consulta SQL para obtener las opciones de roles
                     $consultaRoles = "SELECT ID, Nombre FROM Roles";
                     $resultRoles = mysqli_query($conexion, $consultaRoles);
@@ -185,19 +196,19 @@
                         echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                     }
                     ?>
-                        </select>
-                    </div>
+                    </select>
+                </div>
 
-                    <div class="input-container" id="saldo-inicial-container" style="display: none;">
-                        <label for="saldo-inicial">Saldo Inicial:</label>
-                        <input type="text" id="saldo-inicial" name="saldo-inicial"
-                            placeholder="Por favor ingrese el saldo inicial">
-                    </div>
+                <div class="input-container" id="saldo-inicial-container" style="display: none;">
+                    <label for="saldo-inicial">Saldo Inicial:</label>
+                    <input type="text" id="saldo-inicial" name="saldo-inicial"
+                        placeholder="Por favor ingrese el saldo inicial">
+                </div>
 
-                    <div class="btn-container">
-                        <button type="submit" name="registrar_usuario">Registrar</button> 
-                    </div>
-                </form>
+                <div class="btn-container">
+                    <button type="submit" name="registrar_usuario">Registrar</button>
+                </div>
+            </form>
         </main>
 
     </main>

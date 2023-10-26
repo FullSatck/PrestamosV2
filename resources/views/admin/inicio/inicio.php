@@ -1,9 +1,12 @@
 <?php
 session_start();
 
-// Verificar si el usuario no está autenticado
-if (!isset($_SESSION['user_id'])) {
-    // Redirigir a la página de inicio de sesión o mostrar un mensaje de error
+
+// Verifica si el usuario está autenticado
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../index.php");
     exit();
 }
@@ -84,7 +87,7 @@ mysqli_close($conexion);
             <div class="nombre-pagina">
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
-            </div> 
+            </div>
         </div>
         <nav class="navegacion">
             <ul>
@@ -167,7 +170,7 @@ mysqli_close($conexion);
                     </a>
                 </li>
             </ul>
-        </nav> 
+        </nav>
 
         <div>
             <div class="linea"></div>
@@ -176,7 +179,7 @@ mysqli_close($conexion);
                 <div class="info">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <a href="/controllers/cerrar_sesion.php"><span class="hola">Cerrar Sesion</span></a>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -184,7 +187,7 @@ mysqli_close($conexion);
 
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
- 
+
     <main>
         <h1>Inicio Administrador</h1>
         <div class="cuadros-container">
@@ -198,11 +201,11 @@ mysqli_close($conexion);
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
                     <p><?php echo "<strong>Total:</strong> <span class='ing'> $  $totalIngresos </span>" ?></p>
-                </div>  
+                </div>
             </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Contabilidad</a> 
+                    <a href="##" class="titulo">Contabilidad</a>
                 </div>
             </div>
             <div class="cuadro cuadro-4">

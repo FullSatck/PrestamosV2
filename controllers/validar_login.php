@@ -1,72 +1,60 @@
 <?php
+// Asegúrate de que la sesión esté iniciada
 session_start();
 
-// Incluir el archivo de conexión a la base de datos
-require_once 'conexion.php';
+// Incluye el archivo de conexión a la base de datos
+include("conexion.php");
 
-// Verificar si el usuario ya está autenticado
-if (isset($_SESSION['user_id'])) {
-    // El usuario ya ha iniciado sesión, redirigir a la página correspondiente
-    if ($_SESSION['user_role'] == 1) {
-        header("Location: ../resources/views/admin/inicio/inicio.php");
-    } elseif ($_SESSION['user_role'] == 2) {
-        header("Location: ../resources/views/cobrador/inicio/inicio.php");
+// Obtiene los datos del formulario
+$email = $_POST["email"];
+$contrasena = $_POST["contrasena"];
+
+// Realiza la consulta a la base de datos
+$query = "SELECT * FROM usuarios WHERE Email = '$email' AND Password = '$contrasena'";
+$result = mysqli_query($conexion, $query);
+
+// Comprueba si la consulta devuelve algún registro
+if (mysqli_num_rows($result) > 0) {
+    // La consulta devuelve un registro
+    $row = mysqli_fetch_assoc($result);
+
+    // Comprueba si el usuario existe
+    if ($row) {
+        // Guarda los datos del usuario en la sesión
+        $_SESSION["usuario_id"] = $row["ID"];
+        $_SESSION["nombre"] = $row["Nombre"];
+        $_SESSION["rol"] = $row["RolID"];
+
+        // Redirige a la página correspondiente según el rol del usuario
+        switch ($_SESSION["rol"]) {
+            case 1: // Rol de administrador
+                header("Location: /resources/views/admin/inicio/inicio.php");
+                break;
+            case 2: // Rol de supervisor
+                header("Location: supervisor_dashboard.php");
+                break;
+            case 3: // Rol de cobrador
+                header("Location: cobrador_dashboard.php");
+                break;
+            default:
+                // Redirige a una página por defecto si el rol no se encuentra
+                header("Location: default_dashboard.php");
+                break;
+        }
     } else {
-        header("Location: otro_page.php");
+        // Mensaje de error si el usuario no existe
+        $error_message = "Credenciales incorrectas. Por favor, inténtelo de nuevo.";
     }
-    exit();
+} else {
+    // La consulta no devuelve ningún registro
+    $error_message = "Credenciales incorrectas. Por favor, inténtelo de nuevo.";
 }
 
-// Recuperar los datos del formulario
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+// Cierra la conexión a la base de datos
+mysqli_close($conexion);
 
-    // Consulta SQL para buscar al usuario en la base de datos
-    $sql = "SELECT ID, Nombre, Password, RolID FROM usuarios WHERE Email = ?";
-    $stmt = $conexion->prepare($sql);
-
-    if ($stmt) {
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows == 1) {
-            // Vincula las columnas de resultado
-            $stmt->bind_result($userID, $userName, $hashedPassword, $userRole);
-            $stmt->fetch();
-
-            // Verifica la contraseña hash
-            if (password_verify($password, $hashedPassword)) {
-                // Contraseña válida, establece la sesión del usuario
-                $_SESSION['user_id'] = $userID;
-                $_SESSION['user_name'] = $userName;
-                $_SESSION['user_role'] = $userRole;
-
-                // Redirige según el rol del usuario
-                if ($userRole == 1) {
-                    // Rol 1: Redirige a la página de administrador
-                    header("Location: ../resources/views/admin/inicio/inicio.php");
-                } elseif ($userRole == 2) {
-                    // Rol 2: Redirige a la página de usuario normal
-                    header("Location: ../resources/views/cobrador/inicio/inicio.php");
-                } else {
-                    // Otros roles o manejo personalizado
-                    header("Location: otro_page.php");
-                }
-                exit();
-            } else {
-                $loginError = "Contraseña incorrecta.";
-            }
-        } else {
-            $loginError = "Usuario no encontrado.";
-        }
-
-        $stmt->close();
-    } else {
-        // Error en la consulta preparada
-        $loginError = "Error en el inicio de sesión. Por favor, inténtelo de nuevo.";
-    }
+// Muestra el mensaje de error
+if (isset($error_message)) {
+    echo $error_message;
 }
 ?>
-

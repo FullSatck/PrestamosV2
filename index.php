@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
     <link rel="stylesheet" href="/public/assets/css/login.css">
     <title>Iniciar sesión</title>
-   
+    
 </head>
 <body>
-<div class="container">
+   <div class="container">
         <div class="login-box">
             <div class="logo">
                 <img src="/public/assets/img/logo.png" alt="Logo" class="logo-image">
@@ -23,7 +23,7 @@
                 <div class="input-container">
                     <label for="password" class="label">Contraseña:</label>
                     <div class="password-container">
-                        <input type="Password" id="Password" name="Password" placeholder="Ingresa tu contraseña" required>
+                        <input type="Password" id="Password" name="contrasena" placeholder="Ingresa tu contraseña" required>
                         <button type="button" id="togglePassword" class="toggle-password">
                             <i class="fas fa-eye"></i>
                         </button>
