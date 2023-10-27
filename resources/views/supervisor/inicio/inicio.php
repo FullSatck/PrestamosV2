@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 // Verifica si el usuario está autenticado
 if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
@@ -10,59 +9,7 @@ if (isset($_SESSION["usuario_id"])) {
     header("Location: ../../../../index.php");
     exit();
 }
-
-
-// Incluye el archivo de conexión
-include("../../../../controllers/conexion.php");
-
-// COBROS
-try {
-    // Consulta SQL para obtener la suma de MontoAPagar
-    $sqlCobros = "SELECT SUM(MontoAPagar) AS TotalMonto FROM prestamos";
-
-    // Realizar la consulta
-    $resultCobros = mysqli_query($conexion, $sqlCobros);
-
-    if ($resultCobros) {
-        $rowCobros = mysqli_fetch_assoc($resultCobros);
-
-        // Obtener el total de cobros
-        $totalMonto = $rowCobros['TotalMonto'];
-
-        // Cierra la consulta de cobros
-        mysqli_free_result($resultCobros);
-    } else {
-        echo "Error en la consulta de cobros: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (cobros): " . $e->getMessage();
-}
-
-// INGRESOS
-try {
-    // Consulta SQL para obtener la suma de MontoPagado
-    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos";
-
-    // Realizar la consulta
-    $resultIngresos = mysqli_query($conexion, $sqlIngresos);
-
-    if ($resultIngresos) {
-        $rowIngresos = mysqli_fetch_assoc($resultIngresos);
-
-        // Obtener el total de ingresos
-        $totalIngresos = $rowIngresos['TotalIngresos'];
-
-        // Cierra la consulta de ingresos
-        mysqli_free_result($resultIngresos);
-    } else {
-        echo "Error en la consulta de ingresos: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
-}
-
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
+ 
 ?>
 
 
@@ -146,19 +93,19 @@ mysqli_close($conexion);
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/">
+                    <a href="/resources/views/supervisor/ruta/lista_super.php">
                         <ion-icon name="map-outline"></ion-icon>
                         <span>Ruta</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/abonos/abonos.php">
+                    <a href="/resources/views/supervisor/abonos/abonos.php">
                         <ion-icon name="cloud-download-outline"></ion-icon>
                         <span>Abonos</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/retiros/retiros.php">
+                    <a href="/resources/views/supervisor/retiros/retiros.php">
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
                     </a>
