@@ -1,12 +1,15 @@
 <?php
 session_start();
 
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
-    header("location: ../../../../index.php");
+// Verifica si el usuario está autenticado
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../index.php");
     exit();
 }
+
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
@@ -20,43 +23,144 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
         LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID";
 $resultado = $conexion->query($sql);
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/lista_clientes.css"> <!-- Asegúrate de incluir tu hoja de estilos CSS -->
+    <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
     <title>Listado de Clientes</title>
 </head>
+
 <body>
-    <h1>Listado de Clientes</h1>
-
-    <div id="mensaje">
-            <?php
-            if (isset($_GET['mensaje'])) {
-                echo htmlspecialchars($_GET['mensaje']);
-            }
-            ?>
-        </div>
-    
-    <div class="search-container">
-        <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-circle-outline"></ion-icon>
     </div>
-    <div class="div">
-        <a href="/resources/views/admin/clientes/agregar_clientes.php">Agregar Cliente</a>
-       
-        <a href="/resources/views/admin/inicio/inicio.php">Volver</a>
-    </div> <br><br>
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
+                <span>Recaudo</span>
+            </div>
+        </div>
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
+                        <ion-icon name="push-outline"></ion-icon>
+                        <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/registrar.php">
+                        <ion-icon name="person-add-outline"></ion-icon>
+                        <span>Registrar Usuario</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="hola">
+                        <ion-icon name="people-circle-outline"></ion-icon>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <span>Registrar Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                        <ion-icon name="list-outline"></ion-icon>
+                        <span>Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/prestamos.php">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <span>Registrar Prestamos</span>
+                    </a>
+                </li> 
+                <li>
+                    <a href="/resources/views/admin/cobros/cobros.php">
+                        <ion-icon name="planet-outline"></ion-icon>
+                        <span>Zonas de cobro</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/gastos/gastos.php">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Gastos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/lista_super.php">
+                        <ion-icon name="map-outline"></ion-icon>
+                        <span>Ruta</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/abonos.php">
+                        <ion-icon name="cloud-download-outline"></ion-icon>
+                        <span>Abonos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/retiros/retiros.php">
+                        <ion-icon name="cloud-done-outline"></ion-icon>
+                        <span>Retiros</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
-    <?php if ($resultado->num_rows > 0) { ?>
+        <div>
+            <div class="linea"></div>
+
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+
+    <main>
+        <h1>Listado de Clientes</h1>
+
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+        </div>
+
+        <?php if ($resultado->num_rows > 0) { ?>
+            
         <table>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Domicilio</th>
-                <th>Teléfono</th> 
+                <th>Teléfono</th>
                 <th>Referencias Personales</th>
                 <th>Moneda Preferida</th>
                 <th>Zona Asignada</th>
@@ -64,45 +168,53 @@ $resultado = $conexion->query($sql);
                 <th>Pagos</th>
             </tr>
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <tr>
-                    <td><?= "REC 100" .$fila["ID"] ?></td>
-                    <td><?= $fila["Nombre"] ?></td>
-                    <td><?= $fila["Apellido"] ?></td>
-                    <td><?= $fila["Domicilio"] ?></td>
-                    <td><?= $fila["Telefono"] ?></td> 
-                    <td><?= $fila["ReferenciasPersonales"] ?></td>
-                    <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
-                    <td><?= $fila["ZonaAsignada"] ?></td>
-                    <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Ver Perfil</a></td>
-                    <td><a href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a></td>
-                </tr>
+            <tr>
+                <td><?= "REC 100" .$fila["ID"] ?></td>
+                <td><?= $fila["Nombre"] ?></td>
+                <td><?= $fila["Apellido"] ?></td>
+                <td><?= $fila["Domicilio"] ?></td>
+                <td><?= $fila["Telefono"] ?></td>
+                <td><?= $fila["ReferenciasPersonales"] ?></td>
+                <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
+                <td><?= $fila["ZonaAsignada"] ?></td>
+                <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
+                <td><a
+                        href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                </td>
+            </tr>
             <?php } ?>
         </table>
-    <?php } else { ?>
+        <?php } else { ?>
         <p>No se encontraron clientes en la base de datos.</p>
-    <?php } ?>
-    
+        <?php } ?>
+    </main>
+
     <script>
-        // JavaScript para la búsqueda en tiempo real
-        const searchInput = document.getElementById('search-input');
-        const table = document.querySelector('table');
-        const rows = table.querySelectorAll('tbody tr');
+    // JavaScript para la búsqueda en tiempo real
+    const searchInput = document.getElementById('search-input');
+    const table = document.querySelector('table');
+    const rows = table.querySelectorAll('tbody tr');
 
-        searchInput.addEventListener('input', function () {
-            const searchTerm = searchInput.value.toLowerCase();
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
 
-            rows.forEach((row) => {
-                const rowData = Array.from(row.children)
-                    .map((cell) => cell.textContent.toLowerCase())
-                    .join('');
+        rows.forEach((row) => {
+            const rowData = Array.from(row.children)
+                .map((cell) => cell.textContent.toLowerCase())
+                .join('');
 
-                if (rowData.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+            if (rowData.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
         });
-    </script> 
+    });
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/menu/main.js"></script>
+
 </body>
+
 </html>

@@ -11,17 +11,9 @@ if (isset($_SESSION["usuario_id"])) {
 }
 
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
-?>
-
-<?php
-// Incluir el archivo de conexión a la base de datos
+// Conectar a la base de datos
 include("../../../../controllers/conexion.php");
-
-// Consulta SQL para obtener todos los clientes con el nombre de la moneda
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID";
-$resultado = $conexion->query($sql);
+ 
 ?>
 
 <!DOCTYPE html>
@@ -30,8 +22,8 @@ $resultado = $conexion->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
-    <title>Listado de Clientes</title>
+    <title>Recaudo</title>
+    <link rel="stylesheet" href="/public/assets/css/recaudo_admin.css">
 </head>
 
 <body>
@@ -45,6 +37,10 @@ $resultado = $conexion->query($sql);
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div>
+            <button class="boton" id="volverAtras">
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
         </div>
         <nav class="navegacion">
             <ul>
@@ -55,7 +51,7 @@ $resultado = $conexion->query($sql);
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/inicio/inicio.php">
+                    <a href="/resources/views/admin/inicio/inicio.php" class="hola">
                         <ion-icon name="home-outline"></ion-icon>
                         <span>Inicio</span>
                     </a>
@@ -73,7 +69,7 @@ $resultado = $conexion->query($sql);
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="hola">
+                    <a href="/resources/views/admin/clientes/lista_clientes.php">
                         <ion-icon name="people-circle-outline"></ion-icon>
                         <span>Clientes</span>
                     </a>
@@ -95,7 +91,7 @@ $resultado = $conexion->query($sql);
                         <ion-icon name="cloud-upload-outline"></ion-icon>
                         <span>Registrar Prestamos</span>
                     </a>
-                </li> 
+                </li>
                 <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
@@ -146,71 +142,114 @@ $resultado = $conexion->query($sql);
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Listado de Clientes</h1>
+        <h1>Recaudos totales</h1>
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
 
-        <?php if ($resultado->num_rows > 0) { ?>
-            
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Domicilio</th>
-                <th>Teléfono</th>
-                <th>Referencias Personales</th>
-                <th>Moneda Preferida</th>
-                <th>Zona Asignada</th>
-                <th>Acciones</th>
-                <th>Pagos</th>
-            </tr>
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-            <tr>
-                <td><?= "REC 100" .$fila["ID"] ?></td>
-                <td><?= $fila["Nombre"] ?></td>
-                <td><?= $fila["Apellido"] ?></td>
-                <td><?= $fila["Domicilio"] ?></td>
-                <td><?= $fila["Telefono"] ?></td>
-                <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
-                <td><?= $fila["ZonaAsignada"] ?></td>
-                <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                <td><a
-                        href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                </td>
-            </tr>
-            <?php } ?>
-        </table>
-        <?php } else { ?>
-        <p>No se encontraron clientes en la base de datos.</p>
-        <?php } ?>
+        <?php
+// Incluye el archivo de conexión a la base de datos
+include("../../../../controllers/conexion.php");
+
+// Consulta SQL para obtener todos los campos de la tabla historial_pagos en orden descendente
+$sql = "SELECT * FROM historial_pagos ORDER BY ID DESC";
+
+// Ejecutar la consulta
+$result = mysqli_query($conexion, $sql);
+
+if ($result) {
+    // Crear un arreglo para almacenar los nombres de los clientes
+    $nombresClientes = array();
+
+    echo "<table>";
+    echo "<tr>";
+    echo "<th>ID</th>";
+    echo "<th>Nombre del Cliente</th>";
+    echo "<th>FechaPago</th>";
+    echo "<th>MontoPagado</th>";
+    echo "</tr>";
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Almacena los IDs de cliente en el arreglo
+        $clienteID = $row['IDCliente'];
+        // Verifica si el nombre del cliente ya se obtuvo previamente
+        if (!array_key_exists($clienteID, $nombresClientes)) {
+            // Si no se ha obtenido, realiza una consulta para obtener el nombre
+            $consultaCliente = "SELECT Nombre FROM clientes WHERE ID = $clienteID";
+            $resultCliente = mysqli_query($conexion, $consultaCliente);
+            if ($rowCliente = mysqli_fetch_assoc($resultCliente)) {
+                // Almacena el nombre del cliente en el arreglo
+                $nombresClientes[$clienteID] = $rowCliente['Nombre'];
+            }
+        }
+        // Muestra los resultados en la tabla con el formato de MontoPagado
+        $nombreCliente = $nombresClientes[$clienteID];
+        $montoPagado = number_format($row['MontoPagado'], 0, ',', '.'); // Formatea con puntos de mil
+        echo "<tr>";
+        echo "<td>" . "Recaudo REC-10" . $row['ID'] . "</td>";
+        echo "<td>" . $nombreCliente . "</td>";
+        echo "<td>" . $row['FechaPago'] . "</td>";
+        echo "<td>" . $montoPagado . "</td>";
+        echo "</tr>";
+    }
+
+    echo "</table>";
+} else {
+    echo "Error en la consulta: " . mysqli_error($conexion);
+}
+
+// Cierra la conexión a la base de datos
+mysqli_close($conexion);
+?>
+
+
     </main>
 
     <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
+    // Agregar un evento clic al botón
+    document.getElementById("volverAtras").addEventListener("click", function() {
+        window.history.back();
+    });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("search-input");
+        const rows = document.querySelectorAll("table tr");
 
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
+        searchInput.addEventListener("input", function() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
 
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
+            rows.forEach(function(row, index) {
+                if (index === 0) {
+                    // Salta la primera fila que contiene encabezados de la tabla
+                    return;
+                }
 
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+                const columns = row.querySelectorAll("td");
+                let found = false;
+
+                columns.forEach(function(column, columnIndex) {
+                    const text = column.textContent.toLowerCase();
+                    if (columnIndex === 0 && text.includes(searchTerm)) {
+                        // Busca el término en la primera columna (ID)
+                        found = true;
+                    } else if (text.includes(searchTerm)) {
+                        // Busca el término en otras columnas
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
         });
     });
     </script>
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>

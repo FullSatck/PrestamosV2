@@ -17,7 +17,7 @@ if (isset($_GET['facturaId']) && is_numeric($_GET['facturaId'])) {
     // Verificar si la consulta se ejecutó correctamente y si se obtuvieron resultados
     if ($resultado && $resultado->num_rows > 0) {
         $fila = $resultado->fetch_assoc();
-        
+
         // Crear una instancia de FPDF
         $pdf = new FPDF();
         $pdf->AddPage();

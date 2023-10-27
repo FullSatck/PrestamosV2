@@ -33,9 +33,12 @@ if (isset($_GET['zona'])) {
 <html>
 <head>
     <title>Lista de Fechas de Pago</title>
+    <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
+</head>
 </head>
 <body>
     <h1>Lista de Fechas de Pago para la Zona: <?= $nombreZona ?></h1>
+    <button onclick="guardarCambios()">Guardar Cambios</button>
     <table id="lista-pagos">
         <thead>
             <tr>
@@ -51,13 +54,11 @@ if (isset($_GET['zona'])) {
                     <td><?= $fecha['ID'] ?></td>
                     <td><?= $fecha['IDPrestamo'] ?></td>
                     <td><?= $fecha['FechaPago'] ?></td>
-                    <td class="drag-handle" style="text-align: center;">|||</td> 
+                    <td class="drag-handle">|||</td> 
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-
-    <button onclick="guardarCambios()">Guardar Cambios</button>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

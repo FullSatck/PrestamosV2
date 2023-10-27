@@ -1,26 +1,141 @@
 <?php
 session_start();
 
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
-    header("location: ../../../../index.php");
+// Verifica si el usuario está autenticado
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../index.php");
     exit();
 }
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
-
+ 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <title>Solicitud de Préstamo</title>
     <!-- Agrega aquí tus estilos CSS si es necesario -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/public/assets/css/prestamo.css">
 </head>
+
 <body>
-    <div class="container">
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-circle-outline"></ion-icon>
+    </div>
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
+                <span>Recaudo</span>
+            </div>
+        </div>
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
+                        <ion-icon name="push-outline"></ion-icon>
+                        <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Usuarios</span>
+                    </a>
+                </li> 
+                <li>
+                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                        <ion-icon name="people-circle-outline"></ion-icon>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <span>Registrar Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                        <ion-icon name="list-outline"></ion-icon>
+                        <span>Prestamos</span>
+                    </a>
+                </li> 
+                <li>
+                    <a href="/resources/views/admin/creditos/prestamos.php" class="hola">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <span>Registrar Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/cobros/cobros.php">
+                        <ion-icon name="planet-outline"></ion-icon>
+                        <span>Zonas de cobro</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/gastos/gastos.php">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Gastos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/lista_super.php">
+                        <ion-icon name="map-outline"></ion-icon>
+                        <span>Ruta</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/abonos.php">
+                        <ion-icon name="cloud-download-outline"></ion-icon>
+                        <span>Abonos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/retiros/retiros.php">
+                        <ion-icon name="cloud-done-outline"></ion-icon>
+                        <span>Retiros</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="linea"></div>
+
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="moon-outline"></ion-icon>
+                    <span>Dark Mode</span>
+                </div>
+                <div class="switch">
+                    <div class="base">
+                        <div class="circulo">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+
+    <main>
         <h1>Solicitud de Préstamo</h1><br><br>
         <form action="/controllers/procesar_prestamo.php" method="POST" class="form-container">
             <?php
@@ -49,7 +164,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <input type="text" name="monto" id="monto" required><br>
 
             <label for="tasa_interes">Tasa de Interés (%):</label>
-            <input type="text" name "tasa_interes" id="tasa_interes" required><br>
+            <input type="text" name="TasaInteres" id="TasaInteres" required><br>
+
+            <label for="frecuencia_pago">Frecuencia de Pago:</label>
+            <select name="frecuencia_pago" id="frecuencia_pago" required onchange="calcularMontoPagar()">
+                <option value="diario">Diario</option>
+                <option value="semanal">Semanal</option>
+                <option value="quincenal">Quincenal</option>
+                <option value="mensual">Mensual</option>
+            </select><br>
+
 
             <label for="plazo">Plazo:</label>
             <input type="text" name="plazo" id="plazo" required><br>
@@ -64,16 +188,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 ?>
             </select><br>
 
+            <!-- Reemplaza el campo de fecha de inicio con un campo de texto readonly -->
             <label for="fecha_inicio">Fecha de Inicio:</label>
-            <input type="date" name="fecha_inicio" required><br>
 
-            <label for="frecuencia_pago">Frecuencia de Pago:</label>
-            <select name="frecuencia_pago" id="frecuencia_pago" required onchange="calcularMontoPagar()">
-                <option value="diario">Diario</option>
-                <option value="semanal">Semanal</option>
-                <option value="quincenal">Quincenal</option>
-                <option value="mensual">Mensual</option>
-            </select><br>
+            <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d '); ?>" readonly><br>
+
+
 
             <label for="zona">Zona:</label>
             <select name="zona" required>
@@ -95,47 +215,52 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             <input type="submit" value="Hacer préstamo" class="calcular-button">
         </form>
-    </div>
-
+    </main>
+    <script src="/menu/main.js"></script>
     <script>
-        function calcularMontoPagar() {
-            // Obtener los valores ingresados por el usuario
-            var monto = parseFloat(document.getElementById('monto').value);
-            var tasa_interes = parseFloat(document.getElementById('tasa_interes').value);
-            var plazo = parseFloat(document.getElementById('plazo').value);
-            var frecuencia_pago = document.getElementById('frecuencia_pago').value;
-            var moneda_select = document.getElementById('moneda_id');
-            var moneda_option = moneda_select.options[moneda_select.selectedIndex];
-            var simbolo_moneda = moneda_option.getAttribute('data-simbolo');
+    function calcularMontoPagar() {
+        // Obtener los valores ingresados por el usuario
+        var monto = parseFloat(document.getElementById('monto').value);
+        var tasa_interes = parseFloat(document.getElementById('TasaInteres').value);
+        var plazo = parseFloat(document.getElementById('plazo').value);
+        var frecuencia_pago = document.getElementById('frecuencia_pago').value;
+        var moneda_select = document.getElementById('moneda_id');
+        var moneda_option = moneda_select.options[moneda_select.selectedIndex];
+        var simbolo_moneda = moneda_option.getAttribute('data-simbolo');
 
-            // Calcular el monto total, incluyendo el interés
-            var monto_total = monto + (monto * (tasa_interes / 100));
+        // Calcular el monto total, incluyendo el interés
+        var monto_total = monto + (monto * (tasa_interes / 100));
 
-            // Calcular la cantidad a pagar por cuota
-            var cantidad_por_cuota = monto_total / plazo;
+        // Calcular la cantidad a pagar por cuota
+        var cantidad_por_cuota = monto_total / plazo;
 
-            // Actualizar los elementos HTML para mostrar los resultados en tiempo real
-            document.getElementById('monto_a_pagar').textContent = monto_total.toFixed(2);
-            document.getElementById('plazo_mostrado').textContent = plazo + ' ' + getPlazoText(frecuencia_pago);
-            document.getElementById('frecuencia_pago_mostrada').textContent = frecuencia_pago;
-            document.getElementById('cantidad_por_cuota').textContent = cantidad_por_cuota.toFixed(2);
-            document.getElementById('moneda_simbolo').textContent = simbolo_moneda;
+        // Actualizar los elementos HTML para mostrar los resultados en tiempo real
+        document.getElementById('monto_a_pagar').textContent = monto_total.toFixed(2);
+        document.getElementById('plazo_mostrado').textContent = plazo + ' ' + getPlazoText(frecuencia_pago);
+        document.getElementById('frecuencia_pago_mostrada').textContent = frecuencia_pago;
+        document.getElementById('cantidad_por_cuota').textContent = cantidad_por_cuota.toFixed(2);
+        document.getElementById('moneda_simbolo').textContent = simbolo_moneda;
+    }
+
+    function getPlazoText(frecuencia_pago) {
+        switch (frecuencia_pago) {
+            case 'diario':
+                return 'día(s)';
+            case 'semanal':
+                return 'semana(s)';
+            case 'quincenal':
+                return 'quincena(s)';
+            case 'mensual':
+                return 'mes(es)';
+            default:
+                return 'día(s)';
         }
+    }
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
 
-        function getPlazoText(frecuencia_pago) {
-            switch (frecuencia_pago) {
-                case 'diario':
-                    return 'día(s)';
-                case 'semanal':
-                    return 'semana(s)';
-                case 'quincenal':
-                    return 'quincena(s)';
-                case 'mensual':
-                    return 'mes(es)';
-                default:
-                    return 'día(s)';
-            }
-        }
-    </script> 
 </body>
+
 </html>

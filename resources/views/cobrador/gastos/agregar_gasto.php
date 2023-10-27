@@ -1,12 +1,15 @@
 <?php
 session_start();
 
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // El usuario no ha iniciado sesión, redirigir al inicio de sesión
-    header("location: ../../../../index.php");
+// Verifica si el usuario está autenticado
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../index.php");
     exit();
 }
+
 
 // Incluye la configuración de conexión a la base de datos
 include "../../../../controllers/conexion.php";
@@ -81,93 +84,154 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/agregar_gasto.css">
     <title>Agregar Gasto</title>
-    
-    <!-- Enlaza jQuery y jQuery UI (asegúrate de usar las URL correctas) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    
-    <!-- Enlaza los estilos de jQuery UI para darle formato al calendario -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    
-    <style>
-        /* Estilos CSS personalizados */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 40px;
-        }
-
-        h1 {
-            background-color: #70aee9;
-            color: #000000;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px; 
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        button[type="submit"] {
-            padding: 12px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
+
 <body>
-    <h1>Agregar Gasto</h1>
-    
-    <div id="mensaje">
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-circle-outline"></ion-icon>
+    </div>
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
+                <span>Recaudo</span>
+            </div>
+            <button class="boton" id="volverAtras">
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
+        </div>
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
+                        <ion-icon name="push-outline"></ion-icon>
+                        <span>Saldo Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/inicio/inicio.php">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/usuarios/registrar.php">
+                        <ion-icon name="person-add-outline"></ion-icon>
+                        <span>Registrar Usuario</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                        <ion-icon name="people-circle-outline"></ion-icon>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <span>Registrar Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                        <ion-icon name="list-outline"></ion-icon>
+                        <span>Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/creditos/prestamos.php">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <span>Registrar Prestamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/cobros/cobros.php">
+                        <ion-icon name="planet-outline"></ion-icon>
+                        <span>Zonas de cobro</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/gastos/gastos.php" class="hola">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Gastos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/lista_super.php">
+                        <ion-icon name="map-outline"></ion-icon>
+                        <span>Ruta</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/abonos/abonos.php">
+                        <ion-icon name="cloud-download-outline"></ion-icon>
+                        <span>Abonos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/views/admin/retiros/retiros.php">
+                        <ion-icon name="cloud-done-outline"></ion-icon>
+                        <span>Retiros</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="linea"></div>
+
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+
+    <main>
+        <h1>Agregar Gasto</h1>
+
+        <div id="mensaje">
             <?php
             if (isset($_GET['mensaje'])) {
                 echo htmlspecialchars($_GET['mensaje']);
             }
             ?>
         </div>
-    
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-        <div class="form-group">
-            <label for="id_zona">Zona:</label>
-            <select name="id_zona" id="id_zona" class="form-control">
-                <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
-                <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
-                <?php
+
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <div class="form-group">
+                <label for="id_zona">Zona:</label>
+                <select name="id_zona" id="id_zona" class="zona">
+                    <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
+                    <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
+                    <?php
                 $sql_zonas = "SELECT * FROM Zonas";
                 $result_zonas = $conexion->query($sql_zonas);
 
@@ -178,38 +242,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 }
                 ?>
-            </select>
-            <span class="help-block"><?php echo $id_zona_err; ?></span>
-        </div>
-        <div class="form-group">
-            <label for="fecha">Fecha:</label>
-            <input type="text" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
-            <span class="help-block"><?php echo $fecha_err; ?></span>
-        </div>
-        <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" name="descripcion" id="descripcion" class="form-control" value="<?php echo $descripcion; ?>">
-            <span class="help-block"><?php echo $descripcion_err; ?></span>
-        </div>
-        <div class="form-group">
-            <label for="valor">Valor:</label>
-            <input type="number" name="valor" id="valor" class="form-control" value="<?php echo $valor; ?>">
-            <span class="help-block"><?php echo $valor_err; ?></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Agregar Gasto">
-            <a href="gastos.php" class="btn btn-secondary">Cancelar</a>
-        </div>
-    </form>
+                </select>
+                <span class="help-block"><?php echo $id_zona_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="text" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
+                <span class="help-block"><?php echo $fecha_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" name="descripcion" id="descripcion" class="form-control"
+                    value="<?php echo $descripcion; ?>">
+                <span class="help-block"><?php echo $descripcion_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label for="valor">Valor:</label>
+                <input type="number" name="valor" id="valor" class="form-control" value="<?php echo $valor; ?>">
+                <span class="help-block"><?php echo $valor_err; ?></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Agregar Gasto">
+                <a href="gastos.php" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </main>
 
-    <!-- JavaScript para inicializar el Datepicker -->
     <script>
-        $(function () {
-            $("#fecha").datepicker({
-                dateFormat: "dd/mm/yy", // Formato de fecha deseado
-                showButtonPanel: true, // Muestra botones de "Hoy" y "Limpiar"
-            });
+    // Agregar un evento clic al botón
+    document.getElementById("volverAtras").addEventListener("click", function() {
+        window.history.back();
+    });
+    </script>
+
+    <script>
+    $(function() {
+        $("#fecha").datepicker({
+            dateFormat: "dd/mm/yy", // Formato de fecha deseado
+            showButtonPanel: true, // Muestra botones de "Hoy" y "Limpiar"
         });
-    </script> 
+    });
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/menu/main.js"></script>
+
 </body>
+
 </html>
