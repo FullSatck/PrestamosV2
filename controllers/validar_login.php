@@ -31,10 +31,10 @@ if (mysqli_num_rows($result) > 0) {
                 header("Location: /resources/views/admin/inicio/inicio.php");
                 break;
             case 2: // Rol de supervisor
-                header("Location: supervisor_dashboard.php");
+                header("Location: /resources/views/supervisor/inicio/inicio.php");
                 break;
             case 3: // Rol de cobrador
-                header("Location: cobrador_dashboard.php");
+                header("Location: /resources/cobrador/admin/inicio/inicio.php");
                 break;
             default:
                 // Redirige a una página por defecto si el rol no se encuentra

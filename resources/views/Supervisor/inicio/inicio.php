@@ -189,31 +189,8 @@ mysqli_close($conexion);
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Inicio Administrador</h1>
-        <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Cobros</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'> $ $totalMonto </span>" ?></p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $  $totalIngresos </span>" ?></p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Contabilidad</a>
-                </div>
-            </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Comision</a>
-                </div>
-            </div>
-        </div>
+        <h1>Inicio Supervisor</h1>
+         
     </main>
 
 
