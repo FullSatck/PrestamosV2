@@ -1,48 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap');
 
-:root{
-    --color-barra-lateral: rgb(255,255,255);
-
-    --color-texto: rgb(0,0,0);
-    --color-texto-menu: rgb(134,136,144);
-
-    --color-menu-hover: rgb(238,238,238);
-    --color-menu-hover-texto: rgb(0,0,0);
-
-    --color-boton:rgb(0,0,0);
-    --color-boton-texto: rgb(255,255,255);
-
+:root {
+    --color-barra-lateral: rgb(255, 255, 255);
+    --color-texto: rgb(0, 0, 0);
+    --color-texto-menu: rgb(134, 136, 144);
+    --color-menu-hover: rgb(238, 238, 238);
+    --color-menu-hover-texto: rgb(0, 0, 0);
+    --color-boton: rgb(0, 0, 0);
+    --color-boton-texto: rgb(255, 255, 255);
     --color-linea: rgb(180, 180, 180);
-
-    --color-switch-base: rgb(201,202,206);
-    --color-switch-circulo: rgb(241,241,241); 
-
-    --color-scroll: rgb(192,192,192);
-    --color-scroll-hover: rgb(134,134,134);
-
+    --color-switch-base: rgb(201, 202, 206);
+    --color-switch-circulo: rgb(241, 241, 241);
+    --color-scroll: rgb(192, 192, 192);
+    --color-scroll-hover: rgb(134, 134, 134);
     --color-fondo: rgb(238, 238, 238);
-    --color-fondo-texto: rgb(0,0,0);
+    --color-fondo-texto: rgb(0, 0, 0);
     --color-cuadros: rgb(199, 199, 199);
-} 
- 
-/* ESTILOS EN GENERALL */
-*{
+}
+
+/* ESTILOS EN GENERAL */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Outfit', sans-serif;
 }
 
-body{
+body {
     height: 100vh;
-    width: 100%; 
+    width: 100%;
     padding: 20px;
     background-color: var(--color-fondo);
 }
 
-/* ESTILOS PARA EL BOTON */
+/* ESTILOS PARA EL BOTÓN */
 
-.barra-lateral .boton{
+.barra-lateral .boton {
     width: 100%;
     height: 45px;
     margin-bottom: 20px;
@@ -56,14 +49,14 @@ body{
     color: var(--color-boton-texto);
 }
 
-.barra-lateral .boton ico-icon{
+.barra-lateral .boton ico-icon {
     min-width: 50px;
     font-size: 25px;
 }
 
-/* ESTILOS PARA EL MENU */
+/* ESTILOS PARA EL MENÚ */
 
-.menu{
+.menu {
     position: fixed;
     width: 50px;
     height: 50px;
@@ -81,7 +74,7 @@ body{
 
 /* ESTILOS PARA LA BARRA LATERAL */
 
-.barra-lateral{
+.barra-lateral {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -91,15 +84,14 @@ body{
     overflow: hidden;
     padding: 20px 15px;
     background-color: var(--color-barra-lateral);
-    transition: width 0.5s ease,background-color 0.3s ease,left 0.5s ease;
+    transition: width 0.5s ease, background-color 0.3s ease, left 0.5s ease;
 }
 
-.mini-barra-lateral{
+.mini-barra-lateral {
     width: 80px;
-
 }
 
-.barra-lateral span{
+.barra-lateral span {
     width: 100px;
     white-space: nowrap;
     font-size: 18px;
@@ -108,35 +100,35 @@ body{
     transition: opacity 0.5s ease, width 0.5s ease;
 }
 
-.barra-lateral span.oculto{
+.barra-lateral span.oculto {
     opacity: 0;
     width: 0;
 }
 
-/* ESTILOS PARA NOMBRE DE LA PAGINA */
-.barra-lateral .nombre-pagina{
+/* ESTILOS PARA NOMBRE DE LA PÁGINA */
+.barra-lateral .nombre-pagina {
     width: 100%;
     height: 45px;
     color: var(--color-texto);
-    margin-bottom: 40PX;
+    margin-bottom: 40px;
     display: flex;
     align-items: center;
 }
 
-.barra-lateral .nombre-pagina ion-icon{
+.barra-lateral .nombre-pagina ion-icon {
     min-width: 50px;
     font-size: 40px;
     cursor: pointer;
 }
 
-.barra-lateral .nombre-pagina span{
+.barra-lateral .nombre-pagina span {
     margin-left: 5px;
     font-size: 25px;
 }
 
-/* ESTILOS PARA EL BOTON */
+/* ESTILOS PARA EL BOTÓN */
 
-.barra-lateral .boton{
+.barra-lateral .boton {
     width: 100%;
     height: 45px;
     margin-bottom: 20px;
@@ -149,40 +141,40 @@ body{
     color: var(--color-boton-texto);
 }
 
-.barra-lateral .boton ico-icon{
+.barra-lateral .boton ico-icon {
     min-width: 50px;
     font-size: 25px;
 }
 
-/* ESTILOS PARA EL MENU DE NAVEGACION */
+/* ESTILOS PARA EL MENÚ DE NAVEGACIÓN */
 
-.barra-lateral .navegacion{
+.barra-lateral .navegacion {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.barra-lateral .navegacion::-webkit-scrollbar{
+.barra-lateral .navegacion::-webkit-scrollbar {
     width: 5px;
 }
 
-.barra-lateral .navegacion::-webkit-scrollbar-thumb{
+.barra-lateral .navegacion::-webkit-scrollbar-thumb {
     background-color: var(--color-scroll);
     border-radius: 5px;
 }
 
-.barra-lateral .navegacion::-webkit-scrollbar-thumb:hover{
+.barra-lateral .navegacion::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-scroll-hover);
     border-radius: 5px;
 }
 
-.barra-lateral .navegacion li{
+.barra-lateral .navegacion li {
     list-style: none;
     display: flex;
     margin-bottom: 5px;
 }
 
-.barra-lateral .navegacion a{
+.barra-lateral .navegacion a {
     width: 100%;
     height: 45px;
     display: flex;
@@ -192,7 +184,7 @@ body{
     color: var(--color-texto-menu);
 }
 
-.barra-lateral .navegacion .hola{
+.barra-lateral .navegacion .hola {
     width: 100%;
     height: 45px;
     display: flex;
@@ -203,19 +195,19 @@ body{
     color: rgb(0, 0, 0);
 }
 
-.barra-lateral .navegacion a:hover{
+.barra-lateral .navegacion a:hover {
     background-color: var(--color-menu-hover);
     color: var(--color-menu-hover-texto);
 }
 
-.barra-lateral .navegacion ion-icon{
+.barra-lateral .navegacion ion-icon {
     min-width: 50px;
     font-size: 20px;
 }
 
-/* ESTILOS PARA LA LINEA */
+/* ESTILOS PARA LA LÍNEA */
 
-.barra-lateral .linea{
+.barra-lateral .linea {
     width: 100%;
     height: 1px;
     margin-top: 15px;
@@ -224,118 +216,117 @@ body{
 
 /* ESTILOS PARA EL MODO OSCURO */
 
-.barra-lateral .modo-oscuro{
+.barra-lateral .modo-oscuro {
     width: 100%;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
 }
 
-.barra-lateral .modo-oscuro .info{
+.barra-lateral .modo-oscuro .info {
     width: 150px;
-    height: 45px; 
+    height: 45px;
     overflow: hidden;
     display: flex;
     align-items: center;
-    color: var(--color-texto-menu); 
+    color: var(--color-texto-menu);
 }
 
-span .hola{
+span .hola {
     background-color: yellow;
 }
 
-.barra-lateral .modo-oscuro ion-icon{
+.barra-lateral .modo-oscuro ion-icon {
     width: 50px;
     font-size: 20px;
 }
 
-/* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
+/* ESTILOS PARA EL CONTENIDO DE LA PÁGINA */
 
-main{
+main {
     margin-left: 250px;
     padding: 20px;
     transition: margin-left 0.5s ease;
     color: var(--color-fondo-texto);
 }
 
-main.min-main{
+main.min-main {
     margin-left: 80px;
 }
 
 /* RESPONSIVE */
 
-@media (max-height: 660px){
-    .barra-lateral .nombre-pagina{
+@media (max-height: 660px) {
+    .barra-lateral .nombre-pagina {
         margin-bottom: 5px;
     }
 
-    .barra-lateral .modo-oscuro{
+    .barra-lateral .modo-oscuro {
         margin-bottom: 3px;
     }
 }
 
-@media (max-width: 660px){
-    .barra-lateral{
+@media (max-width: 660px) {
+    .barra-lateral {
         position: absolute;
         left: -250px;
     }
-    .max-barra-lateral{
+    .max-barra-lateral {
         left: 0;
     }
-    .menu{
+    .menu {
         display: flex;
     }
-    .menu ion-icon:nth-child(2){
+    .menu ion-icon:nth-child(2) {
         display: none;
     }
 }
 
-
-h1{
+h1 {
     text-align: center;
     margin-bottom: 20px;
 }
- 
+
 /* Estilos CSS */
 .cuadros-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas iguales */
-    gap: 20px; /* Espacio entre los cuadros */
-} 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
 
 .cuadro {
     border: 1px solid #ccc;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centrar verticalmente */
-    align-items: center; /* Centrar horizontalmente */
+    justify-content: center;
+    align-items: center;
     height: 200px;
-    background-size: cover; /* Ajustar la imagen al tamaño del cuadro */
-    background-position: center; /* Centrar la imagen en el cuadro */
+    background-size: cover;
+    background-position: center;
 }
 
-.cuadro-1-1{
+.cuadro-1-1 {
     background-color: var(--color-fondo);
     color: var(--color-fondo-texto);
     padding: 8px;
     border-radius: 10px;
 }
- 
+
 .cuadro-1 {
-    background-image: url('/public/assets/img/inicio_admin/cobros2.png'); /* Ruta de la primera imagen */
+    background-image: url('/public/assets/img/inicio_admin/cobros2.png');
 }
 
 .cuadro-2 {
-    background-image: url('/public/assets/img/inicio_admin/contabilidad.jpg'); /* Ruta de la segunda imagen */
+    background-image: url('/public/assets/img/inicio_admin/contabilidad.jpg');
 }
 
 .cuadro-3 {
-    background-image: url('/public/assets/img/inicio_admin/ingresos.avif'); /* Ruta de la tercera imagen */
+    background-image: url('/public/assets/img/inicio_admin/ingresos.avif');
 }
 
 .cuadro-4 {
-    background-image: url('/public/assets/img/inicio_admin/comision.avif'); /* Ruta de la cuarta imagen */
+    background-image: url('/public/assets/img/inicio_admin/comision.avif');
 }
 
 .titulo {
@@ -343,14 +334,14 @@ h1{
     font-weight: bold;
     text-align: center;
     text-decoration: none;
-    color: var(--color-fondo-texto); 
-    padding: 8px; 
+    color: var(--color-fondo-texto);
+    padding: 8px;
 }
 
-.cob{
+.cob {
     color: red;
 }
 
-.ing{
+.ing {
     color: green;
 }
