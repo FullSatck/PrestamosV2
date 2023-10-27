@@ -47,13 +47,7 @@ $resultado = $conexion->query($sql);
             </div>
         </div>
         <nav class="navegacion">
-            <ul>
-                <li>
-                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
-                        <ion-icon name="push-outline"></ion-icon>
-                        <span>Saldo Inicial</span>
-                    </a>
-                </li>
+            <ul> 
                 <li>
                     <a href="/resources/views/admin/inicio/inicio.php">
                         <ion-icon name="home-outline"></ion-icon>

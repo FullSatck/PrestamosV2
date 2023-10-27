@@ -11,41 +11,51 @@ if (isset($_SESSION["usuario_id"])) {
 }
 
 
-// Obtener el nombre de la zona desde la URL
-if (isset($_GET['zona'])) {
-    $nombreZona = $_GET['zona'];
-}
+  // Incluye tu archivo de conexión a la base de datos
+  include("../../../../controllers/conexion.php");
 
-// Verificar si se ha pasado un mensaje en la URL
-$mensaje = "";
-if (isset($_GET['mensaje'])) {
-    $mensaje = $_GET['mensaje'];
-}
+  // Obtener el nombre de la zona desde la URL
+  if (isset($_GET['zona'])) {
+      $nombreZona = $_GET['zona'];
+  }
 
-// Conectar a la base de datos
-include("../../../../controllers/conexion.php");
-
-// Consulta SQL para obtener los préstamos de la zona especificada con el nombre del cliente
-$sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID WHERE P.Zona = ?");
-$sql->bind_param("s", $nombreZona);
-$sql->execute();
-
-// Verificar si la consulta se realizó con éxito
-if ($sql === false) {
-    die("Error en la consulta SQL: " . $conexion->error);
-}
- 
+  // Verifica si se ha proporcionado una zona válida
+  if (isset($_GET['zona'])) {
+      $nombreZona = $_GET['zona'];
+  } else {
+      // Maneja el caso donde no se proporcionó una zona válida
+      echo "Zona no especificada.";
+  }
+  
+  // Manejar la solicitud POST para actualizar el orden
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      // Obtener el nuevo orden desde la solicitud POST
+      $nuevoOrden = $_POST["nuevoOrden"];
+      
+      // Actualizar el orden en la base de datos (debes adaptar esto a tu estructura)
+      $sqlUpdate = "UPDATE nueva_lista_pagos SET Orden = ? WHERE Zona = ?";
+      $stmt = $conexion->prepare($sqlUpdate);
+      $stmt->bind_param("is", $nuevoOrden, $nombreZona);
+      
+      if ($stmt->execute()) {
+          echo "Nuevo orden actualizado con éxito.";
+      } else {
+          echo "Error al actualizar el nuevo orden: " . $conexion->error;
+      }
+      
+      $stmt->close();
+  }
+  $conexion->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/lista_super.css">
-    <title>Listado de Préstamos</title>
+    <title>Lista de Fechas de Pago</title>
+    <link rel="stylesheet" href="/public/assets/css/ruta.css">
 </head>
 
 <body>
@@ -65,13 +75,7 @@ if ($sql === false) {
             </button>
         </div>
         <nav class="navegacion">
-            <ul>
-                <li>
-                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
-                        <ion-icon name="push-outline"></ion-icon>
-                        <span>Saldo Inicial</span>
-                    </a>
-                </li>
+            <ul> 
                 <li>
                     <a href="/resources/views/admin/inicio/inicio.php">
                         <ion-icon name="home-outline"></ion-icon>
@@ -142,7 +146,7 @@ if ($sql === false) {
                     <a href="/resources/views/admin/retiros/retiros.php">
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
-                    </a>
+                    </a> 
                 </li>
             </ul>
         </nav>
@@ -154,7 +158,7 @@ if ($sql === false) {
             <div class="info">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
-                </div>
+                </div> 
             </div>
         </div>
 
@@ -164,51 +168,36 @@ if ($sql === false) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1 class="text-center">Listado de Prestamos en Zona: <?= $nombreZona ?></h1>
-
-        <div class="container-fluid">
-            <div class="row">
-
-                <div class="col-md-9">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID del Préstamo</th>
-                                <th scope="col">Nombre del Cliente</th>
-                                <th scope="col">Zona</th>
-                                <th scope="col">Monto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                    $result = $sql->get_result();
-                    $rowCount = 0; // Contador de filas
-                    while ($datos = $result->fetch_assoc()) { 
-                        $rowCount++; // Incrementar el contador de filas
-                        ?>
-                            <tr class="row<?= $rowCount ?>">
-                                <td><?= "Prestamo " . $datos['ID'] ?></td>
-                                <td><?= $datos['NombreCliente'] ?></td>
-                                <td><?= $datos['Zona'] ?></td>
-                                <td><?= $datos['Monto'] ?></td>
-                            </tr>
-                            <?php } 
-                    // Cerrar la consulta y la conexión a la base de datos
-                    $sql->close();
-                    $conexion->close();
-                    ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div id="fechasPagoContainer">
+            <!-- Aquí se mostrará la lista de fechas de pago en tiempo real -->
         </div>
     </main>
 
     <script>
-    // Agregar un evento clic al botón
-    document.getElementById("volverAtras").addEventListener("click", function() {
-        window.history.back();
-    });
+        // Agregar un evento clic al botón
+        document.getElementById("volverAtras").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    // Función para cargar y mostrar las fechas de pago en tiempo real
+    function cargarFechasDePago() {
+        $.ajax({
+            url: 'cargar_fechas_pago.php?zona=<?php echo $nombreZona; ?>',
+            method: 'GET',
+            success: function(data) {
+                $('#fechasPagoContainer').html(data);
+            }
+        });
+    }
+
+    // Cargar las fechas de pago al cargar la página
+    cargarFechasDePago();
+
+    // Actualizar las fechas de pago cada 30 segundos
+    setInterval(cargarFechasDePago, 30000); // 30,000 milisegundos = 30 segundos
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

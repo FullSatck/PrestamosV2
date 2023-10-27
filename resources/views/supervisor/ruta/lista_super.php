@@ -11,7 +11,11 @@ if (isset($_SESSION["usuario_id"])) {
 }
 
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
+// Verificar si se ha pasado un mensaje en la URL
+$mensaje = "";
+if (isset($_GET['mensaje'])) {
+    $mensaje = $_GET['mensaje'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -19,9 +23,10 @@ if (isset($_SESSION["usuario_id"])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saldo Inicial</title>
-    <link rel="stylesheet" href="/public/assets/css/saldo_admin.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="stylesheet" href="/public/assets/css/lista_super.css">
+    <title>Abonos</title>
 </head>
 
 <body>
@@ -31,19 +36,13 @@ if (isset($_SESSION["usuario_id"])) {
     </div>
     <div class="barra-lateral">
         <div>
-            <div class="nombre-pagina">
+            <div class="nombre-pagina"> 
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
-            </div>
+            </div> 
         </div>
         <nav class="navegacion">
-            <ul>
-                <li>
-                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php" class="hola">
-                        <ion-icon name="push-outline"></ion-icon>
-                        <span>Saldo Inicial</span>
-                    </a>
-                </li>
+            <ul> 
                 <li>
                     <a href="/resources/views/admin/inicio/inicio.php">
                         <ion-icon name="home-outline"></ion-icon>
@@ -85,7 +84,7 @@ if (isset($_SESSION["usuario_id"])) {
                         <ion-icon name="cloud-upload-outline"></ion-icon>
                         <span>Registrar Prestamos</span>
                     </a>
-                </li>
+                </li> 
                 <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
@@ -99,7 +98,7 @@ if (isset($_SESSION["usuario_id"])) {
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/abonos/lista_super.php">
+                    <a href="/resources/views/admin/abonos/lista_super.php" class="hola">
                         <ion-icon name="map-outline"></ion-icon>
                         <span>Ruta</span>
                     </a>
@@ -115,7 +114,7 @@ if (isset($_SESSION["usuario_id"])) {
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
                     </a>
-                </li>
+                </li> 
             </ul>
         </nav>
 
@@ -123,10 +122,10 @@ if (isset($_SESSION["usuario_id"])) {
             <div class="linea"></div>
 
             <div class="modo-oscuro">
-                <div class="info">
+            <div class="info">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
-                </div>
+                </div> 
             </div>
         </div>
 
@@ -135,60 +134,73 @@ if (isset($_SESSION["usuario_id"])) {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>
-        <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['guardar_saldo'])) {
-        // Obtén el monto del formulario
-        $monto = isset($_POST['monto']) ? floatval($_POST['monto']) : 0; // Asegúrate de tener un valor válido
+    <main>  
+        <!-- Botón para volver a la página anterior -->
+    <h1 class="text-center">Listado de Supervisores</h1>
 
-        // Realiza la validación del monto si es necesario
+<div class="container-fluid"> 
 
-        // Incluye el archivo de conexión a la base de datos
-        include("../../../../controllers/conexion.php");
+        <!-- Resto del código de la tabla --> 
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th> 
+                    <th scope="col">Zona</th>
+                    <th scope="col">Rol</th> 
+                    <th scope="col">Acciones</th> 
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                include("../../../../controllers/conexion.php");
+                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 2"); // Filtra por el ID del rol de supervisor (2)
+                
+                // Verificar si la preparación de la consulta fue exitosa
+                if ($sql === false) {
+                    die("La preparación de la consulta SQL falló: " . $conexion->error);
+                }
+                
+                // Ejecutar la consulta
+                if (!$sql->execute()) {
+                    die("La ejecución de la consulta SQL falló: " . $sql->error);
+                }
 
-        // Supongamos que el ID de administrador es 1 (reemplaza con el valor correcto)
-        $idAdmin = 1;
+                $result = $sql->get_result();
+                $rowCount = 0; // Contador de filas
+                while ($datos = $result->fetch_object()) { 
+                    $rowCount++; // Incrementar el contador de filas
+                    ?>
+                    <tr class="row<?= $rowCount ?>">
+                        <td><?= "REC 100" .$datos->ID ?></td>
+                        <td><?= $datos->Nombre ?></td>
+                        <td><?= $datos->Apellido ?></td>
+                        <td><?= $datos->Zona ?></td>
+                        <td><?= $datos->Rol ?></td> 
+                        <td>
+                            <!-- Botón para ver los cobradores de la zona -->
+                            <a href="ver_cobradores.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Cobradores</a>
+                            <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Prestamos</a>
+                            <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
 
-        // Inserta el saldo inicial en la tabla saldo_admin en ambas columnas
-        $sql = "INSERT INTO saldo_admin (IDUsuario, Monto, Monto_Neto) VALUES (?, ?, ?)";
-        $stmt = $conexion->prepare($sql);
-
-        if ($stmt) {
-            $stmt->bind_param("idd", $idAdmin, $monto, $monto);
-
-            if ($stmt->execute()) {
-                echo '<p class="success-message">Saldo inicial guardado con éxito.</p>';
-            } else {
-                echo '<p class="error-message">Error al guardar el saldo inicial: ' . $stmt->error . '</p>';
-            }
-            
-            $stmt->close();
-        } else {
-            echo "Error de consulta preparada: " . $conexion->error;
-        }
-
-        $conexion->close();
-    }
-    ?>
-        <div class="container">
-            <h2>Asignar Saldo Inicial al Administrador</h2>
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                <div class="form-group">
-                    <label for="monto">Monto:</label>
-                    <input type="number" step="0.01" id="monto" name="monto" required>
-                </div>
-                <button type="submit" name="guardar_saldo">Guardar</button>
-            </form>
-        </div>
+    <!-- Paginación -->
+    <div id="pagination" class="text-center">
+        <ul class="pagination">
+            <!-- Los botones de paginación se generarán aquí -->
+        </ul>
+    </div>
+</div>
     </main>
-
-
-
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>
 
-</body>
-
-</html>
+ 

@@ -16,6 +16,26 @@ $mensaje = "";
 if (isset($_GET['mensaje'])) {
     $mensaje = $_GET['mensaje'];
 }
+
+// Obtener el nombre de la zona desde la URL
+if (isset($_GET['zona'])) {
+    $nombreZona = $_GET['zona'];
+
+    // Conectar a la base de datos
+    include("../../../../controllers/conexion.php");
+
+    // Consulta para obtener los usuarios con rol 2 (supervisores) en la zona especificada
+    $sql = $conexion->prepare("SELECT U.ID, U.Nombre, U.Apellido, U.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios U JOIN Roles ON U.RolID = Roles.ID JOIN Zonas ON U.Zona = Zonas.ID WHERE U.RolID = 3 AND Zonas.Nombre = ?");
+    $sql->bind_param("s", $nombreZona);
+    $sql->execute();
+    $result = $sql->get_result();
+
+    // Verificar si se encontraron supervisores en la zona
+    $supervisoresEnZona = $result->num_rows > 0;
+} else {
+    // Si no se proporciona un nombre de zona válido, establecer $supervisoresEnZona en falso
+    $supervisoresEnZona = false;
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +45,8 @@ if (isset($_GET['mensaje'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <link rel="stylesheet" href="/public/assets/css/lista_super.css">
-    <title>Abonos</title>
+    <link rel="stylesheet" href="/public/assets/css/vercobradores.css">
+    <title>Zona: <?= $nombreZona ?></title>
 </head>
 
 <body>
@@ -40,15 +60,13 @@ if (isset($_GET['mensaje'])) {
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div> 
+            <button class="boton" id="volverAtras"> 
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
         </div>
         <nav class="navegacion">
-            <ul>
-                <li>
-                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
-                        <ion-icon name="push-outline"></ion-icon>
-                        <span>Saldo Inicial</span>
-                    </a>
-                </li>
+            <ul> 
                 <li>
                     <a href="/resources/views/admin/inicio/inicio.php">
                         <ion-icon name="home-outline"></ion-icon>
@@ -140,73 +158,109 @@ if (isset($_GET['mensaje'])) {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>  
-        <!-- Botón para volver a la página anterior -->
-    <h1 class="text-center">Listado de Supervisores</h1>
+    <main>   
+    <h1 class="text-center">Listado de Cobradores en Zona: <?= $nombreZona ?></h1>
 
-<div class="container-fluid"> 
-
-        <!-- Resto del código de la tabla --> 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th> 
-                    <th scope="col">Zona</th>
-                    <th scope="col">Rol</th> 
-                    <th scope="col">Acciones</th> 
-                </tr>
-            </thead>
-            <tbody>
+<div class="container-fluid">
+    <div class="row">
+        
+        <div class="col-md-9">
+            <?php
+            if ($supervisoresEnZona) {
+                // Mostrar la tabla solo si hay supervisores en la zona
+                ?>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th> 
+                            <th scope="col">Email</th>
+                            <th scope="col">Rol</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        while ($datos = $result->fetch_assoc()) {
+                            ?>
+                            <tr>
+                                <td><?= "REC 100" . $datos['ID'] ?></td>
+                                <td><?= $datos['Nombre'] ?></td>
+                                <td><?= $datos['Apellido'] ?></td>
+                                <td><?= $datos['Email'] ?></td>
+                                <td><?= $datos['Rol'] ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
                 <?php
-                include("../../../../controllers/conexion.php");
-                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 2"); // Filtra por el ID del rol de supervisor (2)
-                
-                // Verificar si la preparación de la consulta fue exitosa
-                if ($sql === false) {
-                    die("La preparación de la consulta SQL falló: " . $conexion->error);
-                }
-                
-                // Ejecutar la consulta
-                if (!$sql->execute()) {
-                    die("La ejecución de la consulta SQL falló: " . $sql->error);
-                }
-
-                $result = $sql->get_result();
-                $rowCount = 0; // Contador de filas
-                while ($datos = $result->fetch_object()) { 
-                    $rowCount++; // Incrementar el contador de filas
-                    ?>
-                    <tr class="row<?= $rowCount ?>">
-                        <td><?= "REC 100" .$datos->ID ?></td>
-                        <td><?= $datos->Nombre ?></td>
-                        <td><?= $datos->Apellido ?></td>
-                        <td><?= $datos->Zona ?></td>
-                        <td><?= $datos->Rol ?></td> 
-                        <td>
-                            <!-- Botón para ver los cobradores de la zona -->
-                            <a href="ver_cobradores.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Cobradores</a>
-                            <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver Prestamos</a>
-                            <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
-                        </td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Paginación -->
-    <div id="pagination" class="text-center">
-        <ul class="pagination">
-            <!-- Los botones de paginación se generarán aquí -->
-        </ul>
+            } else {
+                // Mostrar un mensaje si no se encontraron supervisores en la zona
+                echo "No se encontraron supervisores para la zona: " . $nombreZona;
+            }
+            ?>
+        </div>
     </div>
 </div>
     </main>
 
+    <script>
+        // Agregar un evento clic al botón
+        document.getElementById("volverAtras").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/menu/main.js"></script>
 
- 
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <!-- Botón para volver a la página anterior -->
+     
+</body>
+</html>
