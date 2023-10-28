@@ -34,13 +34,14 @@ if (isset($_GET['mensaje'])) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/public/assets/css/abonos.css">
 </head>
- 
+
 <body>
     <div class="menu">
         <ion-icon name="menu-outline"></ion-icon>
         <ion-icon name="close-circle-outline"></ion-icon>
     </div>
     <div class="barra-lateral">
+    <ion-icon name="close-circle-outline" class="close-button"></ion-icon>
         <div>
             <div class="nombre-pagina">
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
@@ -134,10 +135,10 @@ if (isset($_GET['mensaje'])) {
             <div class="linea"></div>
 
             <div class="modo-oscuro">
-            <div class="info">
+                <div class="info">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -293,9 +294,9 @@ if (isset($_GET['mensaje'])) {
                         <button id="generarFacturaButton" class="btn btn-primary">Generar Factura</button>
 
                         <!-- Agregar un botón para compartir la factura por WhatsApp -->
-                       
+
                         <button type="button" class="btn btn-primary" id="compartirPorWhatsAppButton">
-                            Compartir por WhatsApp 
+                            Compartir por WhatsApp
                         </button>
 
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
