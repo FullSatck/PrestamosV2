@@ -1,6 +1,5 @@
 <?php
 session_start();
-include("../../../../controllers/conexion.php");
 
 // Verifica si el usuario está autenticado
 if (isset($_SESSION["usuario_id"])) {
@@ -11,11 +10,7 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
-// Verificar si se ha pasado un mensaje en la URL
-$mensaje = "";
-if (isset($_GET['mensaje'])) {
-    $mensaje = $_GET['mensaje'];
-}
+// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
 <!DOCTYPE html>
@@ -23,11 +18,9 @@ if (isset($_GET['mensaje'])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/assets/css/lista_usuarios.css">
-    <title>CRUD de Usuarios</title>
+    <link rel="stylesheet" href="/public/assets/css/dias_pago.css"> <!-- Agrega esta línea para vincular el archivo CSS -->
+    <title>Fechas de Pago</title>
 </head>
 
 <body>
@@ -37,13 +30,23 @@ if (isset($_GET['mensaje'])) {
     </div>
     <div class="barra-lateral">
         <div>
-            <div class="nombre-pagina">
+            <div class="nombre-pagina"> 
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
-            </div>
+            </div> 
+            <button class="boton" id="volverAtras"> 
+                <ion-icon name="arrow-undo-outline"></ion-icon>
+                <span>&nbsp;Volver</span>
+            </button>
         </div>
         <nav class="navegacion">
             <ul>
+                <li>
+                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
+                        <ion-icon name="push-outline"></ion-icon>
+                        <span>Saldo Inicial</span>
+                    </a>
+                </li>
                 <li>
                     <a href="/resources/views/admin/inicio/inicio.php">
                         <ion-icon name="home-outline"></ion-icon>
@@ -51,7 +54,7 @@ if (isset($_GET['mensaje'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/usuarios/crudusuarios.php" class="hola">
+                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
                         <ion-icon name="people-outline"></ion-icon>
                         <span>Usuarios</span>
                     </a>
@@ -63,7 +66,7 @@ if (isset($_GET['mensaje'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/clientes/lista_clientes.php">
+                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="hola">
                         <ion-icon name="people-circle-outline"></ion-icon>
                         <span>Clientes</span>
                     </a>
@@ -85,13 +88,7 @@ if (isset($_GET['mensaje'])) {
                         <ion-icon name="cloud-upload-outline"></ion-icon>
                         <span>Registrar Prestamos</span>
                     </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/grupos/grupos.php">
-                        <ion-icon name="eye-outline"></ion-icon>
-                        <span>Roles</span>
-                    </a>
-                </li>
+                </li> 
                 <li>
                     <a href="/resources/views/admin/cobros/cobros.php">
                         <ion-icon name="planet-outline"></ion-icon>
@@ -121,7 +118,7 @@ if (isset($_GET['mensaje'])) {
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
                     </a>
-                </li>
+                </li> 
             </ul>
         </nav>
 
@@ -132,7 +129,7 @@ if (isset($_GET['mensaje'])) {
                 <div class="info">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
-                </div>
+                </div> 
             </div>
         </div>
 
@@ -141,86 +138,98 @@ if (isset($_GET['mensaje'])) {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>
-        <h1>Listado de Cobradores</h1>
+    <main>   
+        
+<?php
+// Incluir el archivo de conexión a la base de datos
+require_once("conexion.php");
 
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-        </div>
+// Obtener el ID del préstamo desde el parámetro GET
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $idPrestamo = $_GET['id'];
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Zona</th>
-                <th>Rol</th>
-                <th>Acciones</th>
-            </tr>
-            <?php
-    // Supongamos que ya has identificado al supervisor y su zona asignada
-    $supervisor_id = $_SESSION["usuario_id"]; // Esto dependerá de cómo se almacena el ID del supervisor en la sesión
+    // Consulta SQL para obtener los detalles del préstamo con el ID dado
+    $sql = "SELECT FechaInicio, FrecuenciaPago, Plazo, Cuota FROM prestamos WHERE ID = $idPrestamo";
+    $result = $conexion->query($sql);
 
-    $sql = $conexion->prepare("SELECT * FROM usuarios WHERE RolID = 3 AND Zona = (SELECT Zona FROM supervisores WHERE ID = ?)");
-    $sql->bind_param("i", $supervisor_id);
-    $sql->execute();
-    $result = $sql->get_result();
+    if ($result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+        $fechaInicio = new DateTime($row["FechaInicio"]);
+        $frecuenciaPago = $row["FrecuenciaPago"];
+        $plazo = $row["Plazo"];
+        $cuota = $row["Cuota"];
 
-    if ($result->num_rows > 0) {
-        $rowCount = 0; // Contador de filas
-        while ($datos = $result->fetch_object()) {
-            $rowCount++; // Incrementar el contador de filas
-            ?>
+        // Calcular las fechas de pago
+        $fechasPago = calcularFechasPago($fechaInicio, $frecuenciaPago, $plazo);
 
-            <tr class="row<?= $rowCount ?>">
-                <td><?= "REC 100" . $datos->ID ?></td>
-                <td><?= $datos->Nombre ?></td>
-                <td><?= $datos->Apellido ?></td>
-                <td><?= $datos->Email ?></td>
-                <td><?= $datos->Zona ?></td>
-                <td><?= $datos->RolID ?></td>
-                <td>
-                    <a href="modificarUser.php?id=<?= $datos->ID ?>">
-                        <i class="fas fa-pencil-alt"></i> Modificar
-                    </a>
-                </td>
-            </tr>
-
-            <?php
+        // Mostrar las fechas de pago en una tabla
+        echo "<div class='container'>";
+        echo "<h1>Fechas de Pago</h1>";
+        echo "<p class='p'>A pagar: $cuota " . " $frecuenciaPago</p>";
+        echo "<table>";
+        echo "<tr><th>Frecuencia</th><th>Fecha</th></tr>";
+        $numeroFecha = 1;
+        foreach ($fechasPago as $fecha) {
+            $frecuencia = obtenerFrecuencia($frecuenciaPago, $numeroFecha);
+            echo "<tr><td>$frecuencia</td><td>" . $fecha->format("Y-m-d") . "</td></tr>";
+            $numeroFecha++;
         }
+        echo "</table>";
+        echo "</div>";
     } else {
-        echo "No se encontraron cobradores en la zona asignada.";
+        echo "ID de préstamo no válido.";
     }
-    $sql->close();
-    ?>
-        </table>
+} else {
+    echo "ID de préstamo no proporcionado.";
+}
+
+// Función para calcular las fechas de pago
+function calcularFechasPago($fechaInicio, $frecuenciaPago, $plazo) {
+    $fechasPago = array();
+
+    for ($i = 0; $i < $plazo; $i++) {
+        $fechasPago[] = clone $fechaInicio;
+
+        if ($frecuenciaPago === "diario") {
+            $fechaInicio->modify("+1 day");
+        } elseif ($frecuenciaPago === "semanal") {
+            $fechaInicio->modify("+1 week");
+        } elseif ($frecuenciaPago === "quincenal") {
+            $fechaInicio->modify("+2 weeks");
+        } elseif ($frecuenciaPago === "mensual") {
+            $fechaInicio->modify("+1 month");
+        }
+    }
+
+    return $fechasPago;
+}
+
+// Función para obtener la descripción de la frecuencia
+function obtenerFrecuencia($frecuenciaPago, $numeroFecha) {
+    switch ($frecuenciaPago) {
+        case "diario":
+            return "Día $numeroFecha";
+        case "semanal":
+            return "Semana $numeroFecha";
+        case "quincenal":
+            return "Quincena $numeroFecha";
+        case "mensual":
+            return "Mes $numeroFecha";
+        default:
+            return "";
+    }
+}
+
+// Cerrar la conexión a la base de datos
+$conexion->close();
+?>
     </main>
 
     <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
-
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
-
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+        // Agregar un evento clic al botón
+        document.getElementById("volverAtras").addEventListener("click", function() {
+            window.history.back();
         });
-    });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -229,3 +238,4 @@ if (isset($_GET['mensaje'])) {
 </body>
 
 </html>
+ 
