@@ -65,85 +65,113 @@ try {
 mysqli_close($conexion);
 ?>
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recaudo</title>
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
-
 <body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-hand-holding-usd"></i> Recaudo</h3>
+                <strong><i class="fas fa-hand-holding-usd"></i></strong>
+            </div>
 
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-home"></i>
+                        Inicio
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-users"></i>
+                        Usuarios
+                    </a>
+                    <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-user-plus"></i>
+                        Registrar Usuario
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-user-tie"></i>
+                        Clientes
+                    </a>
+                    <a href="#clientsSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-user-tag"></i>
+                        Registrar Clientes
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        Préstamos
+                    </a>
+                    <a href="#loansSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Registrar Préstamos
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-route"></i>
+                        Zonas de cobro
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-receipt"></i>
+                        Gastos
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-road"></i>
+                        Ruta
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-donate"></i>
+                        Abonos
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-money-bill-wave"></i>
+                        Retiros
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar sesión
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
-<nav id="sidebar">
-        <div class="sidebar-header">
-            <h2>Recaudo</h2>
-            <strong>R</strong>
+        <!-- Page Content -->
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span>Toggle Sidebar</span>
+                    </button>
+                </div>
+            </nav>
         </div>
-        <ul class="sidebar-menu">
-            <li>
-                <a href="#">
-                    <i class="fas fa-credit-card"></i>
-                    <span class="menu-text">Saldo Inicial</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-home"></i>
-                    <span class="menu-text">Inicio</span>
-                </a>
-            </li>
-            <!-- Más elementos del menú aquí -->
-        </ul>
-    </nav>
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
-    <div id="content">
-
-        <h1>Inicio Administrador</h1>
-        <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Cobros</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'> $ $totalMonto </span>" ?></p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $  $totalIngresos </span>" ?></p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Contabilidad</a>
-                </div>
-            </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Comision</a>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-
-
-
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/public/assets/js/MenuLate.js"></script>
-
 </body>
-
 </html>

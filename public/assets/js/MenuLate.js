@@ -1,8 +1,6 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const sidebar = document.getElementById("sidebar");
-    const sidebarCollapse = document.getElementById("sidebarCollapse");
-
-    sidebarCollapse.addEventListener("click", function() {
-        sidebar.classList.toggle("closed");
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector('#sidebarCollapse').addEventListener('click', () => {
+        document.querySelector('#sidebar').classList.toggle('active');
+        document.querySelector('#content').classList.toggle('active');
     });
 });
