@@ -85,7 +85,9 @@ body {
   }
 
   .icon{
-    
+    min-width: 50px;
+    font-size: 40px;
+    cursor: pointer;
   }
   
   .sidebar-menu > button > img {
