@@ -77,7 +77,7 @@ if (!$_SESSION['logged_in']) {
   >
 
   <script type="text/javascript">
-    const toggleSidebar = () => document.body.classList.toggle("open");
+    const addEventListener = () => document.body.classList.toggle("open");
 
     
   </script>
