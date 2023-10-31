@@ -34,7 +34,7 @@ if (mysqli_num_rows($result) > 0) {
                 header("Location: /resources/views/supervisor/inicio/inicio.php");
                 break;
             case 3: // Rol de cobrador
-                header("Location: /resources/views/cobrador/admin/inicio/inicio.php");
+                header("Location: /resources/views/cobrador/inicio/inicio.php");
                 break;
             default:
                 // Redirige a una página por defecto si el rol no se encuentra
