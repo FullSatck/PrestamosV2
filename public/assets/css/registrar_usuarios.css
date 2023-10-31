@@ -255,7 +255,7 @@ main{
     padding: 20px;
     transition: margin-left 0.5s ease;
     color: var(--color-fondo-texto);
-}
+} 
 
 main.min-main{
     margin-left: 80px;
@@ -365,3 +365,4 @@ button:hover {
         width: 90%;
     }
 }
+ 

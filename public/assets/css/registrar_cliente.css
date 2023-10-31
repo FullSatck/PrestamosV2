@@ -278,7 +278,7 @@ body{
 /* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
 
 main{
-    margin-left: 250px;
+    
     padding: 20px;
     transition: margin-left 0.5s ease;
 }
@@ -384,7 +384,7 @@ textarea {
 .btn-container {
     margin-top: 20px;
     text-align: center;
-}
+} 
 
 input[type="submit"] {
     background-color: #007bff;
