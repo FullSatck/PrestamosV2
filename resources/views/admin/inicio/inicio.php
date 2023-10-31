@@ -97,11 +97,11 @@ mysqli_close($conexion);
 
             <a href="/resources/views/admin/inicio/inicio.php" class="selected">
                 <div class="option">
-                <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
-           
+
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
                     <i class="far fa-file" title="Portafolio"></i>
@@ -109,31 +109,31 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="#">
+            <a href="/resources/views/admin/usuarios/crudusuarios.php">
                 <div class="option">
-                    <i class="fas fa-video" title="Cursos"></i>
-                    <h4>Cursos</h4>
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="#">
+            <a href="/resources/views/admin/usuarios/registrar.php">
                 <div class="option">
-                    <i class="far fa-sticky-note" title="Blog"></i>
-                    <h4>Blog</h4>
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="#">
+            <a href="/resources/views/admin/clientes/lista_clientes.php">
                 <div class="option">
-                    <i class="far fa-id-badge" title="Contacto"></i>
-                    <h4>Contacto</h4>
+                <i class="fa-solid fa-people-group" title=""></i>
+                    <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="#">
+            <a href="/resources/views/admin/clientes/agregar_clientes.php">
                 <div class="option">
-                    <i class="far fa-address-card" title="Nosotros"></i>
-                    <h4>Nosotros</h4>
+                    <i class="far fa-address-card" title=""></i>
+                    <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
