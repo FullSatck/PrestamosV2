@@ -69,70 +69,107 @@ mysqli_close($conexion);
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <title>Recaudo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sidebar</title>
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
 </head>
-
 <body>
-    <div class="home">
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-outline"></ion-icon>
     </div>
 
-    <nav class="sidebar">
-        <div class="sidebar-inner">
-            <header class="sidebar-header">
-                <button type="button" class="sidebar-burger" onclick="toggleSidebar()"><i
-                        class="fa-solid fa-house-user fa-2xl"></i></button>
-                
-            </header>
-            <nav class="sidebar-menu">
-                <button type="button" onclick="window.location.href = '/index.html'">
-                    <i class="fa-solid fa-house fa-xl" style="color: #000000;"></i>
-                    <span>Inicio</span>
-                </button>
-
-                <button type="button" onclick="window.location.href = '/index.html'" class="has-border">
-                    <i class="fa-solid fa-gear fa-xl"></i>
-                    <span>Configuracion</span>
-                </button>
-
-                <button type="button" onclick="window.location.href = '/lognprin/admi/horario/crud.php'">
-                    <i class="fa-regular fa-calendar fa-xl" style="color: #000000;"></i>
-                    <span>Agregar horarios</span>
-                </button>
-
-                <button type="button" onclick="window.location.href = '/lognprin/admi/estudiantes/crud.php'">
-                    <i class="fa-solid fa-graduation-cap fa-xl" style="color: #000000;"></i>
-                    <span>Estudiantes</span>
-                </button>
-
-                <button type="button" onclick="window.location.href = '/lognprin/admi/instructor/crud.php'">
-                    <i class="fa-solid fa-user-tie fa-2xl" style="color: #000000;"></i>
-                    <span>Instructores</span>
-                </button>
-
-                <button type="button" onclick="window.location.href = '/lognprin/admi/usuarios/crud.php'"
-                    class="has-border">
-                    <i class="fa-solid fa-users fa-xl" style="color: #000000;"></i>
-                    <span>Usuarios</span>
-                </button>
-
-                <button type="button" onclick="window.location.href = '../../../Login_registro/login/cerrar_sesion.php'"
-                    class="has-border">
-                    <i class="fa-solid fa-right-from-bracket fa-xl" style="color: #000000;"></i>
-                    <span>Log out</span>
-
-
-                </button>
-            </nav>
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="cloud" name="cloud-outline"></ion-icon>
+                <span>Apex</span>
+            </div>
+            <button class="boton">
+                <ion-icon name="add-outline"></ion-icon>
+                <span>Create new</span>
+            </button>
         </div>
-    </nav>
-   
+
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a id="inbox" href="#">
+                        <ion-icon name="mail-unread-outline"></ion-icon>
+                        <span>Inbox</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="star-outline"></ion-icon>
+                        <span>Starred</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="paper-plane-outline"></ion-icon>
+                        <span>Sent</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span>Drafts</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="bookmark-outline"></ion-icon>
+                        <span>Important</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Spam</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="trash-outline"></ion-icon>
+                        <span>Trash</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="linea"></div>
+
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="moon-outline"></ion-icon>
+                    <span>Drak Mode</span>
+                </div>
+                <div class="switch">
+                    <div class="base">
+                        <div class="circulo">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="usuario">
+                <img src="/Jhampier.jpg" alt="">
+                <div class="info-usuario">
+                    <div class="nombre-email">
+                        <span class="nombre">Jhampier</span>
+                        <span class="email">jhampier@gmail.com</span>
+                    </div>
+                    <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 
 
@@ -167,36 +204,10 @@ mysqli_close($conexion);
     </main>
 
 
-
     
-
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script type="text/javascript">
-    const toggleSidebar = () => document.body.classList.toggle("open");
-
-    function changeTheme() {
-      const selectElement = document.getElementById("theme-select");
-      const selectedTheme = selectElement.value;
-
-      // Guardar el tema seleccionado en la sesión
-      fetch('guardar_tema.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ theme: selectedTheme })
-      })
-        .then(response => response.json())
-        .then(data => {
-          // Actualizar el tema en el documento
-          document.body.setAttribute("data-theme", data.theme);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    }
-  </script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 
