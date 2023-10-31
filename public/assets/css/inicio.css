@@ -1,6 +1,12 @@
+/* Restablecer margen y padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
   background: #f4f4f4;
 }
 
@@ -9,85 +15,84 @@ body {
   top: 0;
   left: 0;
   width: 250px;
-  height: 100%;
-  background: #2c3e50;
-  color: #ecf0f1;
-  transition: width 0.5s;
-  overflow: hidden;
+  height: 100vh;
+  background: #333;
+  color: #fff;
+  transition: width 0.4s;
 }
-
-.sidebar-header {
-  padding: 20px;
-  background: #1abc9c;
-  color: #ecf0f1;
-  text-align: center;
-  cursor: pointer;
-}
-
-.sidebar-header h2 {
-  margin: 0;
-  padding: 0;
-  font-size: 20px;
-}
-
-.sidebar-header .sidebar-icon {
-  display: none;
-}
-
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar-menu li a {
-  padding: 15px 20px;
-  display: block;
-  color: #ecf0f1;
-  text-decoration: none;
-  transition: background 0.3s;
-}
-
-.sidebar-menu li a:hover {
-  background: #34495e;
-}
-
-.menu-icon {
-  margin-right: 10px;
-}
-
-/* ... (resto del CSS anterior) ... */
 
 #sidebar.closed {
   width: 50px;
 }
 
-#sidebar.closed .menu-text {
-  display: none;
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #444;
 }
 
 #sidebar.closed .sidebar-header h2 {
   display: none;
 }
 
-#content.expanded {
-  margin-left: 50px;
+#sidebar.closed .sidebar-header strong {
+  display: block;
+}
+
+#sidebar ul.sidebar-menu {
+  list-style: none;
+  padding: 20px 0;
+}
+
+#sidebar ul.sidebar-menu li a {
+  padding: 10px 20px;
+  font-size: 1.1em;
+  display: block;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+#sidebar ul.sidebar-menu li a:hover {
+  color: #7386D5;
+}
+
+#sidebar.closed ul.sidebar-menu li a span {
+  display: none;
+}
+
+#sidebar ul.sidebar-menu li a .fas {
+  margin-right: 10px;
+}
+
+#content {
+  transition: margin-left 0.4s;
+  padding: 20px;
+  margin-left: 250px;
+}
+
+#sidebarCollapse {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  background: #333;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 @media (max-width: 768px) {
+  #sidebarCollapse {
+      display: block;
+  }
   #sidebar {
       width: 0;
-  }
-  #sidebar.closed {
-      width: 250px;
-  }
-  #sidebar.closed .sidebar-header h2 {
-      display: block;
   }
   #content {
       margin-left: 0;
   }
-  #content.expanded {
-      margin-left: 250px;
+  #sidebar.closed {
+      width: 250px;
   }
 }

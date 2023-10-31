@@ -77,22 +77,33 @@ mysqli_close($conexion);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recaudo</title>
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
 
 
-<div id="sidebar">
+<nav id="sidebar">
         <div class="sidebar-header">
-            <i id="sidebarToggle" class="sidebar-icon">&#9776;</i>
             <h2>Recaudo</h2>
+            <strong>R</strong>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#"><i class="menu-icon">&#128205;</i><span class="menu-text"> Saldo Inicial</span></a></li>
-            <li><a href="#"><i class="menu-icon">&#127968;</i><span class="menu-text"> Inicio</span></a></li>
-            <!-- Añade más elementos con íconos y texto como se muestra arriba -->
+            <li>
+                <a href="#">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="menu-text">Saldo Inicial</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-home"></i>
+                    <span class="menu-text">Inicio</span>
+                </a>
+            </li>
+            <!-- Más elementos del menú aquí -->
         </ul>
-    </div>
+    </nav>
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <div id="content">
