@@ -1,0 +1,187 @@
+
+body {
+    margin: 0;
+    background: #ffffff;
+  }
+
+
+  .admin{
+    text-align: center;
+    padding: 50px;
+  }
+  
+  button {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .sidebar {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 72px;
+    height: 100%;
+    background: #747474;
+    transition: width 0.4s;
+  }
+  
+  body.open .sidebar {
+    width: 260px;
+  }
+  
+  .sidebar-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+  }
+  
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    padding: 0 1.25rem 0 0;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar-burger {
+    width: 72px;
+    height: 72px;
+    display: grid;
+    place-items: center;
+    background: url(./assets/icoer.svg) no-repeat center center;
+  }
+  
+
+  
+  .sidebar-logo {
+    height: 73px;
+  }
+  
+  .sidebar-menu {
+    display: grid;
+  }
+  
+  .sidebar-menu > button {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    height: 60px;
+    font-family: "Poppins";
+    font-size: 16px;
+    font-weight: 200;
+    letter-spacing: 2px;
+    line-height: 1;
+    padding: 0 25px;
+  }
+  
+  .sidebar-menu > button.has-border {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 1rem;
+  }
+
+  .icon{
+    
+  }
+  
+  .sidebar-menu > button > img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .sidebar-menu > button > span {
+    color: #000000;
+  }
+  
+ 
+  .home {
+    position: absolute;
+    top: 20%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+
+/* ESTILOS PARA EL CONTENIDO DE LA PÁGINA */
+
+main {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.5s ease;
+    color: var(--color-fondo-texto);
+}
+
+main.min-main {
+    margin-left: 80px;
+}
+
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilos CSS */
+.cuadros-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.cuadro {
+    border: 1px solid #ccc;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+.cuadro-1-1 {
+    background-color: var(--color-fondo);
+    color: var(--color-fondo-texto);
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.cuadro-1 {
+    background-image: url('/public/assets/img/inicio_admin/cobros2.png');
+}
+
+.cuadro-2 {
+    background-image: url('/public/assets/img/inicio_admin/contabilidad.jpg');
+}
+
+.cuadro-3 {
+    background-image: url('/public/assets/img/inicio_admin/ingresos.avif');
+}
+
+.cuadro-4 {
+    background-image: url('/public/assets/img/inicio_admin/comision.avif');
+}
+
+.titulo {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-fondo-texto);
+    padding: 8px;
+}
+
+.cob {
+    color: red;
+}
+
+.ing {
+    color: green;
+}
