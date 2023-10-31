@@ -65,150 +65,113 @@ try {
 mysqli_close($conexion);
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sidebar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recaudo</title>
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 <body>
-    <div class="menu">
-        <ion-icon name="menu-outline"></ion-icon>
-        <ion-icon name="close-outline"></ion-icon>
-    </div>
-
-    <div class="barra-lateral">
-        <div>
-            <div class="nombre-pagina">
-                <ion-icon id="cloud" name="cloud-outline"></ion-icon>
-                <span>Apex</span>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-hand-holding-usd"></i> Recaudo</h3>
+                <strong><i class="fas fa-hand-holding-usd"></i></strong>
             </div>
-            <button class="boton">
-                <ion-icon name="add-outline"></ion-icon>
-                <span>Create new</span>
-            </button>
-        </div>
 
-        <nav class="navegacion">
-            <ul>
-                <li>
-                    <a id="inbox" href="#">
-                        <ion-icon name="mail-unread-outline"></ion-icon>
-                        <span>Inbox</span>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-home"></i>
+                        Inicio
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <ion-icon name="star-outline"></ion-icon>
-                        <span>Starred</span>
+                        <i class="fas fa-users"></i>
+                        Usuarios
+                    </a>
+                    <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-user-plus"></i>
+                        Registrar Usuario
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <ion-icon name="paper-plane-outline"></ion-icon>
-                        <span>Sent</span>
+                        <i class="fas fa-user-tie"></i>
+                        Clientes
+                    </a>
+                    <a href="#clientsSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-user-tag"></i>
+                        Registrar Clientes
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <ion-icon name="document-text-outline"></ion-icon>
-                        <span>Drafts</span>
+                        <i class="fas fa-hand-holding-usd"></i>
+                        Préstamos
+                    </a>
+                    <a href="#loansSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Registrar Préstamos
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <ion-icon name="bookmark-outline"></ion-icon>
-                        <span>Important</span>
+                        <i class="fas fa-route"></i>
+                        Zonas de cobro
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span>Spam</span>
+                        <i class="fas fa-receipt"></i>
+                        Gastos
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <ion-icon name="trash-outline"></ion-icon>
-                        <span>Trash</span>
+                        <i class="fas fa-road"></i>
+                        Ruta
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-donate"></i>
+                        Abonos
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-money-bill-wave"></i>
+                        Retiros
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar sesión
                     </a>
                 </li>
             </ul>
         </nav>
 
-        <div>
-            <div class="linea"></div>
-
-            <div class="modo-oscuro">
-                <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Drak Mode</span>
+        <!-- Page Content -->
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span>Toggle Sidebar</span>
+                    </button>
                 </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="usuario">
-                <img src="/Jhampier.jpg" alt="">
-                <div class="info-usuario">
-                    <div class="nombre-email">
-                        <span class="nombre">Jhampier</span>
-                        <span class="email">jhampier@gmail.com</span>
-                    </div>
-                    <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-                </div>
-            </div>
+            </nav>
         </div>
-
     </div>
 
-
-
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
-    <main>
-        <h1>Inicio Administrador</h1>
-        <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Cobros</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'> $ $totalMonto </span>" ?></p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $  $totalIngresos </span>" ?></p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Contabilidad</a>
-                </div>
-            </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Comision</a>
-                </div>
-            </div>
-        </div>
-    </main>
-
-
-    
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/public/assets/js/MenuLate.js"></script>
-
 </body>
-
 </html>

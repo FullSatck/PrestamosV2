@@ -78,16 +78,20 @@ mysqli_close($conexion);
 </head>
 
 <body>
-    <div class="menu">
-        <ion-icon name="menu-outline"></ion-icon>
-        <ion-icon name="close-circle-outline"></ion-icon>
-    </div>
-    <div class="barra-lateral">
-        <div>
-            <div class="nombre-pagina">
-                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
-                <span>Recaudo</span>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recaudo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="sidebar">
+        <div class="sidebar-title">
+            <h2>Recaudo</h2>
+            <span id="close-btn">&times;</span>
         </div>
         <nav class="navegacion">
             <ul>
@@ -184,12 +188,10 @@ mysqli_close($conexion);
         </div>
 
     </div>
-
-
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
-    <main>
-        <h1>Inicio Administrador</h1>
+    
+ <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+    <div id="content">
+    <h1>Inicio Administrador</h1>
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
@@ -214,7 +216,14 @@ mysqli_close($conexion);
                 </div>
             </div>
         </div>
-    </main>
+        <span id="menu-btn">&#9776;</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+   
 
 
 
