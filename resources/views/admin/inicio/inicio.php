@@ -67,111 +67,107 @@ mysqli_close($conexion);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recaudo</title>
+    <title>Inicio Admin</title>
+
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
-<body>
-    <div class="wrapper">
-        <!-- Sidebar -->
-        <nav id="sidebar">
-            <div class="sidebar-header">
-                <h3><i class="fas fa-hand-holding-usd"></i> Recaudo</h3>
-                <strong><i class="fas fa-hand-holding-usd"></i></strong>
-            </div>
 
-            <ul class="list-unstyled components">
-                <li class="active">
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
-                        <i class="fas fa-home"></i>
-                        Inicio
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-users"></i>
-                        Usuarios
-                    </a>
-                    <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false">
-                        <i class="fas fa-user-plus"></i>
-                        Registrar Usuario
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-user-tie"></i>
-                        Clientes
-                    </a>
-                    <a href="#clientsSubmenu" data-toggle="collapse" aria-expanded="false">
-                        <i class="fas fa-user-tag"></i>
-                        Registrar Clientes
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        Préstamos
-                    </a>
-                    <a href="#loansSubmenu" data-toggle="collapse" aria-expanded="false">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        Registrar Préstamos
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-route"></i>
-                        Zonas de cobro
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-receipt"></i>
-                        Gastos
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-road"></i>
-                        Ruta
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-donate"></i>
-                        Abonos
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-money-bill-wave"></i>
-                        Retiros
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Cerrar sesión
-                    </a>
-                </li>
-            </ul>
-        </nav>
+<body id="body">
 
-        <!-- Page Content -->
-        <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fas fa-align-left"></i>
-                        <span>Toggle Sidebar</span>
-                    </button>
-                </div>
-            </nav>
+    <header>
+        <div class="icon__menu">
+            <i class="fas fa-bars" id="btn_open"></i>
         </div>
+    </header>
+
+    <div class="menu__side" id="menu_side">
+
+        <div class="name__page">
+            <i class="fab fa-youtube"></i>
+            <h4>Recaudos</h4>
+        </div>
+
+        <div class="options__menu">
+
+            <a href="/resources/views/admin/inicio/inicio.php" class="selected">
+                <div class="option">
+                <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <h4>Inicio</h4>
+                </div>
+            </a>
+           
+            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
+                <div class="option">
+                    <i class="far fa-file" title="Portafolio"></i>
+                    <h4>Saldo Incial</h4>
+                </div>
+            </a>
+
+            <a href="#">
+                <div class="option">
+                    <i class="fas fa-video" title="Cursos"></i>
+                    <h4>Cursos</h4>
+                </div>
+            </a>
+
+            <a href="#">
+                <div class="option">
+                    <i class="far fa-sticky-note" title="Blog"></i>
+                    <h4>Blog</h4>
+                </div>
+            </a>
+
+            <a href="#">
+                <div class="option">
+                    <i class="far fa-id-badge" title="Contacto"></i>
+                    <h4>Contacto</h4>
+                </div>
+            </a>
+
+            <a href="#">
+                <div class="option">
+                    <i class="far fa-address-card" title="Nosotros"></i>
+                    <h4>Nosotros</h4>
+                </div>
+            </a>
+
+        </div>
+
     </div>
+
+    <main>
+        <h1>Inicio Administrador</h1>
+        <div class="cuadros-container">
+            <div class="cuadro cuadro-1">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Cobros</a><br>
+                    <p><?php echo "<strong>Total:</strong> <span class='cob'> $ $totalMonto </span>" ?></p>
+                </div>
+            </div>
+            <div class="cuadro cuadro-3">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
+                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $  $totalIngresos </span>" ?></p>
+                </div>
+            </div>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="##" class="titulo">Contabilidad</a>
+                </div>
+            </div>
+            <div class="cuadro cuadro-4">
+                <div class="cuadro-1-1">
+                    <a href="##" class="titulo">Comision</a>
+    </main>
+
 
     <script src="/public/assets/js/MenuLate.js"></script>
 </body>
+
 </html>
