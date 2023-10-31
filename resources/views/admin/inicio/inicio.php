@@ -88,7 +88,7 @@ mysqli_close($conexion);
             <header class="sidebar-header">
                 <button type="button" class="sidebar-burger" onclick="toggleSidebar()"><i
                         class="fa-solid fa-house-user fa-2xl"></i></button>
-                <img src="/img/Inovatec.svg" class="sidebar-logo" />
+                
             </header>
             <nav class="sidebar-menu">
                 <button type="button" onclick="window.location.href = '/index.html'">
