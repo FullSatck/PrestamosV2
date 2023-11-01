@@ -1,86 +1,85 @@
-<?php
-session_start();
-if (!$_SESSION['logged_in']) {
-  header("location: ../../Login_registro/login/validar.php");
-  exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú lateral responsive - MagtimusPro</title>
 
-  <title>admin</title>
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
+<body id="body">
+    
+    <header>
+        <div class="icon__menu">
+            <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+    </header>
 
-<body>
-  <div class="home">
-    <h1>Bienvenido <?php echo $_SESSION['Nombre']; ?></h1>
-    <p>Navega por el menú para acceder a las distintas funciones</p>
-  </div>
+    <div class="menu__side" id="menu_side">
 
-  <nav class="sidebar">
-    <div class="sidebar-inner">
-      <header class="sidebar-header">
-        <button type="button" class="sidebar-burger" onclick="toggleSidebar()"><i
-            class="fa-solid fa-house-user fa-2xl"></i></button>
-        <img src="/img/Inovatec.svg" class="sidebar-logo" />
-      </header>
-      <nav class="sidebar-menu">
-        <button type="button" onclick="window.location.href = '/index.html'">
-          <i class="fa-solid fa-house fa-xl" style="color: #000000;"></i>
-          <span>Inicio</span>
-        </button>
+        <div class="name__page">
+            <i class="fab fa-youtube"></i>
+            <h4>MagtimusPro</h4>
+        </div>
 
-        <button type="button" onclick="window.location.href = '/index.html'" class="has-border">
-          <i class="fa-solid fa-gear fa-xl"></i>
-          <span>Configuracion</span>
-        </button>
+        <div class="options__menu">	
 
-        <button type="button" onclick="window.location.href = '/lognprin/admi/horario/crud.php'">
-          <i class="fa-regular fa-calendar fa-xl" style="color: #000000;"></i>
-          <span>Agregar horarios</span>
-        </button>
+            <a href="#" class="selected">
+                <div class="option">
+                    <i class="fas fa-home" title="Inicio"></i>
+                    <h4>Inicio</h4>
+                </div>
+            </a>
 
-        <button type="button" onclick="window.location.href = '/lognprin/admi/estudiantes/crud.php'">
-          <i class="fa-solid fa-graduation-cap fa-xl" style="color: #000000;"></i>
-          <span>Estudiantes</span>
-        </button>
+            <a href="#">
+                <div class="option">
+                    <i class="far fa-file" title="Portafolio"></i>
+                    <h4>Portafolio</h4>
+                </div>
+            </a>
+            
+            <a href="#">
+                <div class="option">
+                    <i class="fas fa-video" title="Cursos"></i>
+                    <h4>Cursos</h4>
+                </div>
+            </a>
 
-        <button type="button" onclick="window.location.href = '/lognprin/admi/instructor/crud.php'">
-          <i class="fa-solid fa-user-tie fa-2xl" style="color: #000000;"></i>
-          <span>Instructores</span>
-        </button>
+            <a href="#">
+                <div class="option">
+                    <i class="far fa-sticky-note" title="Blog"></i>
+                    <h4>Blog</h4>
+                </div>
+            </a>
 
-        <button type="button" onclick="window.location.href = '/lognprin/admi/usuarios/crud.php'" class="has-border">
-          <i class="fa-solid fa-users fa-xl" style="color: #000000;"></i>
-          <span>Usuarios</span>
-        </button>
+            <a href="#">
+                <div class="option">
+                    <i class="far fa-id-badge" title="Contacto"></i>
+                    <h4>Contacto</h4>
+                </div>
+            </a>
 
-        <button type="button" onclick="window.location.href = '../../../Login_registro/login/cerrar_sesion.php'"
-          class="has-border">
-          <i class="fa-solid fa-right-from-bracket fa-xl" style="color: #000000;"></i>
-          <span>Log out</span>
-        </button>
-      </nav>
+            <a href="#">
+                <div class="option">
+                    <i class="far fa-address-card" title="Nosotros"></i>
+                    <h4>Nosotros</h4>
+                </div>
+            </a>
+
+        </div>
+
     </div>
-  </nav>
 
-  >
+    <main>
+        <h1>Title Exemple</h1><br>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam sapiente cumque dicta animi explicabo sequi. Ex amet et, dolor eligendi commodi consectetur quo voluptatibus, cum nemo porro veniam at blanditiis?</p> <br>
 
-  <script type="text/javascript">
-    const toggleSidebar = () => document.body.classList.toggle("open");
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident adipisci beatae impedit quia, deleniti quasi sequi iusto exercitationem nihil nulla, laboriosam dolore corrupti fuga officiis? Odit a mollitia id magnam amet delectus quia blanditiis reprehenderit explicabo eveniet! Rem voluptatum explicabo ipsum quae, dolorum, laudantium doloribus a, illum saepe sapiente accusantium dicta reiciendis? Amet iure porro voluptatum error fugit odit voluptas?</p>
+    </main>
 
-   
-  </script>
+    <script src="js/script.js"></script>
 </body>
-
 </html>

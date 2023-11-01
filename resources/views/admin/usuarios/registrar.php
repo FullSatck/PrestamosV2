@@ -26,7 +26,7 @@ if (isset($_SESSION["usuario_id"])) {
     <title>Registrar Usuario</title>
 
     <link rel="stylesheet" href="/public/assets/css/registrar_usuarios.css">
-   
+
 
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
@@ -138,8 +138,25 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
     </div>
-    <script src="/public/assets/js/MenuLate.js"></script>
-   
+    <script>
+    //Ejecutar función en el evento click
+    document.getElementById("btn_open").addEventListener("click", open_close_menu);
+
+    //Declaramos variables
+    var side_menu = document.getElementById("menu_side");
+    var btn_open = document.getElementById("btn_open");
+
+    //Evento para mostrar y ocultar menú
+    function open_close_menu() {
+        var menuSideWidth = side_menu.offsetWidth; // Obtener el ancho actual de la barra lateral
+        if (side_menu.style.left === "0px") {
+            side_menu.style.left = "-" + menuSideWidth + "px"; // Ocultar la barra lateral
+        } else {
+            side_menu.style.left = "0px"; // Mostrar la barra lateral
+        }
+    }
+    </script>
+
 
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
