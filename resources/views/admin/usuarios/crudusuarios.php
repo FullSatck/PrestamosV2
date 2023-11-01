@@ -18,129 +18,123 @@ if (isset($_GET['mensaje'])) {
     $mensaje = $_GET['mensaje'];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Usuarios</title>
+
     <link rel="stylesheet" href="/public/assets/css/lista_usuarios.css">
-    <title>CRUD de Usuarios</title>
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
+<body id="body">
 
-<body>
-    <div class="menu">
-        <ion-icon name="menu-outline"></ion-icon>
-        <ion-icon name="close-circle-outline"></ion-icon>
-    </div>
-    <div class="barra-lateral">
-        <div>
-            <div class="nombre-pagina">
-                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
-                <span>Recaudo</span>
-            </div>
+    <header>
+        <div class="icon__menu">
+            <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <nav class="navegacion">
-            <ul>
-                <li>
-                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
-                        <ion-icon name="push-outline"></ion-icon>
-                        <span>Saldo Inicial</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/inicio/inicio.php">
-                        <ion-icon name="home-outline"></ion-icon>
-                        <span>Inicio</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/usuarios/crudusuarios.php" class="hola">
-                        <ion-icon name="people-outline"></ion-icon>
-                        <span>Usuarios</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/usuarios/registrar.php">
-                        <ion-icon name="person-add-outline"></ion-icon>
-                        <span>Registrar Usuario</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/clientes/lista_clientes.php">
-                        <ion-icon name="people-circle-outline"></ion-icon>
-                        <span>Clientes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
-                        <ion-icon name="person-circle-outline"></ion-icon>
-                        <span>Registrar Clientes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
-                        <ion-icon name="list-outline"></ion-icon>
-                        <span>Prestamos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/creditos/prestamos.php">
-                        <ion-icon name="cloud-upload-outline"></ion-icon>
-                        <span>Registrar Prestamos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/grupos/grupos.php">
-                        <ion-icon name="eye-outline"></ion-icon>
-                        <span>Roles</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/cobros/cobros.php">
-                        <ion-icon name="planet-outline"></ion-icon>
-                        <span>Zonas de cobro</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/gastos/gastos.php">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span>Gastos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/abonos/lista_super.php">
-                        <ion-icon name="map-outline"></ion-icon>
-                        <span>Ruta</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/abonos/abonos.php">
-                        <ion-icon name="cloud-download-outline"></ion-icon>
-                        <span>Abonos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/retiros/retiros.php">
-                        <ion-icon name="cloud-done-outline"></ion-icon>
-                        <span>Retiros</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    </header>
 
-        <div>
-            <div class="linea"></div>
+    <div class="menu__side" id="menu_side">
 
-            <div class="modo-oscuro">
-                <div class="info">
-                    <ion-icon name="arrow-back-outline"></ion-icon>
-                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
+    <div class="name__page">
+        <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+            <h4>Recaudo</h4>
+        </div>
+
+        <div class="options__menu">
+
+            <a href="/resources/views/admin/inicio/inicio.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <h4>Inicio</h4>
                 </div>
-            </div>
+            </a>
+
+            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-dollar" title=""></i>
+                    <h4>Saldo Incial</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/clientes/lista_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-people-group" title=""></i>
+                    <h4>Clientes</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-tag" title=""></i>
+                    <h4>Registrar Clientes</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                    <h4>Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                    <h4>Registrar Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/cobros/cobros.php">
+                <div class="option">
+                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
+                    <h4>Zonas de cobro</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <h4>Gastos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/abonos/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/abonos/abonos.php">
+                <div class="option">
+                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <h4>Abonos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/retiros/retiros.php">
+                <div class="option">
+                <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Retiros</h4>
+                </div>
+            </a>
+
+
+
         </div>
 
     </div>
@@ -226,9 +220,8 @@ if (isset($_GET['mensaje'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="/menu/main.js"></script>
+   
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 

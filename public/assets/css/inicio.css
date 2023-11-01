@@ -193,6 +193,13 @@ a.selected{
   color: #333;
   margin-bottom: 15px;
 }
+.logo-image {
+    max-width: 100px; /* Establece el ancho máximo deseado para el logo */
+    max-height: 30px; /* Establece la altura máxima deseada para el logo */
+    display: block; /* Asegura que la imagen se muestre como un bloque */
+    margin: 0 auto; /* Centra la imagen horizontalmente en su contenedor */
+}
+
 
 @media screen and (max-width: 600px) {
   .cuadros-container {

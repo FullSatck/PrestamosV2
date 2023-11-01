@@ -89,7 +89,7 @@ mysqli_close($conexion);
     <div class="menu__side" id="menu_side">
 
         <div class="name__page">
-        <i class="fa-solid fa-piggy-bank"></i>
+        <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
             <h4>Recaudo</h4>
         </div>
 
