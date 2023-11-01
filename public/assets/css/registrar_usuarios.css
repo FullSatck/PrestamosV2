@@ -272,34 +272,87 @@ button:hover {
     display: none;
 }
 
+@media screen and (max-width: 600px) {
+    .cuadros-container {
+        flex-direction: column;
+    }
 
+    .cuadro {
+        width: 100%;
+        max-width: 100%;
+    }
+
+}
 
 @media screen and (max-width: 768px) {
+    body {
+        margin-left: 0; /* Eliminar margen izquierdo para maximizar el espacio */
+    }
+
+    header {
+        height: 60px; /* Altura de cabecera más pequeña */
+    }
+
+    .icon__menu {
+        transform: translateX(5px); /* Ajustar posición del ícono del menú */
+    }
+
+    .icon__menu i {
+        font-size: 18px; /* Ícono de menú más pequeño */
+    }
+
     .menu__side {
-        width: 79px;
-        /* Menú más estrecho para pantallas pequeñas */
+        width: 60px; /* Menú lateral más estrecho */
     }
 
-    .body_move {
-        margin-left: 60px;
-        /* Ajustar margen cuando el menú esté abierto */
+    .name__page {
+        padding: 10px 15px; /* Padding más pequeño para el nombre de la página */
     }
 
-    .cuadros-container {
-        grid-template-columns: 4fr;
-        /* Apilar elementos verticalmente */
+    .name__page img {
+        max-width: 80px; /* Logo más pequeño */
+        max-height: 24px;
     }
 
-    header,
+    .options__menu {
+        padding: 10px 15px; /* Padding más pequeño para las opciones del menú */
+    }
+
+    .options__menu .option {
+        padding: 10px 0px; /* Espaciado más pequeño entre opciones */
+    }
+
+    .options__menu .option i {
+        margin-right: 15px; /* Menor margen derecho para íconos */
+    }
+
+    .options__menu .option h4 {
+        font-size: 14px; /* Tamaño de fuente más pequeño para texto de opciones */
+    }
+
     main {
-        margin-left: 10px;
-        /* Menos margen para aprovechar más el espacio */
-        margin-right: 10px;
+        padding: 10px; /* Padding más pequeño para el contenido principal */
     }
 
-    .input-container,
-    .btn-container {
-        width: 100%;
-        /* Asegurarse de que los formularios usen todo el ancho disponible */
+    form {
+        max-width: 100%; /* Formulario ocupa todo el ancho disponible */
+        padding: 15px; /* Padding más pequeño para el formulario */
     }
+
+    .input-container, .btn-container {
+        width: 100%; /* Asegurarse de que los formularios usen todo el ancho disponible */
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+        font-size: 16px; /* Tamaño de fuente más grande para facilitar la lectura en dispositivos móviles */
+    }
+
+    button {
+        padding: 12px 24px; /* Botón más grande para facilitar la interacción táctil */
+    }
+
+    /* Ajustes adicionales para elementos específicos si es necesario */
 }
