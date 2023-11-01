@@ -89,8 +89,8 @@ mysqli_close($conexion);
     <div class="menu__side" id="menu_side">
 
         <div class="name__page">
-            <i class="fab fa-youtube"></i>
-            <h4>Recaudos</h4>
+        <i class="fa-solid fa-piggy-bank"></i>
+            <h4>Recaudo</h4>
         </div>
 
         <div class="options__menu">
@@ -104,7 +104,7 @@ mysqli_close($conexion);
 
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
-                    <i class="far fa-file" title="Portafolio"></i>
+                    <i class="fa-solid fa-sack-dollar" title=""></i>
                     <h4>Saldo Incial</h4>
                 </div>
             </a>
@@ -125,17 +125,64 @@ mysqli_close($conexion);
 
             <a href="/resources/views/admin/clientes/lista_clientes.php">
                 <div class="option">
-                <i class="fa-solid fa-people-group" title=""></i>
+                    <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
             <a href="/resources/views/admin/clientes/agregar_clientes.php">
                 <div class="option">
-                    <i class="far fa-address-card" title=""></i>
+                    <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
+            <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                    <h4>Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                    <h4>Registrar Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/cobros/cobros.php">
+                <div class="option">
+                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
+                    <h4>Zonas de cobro</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <h4>Gastos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/abonos/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/abonos/abonos.php">
+                <div class="option">
+                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <h4>Abonos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/retiros/retiros.php">
+                <div class="option">
+                <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Retiros</h4>
+                </div>
+            </a>
+
+
 
         </div>
 
