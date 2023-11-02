@@ -80,7 +80,7 @@ mysqli_close($conexion);
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
@@ -88,8 +88,8 @@ mysqli_close($conexion);
 
     <div class="menu__side" id="menu_side">
 
-    <div class="name__page">
-        <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
             <h4>Recaudo</h4>
         </div>
 
@@ -171,21 +171,17 @@ mysqli_close($conexion);
 
             <a href="/resources/views/admin/abonos/abonos.php">
                 <div class="option">
-                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
-
-
-
         </div>
-
     </div>
 
     <main>
@@ -211,6 +207,9 @@ mysqli_close($conexion);
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="##" class="titulo">Comision</a>
+                </div>
+            </div>
+        </div>
     </main>
 
 
