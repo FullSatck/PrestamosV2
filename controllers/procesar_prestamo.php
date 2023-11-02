@@ -18,19 +18,20 @@ if (!is_numeric($tasa_interes)) {
     exit; // Detener la ejecución
 }
 
-// Calcular la fecha de vencimiento en función de la frecuencia de pago y el plazo
-$fecha_vencimiento = calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago);
-
-// Calcular el monto total a pagar
-// Fórmula: Monto Total a Pagar = Monto + (Monto * Tasa de Interés / 100)
+// Calcular el monto total a pagar (sin la comisión)
 $monto_total = $monto + ($monto * $tasa_interes / 100);
+
+// Calcular la comisión como el 10% del monto total a pagar
+$comision = $monto_total * 0.10;
 
 // Calcular el monto de cada cuota
 $cuota = $monto_total / $plazo;
 
-$sql = "INSERT INTO prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona, FrecuenciaPago, MontoAPagar, Cuota, MontoCuota) 
-        VALUES ('$id_cliente', '$monto', '$tasa_interes', '$plazo', '$moneda_id', '$fecha_inicio', '$fecha_vencimiento', 'pendiente', NULL, '$zona', '$frecuencia_pago', '$monto_total', '$cuota', '$cuota')";
+// Calcular la fecha de vencimiento en función de la frecuencia de pago y el plazo
+$fecha_vencimiento = calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago);
 
+$sql = "INSERT INTO prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona, FrecuenciaPago, MontoAPagar, Cuota, MontoCuota, Comision) 
+        VALUES ('$id_cliente', '$monto', '$tasa_interes', '$plazo', '$moneda_id', '$fecha_inicio', '$fecha_vencimiento', 'pendiente', NULL, '$zona', '$frecuencia_pago', '$monto_total', '$cuota', '$cuota', '$comision')";
 
 if ($conexion->query($sql) === TRUE) {
     $id_prestamo = $conexion->insert_id; // Obtener el ID del préstamo recién insertado
@@ -44,7 +45,7 @@ if ($conexion->query($sql) === TRUE) {
         $conexion->query($sql_fecha_pago);
     }
 
-    echo "Solicitud de préstamo realizada con éxito. Monto Total a Pagar: $monto_total. Cada cuota es de: $cuota";
+    echo "Solicitud de préstamo realizada con éxito. Monto Total a Pagar: $monto_total. Cada cuota es de: $cuota. Comisión: $comision";
 } else {
     echo "Error al solicitar el préstamo: " . $conexion->error;
 }
