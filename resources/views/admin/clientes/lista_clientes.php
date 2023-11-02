@@ -112,7 +112,7 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-            <a href="/resources/views/admin/creditos/prestamos.php">
+            <a href="/resources/views/admin/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>

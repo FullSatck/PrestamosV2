@@ -103,7 +103,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/admin/creditos/prestamos.php">
+            <a href="/resources/views/admin/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
@@ -275,9 +275,7 @@ if (isset($_SESSION["usuario_id"])) {
     });
     </script>
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="/menu/main.js"></script>
+   
     <script src="/public/assets/js/mensaje.js"></script>
 
 </body>
