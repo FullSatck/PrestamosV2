@@ -225,10 +225,10 @@ a.selected{
   }
 
   .cuadros-container {
-      grid-template-columns: 1fr; /* Esto hará que los cuadros se apilen uno debajo del otro */
+      grid-template-columns: 1fr; 
   }
 
   .cuadro {
-      height: auto; /* Esto asegurará que el contenido no se recorte si hay más contenido en pantallas pequeñas */
+      height: auto;  
   }
 }

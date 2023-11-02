@@ -146,27 +146,89 @@ a.selected{
 
  
 .logo-image {
-    max-width: 100px; /* Establece el ancho máximo deseado para el logo */
-    max-height: 30px; /* Establece la altura máxima deseada para el logo */
-    display: block; /* Asegura que la imagen se muestre como un bloque */
-    margin: 0 auto; /* Centra la imagen horizontalmente en su contenedor */
+    max-width: 100px; 
+    max-height: 30px; 
+    display: block;  
+    margin: 0 auto;  
+}
+
+.volver { 
+    width: auto; /* Ancho automático para adaptarse al contenido */
+    height: 22px;
+    color: white;
+    background-color: black;
+    padding: 5px 10px; /* Reduje el padding para hacerlo más compacto */
+    border: none;
+    border-radius: 15px; /* Utilicé 15px en lugar de 15% para un mejor aspecto */
+    display: flex; /* Para permitir el alineamiento horizontal */
+    align-items: center; /* Centrar verticalmente el contenido */
+}
+
+.volver i {
+    margin-right: 5px; /* Espacio entre el icono y el texto */
+}
+
+.volver:hover {
+    background-color: rgb(161, 161, 161);
 }
 
 @media screen and (max-width: 760px){
-  .body_move{
-      margin-left: 0px;
+    .body_move{
+        margin-left: 0px;
+    }
+  
+    .menu__side_move{
+        width: 80px;
+        left: -80px;
+    }
   }
 
-  .menu__side_move{
-      width: 80px;
-      left: -80px;
-  }
+h1 {
+    text-align: center;
+    margin-bottom: 15px;
+}
 
-  .cuadros-container {
-      grid-template-columns: 1fr; 
-  }
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-  .cuadro {
-      height: auto;  
-  }
+form label {
+    display: block;
+    margin: 10px 0;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form input[type="submit"] {
+    background-color: #747474;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form input[type="submit"]:hover {
+    background-color: #585858;
+}
+
+ 
+form p {
+    color: #a0a0a0;
+    font-size: 14px;
+    margin: 10px 0;
 }
