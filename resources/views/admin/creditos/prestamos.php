@@ -12,9 +12,10 @@ if (isset($_SESSION["usuario_id"])) {
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
- 
- <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,6 +25,7 @@ if (isset($_SESSION["usuario_id"])) {
     <link rel="stylesheet" href="/public/assets/css/prestamo.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
+
 <body id="body">
 
     <header>
@@ -34,8 +36,8 @@ if (isset($_SESSION["usuario_id"])) {
 
     <div class="menu__side" id="menu_side">
 
-    <div class="name__page">
-        <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
             <h4>Recaudo</h4>
         </div>
 
@@ -117,13 +119,13 @@ if (isset($_SESSION["usuario_id"])) {
 
             <a href="/resources/views/admin/abonos/abonos.php">
                 <div class="option">
-                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
@@ -140,27 +142,28 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
+        <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="/controllers/procesar_prestamo.php" method="POST" class="form-container">
             <?php
-            // Incluir el archivo de conexión a la base de datos
-            include("../../../../controllers/conexion.php");
+    // Incluir el archivo de conexión a la base de datos
+    include("../../../../controllers/conexion.php");
 
-            // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT ID, Nombre FROM Clientes";
-            $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
-            $query_zonas = "SELECT Nombre FROM Zonas";
+    // Obtener la lista de clientes, monedas y zonas desde la base de datos
+    $query_clientes = "SELECT ID, Nombre FROM Clientes";
+    $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
+    $query_zonas = "SELECT Nombre FROM Zonas";
 
-            $result_clientes = $conexion->query($query_clientes);
-            $result_monedas = $conexion->query($query_monedas);
-            $result_zonas = $conexion->query($query_zonas);
-            ?>
+    $result_clientes = $conexion->query($query_clientes);
+    $result_monedas = $conexion->query($query_monedas);
+    $result_zonas = $conexion->query($query_zonas);
+    ?>
             <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php
-                while ($row = $result_clientes->fetch_assoc()) {
-                    echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
-                }
-                ?>
+        while ($row = $result_clientes->fetch_assoc()) {
+            echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+        }
+        ?>
             </select><br>
 
             <label for="monto">Monto:</label>
@@ -177,34 +180,30 @@ if (isset($_SESSION["usuario_id"])) {
                 <option value="mensual">Mensual</option>
             </select><br>
 
-
             <label for="plazo">Plazo:</label>
             <input type="text" name="plazo" id="plazo" required><br>
 
             <label for="moneda_id">Moneda:</label>
             <select name="moneda_id" id="moneda_id" required onchange="calcularMontoPagar()">
                 <?php
-                while ($row = $result_monedas->fetch_assoc()) {
-                    // Agregar el símbolo de la moneda como un atributo data-*
-                    echo "<option value='" . $row['ID'] . "' data-simbolo='" . $row['Simbolo'] . "'>" . $row['Nombre'] . "</option>";
-                }
-                ?>
+        while ($row = $result_monedas->fetch_assoc()) {
+            // Agregar el símbolo de la moneda como un atributo data-*
+            echo "<option value='" . $row['ID'] . "' data-simbolo='" . $row['Simbolo'] . "'>" . $row['Nombre'] . "</option>";
+        }
+        ?>
             </select><br>
 
             <!-- Reemplaza el campo de fecha de inicio con un campo de texto readonly -->
             <label for="fecha_inicio">Fecha de Inicio:</label>
-
-            <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d '); ?>" readonly><br>
-
-
+            <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d'); ?>" readonly><br>
 
             <label for="zona">Zona:</label>
             <select name="zona" required>
                 <?php
-                while ($row = $result_zonas->fetch_assoc()) {
-                    echo "<option value='" . $row['Nombre'] . "'>" . $row['Nombre'] . "</option>";
-                }
-                ?>
+        while ($row = $result_zonas->fetch_assoc()) {
+            echo "<option value='" . $row['Nombre'] . "'>" . $row['Nombre'] . "</option>";
+        }
+        ?>
             </select><br>
 
             <div class="result-container">
@@ -214,10 +213,12 @@ if (isset($_SESSION["usuario_id"])) {
                 <p>Frecuencia de Pago: <span id="frecuencia_pago_mostrada">Diario</span></p>
                 <p>Cantidad a Pagar por Cuota: <span id="cantidad_por_cuota">0.00</span></p>
                 <p>Moneda: <span id="moneda_simbolo">USD</span></p>
+                <input type="hidden" name="comision" value="10"> <!-- Establecer la comisión como 10% por defecto -->
             </div>
 
             <input type="submit" value="Hacer préstamo" class="calcular-button">
         </form>
+
     </main>
     <script src="/menu/main.js"></script>
     <script>
@@ -260,8 +261,8 @@ if (isset($_SESSION["usuario_id"])) {
         }
     }
     </script>
-<script src="/public/assets/js/MenuLate.js"></script>
-    
+    <script src="/public/assets/js/MenuLate.js"></script>
+
 
 </body>
 
