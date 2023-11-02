@@ -22,8 +22,6 @@ if (isset($_SESSION["usuario_id"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Zonas</title>
     <link rel="stylesheet" href="/public/assets/css/cobros.css">
-
-    
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
@@ -175,9 +173,7 @@ if (isset($_SESSION["usuario_id"])) {
 
 
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="/menu/main.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 
