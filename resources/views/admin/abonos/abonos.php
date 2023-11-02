@@ -136,9 +136,6 @@ if (isset($_GET['mensaje'])) {
                     <h4>Retiros</h4>
                 </div>
             </a>
-
-
-
         </div>
 
     </div>

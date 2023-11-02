@@ -199,7 +199,7 @@ a.selected{
     display: block; /* Asegura que la imagen se muestre como un bloque */
     margin: 0 auto; /* Centra la imagen horizontalmente en su contenedor */
 }
-
+/* pagina */
 .container {
     max-width: 800px;
     margin: 0 auto;
