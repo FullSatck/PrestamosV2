@@ -69,7 +69,7 @@ if (isset($_SESSION["usuario_id"])) {
                 <ion-icon id="cloud" name="wallet-outline"></ion-icon>
                 <span>Recaudo</span>
             </div>
-            <button class="boton" id="volverAtras"> 
+            <button class="boton" id="volverAtras">
                 <ion-icon name="arrow-undo-outline"></ion-icon>
                 <span>&nbsp;Volver</span>
             </button>
@@ -137,7 +137,7 @@ if (isset($_SESSION["usuario_id"])) {
                     </a>
                 </li>
                 <li>
-                <a href="/resources/views/admin/ruta/lista_super.php">
+                    <a href="/resources/views/admin/ruta/lista_super.php">
                         <ion-icon name="map-outline"></ion-icon>
                         <span>Ruta</span>
                     </a>
@@ -152,7 +152,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <a href="/resources/views/admin/retiros/retiros.php">
                         <ion-icon name="cloud-done-outline"></ion-icon>
                         <span>Retiros</span>
-                    </a> 
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -161,10 +161,10 @@ if (isset($_SESSION["usuario_id"])) {
             <div class="linea"></div>
 
             <div class="modo-oscuro">
-            <div class="info">
+                <div class="info">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -180,10 +180,10 @@ if (isset($_SESSION["usuario_id"])) {
     </main>
 
     <script>
-        // Agregar un evento clic al botón
-        document.getElementById("volverAtras").addEventListener("click", function() {
-            window.history.back();
-        });
+    // Agregar un evento clic al botón
+    document.getElementById("volverAtras").addEventListener("click", function() {
+        window.history.back();
+    });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
