@@ -77,22 +77,9 @@ mysqli_close($conexion);
 
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script> 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 
-    <style>
-    .btn-status {
-        padding: 10px;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-    .active {
-        background-color: green;
-    }
-    .inactive {
-        background-color: red;
-    }
-</style>
+    
 
 </head>
 
@@ -102,8 +89,7 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-
-        <button id="systemStatusButton" class="btn-status">On/Off</button>
+      
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -182,7 +168,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="/resources/views/admin/ruta/lista_super.php">
+            <a href="/resources/views/admin/abonos/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
@@ -233,67 +219,8 @@ mysqli_close($conexion);
         </div>
     </main>
 
-    <script>
-        $(document).ready(function() {
-            // Obtener el estado actual del sistema
-            $.get('controllers/system_status.php', function(data) {
-                var response = JSON.parse(data);
-                if (response.systemStatus == '1') {
-                    $('#systemStatusButton').addClass('active').text('Sistema Activo');
-                } else {
-                    $('#systemStatusButton').addClass('inactive').text('Sistema Inactivo');
-                }
-            });
-
-            // Cambiar el estado del sistema
-            $('#systemStatusButton').click(function() {
-                var newStatus = $(this).hasClass('inactive');
-                $.post('controllers/system_status.php', {newStatus: newStatus}, function(response) {
-                    var result = JSON.parse(response);
-                    if (result.success) {
-                        if (newStatus) {
-                            $('#systemStatusButton').removeClass('inactive').addClass('active').text('Sistema Activo');
-                        } else {
-                            $('#systemStatusButton').removeClass('active').addClass('inactive').text('Sistema Inactivo');
-                        }
-                    } else {
-                        alert(result.message || 'No se pudo cambiar el estado del sistema.');
-                    }
-                });
-            });
-        });
-    </script>
-<script>
-$(document).ready(function() {
-    // Obtener el estado actual del sistema
-    $.get('controllers/system_status.php', function(data) {
-        var response = JSON.parse(data);
-        if (response.systemStatus == '1') {
-            $('#systemStatusButton').addClass('active').text('Sistema Activo');
-        } else {
-            $('#systemStatusButton').addClass('inactive').text('Sistema Inactivo');
-        }
-    });
-
-    // Cambiar el estado del sistema
-    $('#systemStatusButton').click(function() {
-        var newStatus = $(this).hasClass('inactive');
-        $.post('controllers/system_status.php', {newStatus: newStatus}, function(response) {
-            var result = JSON.parse(response);
-            if (result.success) {
-                if (newStatus) {
-                    $('#systemStatusButton').removeClass('inactive').addClass('active').text('Sistema Activo');
-                } else {
-                    $('#systemStatusButton').removeClass('active').addClass('inactive').text('Sistema Inactivo');
-                }
-            } else {
-                alert(result.message || 'No se pudo cambiar el estado del sistema.');
-            }
-        });
-    });
-});
-<script/>
-
+   
+    
     <script src="/public/assets/js/MenuLate.js"></script>
 </body>
 
