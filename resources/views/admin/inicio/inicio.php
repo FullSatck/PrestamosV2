@@ -61,6 +61,7 @@ try {
     echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
 }
 
+
 // Cierra la conexión a la base de datos
 mysqli_close($conexion);
 ?>
@@ -75,7 +76,24 @@ mysqli_close($conexion);
     <title>Inicio Admin</title>
 
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
-    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+    .btn-status {
+        padding: 10px;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .active {
+        background-color: green;
+    }
+    .inactive {
+        background-color: red;
+    }
+</style>
+
 </head>
 
 <body id="body">
@@ -84,6 +102,8 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+
+        <button id="systemStatusButton" class="btn-status">On/Off</button>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -105,7 +125,7 @@ mysqli_close($conexion);
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Incial</h4>
+                    <h4>Saldo Inicial</h4>
                 </div>
             </a>
 
@@ -190,7 +210,8 @@ mysqli_close($conexion);
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'> $ $totalMonto </span>" ?></p>
+                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
+                    </p>
                 </div>
             </div>
             <div class="cuadro cuadro-3">
@@ -212,6 +233,66 @@ mysqli_close($conexion);
         </div>
     </main>
 
+    <script>
+        $(document).ready(function() {
+            // Obtener el estado actual del sistema
+            $.get('controllers/system_status.php', function(data) {
+                var response = JSON.parse(data);
+                if (response.systemStatus == '1') {
+                    $('#systemStatusButton').addClass('active').text('Sistema Activo');
+                } else {
+                    $('#systemStatusButton').addClass('inactive').text('Sistema Inactivo');
+                }
+            });
+
+            // Cambiar el estado del sistema
+            $('#systemStatusButton').click(function() {
+                var newStatus = $(this).hasClass('inactive');
+                $.post('controllers/system_status.php', {newStatus: newStatus}, function(response) {
+                    var result = JSON.parse(response);
+                    if (result.success) {
+                        if (newStatus) {
+                            $('#systemStatusButton').removeClass('inactive').addClass('active').text('Sistema Activo');
+                        } else {
+                            $('#systemStatusButton').removeClass('active').addClass('inactive').text('Sistema Inactivo');
+                        }
+                    } else {
+                        alert(result.message || 'No se pudo cambiar el estado del sistema.');
+                    }
+                });
+            });
+        });
+    </script>
+<script>
+$(document).ready(function() {
+    // Obtener el estado actual del sistema
+    $.get('controllers/system_status.php', function(data) {
+        var response = JSON.parse(data);
+        if (response.systemStatus == '1') {
+            $('#systemStatusButton').addClass('active').text('Sistema Activo');
+        } else {
+            $('#systemStatusButton').addClass('inactive').text('Sistema Inactivo');
+        }
+    });
+
+    // Cambiar el estado del sistema
+    $('#systemStatusButton').click(function() {
+        var newStatus = $(this).hasClass('inactive');
+        $.post('controllers/system_status.php', {newStatus: newStatus}, function(response) {
+            var result = JSON.parse(response);
+            if (result.success) {
+                if (newStatus) {
+                    $('#systemStatusButton').removeClass('inactive').addClass('active').text('Sistema Activo');
+                } else {
+                    $('#systemStatusButton').removeClass('active').addClass('inactive').text('Sistema Inactivo');
+                }
+            } else {
+                alert(result.message || 'No se pudo cambiar el estado del sistema.');
+            }
+        });
+    });
+});
+<script/>
 
     <script src="/public/assets/js/MenuLate.js"></script>
 </body>
