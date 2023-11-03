@@ -61,15 +61,6 @@ try {
     echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
 }
 
-    require '../../../../controllers/funciones.php';
-    $userID = 1;  // Cambia esto por el ID del usuario actual.
-    if (isset($_POST['cerrar'])) {
-        cerrarSistema($userID);
-    }
-    if (isset($_POST['abrir'])) {
-        reactivarSistema($userID);
-    }
-    
 
 // Cierra la conexión a la base de datos
 mysqli_close($conexion);
@@ -85,7 +76,23 @@ mysqli_close($conexion);
     <title>Inicio Admin</title>
 
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
-    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+    .btn-status {
+            padding: 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .active {
+            background-color: green;
+        }
+        .inactive {
+            background-color: red;
+        }
+    </style>
 </head>
 
 <body id="body">
@@ -95,12 +102,7 @@ mysqli_close($conexion);
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
-        <form action="control.php" method="post">
-            <button type="submit" name="cerrar" class="button">Cerrar Sistema</button>
-            <button type="submit" name="abrir" class="button">Reactivar Sistema</button>
-        </form>
-        <p><?php echo sistemaActivo() ? 'Activo' : 'Inactivo'; ?></p>
-
+        <button id="systemStatusButton" class="btn-status">Cargando...</button>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -122,7 +124,7 @@ mysqli_close($conexion);
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Incial</h4>
+                    <h4>Saldo Inicial</h4>
                 </div>
             </a>
 
@@ -230,7 +232,36 @@ mysqli_close($conexion);
         </div>
     </main>
 
+    <script>
+        $(document).ready(function() {
+            // Obtener el estado actual del sistema
+            $.get('controllers/system_status.php', function(data) {
+                var response = JSON.parse(data);
+                if (response.systemStatus == '1') {
+                    $('#systemStatusButton').addClass('active').text('Sistema Activo');
+                } else {
+                    $('#systemStatusButton').addClass('inactive').text('Sistema Inactivo');
+                }
+            });
 
+            // Cambiar el estado del sistema
+            $('#systemStatusButton').click(function() {
+                var newStatus = $(this).hasClass('inactive');
+                $.post('controllers/system_status.php', {newStatus: newStatus}, function(response) {
+                    var result = JSON.parse(response);
+                    if (result.success) {
+                        if (newStatus) {
+                            $('#systemStatusButton').removeClass('inactive').addClass('active').text('Sistema Activo');
+                        } else {
+                            $('#systemStatusButton').removeClass('active').addClass('inactive').text('Sistema Inactivo');
+                        }
+                    } else {
+                        alert(result.message || 'No se pudo cambiar el estado del sistema.');
+                    }
+                });
+            });
+        });
+    </script>
     <script src="/public/assets/js/MenuLate.js"></script>
 </body>
 
