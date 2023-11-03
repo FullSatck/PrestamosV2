@@ -143,88 +143,35 @@ if ($sql === false) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Cobros totales</h1>
-
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-        </div>
-
-        <div class="container-fluid">
-            <div class="row">
-
-                <div class="col-md-9">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID del Préstamo</th>
-                                <th scope="col">Nombre del Cliente</th>
-                                <th scope="col">Zona</th>
-                                <th scope="col">Monto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $result = $sql->get_result();
-                            $rowCount = 0; // Contador de filas
-                            while ($datos = $result->fetch_assoc()) { 
-                              $rowCount++; // Incrementar el contador de filas
-                              $montoFormateado = number_format($datos['Monto'], 0, '.', '.'); // Formatear Monto
-                            ?>
-                            <tr class="row<?= $rowCount ?>">
-                                <td><?= "Cobro REC-10" . $datos['ID'] ?></td>
-                                <td><?= $datos['NombreCliente'] ?></td>
-                                <td><?= $datos['Zona'] ?></td>
-                                <td><?= $montoFormateado ?></td> <!-- Mostrar Monto formateado -->
-                            </tr>
-                            <?php } 
-                            // Cerrar la consulta y la conexión a la base de datos
-                            $sql->close();
-                            $conexion->close();
-                            ?>
-
-                        </tbody>
-                    </table>
+        <h1>Prestamos totales</h1>
+        <div class="cuadros-container">
+            <div class="cuadro cuadro-1">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Cobros</a><br>
+                    <p>Mantenimiento</p>
+                </div>
+            </div>
+            <div class="cuadro cuadro-3">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
+                    <p>Mantenimiento</p>
+                </div>
+            </div>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="##" class="titulo">Contabilidad</a>
+                    <p>Mantenimiento</p>
+                </div>
+            </div>
+            <div class="cuadro cuadro-4">
+                <div class="cuadro-1-1">
+                    <a href="##" class="titulo">Comision</a>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
         </div>
-    </main>
-
-    <script>
-    // Agregar un evento clic al botón
-    document.getElementById("volverAtras").addEventListener("click", function() {
-        window.history.back();
-    });
-    </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const searchInput = document.getElementById("search-input");
-        const rows = document.querySelectorAll(".table tbody tr");
-
-        searchInput.addEventListener("input", function() {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-
-            rows.forEach(function(row) {
-                const columns = row.querySelectorAll("td");
-                let found = false;
-
-                columns.forEach(function(column, index) {
-                    const text = column.textContent.toLowerCase();
-                    if (index === 0 && text.includes(searchTerm)) {
-                        found = true; // Search only in the first (ID) column
-                    } else if (index !== 0 && text.includes(searchTerm)) {
-                        found = true; // Search in other columns
-                    }
-                });
-
-                if (found) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        });
-    });
-    </script>
+    </main> 
+    
     <script src="/public/assets/js/MenuLate.js"></script>
 </body>
 
