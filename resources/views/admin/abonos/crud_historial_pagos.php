@@ -114,7 +114,7 @@ if (isset($_GET['clienteId'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/admin/abonos/lista_super.php">
+                <a href="/resources/views/admin/ruta/lista_super.php">
                         <ion-icon name="map-outline"></ion-icon>
                         <span>Ruta</span>
                     </a>
