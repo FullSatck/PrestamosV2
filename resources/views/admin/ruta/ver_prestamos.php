@@ -45,6 +45,7 @@ if ($sql === false) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script> 
     <title>Listado de Préstamos</title>
 </head>
 
@@ -206,9 +207,7 @@ if ($sql === false) {
         window.history.back();
     });
     </script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="/menu/main.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 
