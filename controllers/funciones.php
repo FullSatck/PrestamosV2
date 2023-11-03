@@ -4,7 +4,7 @@ require 'conexion.php';
 function esAdmin($userID) {
      global $pdo; // Aseguramos que la conexión a la base de datos esté disponible globalmente
  
-     $stmt = $pdo->prepare("SELECT RolID FROM usuarios WHERE ID = :userID");
+     $stmt = $pdo->prepare("SELECT RolID FROM usuarios WHERE RolID = 1");
      $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
      $stmt->execute();
      

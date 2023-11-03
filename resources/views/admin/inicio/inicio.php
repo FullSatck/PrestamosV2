@@ -61,6 +61,16 @@ try {
     echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
 }
 
+    require '../../../../controllers/funciones.php';
+    $userID = 1;  // Cambia esto por el ID del usuario actual.
+    if (isset($_POST['cerrar'])) {
+        cerrarSistema($userID);
+    }
+    if (isset($_POST['abrir'])) {
+        reactivarSistema($userID);
+    }
+    
+
 // Cierra la conexión a la base de datos
 mysqli_close($conexion);
 ?>
@@ -84,6 +94,13 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+
+        <form action="control.php" method="post">
+            <button type="submit" name="cerrar" class="button">Cerrar Sistema</button>
+            <button type="submit" name="abrir" class="button">Reactivar Sistema</button>
+        </form>
+        <p><?php echo sistemaActivo() ? 'Activo' : 'Inactivo'; ?></p>
+
     </header>
 
     <div class="menu__side" id="menu_side">
