@@ -315,32 +315,7 @@ table th {
     background-color: #0056b3;
 }
 
-/* CSS para dispositivos móviles */
-@media screen and (max-width: 768px) {
-    .profile-image img {
-        max-height: 150px; /* Reduce la altura máxima en dispositivos móviles */
-    }
-
-    /* Ajustes adicionales para dispositivos móviles */
-    .profile-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .profile-image {
-        margin-bottom: 10px; /* Reduce el espacio entre la imagen y los datos */
-    }
-}
-
-/* Estilos para el pie de página */
-#footer {
-    text-align: center; /* Alineación de texto al centro para el pie de página */
-    background-color: #f0f0f0; /* Color de fondo del pie de página */
-    padding: 10px 0; /* Relleno en el pie de página */
-    color: #333; /* Color del texto en el pie de página */
-    font-size: 14px; /* Tamaño de fuente en el pie de página */
-  }
-  @media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
     .cuadros-container {
         flex-direction: column;
     }
@@ -361,3 +336,9 @@ table th {
     
     
 }
+
+
+
+
+
+
