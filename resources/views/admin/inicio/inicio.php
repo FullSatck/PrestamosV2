@@ -206,8 +206,9 @@ mysqli_close($conexion);
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Cobros</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'> $ $totalMonto </span>" ?></p>
+                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
+                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
+                    </p>
                 </div>
             </div>
             <div class="cuadro cuadro-3">
