@@ -19,13 +19,14 @@ if (isset($_SESSION["usuario_id"])) {
 include("../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener todos los clientes con el nombre de la moneda
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada FROM Clientes c
+$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada, c.Estado FROM Clientes c
         LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID";
 $resultado = $conexion->query($sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,6 +36,7 @@ $resultado = $conexion->query($sql);
     <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
+
 <body id="body">
 
     <header>
@@ -45,8 +47,8 @@ $resultado = $conexion->query($sql);
 
     <div class="menu__side" id="menu_side">
 
-    <div class="name__page">
-        <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
             <h4>Recaudo</h4>
         </div>
 
@@ -112,7 +114,7 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-           <a href="/resources/views/admin/gastos/gastos.php">
+            <a href="/resources/views/admin/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
@@ -128,13 +130,13 @@ $resultado = $conexion->query($sql);
 
             <a href="/resources/views/admin/abonos/abonos.php">
                 <div class="option">
-                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
@@ -157,7 +159,7 @@ $resultado = $conexion->query($sql);
         </div>
 
         <?php if ($resultado->num_rows > 0) { ?>
-            
+
         <table>
             <tr>
                 <th>ID</th>
@@ -168,7 +170,9 @@ $resultado = $conexion->query($sql);
                 <th>Referencias Personales</th>
                 <th>Moneda Preferida</th>
                 <th>Zona Asignada</th>
-                <th>Acciones</th>
+                <th>Estado</th>
+                <th>Des/Act</th>
+                <th>Perfil</th>
                 <th>Pagos</th>
             </tr>
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
@@ -179,8 +183,15 @@ $resultado = $conexion->query($sql);
                 <td><?= $fila["Domicilio"] ?></td>
                 <td><?= $fila["Telefono"] ?></td>
                 <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
+                <td><?= $fila["Moneda"] ?></td> 
                 <td><?= $fila["ZonaAsignada"] ?></td>
+                <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td>
+                <td>
+                    <a href="cambiarEstadoCliente.php?id=<?= $fila["ID"] ?>&estado=<?= $fila["Estado"] ?>">
+                        <i class="fas <?= $fila["Estado"] == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
+                        <?= $fila["Estado"] == 1 ? 'Desactivar' : 'Activar' ?>
+                    </a>
+                </td>
                 <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                 <td><a
                         href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
@@ -215,8 +226,8 @@ $resultado = $conexion->query($sql);
         });
     });
     </script>
-   <script src="/public/assets/js/MenuLate.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    <script src="/public/assets/js/MenuLate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
 

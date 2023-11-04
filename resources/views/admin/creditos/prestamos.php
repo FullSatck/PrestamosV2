@@ -144,19 +144,20 @@ if (isset($_SESSION["usuario_id"])) {
         <h1>Solicitud de Préstamo</h1><br><br>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="/controllers/procesar_prestamo.php" method="POST" class="form-container">
-            <?php
+        <?php
     // Incluir el archivo de conexión a la base de datos
     include("../../../../controllers/conexion.php");
 
-    // Obtener la lista de clientes, monedas y zonas desde la base de datos
-    $query_clientes = "SELECT ID, Nombre FROM Clientes";
+    // Obtener la lista de clientes activos, monedas y zonas desde la base de datos
+    $query_clientes = "SELECT ID, Nombre FROM Clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
     $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
     $query_zonas = "SELECT Nombre FROM Zonas";
 
     $result_clientes = $conexion->query($query_clientes);
     $result_monedas = $conexion->query($query_monedas);
     $result_zonas = $conexion->query($query_zonas);
-    ?>
+?>
+
             <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php

@@ -10,19 +10,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener la fecha actual en formato YYYY-MM-DD
     $fechaPago = date('Y-m-d');
 
-    // Consulta SQL para obtener el monto actual del préstamo
-    $sqlMontoPendiente = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = '$clienteId' AND Estado = 'pendiente'";
+    // Consulta SQL para obtener el monto actual del préstamo y el IDPrestamo
+    $sqlMontoPendiente = "SELECT MontoAPagar, ID AS IDPrestamo FROM prestamos WHERE IDCliente = '$clienteId' AND Estado = 'pendiente'";
     $result = $conexion->query($sqlMontoPendiente);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $montoActual = $row["MontoAPagar"];
+        $IDPrestamo = $row["IDPrestamo"]; // Obtener el IDPrestamo
         
         // Calcular el nuevo monto pendiente después del pago
         $nuevoMonto = $montoActual - $montoPagado;
 
         // Consulta SQL para registrar el pago en la tabla 'historial_pagos'
-        $sqlRegistrarPago = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado) VALUES ('$clienteId', '$fechaPago', '$montoPagado')";
+        $sqlRegistrarPago = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES ('$clienteId', '$fechaPago', '$montoPagado', '$IDPrestamo')";
 
         if ($conexion->query($sqlRegistrarPago) === TRUE) {
             // Actualizar el monto pendiente en la tabla 'prestamos'

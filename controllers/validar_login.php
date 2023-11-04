@@ -18,8 +18,8 @@ if (mysqli_num_rows($result) > 0) {
     // La consulta devuelve un registro
     $row = mysqli_fetch_assoc($result);
 
-    // Comprueba si el usuario existe
-    if ($row) {
+    // Comprueba si el usuario existe y está activo
+    if ($row && $row["Estado"] == 'activo') {
         // Guarda los datos del usuario en la sesión
         $_SESSION["usuario_id"] = $row["ID"];
         $_SESSION["nombre"] = $row["Nombre"];
@@ -42,8 +42,8 @@ if (mysqli_num_rows($result) > 0) {
                 break;
         }
     } else {
-        // Mensaje de error si el usuario no existe
-        $error_message = "Credenciales incorrectas. Por favor, inténtelo de nuevo.";
+        // Mensaje de error si el usuario no existe o está inactivo
+        $error_message = "Credenciales incorrectas o usuario inactivo. Por favor, inténtelo de nuevo.";
     }
 } else {
     // La consulta no devuelve ningún registro

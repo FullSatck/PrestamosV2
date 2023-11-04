@@ -53,7 +53,9 @@ function registrarPago() {
             data: {
                 clienteId: $("#cliente-id").text(),
                 cantidadPago: cantidadPago,
-                fechaPago: fechaPago
+                fechaPago: fechaPago,
+                IDPrestamo : $("#prestamo-id").text()
+
             },
             success: function(response) {
                 // Actualiza el monto a pagar en la página

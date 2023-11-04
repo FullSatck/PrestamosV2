@@ -164,28 +164,41 @@ if ($usuariosSQL === false) {
                 <th>Zona</th>
                 <th>Rol</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                <th></th>
+                <th>Modificar</th>
+                <th>Des/Act</th>
             </tr>
             <?php
             if ($usuariosSQL->num_rows > 0) {
                 while ($datos = $usuariosSQL->fetch_object()) {
                     ?>
-                    <tr>
-                        <td><?= "REC 100" . $datos->ID ?></td>
-                        <td><?= $datos->Nombre ?></td>
-                        <td><?= $datos->Apellido ?></td>
-                        <td><?= $datos->Email ?></td>
-                        <td><?= $datos->Zona ?></td>
-                        <td><?= $datos->RolID ?></td>
-                        <td>
-                           
-                        <td>
-                            <a href="modificarUser.php?id=<?= $datos->ID ?>">
-                                <i class="fas fa-pencil-alt"></i> Modificar
-                            </a>
-                        </td>
-                    </tr>
-                <?php
+            <tr>
+                <td><?= "REC 100" . $datos->ID ?></td>
+                <td><?= $datos->Nombre ?></td>
+                <td><?= $datos->Apellido ?></td>
+                <td><?= $datos->Email ?></td>
+                <td><?= $datos->Zona ?></td>
+                <td><?= $datos->RolID ?></td>
+                <td><?= $datos->Estado ?></td>
+                
+                <td>
+
+                <td>
+                    <a href="modificarUser.php?id=<?= $datos->ID ?>">
+                        <i class="fas fa-pencil-alt"></i> Modificar
+                    </a>
+                  
+                    </td>
+                <td>
+                  <!-- Enlace para cambiar el estado -->
+                  <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>">
+                        <i class="fas <?= $datos->Estado == 'activo' ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
+                        <?= $datos->Estado == 'activo' ? 'Desactivar' : 'Activar' ?>
+                    </a>
+                <td>
+
+            </tr>
+            <?php
                 }
             } else {
                 echo "No se encontraron resultados.";
