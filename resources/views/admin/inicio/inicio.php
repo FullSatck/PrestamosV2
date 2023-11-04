@@ -240,7 +240,7 @@ mysqli_close($conexion);
             <div class="cuadro cuadro-4">
     <div class="cuadro-1-1">
         <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-        <p><?php echo "<strong>Total Comisiones:</strong> <span class='com'>$ " . number_format($totalComisiones, 2, '.', ',') . "</span>"; ?></p>
+        <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 2, '.', ',') . "</span>"; ?></p>
     </div>
 </div>
 
