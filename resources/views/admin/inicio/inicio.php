@@ -115,7 +115,8 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-      
+
+     
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -248,9 +249,9 @@ mysqli_close($conexion);
         </div>
     </main>
 
-   
     
     <script src="/public/assets/js/MenuLate.js"></script>
+
 </body>
 
 </html>
