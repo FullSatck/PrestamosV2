@@ -185,15 +185,15 @@ if (isset($_SESSION["usuario_id"])) {
                             $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 0");
                             while ($datos = $sql->fetch_object()) { ?>
                                     <tr>
-                                        <td><?= $datos->ID ?></td>
+                                        <td><?= "10" . $datos->ID ?></td>
                                         <td><?= $datos->NombreCliente ?></td>
-                                        <td><?= $datos->Monto ?></td>
-                                        <td><?= $datos->TasaInteres ?></td>
+                                        <td><?= number_format($datos->Monto, 0, '.', '.') ?></td>
+                                        <td><?= number_format($datos->TasaInteres, 0, '.', '.')."%" ?></td>
                                         <td><?= $datos->Plazo ?></td>
                                         <td><?= $datos->MonedaID ?></td>
                                         <td class="estado"><?= $datos->Estado ?></td>
                                         <td><?= $datos->Zona ?></td>
-                                        <td><?= $datos->MontoAPagar ?></td>
+                                        <td><?= number_format($datos->MontoAPagar, 0, '.', '.') ?></td>
                                         <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
                                         <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
                                         <td class="estado"><?= $datos->EstadoP == 1 ? 'Activado' : 'Desactivado' ?></td>

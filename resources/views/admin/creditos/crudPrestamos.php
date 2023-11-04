@@ -32,7 +32,7 @@ if (isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        
+
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -143,7 +143,15 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <!-- Botón para volver a la página anterior -->
-        <h1 class="text-center">Préstamos Activos</h1>
+        <h1 class="text-center">Listado de préstamos</h1>
+
+        <?php
+if (isset($_GET['mensaje'])) {
+    $claseMensaje = strpos($_GET['mensaje'], 'Error') !== false ? 'mensaje-error' : 'mensaje-exito';
+    echo "<p class='mensaje $claseMensaje'>" . $_GET['mensaje'] . "</p>";
+}
+?>
+
 
         <div class="container-fluid">
             <div class="row">
@@ -179,20 +187,21 @@ if (isset($_SESSION["usuario_id"])) {
                                 </thead>
                                 <tbody>
                                     <?php
-                            include("../../../../controllers/conexion.php");  
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 1");
+        include("../../../../controllers/conexion.php");  
+        // Modificar la consulta para ordenar los resultados en orden descendente por ID
+        $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 1 ORDER BY prestamos.ID DESC");
 
-                            while ($datos = $sql->fetch_object()) { ?>
+        while ($datos = $sql->fetch_object()) { ?>
                                     <tr>
-                                        <td><?= $datos->ID ?></td>
+                                        <td><?= "10" . $datos->ID ?></td>
                                         <td><?= $datos->NombreCliente ?></td>
-                                        <td><?= $datos->Monto ?></td>
-                                        <td><?= $datos->TasaInteres ?></td>
+                                        <td><?= number_format($datos->Monto, 0, '.', '.') ?></td>
+                                        <td><?= number_format($datos->TasaInteres, 0, '.', '.')."%" ?></td>
                                         <td><?= $datos->Plazo ?></td>
                                         <td><?= $datos->MonedaID ?></td>
                                         <td class="estado"><?= $datos->Estado ?></td>
                                         <td><?= $datos->Zona ?></td>
-                                        <td><?= $datos->MontoAPagar ?></td>
+                                        <td><?= number_format($datos->MontoAPagar, 0, '.', '.') ?></td>
                                         <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
                                         <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
                                         <td class="estado"><?= $datos->EstadoP == 1 ? 'Activado' : 'Desactivado' ?></td>
@@ -212,6 +221,7 @@ if (isset($_SESSION["usuario_id"])) {
                                     </tr>
                                     <?php } ?>
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -221,21 +231,21 @@ if (isset($_SESSION["usuario_id"])) {
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#search-input').on('input', function() {
-        var searchTerm = $(this).val().toLowerCase();
-        $('tbody tr').each(function() {
-            var rowText = $(this).text().toLowerCase();
-            if (rowText.indexOf(searchTerm) !== -1) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
+    <script>
+    $(document).ready(function() {
+        $('#search-input').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            $('tbody tr').each(function() {
+                var rowText = $(this).text().toLowerCase();
+                if (rowText.indexOf(searchTerm) !== -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
         });
     });
-});
-</script>
+    </script>
 
     <script src="/public/assets/js/MenuLate.js"></script>
 
