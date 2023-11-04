@@ -288,7 +288,7 @@ if (isset($_GET['mensaje'])) {
                         <!-- Agregar un botón para compartir la factura por WhatsApp -->
 
                         <button type="button" class="btn btn-primary" id="compartirPorWhatsAppButton">
-                            Compartir por WhatsApp
+                            Compartir por WhatsApp 
                         </button>
 
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
