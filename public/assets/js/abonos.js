@@ -19,15 +19,11 @@ function cargarDatosCliente(clienteId) {
         success: function(data) {
             if (data.error) {
                 if (data.error === "Cliente inactivo") {
-                    // Si el cliente está inactivo, elimina el cliente de la lista
-                    clienteIds.splice(clienteActualIndex, 1);
-                    // Si no hay más clientes después del actual, intenta cargar el anterior
-                    if (clienteActualIndex >= clienteIds.length && clienteIds.length > 0) {
-                        clienteActualIndex--;
-                    }
-                    // Si aún hay clientes en la lista, carga el siguiente/previo cliente
+                    // Si el cliente está inactivo, elimina el ID del cliente de la lista y carga el siguiente cliente
+                    clienteIds.splice(clienteActualIndex, 1); // Elimina el cliente inactivo de la lista
                     if (clienteIds.length > 0) {
-                        cargarDatosCliente(clienteIds[clienteActualIndex]);
+                        // Si aún hay clientes en la lista, carga el siguiente
+                        cambiarCliente(1);
                     } else {
                         alert("No hay más clientes activos que mostrar");
                     }
@@ -88,7 +84,7 @@ function registrarPago() {
                 // Cambia automáticamente al siguiente cliente después de 2 segundos
                 setTimeout(function() {
                     cambiarCliente(1);
-                }, 3000);
+                }, 2000);
             },
             error: function() {
                 alert("Error al registrar el pago");
