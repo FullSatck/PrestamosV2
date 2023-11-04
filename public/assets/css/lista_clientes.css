@@ -263,13 +263,18 @@ h1 {
     overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
 }
  
-/* Estilos para la tabla */
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    max-width: 100%;
 }
 
 th, td {
@@ -308,6 +313,24 @@ td a:hover {
     background: #707070;
     color: #000000;
 } 
+button {
+    background-color: rgb(131, 127, 127);
+    border: none; 
+    padding: 10px 16px; 
+    border-radius: 20px; 
+  }
+  
+  
+  button a {
+    text-decoration: none; 
+    color: #fff; 
+  }
+  
+  
+  button:hover {
+    background-color: rgb(129, 118, 118);
+  }
+
 @media screen and (max-width: 600px) {
     .cuadros-container {
         flex-direction: column;

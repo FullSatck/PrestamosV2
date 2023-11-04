@@ -144,7 +144,7 @@ if (isset($_SESSION["usuario_id"])) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <!-- Botón para volver a la página anterior -->
+        
         <h1 class="text-center">Préstamos Desactivados</h1>
 
         <div class="container-fluid">

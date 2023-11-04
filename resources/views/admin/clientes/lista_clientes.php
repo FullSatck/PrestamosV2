@@ -20,7 +20,7 @@ include("../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener todos los clientes con el nombre de la moneda
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada, c.Estado FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID";
+        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID WHERE c.Estado = 1";
 $resultado = $conexion->query($sql);
 ?>
 
@@ -152,63 +152,62 @@ $resultado = $conexion->query($sql);
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Listado de Clientes</h1>
+        <h1>Clientes Activados</h1>
 
-        <?php
-if (isset($_GET['mensaje'])) {
-    echo "<p class='mensaje'>" . $_GET['mensaje'] . "</p>";
-}
-?>
+
+
 
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+            <button><a href="clientesDesactivados.php" class="btn btn-primary">Desactivados</a></button>
         </div>
 
         <?php if ($resultado->num_rows > 0) { ?>
-
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Domicilio</th>
-                <th>Teléfono</th>
-                <th>Referencias Personales</th>
-                <th>Moneda Preferida</th>
-                <th>Zona Asignada</th>
-                <th>Estado</th>
-                <th>Des/Act</th>
-                <th>Perfil</th>
-                <th>Pagos</th>
-            </tr>
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-            <tr>
-                <td><?= "REC 100" .$fila["ID"] ?></td>
-                <td><?= $fila["Nombre"] ?></td>
-                <td><?= $fila["Apellido"] ?></td>
-                <td><?= $fila["Domicilio"] ?></td>
-                <td><?= $fila["Telefono"] ?></td>
-                <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td>
-                <td><?= $fila["ZonaAsignada"] ?></td>
-                <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td>
-                <td>
-                    <a href="cambiarEstadoCliente.php?id=<?= $fila["ID"] ?>&estado=<?= $fila["Estado"] ?>">
-                        <i class="fas <?= $fila["Estado"] == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
-                        <?= $fila["Estado"] == 1 ? 'Desactivar' : 'Activar' ?>
-                    </a>
-                </td>
-                <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                <td><a
-                        href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                </td>
-            </tr>
+        <div class="table-scroll-container">
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Domicilio</th>
+                    <th>Teléfono</th>
+                    <th>Referencias Personales</th>
+                    <th>Moneda Preferida</th>
+                    <th>Zona Asignada</th>
+                    <th>Estado</th>
+                    <th>Des/Act</th>
+                    <th>Perfil</th>
+                    <th>Pagos</th>
+                </tr>
+                <?php while ($fila = $resultado->fetch_assoc()) { ?>
+                <tr>
+                    <td><?= "REC 100" .$fila["ID"] ?></td>
+                    <td><?= $fila["Nombre"] ?></td>
+                    <td><?= $fila["Apellido"] ?></td>
+                    <td><?= $fila["Domicilio"] ?></td>
+                    <td><?= $fila["Telefono"] ?></td>
+                    <td><?= $fila["ReferenciasPersonales"] ?></td>
+                    <td><?= $fila["Moneda"] ?></td>
+                    <td><?= $fila["ZonaAsignada"] ?></td>
+                    <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td>
+                    <td>
+                        <a href="cambiarEstadoCliente.php?id=<?= $fila["ID"] ?>&estado=<?= $fila["Estado"] ?>">
+                            <i class="fas <?= $fila["Estado"] == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
+                            <?= $fila["Estado"] == 1 ? 'Desactivar' : 'Activar' ?>
+                        </a>
+                    </td>
+                    <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
+                    <td><a
+                            href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                    </td>
+                </tr>
+                <?php } ?>
+            </table>
+            <?php } else { ?>
+            <p>No se encontraron clientes en la base de datos.</p>
             <?php } ?>
-        </table>
-        <?php } else { ?>
-        <p>No se encontraron clientes en la base de datos.</p>
-        <?php } ?>
+            </div>
     </main>
 
     <script>

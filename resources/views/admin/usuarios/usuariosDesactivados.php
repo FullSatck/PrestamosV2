@@ -10,7 +10,7 @@ if (!isset($_SESSION["usuario_id"])) {
 }
  
 // Consulta para obtener la lista de usuarios
-$usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE Estado = 'activo'");
+$usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE Estado = 'inactivo'");
 
 if ($usuariosSQL === false) {
     die("Error en la consulta SQL: " . $conexion->error);
@@ -143,14 +143,15 @@ if ($usuariosSQL === false) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Usuarios Activados</h1>
+        <h1>Usuarios Desactivados</h1>
+
 
 
 
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-            <button><a href="usuariosDesactivados.php" class="btn btn-primary">Desactivados</a></button>
+            <button><a href="crudusuarios.php" class="btn btn-primary">Activados</a></button>
         </div>
         <div class="table-scroll-container">
         <table>
@@ -188,8 +189,8 @@ if ($usuariosSQL === false) {
 
                 </td>
                 <td>
-                   <!-- Enlace para cambiar el estado -->
-                   <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>&vista=activos">
+                    <!-- Enlace para cambiar el estado -->
+                    <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>&vista=inactivos">
                         <i class="fas <?= $datos->Estado == 'activo' ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
                         <?= $datos->Estado == 'activo' ? 'Desactivar' : 'Activar' ?>
                     </a>
