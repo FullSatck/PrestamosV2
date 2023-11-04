@@ -9,7 +9,7 @@ var cantidadPagoIngresada = false;
 var cantidadPago;
 
 // Variable global para el número de teléfono del cliente
-var numeroTelefonoCliente; // Nueva variable
+var numeroTelefonoCliente;
 
 // Función para cargar los datos del cliente
 function cargarDatosCliente(clienteId) {
@@ -17,25 +17,44 @@ function cargarDatosCliente(clienteId) {
         url: "consulta.php?clienteId=" + clienteId,
         dataType: "json",
         success: function(data) {
-            // Rellenar los campos con los datos obtenidos
-            $("#cliente-id").text(data.ID);
-            $("#cliente-nombre").text(data.Nombre);
-            $("#cliente-apellido").text(data.Apellido);
-            $("#cliente-domicilio").text(data.Domicilio);
-            $("#cliente-telefono").text(data.Telefono);
-            $("#cliente-curp").text(data.IdentificacionCURP);
-            $("#cliente-zona").text(data.ZonaAsignada);
+            if (data.error) {
+                if (data.error === "Cliente inactivo") {
+                    // Si el cliente está inactivo, elimina el cliente de la lista
+                    clienteIds.splice(clienteActualIndex, 1);
+                    // Si no hay más clientes después del actual, intenta cargar el anterior
+                    if (clienteActualIndex >= clienteIds.length && clienteIds.length > 0) {
+                        clienteActualIndex--;
+                    }
+                    // Si aún hay clientes en la lista, carga el siguiente/previo cliente
+                    if (clienteIds.length > 0) {
+                        cargarDatosCliente(clienteIds[clienteActualIndex]);
+                    } else {
+                        alert("No hay más clientes activos que mostrar");
+                    }
+                } else {
+                    alert(data.error);
+                }
+            } else {
+                // Rellenar los campos con los datos obtenidos
+                $("#cliente-id").text(data.ID);
+                $("#cliente-nombre").text(data.Nombre);
+                $("#cliente-apellido").text(data.Apellido);
+                $("#cliente-domicilio").text(data.Domicilio);
+                $("#cliente-telefono").text(data.Telefono);
+                $("#cliente-curp").text(data.IdentificacionCURP);
+                $("#cliente-zona").text(data.ZonaAsignada);
 
-            $("#prestamo-id").text(data.IDPrestamo);
-            $("#prestamo-tasa").text(data.TasaInteres);
-            $("#prestamo-fecha-inicio").text(data.FechaInicio);
-            $("#prestamo-fecha-vencimiento").text(data.FechaVencimiento);
-            $("#prestamo-zona").text(data.Zona);
-            $("#prestamo-monto-pagar").text(data.MontoAPagar);
-            $("#prestamo-cuota").text(data.Cuota);
+                $("#prestamo-id").text(data.IDPrestamo);
+                $("#prestamo-tasa").text(data.TasaInteres);
+                $("#prestamo-fecha-inicio").text(data.FechaInicio);
+                $("#prestamo-fecha-vencimiento").text(data.FechaVencimiento);
+                $("#prestamo-zona").text(data.Zona);
+                $("#prestamo-monto-pagar").text(data.MontoAPagar);
+                $("#prestamo-cuota").text(data.Cuota);
 
-            // Almacena el número de teléfono del cliente en una variable global
-            numeroTelefonoCliente = data.Telefono; // Asegúrate de que el nombre del campo sea correcto
+                // Almacena el número de teléfono del cliente en una variable global
+                numeroTelefonoCliente = data.Telefono; // Asegúrate de que el nombre del campo sea correcto
+            }
         },
         error: function() {
             alert("No hay más clientes que mostrar");
@@ -54,8 +73,6 @@ function registrarPago() {
                 clienteId: $("#cliente-id").text(),
                 cantidadPago: cantidadPago,
                 fechaPago: fechaPago,
-                IDPrestamo : $("#prestamo-id").text()
-
             },
             success: function(response) {
                 // Actualiza el monto a pagar en la página
@@ -181,8 +198,6 @@ $("#compartirPorWhatsAppButton").click(function() {
     // Abre la URL en una nueva ventana o pestaña
     window.open(whatsappURL, '_blank');
 });
-
-
 
 // Llama a la función para cargar la lista de IDs de clientes al cargar la página
 cargarListaDeClientes();
