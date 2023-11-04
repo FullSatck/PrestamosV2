@@ -31,8 +31,10 @@ if (isset($_SESSION["usuario_id"])) {
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+            
         </div>
         
+
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -143,7 +145,7 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <!-- Botón para volver a la página anterior -->
-        <h1 class="text-center">Préstamos Activos</h1>
+        <h1 class="text-center">Préstamos Desactivados</h1>
 
         <div class="container-fluid">
             <div class="row">
@@ -151,7 +153,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <!-- Barra de búsqueda y botón de registro -->
                     <div class="search-container">
                         <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-                        <button><a href="prestamosDesactivados.php" class="btn btn-primary">Desactivados</a></button>
+                        <button><a href="crudPrestamos.php" class="btn btn-primary">Activados</a></button>
                     </div>
 
 
@@ -180,8 +182,7 @@ if (isset($_SESSION["usuario_id"])) {
                                 <tbody>
                                     <?php
                             include("../../../../controllers/conexion.php");  
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 1");
-
+                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 0");
                             while ($datos = $sql->fetch_object()) { ?>
                                     <tr>
                                         <td><?= $datos->ID ?></td>
