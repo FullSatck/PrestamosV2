@@ -102,10 +102,10 @@ mysqli_close($conexion);
     <title>Inicio Admin</title>
 
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
-    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script> 
-    
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 
-    
+
+
 
 </head>
 
@@ -113,10 +113,14 @@ mysqli_close($conexion);
 
     <header>
         <div class="icon__menu">
-            <i class="fas fa-bars" id="btn_open"></i> 
-            
+            <i class="fas fa-bars" id="btn_open"></i>
         </div>
-
+        <div class="boton2">
+            <a href="/controllers/cerrar_sesion.php" class="botonn">
+                <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                <span class="spann">Cerrar Sesion</span>
+            </a>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -239,21 +243,22 @@ mysqli_close($conexion);
                 </div>
             </div>
             <div class="cuadro cuadro-4">
-    <div class="cuadro-1-1">
-        <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-        <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 2, '.', ',') . "</span>"; ?></p>
-    </div>
-</div>
-
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
+                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 2, '.', ',') . "</span>"; ?>
+                    </p>
+                </div>
             </div>
+
         </div>
- 
-        
+        </div>
+
+
     </main>
 
- 
 
-    
+
+
     <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
