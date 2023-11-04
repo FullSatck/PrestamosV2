@@ -62,6 +62,32 @@ try {
 }
 
 
+// COMISIONES
+try {
+    // Consulta SQL para obtener la suma de Comision
+    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos";
+
+    // Realizar la consulta
+    $resultComisiones = mysqli_query($conexion, $sqlComisiones);
+
+    if ($resultComisiones) {
+        $rowComisiones = mysqli_fetch_assoc($resultComisiones);
+
+        // Obtener el total de comisiones
+        $totalComisiones = $rowComisiones['TotalComisiones'];
+
+        // Cierra la consulta de comisiones
+        mysqli_free_result($resultComisiones);
+    } else {
+        echo "Error en la consulta de comisiones: " . mysqli_error($conexion);
+    }
+} catch (Exception $e) {
+    echo "Error de conexión a la base de datos (comisiones): " . $e->getMessage();
+}
+
+
+
+
 // Cierra la conexión a la base de datos
 mysqli_close($conexion);
 ?>
@@ -212,9 +238,12 @@ mysqli_close($conexion);
                 </div>
             </div>
             <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Comision</a>
-                </div>
+    <div class="cuadro-1-1">
+        <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
+        <p><?php echo "<strong>Total Comisiones:</strong> <span class='com'>$ " . number_format($totalComisiones, 2, '.', ',') . "</span>"; ?></p>
+    </div>
+</div>
+
             </div>
         </div>
     </main>
