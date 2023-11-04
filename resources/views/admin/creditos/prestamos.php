@@ -78,7 +78,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/admin/clientes/agregar_clientes.php" class="selected">
+            <a href="/resources/views/admin/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
@@ -90,7 +90,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <h4>Prestamos</h4>
                 </div>
             </a>
-            <a href="/resources/views/admin/creditos/prestamos.php">
+            <a href="/resources/views/admin/creditos/prestamos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
