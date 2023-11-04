@@ -200,126 +200,48 @@ a.selected{
     margin: 0 auto; /* Centra la imagen horizontalmente en su contenedor */
 }
 
-/* Encabezado */
-h1 {
-    text-align: center;
-    margin: 20px 0;
-    color: #333;
-}
 
-/* Contenedor del perfil */
-.profile-container {
+h1{
+    text-align: center;
+    margin-bottom: 20px;
+}
+ 
+.search-container {
     display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Alinea los elementos al inicio */
-    margin: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-content: center;  
+    margin: 20px 0;
 }
-
-/* Imagen del perfil */
-.profile-image {
-    padding: 30px;
-    text-align: center;
+.search-input {
     flex: 1;
-}
-
-.profile-image img {
-    max-width: 100%;
-    max-height: 200px; /* Ajusta la altura máxima según tus preferencias */
-    border-radius: 50%;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.profile-image img.zoomed {
-    transform: scale(1.5); /* Hace zoom en la imagen al 120% de su tamaño original */
-}
-
-/* Detalles del perfil */
-.profile-details {
-    padding: 20px;
-    text-align: left; 
-    flex: 2;
-    margin: 10px; 
-    background-color: #e0e0e0; 
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.profile-details h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.profile-details p {
-    margin-bottom: 10px;
-    color: #050505;
     font-size: 16px;
 }
-
-/* Préstamos del cliente */
-.profile-loans {
-    margin: 20px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.profile-loans h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-/* Tabla de préstamos */
 table {
     width: 100%;
     border-collapse: collapse;
-}
-
-table th, table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #818080;
-}
-
-table th {
-    background-color: #969595;
-    color: #333;
-    font-size: 18px;
-}
-
-/* Enlace para gestionar préstamos */
-.manage-loans {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.manage-loans a {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
+    background-color: var(--color-fondo-tabla);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    font-size: 18px;
-    transition: background-color 0.3s;
+    color: var(--color-fondo-texto);
 }
-
-.manage-loans a:hover {
-    background-color: #0056b3;
+th, td {
+    padding: 10px; 
+    text-align: left; 
 }
-
+th {
+    background-color: var(--color-cuadros);
+    color: var(--color-fondo-texto);
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+ 
+ 
 @media screen and (max-width: 600px) {
     .cuadros-container {
         flex-direction: column;
     }
-
     .cuadro {
         width: 100%;
         max-width: 100%;
@@ -336,9 +258,3 @@ table th {
     
     
 }
-
-
-
-
-
-
