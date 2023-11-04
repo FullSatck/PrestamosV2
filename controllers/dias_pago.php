@@ -53,15 +53,15 @@ if (isset($_SESSION["usuario_id"])) {
                 echo "<div class='container'>";
                 echo "<h1>Fechas de Pago</h1>"; 
                 echo "<table>";
-                echo "<tr><th>Frecuencia</th><th>Fecha</th><th>Cuota</th><th>Frecuencia de Pago</th><th>Estado del Pago</th></tr>";
+                echo "<tr><th>Frecuencia</th><th>Fecha</th><th>Cuota</th><th>Frecuencia de Pago</th><th>Pagado</th></tr>";
                 $numeroFecha = 1;
                 foreach ($fechasPago as $fecha) {
                     $frecuencia = obtenerFrecuencia($frecuenciaPago, $numeroFecha);
                     $fechaFormato = $fecha->format("Y-m-d");
 
                     // Preparar la consulta SQL para verificar si la cuota ha sido pagada
-                    $stmt = $conexion->prepare("SELECT FechaPago, MontoPagado FROM historial_pagos WHERE FechaPago = ? AND MontoPagado = ? AND IDCliente = ?");
-                    $stmt->bind_param("sdi", $fechaFormato, $cuota, $_SESSION["usuario_id"]);
+                    $stmt = $conexion->prepare("SELECT FechaPago, MontoPagado FROM historial_pagos WHERE FechaPago = ? AND MontoPagado = ? AND IDPrestamo = ?");
+                    $stmt->bind_param("sdi", $fechaFormato, $cuota, $idPrestamo);
                     $stmt->execute();
                     $resultPago = $stmt->get_result();
 
@@ -70,11 +70,28 @@ if (isset($_SESSION["usuario_id"])) {
                         $estadoPago = "Pagado";
                     }
 
+                    // Verificar si el cliente es clavo
+                    $clienteClavo = false;
+                    $fechaActual = new DateTime();
+                    $fechaCuota = new DateTime($fechaFormato);
+                    if ($fechaActual > $fechaCuota && $estadoPago === "No Pagado") {
+                        $clienteClavo = true;
+                    }
+
                     echo "<tr><td>$frecuencia</td><td>$fechaFormato</td><td>$cuota</td><td>$frecuenciaPago</td><td>$estadoPago</td></tr>";
                     $numeroFecha++;
                 }
                 echo "</table>";
                 echo "</div>";
+
+                // Marcar al cliente como clavo si es necesario
+                if ($clienteClavo) {
+                    // Actualizar el estado del cliente en la base de datos
+                    $stmt = $conexion->prepare("UPDATE clientes SET clavo = 'sí' WHERE ID = ?");
+                    $stmt->bind_param("i", $_SESSION["usuario_id"]);
+                    $stmt->execute();
+                    echo "<p>Este cliente es clavo.</p>";
+                }
             } else {
                 echo "ID de préstamo no válido.";
             }
