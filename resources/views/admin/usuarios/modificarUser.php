@@ -118,7 +118,7 @@ if (isset($_GET['id'])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/admin/inicio/inicio.php" class="selected">
+            <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -132,7 +132,7 @@ if (isset($_GET['id'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/admin/usuarios/crudusuarios.php">
+            <a href="/resources/views/admin/usuarios/crudusuarios.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>

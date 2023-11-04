@@ -55,7 +55,7 @@ if (isset($_GET['clienteId'])) {
 
     <div class="options__menu">
 
-        <a href="/resources/views/admin/inicio/inicio.php" class="selected">
+        <a href="/resources/views/admin/inicio/inicio.php">
             <div class="option">
                 <i class="fa-solid fa-landmark" title="Inicio"></i>
                 <h4>Inicio</h4>
@@ -83,7 +83,7 @@ if (isset($_GET['clienteId'])) {
             </div>
         </a>
 
-        <a href="/resources/views/admin/clientes/lista_clientes.php">
+        <a href="/resources/views/admin/clientes/lista_clientes.php" class="selected">
             <div class="option">
                 <i class="fa-solid fa-people-group" title=""></i>
                 <h4>Clientes</h4>

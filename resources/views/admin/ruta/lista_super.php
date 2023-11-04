@@ -49,7 +49,7 @@ if (isset($_GET['mensaje'])) {
 
             <div class="options__menu">
 
-                <a href="/resources/views/admin/inicio/inicio.php" class="selected">
+                <a href="/resources/views/admin/inicio/inicio.php">
                     <div class="option">
                         <i class="fa-solid fa-landmark" title="Inicio"></i>
                         <h4>Inicio</h4>
@@ -116,7 +116,7 @@ if (isset($_GET['mensaje'])) {
                     </div>
                 </a>
 
-                <a href="/resources/views/admin/abonos/lista_super.php">
+                <a href="/resources/views/admin/abonos/lista_super.php" class="selected">
                     <div class="option">
                         <i class="fa-solid fa-map" title=""></i>
                         <h4>Ruta</h4>

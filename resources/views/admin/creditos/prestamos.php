@@ -43,7 +43,7 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/admin/inicio/inicio.php" class="selected">
+            <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -78,7 +78,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/admin/clientes/agregar_clientes.php">
+            <a href="/resources/views/admin/clientes/agregar_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>

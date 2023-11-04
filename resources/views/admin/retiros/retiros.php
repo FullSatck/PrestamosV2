@@ -77,7 +77,7 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
 
         <div class="options__menu">
 
-            <a href="/resources/views/admin/inicio/inicio.php" class="selected">
+            <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -157,7 +157,7 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
                     <h4>Abonos</h4>
                 </div>
             </a>
-            <a href="/resources/views/admin/retiros/retiros.php">
+            <a href="/resources/views/admin/retiros/retiros.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>

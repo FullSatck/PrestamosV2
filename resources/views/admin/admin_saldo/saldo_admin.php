@@ -42,14 +42,14 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/admin/inicio/inicio.php" class="selected">
+            <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
+            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-dollar" title=""></i>
                     <h4>Saldo Incial</h4>
