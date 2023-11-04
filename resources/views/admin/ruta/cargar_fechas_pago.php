@@ -1,4 +1,16 @@
+
 <?php
+session_start();
+
+// Verifica si el usuario está autenticado
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../index.php");
+    exit();
+}
+
 // Incluye tu archivo de conexión a la base de datos
 include("../../../../controllers/conexion.php");
 
@@ -10,7 +22,7 @@ if (isset($_GET['zona'])) {
     $nombreZona = $_GET['zona'];
 
     // Consulta SQL para seleccionar las filas de la tabla fechas_pago solo para la zona especificada y la fecha actual
-    $sql = "SELECT * FROM fechas_pago WHERE Zona = '$nombreZona' AND FechaPago = '$fecha_actual' ORDER BY IDPrestamo";
+    $sql = "SELECT * FROM fechas_pago WHERE Zona = '$nombreZona' AND fechaPago = '$fecha_actual' ORDER BY IDPrestamo";
     $resultado = $conexion->query($sql);
 
     $fechas_pago = array();

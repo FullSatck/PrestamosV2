@@ -178,11 +178,7 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
     </main>
 
-    <script>
-    // Agregar un evento clic al botón
-    document.getElementById("volverAtras").addEventListener("click", function() {
-        window.history.back();
-    });
+   
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
