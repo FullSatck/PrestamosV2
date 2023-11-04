@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // El cliente no existe, devuelve una respuesta que indica que no existe
         $respuesta = array(
             "existe" => false
-        );
+        ); 
 
         echo json_encode($respuesta);
     }

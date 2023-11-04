@@ -212,6 +212,28 @@ h1 {
     /* Reducción del relleno para pantallas más pequeñas */
 }
 
+/* Estilos para el mensaje */
+.mensaje {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.mensaje-exito {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.mensaje-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
 .container {
     max-width: 100%;
     /* Ajuste al ancho de la pantalla */

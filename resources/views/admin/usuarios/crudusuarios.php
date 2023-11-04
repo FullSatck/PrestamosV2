@@ -8,15 +8,7 @@ if (!isset($_SESSION["usuario_id"])) {
     header("Location: ../../../../index.php");
     exit();
 }
-
-// Verificar si se ha pasado un mensaje en la URL
-$mensaje = "";
-if (isset($_GET['mensaje'])) {
-    $mensaje = $_GET['mensaje'];
-}
-
-
-
+ 
 // Consulta para obtener la lista de usuarios
 $usuariosSQL = $conexion->query("SELECT * FROM usuarios");
 
@@ -152,6 +144,16 @@ if ($usuariosSQL === false) {
 
     <main>
         <h1>Listado de Usuarios</h1>
+
+        <?php
+if (isset($_GET['mensaje'])) {
+    $claseMensaje = strpos($_GET['mensaje'], 'Error') !== false ? 'mensaje-error' : 'mensaje-exito';
+    echo "<p class='mensaje $claseMensaje'>" . $_GET['mensaje'] . "</p>";
+}
+?>
+
+
+
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
@@ -180,18 +182,18 @@ if ($usuariosSQL === false) {
                 <td><?= $datos->Zona ?></td>
                 <td><?= $datos->RolID ?></td>
                 <td><?= $datos->Estado ?></td>
-                
+
                 <td>
 
                 <td>
                     <a href="modificarUser.php?id=<?= $datos->ID ?>">
                         <i class="fas fa-pencil-alt"></i> Modificar
                     </a>
-                  
-                    </td>
+
+                </td>
                 <td>
-                  <!-- Enlace para cambiar el estado -->
-                  <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>">
+                    <!-- Enlace para cambiar el estado -->
+                    <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>">
                         <i class="fas <?= $datos->Estado == 'activo' ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
                         <?= $datos->Estado == 'activo' ? 'Desactivar' : 'Activar' ?>
                     </a>

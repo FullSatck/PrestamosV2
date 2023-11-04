@@ -1,6 +1,4 @@
 <?php
-
- 
 session_start();
 include("../../../../controllers/conexion.php");
 
@@ -12,9 +10,7 @@ if (isset($_SESSION["usuario_id"])) {
     header("Location: ../../../../index.php");
     exit();
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,18 +22,17 @@ if (isset($_SESSION["usuario_id"])) {
     <title>Registrar Usuario</title>
 
     <link rel="stylesheet" href="/public/assets/css/registrar_usuarios.css">
-   
-
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body id="body">
 
-    <header>
+<header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-    </header>
+    </header> 
 
     <div class="menu__side" id="menu_side">
 
@@ -139,11 +134,8 @@ if (isset($_SESSION["usuario_id"])) {
 
     </div>
     <script src="/public/assets/js/MenuLate.js"></script>
-   
-
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
     <main>
         <!-- Contenido principal -->
         <main>
@@ -155,8 +147,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
                 <div class="input-container">
                     <label for "apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido"
-                        required>
+                    <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido" required>
                 </div>
                 <div class="input-container">
                     <label for="email">Correo Electrónico:</label>
@@ -164,23 +155,22 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
                 <div class="input-container">
                     <label for="contrasena">Contraseña:</label>
-                    <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave"
-                        required>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
                 </div>
                 <div class="input-container">
                     <label for="zona">Zona:</label>
                     <select id="zona" name="zona" required>
                         <?php
-                    // Incluye el archivo de conexión a la base de datos
-                    include("../../../../controllers/conexion.php");
-                    // Consulta SQL para obtener las zonas
-                    $consultaZonas = "SELECT ID, Nombre FROM zonas";
-                    $resultZonas = mysqli_query($conexion, $consultaZonas);
-                    // Genera las opciones del menú desplegable para Zona
-                    while ($row = mysqli_fetch_assoc($resultZonas)) {
-                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
-                    }
-                    ?>
+                        // Incluye el archivo de conexión a la base de datos
+                        include("../../../../controllers/conexion.php");
+                        // Consulta SQL para obtener las zonas
+                        $consultaZonas = "SELECT ID, Nombre FROM zonas";
+                        $resultZonas = mysqli_query($conexion, $consultaZonas);
+                        // Genera las opciones del menú desplegable para Zona
+                        while ($row = mysqli_fetch_assoc($resultZonas)) {
+                            echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                        }
+                        ?>
                     </select>
                 </div>
 
@@ -188,21 +178,20 @@ if (isset($_SESSION["usuario_id"])) {
                     <label for="RolID">Rol:</label>
                     <select id="RolID" name="RolID" required>
                         <?php
-                    // Consulta SQL para obtener las opciones de roles
-                    $consultaRoles = "SELECT ID, Nombre FROM Roles";
-                    $resultRoles = mysqli_query($conexion, $consultaRoles);
-                    // Genera las opciones del menú desplegable para Rol
-                    while ($row = mysqli_fetch_assoc($resultRoles)) {
-                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
-                    }
-                    ?>
+                        // Consulta SQL para obtener las opciones de roles
+                        $consultaRoles = "SELECT ID, Nombre FROM Roles";
+                        $resultRoles = mysqli_query($conexion, $consultaRoles);
+                        // Genera las opciones del menú desplegable para Rol
+                        while ($row = mysqli_fetch_assoc($resultRoles)) {
+                            echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                        }
+                        ?>
                     </select>
                 </div>
 
                 <div class="input-container" id="saldo-inicial-container" style="display: none;">
                     <label for="saldo-inicial">Saldo Inicial:</label>
-                    <input type="text" id="saldo-inicial" name="saldo-inicial"
-                        placeholder="Por favor ingrese el saldo inicial">
+                    <input type="text" id="saldo-inicial" name="saldo-inicial" placeholder="Por favor ingrese el saldo inicial">
                 </div>
 
                 <div class="btn-container">
@@ -214,7 +203,6 @@ if (isset($_SESSION["usuario_id"])) {
     </main>
 
     <script>
-    // Agrega un evento para detectar cambios en la selección del rol
     $(document).ready(function() {
         $("#RolID").on("change", function() {
             var selectedRole = $(this).val();
@@ -226,10 +214,7 @@ if (isset($_SESSION["usuario_id"])) {
             }
         });
     });
-    
     </script>
-
-
 
 </body>
 

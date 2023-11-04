@@ -154,6 +154,13 @@ $resultado = $conexion->query($sql);
     <main>
         <h1>Listado de Clientes</h1>
 
+        <?php
+if (isset($_GET['mensaje'])) {
+    echo "<p class='mensaje'>" . $_GET['mensaje'] . "</p>";
+}
+?>
+
+
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
@@ -183,7 +190,7 @@ $resultado = $conexion->query($sql);
                 <td><?= $fila["Domicilio"] ?></td>
                 <td><?= $fila["Telefono"] ?></td>
                 <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td> 
+                <td><?= $fila["Moneda"] ?></td>
                 <td><?= $fila["ZonaAsignada"] ?></td>
                 <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td>
                 <td>
