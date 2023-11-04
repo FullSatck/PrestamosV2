@@ -143,7 +143,7 @@ $result = $conexion->query($sql);
     <main>
     <main>
 
-        <h1>Comisiones totales</h1>
+        <h1>Comisiones totaless</h1>
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
