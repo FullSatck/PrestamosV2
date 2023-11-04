@@ -211,9 +211,8 @@ a.selected{
 }
 
 h1 {
-    text-align: center;
-    background-color: #747474;
-    color: #fff;
+    text-align: center; 
+    color: #000000;
     padding: 20px;
     margin: 0;
 } 
