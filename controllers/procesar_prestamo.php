@@ -11,6 +11,8 @@ $moneda_id = $_POST['moneda_id'];
 $fecha_inicio = $_POST['fecha_inicio'];
 $frecuencia_pago = $_POST['frecuencia_pago'];
 $zona = $_POST['zona'];
+$aplicar_comision = $_POST['aplicar_comision']; // Recuperar la selección del usuario sobre la comisión
+$valor_comision = isset($_POST['valor_comision']) ? floatval($_POST['valor_comision']) : 0; // Recuperar el valor de la comisión del formulario
 
 // Validar que la tasa de interés sea un número válido
 if (!is_numeric($tasa_interes)) {
@@ -21,8 +23,13 @@ if (!is_numeric($tasa_interes)) {
 // Calcular el monto total a pagar (sin la comisión)
 $monto_total = $monto + ($monto * $tasa_interes / 100);
 
-// Calcular la comisión como el 10% del monto total a pagar
-$comision = $monto_total * 0.10;
+// Inicializar la comisión
+$comision = 0;
+
+// Si el usuario eligió aplicar comisión, calcularla basada en el valor ingresado
+if ($aplicar_comision === 'si') {
+    $comision = $monto_total * ($valor_comision / 100);
+}
 
 // Calcular el monto de cada cuota
 $cuota = $monto_total / $plazo;

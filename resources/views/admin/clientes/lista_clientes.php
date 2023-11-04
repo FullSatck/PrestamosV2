@@ -154,9 +154,7 @@ $resultado = $conexion->query($sql);
     <main>
         <h1>Clientes Activados</h1>
 
-
-
-
+        
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">

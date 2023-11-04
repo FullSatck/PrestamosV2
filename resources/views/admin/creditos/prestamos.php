@@ -144,7 +144,7 @@ if (isset($_SESSION["usuario_id"])) {
         <h1>Solicitud de Préstamo</h1><br><br>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="/controllers/procesar_prestamo.php" method="POST" class="form-container">
-        <?php
+            <?php
     // Incluir el archivo de conexión a la base de datos
     include("../../../../controllers/conexion.php");
 
@@ -207,20 +207,37 @@ if (isset($_SESSION["usuario_id"])) {
         ?>
             </select><br>
 
+            <label for="aplicar_comision">Aplicar Comisión:</label>
+            <select name="aplicar_comision" id="aplicar_comision" onchange="toggleComision()">
+                <option value="no">No</option>
+                <option value="si">Sí</option>
+            </select><br>
+
+            <div id="comision_container" style="display: none;">
+                <label for="valor_comision">Comisión (%):</label>
+                <input type="text" name="valor_comision" id="valor_comision"><br>
+            </div>
+
             <div class="result-container">
                 <h2>Resultados</h2>
                 <p>Monto Total a Pagar: <span id="monto_a_pagar">0.00</span></p>
                 <p>Plazo: <span id="plazo_mostrado">0 días</span></p>
                 <p>Frecuencia de Pago: <span id="frecuencia_pago_mostrada">Diario</span></p>
                 <p>Cantidad a Pagar por Cuota: <span id="cantidad_por_cuota">0.00</span></p>
-                <p>Moneda: <span id="moneda_simbolo">USD</span></p>
-                <input type="hidden" name="comision" value="10"> <!-- Establecer la comisión como 10% por defecto -->
+                <p>Moneda: <span id="moneda_simbolo">USD</span></p> 
             </div>
 
             <input type="submit" value="Hacer préstamo" class="calcular-button">
         </form>
 
     </main>
+    <script>
+    function toggleComision() {
+        var aplicarComision = document.getElementById('aplicar_comision').value;
+        var comisionContainer = document.getElementById('comision_container');
+        comisionContainer.style.display = (aplicarComision === 'si') ? 'block' : 'none';
+    }
+    </script>
     <script src="/menu/main.js"></script>
     <script>
     function calcularMontoPagar() {
