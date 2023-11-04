@@ -115,12 +115,10 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <div class="boton2">
-            <a href="/controllers/cerrar_sesion.php" class="botonn">
-                <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                <span class="spann">Cerrar Sesion</span>
-            </a>
-        </div>
+        <a href="/controllers/cerrar_sesion.php" class="botonn">
+            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+            <span class="spann">Cerrar Sesion</span>
+        </a>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -234,18 +232,19 @@ mysqli_close($conexion);
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $  $totalIngresos </span>" ?></p>
+                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?></p>
                 </div>
             </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="##" class="titulo">Contabilidad</a>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 2, '.', ',') . "</span>"; ?>
+                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
                     </p>
                 </div>
             </div>

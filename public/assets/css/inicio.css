@@ -29,12 +29,12 @@ header{
     z-index: 200;
 }
 
-.boton2{
-    border-right: 40px;
+h1{
+  text-align: center;
 }
-
+ 
 /* Estilo base para el enlace */
-.botonn {
+.botonn { 
     text-decoration: none;
     color: #fff;
     background-color: #3498db;

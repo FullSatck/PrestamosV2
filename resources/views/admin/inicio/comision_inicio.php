@@ -165,8 +165,8 @@ $result = $conexion->query($sql);
                     <tr>
                         <td><?php echo $row['ID']; ?></td>
                         <td><?php echo $row['NombreCliente']; ?></td>
-                        <td><?php echo number_format($row['MontoAPagar'], 2); ?></td>
-                        <td><?php echo number_format($row['Comision'], 2); ?></td>
+                        <td><?php echo number_format($row['MontoAPagar'], 0, '.', '.'); ?></td>
+                        <td><?php echo number_format($row['Comision'], 0, '.', '.'); ?></td>
                     </tr>
                 <?php endwhile; ?>
             <?php else: ?>
@@ -174,7 +174,7 @@ $result = $conexion->query($sql);
                     <td colspan="4">No hay préstamos registrados.</td>
                 </tr>
             <?php endif; ?>
-        </tbody>
+        </tbody> 
     </table>
 
 
