@@ -33,7 +33,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["usuario_id"]) && isse
         $mensaje = "Error al actualizar el estado en la base de datos.";
     }
 }
+
+// Consulta para obtener la lista de usuarios
+$usuariosSQL = $conexion->query("SELECT * FROM usuarios");
+
+if ($usuariosSQL === false) {
+    die("Error en la consulta SQL: " . $conexion->error);
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["usuario_id"]) && isse
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Usuarios</title>
-
     <link rel="stylesheet" href="/public/assets/css/lista_usuarios.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
@@ -176,18 +184,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["usuario_id"]) && isse
                 <th>Acciones</th>
             </tr>
             <?php
-            $sql = $conexion->query("SELECT * FROM usuarios");
-
-            if ($sql === false) {
-                die("Error en la consulta SQL: " . $conexion->error);
-            }
-
-            if ($sql->num_rows > 0) {
-                $rowCount = 0;
-                while ($datos = $sql->fetch_object()) {
-                    $rowCount++;
+            if ($usuariosSQL->num_rows > 0) {
+                while ($datos = $usuariosSQL->fetch_object()) {
                     ?>
-                    <tr class="row<?= $rowCount ?>">
+                    <tr>
                         <td><?= "REC 100" . $datos->ID ?></td>
                         <td><?= $datos->Nombre ?></td>
                         <td><?= $datos->Apellido ?></td>
@@ -197,11 +197,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["usuario_id"]) && isse
                         <td>
                             <form class="estado-form" action="" method="POST">
                                 <input type="hidden" name="usuario_id" value="<?= $datos->ID ?>">
-                                <select name="nuevo_estado">
-                                    <option value="Activo" <?php if ($datos->Estado == 'Activo') echo 'selected'; ?>>Activo</option>
-                                    <option value="Inactivo" <?php if ($datos->Estado == 'Inactivo') echo 'selected'; ?>>Inactivo</option>
+                                <select name="nuevo_estado" onchange="this.form.submit()">
+                                    <option value="Activo" <?= $datos->Estado == 'Activo' ? 'selected' : '' ?>>Activo</option>
+                                    <option value="Inactivo" <?= $datos->Estado == 'Inactivo' ? 'selected' : '' ?>>Inactivo</option>
                                 </select>
-                                <button type="submit">Cambiar</button>
                             </form>
                         </td>
                         <td>
@@ -245,8 +244,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["usuario_id"]) && isse
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
-
-
 
 </body>
 
