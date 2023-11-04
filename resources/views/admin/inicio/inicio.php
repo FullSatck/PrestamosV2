@@ -113,7 +113,7 @@ mysqli_close($conexion);
 
     <header>
         <div class="icon__menu">
-            <i class="fas fa-bars" id="btn_open"></i>
+            <i class="fas fa-bars" id="btn_open"></i> 
             
         </div>
 
