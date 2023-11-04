@@ -15,24 +15,7 @@ if (isset($_GET['mensaje'])) {
     $mensaje = $_GET['mensaje'];
 }
 
-// Procesar el formulario de cambio de estado
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["usuario_id"]) && isset($_POST["nuevo_estado"])) {
-    $usuarioID = $_POST["usuario_id"];
-    $nuevoEstado = $_POST["nuevo_estado"];
 
-    // Actualiza el estado en la base de datos
-    $updateSQL = $conexion->prepare("UPDATE usuarios SET Estado = ? WHERE ID = ?");
-    $updateSQL->bind_param("si", $nuevoEstado, $usuarioID);
-
-    if ($updateSQL->execute()) {
-        // Éxito en la actualización, redirige de nuevo a esta página
-        header("Location: crudusuarios.php?mensaje=Estado actualizado correctamente.");
-        exit();
-    } else {
-        // Error en la actualización
-        $mensaje = "Error al actualizar el estado en la base de datos.";
-    }
-}
 
 // Consulta para obtener la lista de usuarios
 $usuariosSQL = $conexion->query("SELECT * FROM usuarios");
@@ -195,14 +178,7 @@ if ($usuariosSQL === false) {
                         <td><?= $datos->Zona ?></td>
                         <td><?= $datos->RolID ?></td>
                         <td>
-                            <form class="estado-form" action="" method="POST">
-                                <input type="hidden" name="usuario_id" value="<?= $datos->ID ?>">
-                                <select name="nuevo_estado" onchange="this.form.submit()">
-                                    <option value="Activo" <?= $datos->Estado == 'Activo' ? 'selected' : '' ?>>Activo</option>
-                                    <option value="Inactivo" <?= $datos->Estado == 'Inactivo' ? 'selected' : '' ?>>Inactivo</option>
-                                </select>
-                            </form>
-                        </td>
+                           
                         <td>
                             <a href="modificarUser.php?id=<?= $datos->ID ?>">
                                 <i class="fas fa-pencil-alt"></i> Modificar

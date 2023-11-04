@@ -333,7 +333,37 @@ table th {
             width: 80px;
             left: -80px;
         }
-    
+
+  
+
+    /* Ajustes para el perfil */
+    .profile-container {
+        flex-direction: column; /* Colocar elementos uno debajo del otro */
+    }
+
+    .profile-image, .profile-details {
+        width: 90%; /* Ajustar el ancho para dispositivos móviles */
+        margin: 10px auto; /* Centrar y agregar margen */
+    }
+
+    .profile-image img {
+        max-height: 150px; /* Ajustar la altura de la imagen */
+    }
+
+    /* Ajustes para las tablas */
+    table {
+        display: block;
+        overflow-x: auto; /* Hacer la tabla desplazable horizontalmente */
+    }
+
+    /* Ajustes para fuentes y botones */
+    body, p, h1, h2, a {
+        font-size: 16px; /* Aumentar el tamaño de la fuente */
+    }
+
+    .manage-loans a {
+        padding: 15px 30px; /* Aumentar el tamaño de los botones */
+    }
     
 }
 

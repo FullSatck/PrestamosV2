@@ -13,8 +13,8 @@ $conexion = new mysqli($servidor, $usuario, $contrasena, $dbnombre);
 
 //      if ($conexion->connect_error) {
 //          echo" error de conexion";
-//     }
-//   else { 
-//          echo" conexion efectiva ";
+//      }
+//    else { 
+//           echo" conexion efectiva ";
 //     }
 
