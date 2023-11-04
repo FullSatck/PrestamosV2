@@ -14,7 +14,7 @@ $zona = $_POST['zona'];
 
 // Validar que la tasa de interés sea un número válido
 if (!is_numeric($tasa_interes)) {
-    echo "La tasa de interés no es válida.";
+    header('Location: ../resources/views/admin/creditos/prestamos.php?mensaje=La tasa de interés no es válida.');
     exit; // Detener la ejecución
 }
 
@@ -45,9 +45,13 @@ if ($conexion->query($sql) === TRUE) {
         $conexion->query($sql_fecha_pago);
     }
 
-    echo "Solicitud de préstamo realizada con éxito. Monto Total a Pagar: $monto_total. Cada cuota es de: $cuota. Comisión: $comision";
+    // Redirigir al usuario a crudprestamo.php con un mensaje de éxito
+    header('Location: ../resources/views/admin/creditos/crudPrestamos.php?mensaje=Solicitud de préstamo realizada con éxito');
+    exit;
 } else {
-    echo "Error al solicitar el préstamo: " . $conexion->error;
+    // Redirigir al usuario a crudprestamo.php con un mensaje de error
+    header('Location: ../resources/views/admin/creditos/crudPrestamos.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
+    exit;
 }
 
 // Cerrar la conexión a la base de datos
@@ -82,7 +86,7 @@ function calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago) {
 // Función para calcular las fechas de pago
 function calcularFechasPago($fecha_inicio, $frecuencia_pago, $plazo, $id_prestamo, $zona) {
     $fechasPago = array();
-    $fecha = new DateTime($fecha_inicio);
+    $fecha = new DateTime($fecha_inicio); 
 
     for ($i = 0; $i < $plazo; $i++) {
         $fechasPago[] = clone $fecha;
