@@ -200,7 +200,23 @@ a.selected{
     margin: 0 auto; /* Centra la imagen horizontalmente en su contenedor */
 }
 
-
+button {
+    background-color: rgb(131, 127, 127);
+    border: none; 
+    padding: 10px 16px; 
+    border-radius: 20px; 
+  }
+  
+  
+  button a {
+    text-decoration: none; 
+    color: #fff; 
+  }
+  
+  
+  button:hover {
+    background-color: rgb(129, 118, 118);
+  }
 
 /* Estilos generales */
 
@@ -276,12 +292,18 @@ h1 {
 }
 
 /* Estilos para la tabla */
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    max-width: 100%;
 }
 
 th,
