@@ -1,60 +1,70 @@
 <?php
-// Asegúrate de que la sesión esté iniciada
 session_start();
 
 // Incluye el archivo de conexión a la base de datos
 include("conexion.php");
 
 // Obtiene los datos del formulario
-$email = $_POST["email"];
-$contrasena = $_POST["contrasena"];
+$email = mysqli_real_escape_string($conexion, $_POST["email"]);
+$contrasena = mysqli_real_escape_string($conexion, $_POST["contrasena"]);
 
 // Realiza la consulta a la base de datos
-$query = "SELECT * FROM usuarios WHERE Email = '$email' AND Password = '$contrasena'";
-$result = mysqli_query($conexion, $query);
+$query = "SELECT * FROM usuarios WHERE Email = ? AND Password = ? AND Estado = 'activo'";
+$stmt = $conexion->prepare($query);
+$stmt->bind_param("ss", $email, $contrasena);
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Comprueba si la consulta devuelve algún registro
-if (mysqli_num_rows($result) > 0) {
-    // La consulta devuelve un registro
-    $row = mysqli_fetch_assoc($result);
+if ($row = $result->fetch_assoc()) {
+    // Guarda los datos del usuario en la sesión
+    $_SESSION["usuario_id"] = $row["ID"];
+    $_SESSION["nombre"] = $row["Nombre"];
+    $_SESSION["rol"] = $row["RolID"];
+    $_SESSION['user_zone'] = $row['Zona'];
 
-    // Comprueba si el usuario existe y está activo
-    if ($row && $row["Estado"] == 'activo') {
-        // Guarda los datos del usuario en la sesión
-        $_SESSION["usuario_id"] = $row["ID"];
-        $_SESSION["nombre"] = $row["Nombre"];
-        $_SESSION["rol"] = $row["RolID"];
-
-        // Redirige a la página correspondiente según el rol del usuario
-        switch ($_SESSION["rol"]) {
-            case 1: // Rol de administrador
-                header("Location: /resources/views/admin/inicio/inicio.php");
+    // Redirige a la página correspondiente según el rol y la zona del usuario
+    if ($_SESSION["rol"] == 1) { // admin
+        header("Location: /resources/views/admin/inicio/inicio.php");
+    } else if ($_SESSION["rol"] == 2) { // supervisor
+        switch ($_SESSION['user_zone']) {
+            case 'Zona1':
+                header("Location: /supervisor_zona1_dashboard.php");
                 break;
-            case 2: // Rol de supervisor
-                header("Location: /resources/views/supervisor/inicio/inicio.php");
+            case 'Zona2':
+                header("Location: /supervisor_zona2_dashboard.php");
                 break;
-            case 3: // Rol de cobrador
-                header("Location: /resources/views/cobrador/inicio/inicio.php");
-                break;
+            // ... y así sucesivamente para las demás zonas
             default:
-                // Redirige a una página por defecto si el rol no se encuentra
-                header("Location: default_dashboard.php");
+                header("Location: /supervisor_default_dashboard.php");
+                break;
+        }
+    } else if ($_SESSION["rol"] == 3) { // cobrador
+        switch ($_SESSION['user_zone']) {
+            case 'Zona1':
+                header("Location: /cobrador_zona1_dashboard.php");
+                break;
+            case 'Zona2':
+                header("Location: /cobrador_zona2_dashboard.php");
+                break;
+            // ... y así sucesivamente para las demás zonas
+            default:
+                header("Location: /cobrador_default_dashboard.php");
                 break;
         }
     } else {
-        // Mensaje de error si el usuario no existe o está inactivo
-        $error_message = "Credenciales incorrectas o usuario inactivo. Por favor, inténtelo de nuevo.";
+        // Redirige a una página por defecto si el rol no se encuentra
+        header("Location: /default_dashboard.php");
     }
+    exit();
 } else {
-    // La consulta no devuelve ningún registro
-    $error_message = "Credenciales incorrectas. Por favor, inténtelo de nuevo.";
+    // Credenciales incorrectas o usuario inactivo
+    $_SESSION['error_message'] = "Credenciales incorrectas o usuario inactivo.";
+    header("Location: /login_page.php");
+    exit();
 }
 
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
-
-// Muestra el mensaje de error
-if (isset($error_message)) {
-    echo $error_message;
-}
+// Cierra la declaración y la conexión a la base de datos
+$stmt->close();
+$conexion->close();
 ?>

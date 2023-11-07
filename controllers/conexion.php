@@ -1,20 +1,21 @@
-<?php 
-//conexion al servidor con usuario y contraseña y base de datos 
+<?php
+// Conexión al servidor con usuario, contraseña y base de datos
 $servidor = "localhost";
 $usuario = "root";
 $contrasena = "";
 $dbnombre = "prestamos";
 
-//crear la conexion
-
+// Crear la conexión
 $conexion = new mysqli($servidor, $usuario, $contrasena, $dbnombre);
 
-// // //comprobar la conexion 
-
-//      if ($conexion->connect_error) {
-//          echo" error de conexion";
-//      }
-//    else { 
-//           echo" conexion efectiva ";
-//     }
-
+// Comprobar la conexión
+if ($conexion->connect_error) {
+    die("Error de conexión: " . $conexion->connect_error);
+}
+// Puedes descomentar las siguientes líneas para confirmar que la conexión es efectiva
+/*
+else {
+    echo "Conexión efectiva";
+}
+*/
+?>

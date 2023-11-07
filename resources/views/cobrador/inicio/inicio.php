@@ -120,7 +120,7 @@ mysqli_close($conexion);
                     </a>
                 </li>
                 <li>
-                    <a href="/resources/views/supervisor/clientes/lista_clientes.php">
+                    <a href="/resources/views/cobrador/clientes/lista_clientes.php">
                         <ion-icon name="people-circle-outline"></ion-icon>
                         <span>Clientes</span>
                     </a>
