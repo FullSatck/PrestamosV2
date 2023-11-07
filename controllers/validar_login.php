@@ -28,8 +28,8 @@ if ($row = $result->fetch_assoc()) {
         header("Location: /resources/views/admin/inicio/inicio.php");
     } else if ($_SESSION["rol"] == 2) { // supervisor
         switch ($_SESSION['user_zone']) {
-            case 'Zona1':
-                header("Location: /supervisor_zona1_dashboard.php");
+            case '1-aguascalientes':
+                header("Location: /resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php");
                 break;
             case 'Zona2':
                 header("Location: /supervisor_zona2_dashboard.php");
@@ -42,7 +42,7 @@ if ($row = $result->fetch_assoc()) {
     } else if ($_SESSION["rol"] == 3) { // cobrador
         switch ($_SESSION['user_zone']) {
             case 'Zona1':
-                header("Location: /cobrador_zona1_dashboard.php");
+                header("Location: /resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php");
                 break;
             case 'Zona2':
                 header("Location: /cobrador_zona2_dashboard.php");
