@@ -10,7 +10,8 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.Identifica
                p.ID AS IDPrestamo, p.TasaInteres, p.FechaInicio, p.FechaVencimiento, p.Zona, p.MontoAPagar, p.Cuota
         FROM clientes c
         LEFT JOIN prestamos p ON c.ID = p.IDCliente
-        WHERE c.ID = $clienteId";
+        WHERE c.ZonaAsignada = 'Aguascalientes'";
+
 
 $resultado = $conexion->query($sql);
 
