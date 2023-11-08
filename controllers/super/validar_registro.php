@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["registrar_usuario"])) 
             $ultimoID = mysqli_insert_id($conexion); // Obtiene el ID del último usuario insertado
 
             // Si el rol es supervisor, inserta el saldo inicial en la tabla retiros
-            if ($rol == 2) {
+            if ($rol == 3) {
                 $fechaActual = date("Y-m-d H:i:s");
                 $insertSaldoInicial = "INSERT INTO retiros (IDUsuario, Monto, Fecha) 
                                        VALUES ($ultimoID, $saldoInicial, '$fechaActual')";
