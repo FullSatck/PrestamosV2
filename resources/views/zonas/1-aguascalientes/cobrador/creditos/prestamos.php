@@ -129,7 +129,7 @@ if (isset($_SESSION["usuario_id"])) {
             include("../../../../../../controllers/conexion.php");
 
             // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT ID, Nombre FROM Clientes";
+            $query_clientes = "SELECT ID, Nombre FROM Clientes WHERE ZonaAsignada = 'Aguascalientes'";
             $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
             $query_zonas = "SELECT Nombre FROM Zonas WHERE Nombre = 'Aguascalientes'";
 
@@ -137,7 +137,7 @@ if (isset($_SESSION["usuario_id"])) {
             $result_monedas = $conexion->query($query_monedas);
             $result_zonas = $conexion->query($query_zonas);
             ?>
-            <label for="id_cliente">Cliente:</label>
+         <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php
                 while ($row = $result_clientes->fetch_assoc()) {
