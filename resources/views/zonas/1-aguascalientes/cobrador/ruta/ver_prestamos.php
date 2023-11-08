@@ -23,7 +23,7 @@ if (isset($_GET['mensaje'])) {
 }
 
 // Conectar a la base de datos
-include("../../../../controllers/conexion.php");
+include("../../../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener los préstamos de la zona especificada con el nombre del cliente
 $sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID WHERE P.Zona = ?");
@@ -41,9 +41,9 @@ if ($sql === false) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <title>Listado de Préstamos</title>
 </head>

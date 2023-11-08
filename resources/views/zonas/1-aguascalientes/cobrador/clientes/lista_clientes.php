@@ -168,7 +168,7 @@ $resultado = $conexion->query($sql);
                 <td><?= $fila["ZonaAsignada"] ?></td>
                 <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                 <td><a
-                        href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                        href="/resources/views/zonas/1-aguascalientes/cobrador/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
                 </td>
             </tr>
             <?php } ?>

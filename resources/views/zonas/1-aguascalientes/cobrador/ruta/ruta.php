@@ -12,7 +12,7 @@ if (isset($_SESSION["usuario_id"])) {
 
 
   // Incluye tu archivo de conexión a la base de datos
-  include("../../../../controllers/conexion.php");
+  include("../../../../../../controllers/conexion.php");
 
   // Obtener el nombre de la zona desde la URL
   if (isset($_GET['zona'])) {
