@@ -10,12 +10,22 @@
 </head>
 <body>
    <div class="container">
+   
         <div class="login-box">
             <div class="logo">
                 <img src="/public/assets/img/logo.png" alt="Logo" class="logo-image">
             </div>
             <h1 class="title">¡Bienvenido!</h1>
             <form action="/controllers/validar_login.php" method="post">
+            <div class="error-message" id="error-message">
+    <?php
+    session_start();
+    if (isset($_SESSION['error_message'])) {
+        echo '<p class="error">' . $_SESSION['error_message'] . '</p>';
+        unset($_SESSION['error_message']); // Limpia el mensaje de error después de mostrarlo
+    }
+    ?>
+</div>
                 <div class="input-container">
                     <label for="email" class="label">Correo electrónico:</label>
                     <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
@@ -44,5 +54,14 @@
             togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
         });
     </script>
+    <script>
+    // Obtén la referencia al elemento de mensaje de error
+    const errorMessage = document.getElementById('error-message');
+
+    // Función para ocultar el mensaje de error después de 5 segundos (5000 milisegundos)
+    setTimeout(function () {
+        errorMessage.style.display = 'none';
+    }, 2000); // Cambia 5000 a la cantidad de milisegundos que desees para ajustar el tiempo de visualización
+</script>
 </body>
 </html>

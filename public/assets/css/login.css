@@ -111,3 +111,14 @@ input {
   margin-top: 10px;
   text-decoration: none;
 }
+.error-message {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 16px;
+  color: #e20000;
+ 
+ 
+} 
