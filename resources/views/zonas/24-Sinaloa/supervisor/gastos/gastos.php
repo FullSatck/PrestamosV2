@@ -6,7 +6,7 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 }
 
@@ -18,12 +18,12 @@ if (isset($_SESSION["usuario_id"])) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/gastos.css">
-    <title>Lista de Gastos</title>
-    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <title>Lista de Gastos</title> 
 </head>
 
 <body id="body">
@@ -47,87 +47,77 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/admin/inicio/inicio.php">
+        <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a>
+            </a> 
 
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Incial</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/admin/usuarios/registrar.php">
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/admin/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/admin/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
-            <a href="/resources/views/admin/creditos/crudPrestamos.php">
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
-            <a href="/resources/views/admin/creditos/prestamos.php">
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a>
-            <a href="/resources/views/admin/cobros/cobros.php">
-                <div class="option">
-                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
-                    <h4>Zonas de cobro</h4>
-                </div>
-            </a>
+            </a> 
 
-            <a href="/resources/views/admin/gastos/gastos.php" class="selected">
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/admin/ruta/lista_super.php">
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/admin/abonos/abonos.php">
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
-            <a href="/resources/views/admin/retiros/retiros.php">
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
@@ -147,12 +137,13 @@ if (isset($_SESSION["usuario_id"])) {
         <h1>Lista de Gastos</h1>
         <?php
 // Incluye la configuración de conexión a la base de datos
-include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
+include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
 // Realiza la consulta para obtener los gastos con el nombre de la zona
 $sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
         FROM Gastos G
-        INNER JOIN Zonas Z ON G.IDZona = Z.ID";
+        INNER JOIN Zonas Z ON G.IDZona = Z.ID
+        WHERE IDZona = 1";
 $resultado = $conexion->query($sql);
 
 // Crear una tabla HTML para mostrar las columnas de las filas
