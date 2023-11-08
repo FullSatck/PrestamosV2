@@ -11,20 +11,11 @@ if (isset($_SESSION["usuario_id"])) {
 }
 
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
-?>
-
-<?php
-// Incluir el archivo de conexión a la base de datos
-include("../../../../../../controllers/conexion.php");
-
-// Consulta SQL para obtener todos los clientes con el nombre de la moneda
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
-        FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Aguascalientes'";
-
-$resultado = $conexion->query($sql);
+// Verificar si se ha pasado un mensaje en la URL
+$mensaje = "";
+if (isset($_GET['mensaje'])) {
+    $mensaje = $_GET['mensaje'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,8 +26,8 @@ $resultado = $conexion->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
-    <title>Listado de Clientes</title>
+    <link rel="stylesheet" href="/public/assets/css/lista_super.css">
+    <title>Abonos</title>
 </head>
 
 <body id="body">
@@ -135,73 +126,72 @@ $resultado = $conexion->query($sql);
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Listado de Clientes</h1>
+        <!-- Botón para volver a la página anterior -->
+        <h1 class="text-center">Listado de Cobradores</h1>
 
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+        <div class="container-fluid">
+
+            <!-- Resto del código de la tabla -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Zona</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                include("../../../../../../controllers/conexion.php");
+                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 3 AND Zonas.ID = 1"); // Filtra por el ID del rol de supervisor (2)
+                
+                // Verificar si la preparación de la consulta fue exitosa
+                if ($sql === false) {
+                    die("La preparación de la consulta SQL falló: " . $conexion->error);
+                }
+                
+                // Ejecutar la consulta
+                if (!$sql->execute()) {
+                    die("La ejecución de la consulta SQL falló: " . $sql->error);
+                }
+
+                $result = $sql->get_result();
+                $rowCount = 0; // Contador de filas
+                while ($datos = $result->fetch_object()) { 
+                    $rowCount++; // Incrementar el contador de filas
+                    ?>
+                    <tr class="row<?= $rowCount ?>">
+                        <td><?= "REC 100" .$datos->ID ?></td>
+                        <td><?= $datos->Nombre ?></td>
+                        <td><?= $datos->Apellido ?></td>
+                        <td><?= $datos->Zona ?></td>
+                        <td><?= $datos->Rol ?></td>
+                        <td>
+                            <!-- Botón para ver los cobradores de la zona -->
+                            <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver
+                                Prestamos</a>
+                            <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
         </div>
 
-        <?php if ($resultado->num_rows > 0) { ?>
-            
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Domicilio</th>
-                <th>Teléfono</th>
-                <th>Referencias Personales</th>
-                <th>Moneda Preferida</th>
-                <th>Zona Asignada</th>
-                <th>Acciones</th>
-                <th>Pagos</th>
-            </tr>
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-            <tr>
-                <td><?= "REC 100" .$fila["ID"] ?></td>
-                <td><?= $fila["Nombre"] ?></td>
-                <td><?= $fila["Apellido"] ?></td>
-                <td><?= $fila["Domicilio"] ?></td>
-                <td><?= $fila["Telefono"] ?></td>
-                <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
-                <td><?= $fila["ZonaAsignada"] ?></td>
-                <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                <td><a
-                        href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                </td>
-            </tr>
-            <?php } ?>
-        </table>
-        <?php } else { ?>
-        <p>No se encontraron clientes en la base de datos.</p>
-        <?php } ?>
+        <!-- Paginación -->
+        <div id="pagination" class="text-center">
+            <ul class="pagination">
+                <!-- Los botones de paginación se generarán aquí -->
+            </ul>
+        </div>
+        </div>
     </main>
 
-    <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
+    <script src="/public/assets/js/MenuLate.js"></script>
 
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
-
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
-    </script>
-
-   <script src="/public/assets/js/MenuLate.js"></script>
 </body>
 
 </html>

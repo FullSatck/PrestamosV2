@@ -6,37 +6,56 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+    header("Location: ../../../../index.php");
     exit();
 }
 
 
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
-?>
+  // Incluye tu archivo de conexión a la base de datos
+  include("../../../../controllers/conexion.php");
 
-<?php
-// Incluir el archivo de conexión a la base de datos
-include("../../../../../../controllers/conexion.php");
+  // Obtener el nombre de la zona desde la URL
+  if (isset($_GET['zona'])) {
+      $nombreZona = $_GET['zona'];
+  }
 
-// Consulta SQL para obtener todos los clientes con el nombre de la moneda
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
-        FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Aguascalientes'";
-
-$resultado = $conexion->query($sql);
+  // Verifica si se ha proporcionado una zona válida
+  if (isset($_GET['zona'])) {
+      $nombreZona = $_GET['zona'];
+  } else {
+      // Maneja el caso donde no se proporcionó una zona válida
+      echo "Zona no especificada.";
+  }
+  
+  // Manejar la solicitud POST para actualizar el orden
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      // Obtener el nuevo orden desde la solicitud POST
+      $nuevoOrden = $_POST["nuevoOrden"];
+      
+      // Actualizar el orden en la base de datos (debes adaptar esto a tu estructura)
+      $sqlUpdate = "UPDATE nueva_lista_pagos SET Orden = ? WHERE Zona = ?";
+      $stmt = $conexion->prepare($sqlUpdate);
+      $stmt->bind_param("is", $nuevoOrden, $nombreZona);
+      
+      if ($stmt->execute()) {
+          echo "Nuevo orden actualizado con éxito.";
+      } else {
+          echo "Error al actualizar el nuevo orden: " . $conexion->error;
+      }
+      
+      $stmt->close();
+  }
+  $conexion->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
+<html>
+
 <head>
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
-    <title>Listado de Clientes</title>
+    <title>Lista de Fechas de Pago</title>
+    <link rel="stylesheet" href="/public/assets/css/ruta.css">
 </head>
 
 <body id="body">
@@ -67,7 +86,6 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-          
 
             <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php">
                 <div class="option">
@@ -135,73 +153,39 @@ $resultado = $conexion->query($sql);
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Listado de Clientes</h1>
-
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+        <div id="fechasPagoContainer">
+            <!-- Aquí se mostrará la lista de fechas de pago en tiempo real -->
         </div>
-
-        <?php if ($resultado->num_rows > 0) { ?>
-            
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Domicilio</th>
-                <th>Teléfono</th>
-                <th>Referencias Personales</th>
-                <th>Moneda Preferida</th>
-                <th>Zona Asignada</th>
-                <th>Acciones</th>
-                <th>Pagos</th>
-            </tr>
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-            <tr>
-                <td><?= "REC 100" .$fila["ID"] ?></td>
-                <td><?= $fila["Nombre"] ?></td>
-                <td><?= $fila["Apellido"] ?></td>
-                <td><?= $fila["Domicilio"] ?></td>
-                <td><?= $fila["Telefono"] ?></td>
-                <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
-                <td><?= $fila["ZonaAsignada"] ?></td>
-                <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                <td><a
-                        href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                </td>
-            </tr>
-            <?php } ?>
-        </table>
-        <?php } else { ?>
-        <p>No se encontraron clientes en la base de datos.</p>
-        <?php } ?>
     </main>
 
     <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
-
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
-
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
+        // Agregar un evento clic al botón
+        document.getElementById("volverAtras").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    // Función para cargar y mostrar las fechas de pago en tiempo real
+    function cargarFechasDePago() {
+        $.ajax({
+            url: 'cargar_fechas_pago.php?zona=<?php echo $nombreZona; ?>',
+            method: 'GET',
+            success: function(data) {
+                $('#fechasPagoContainer').html(data);
             }
         });
-    });
-    </script>
+    }
 
-   <script src="/public/assets/js/MenuLate.js"></script>
+    // Cargar las fechas de pago al cargar la página
+    cargarFechasDePago();
+
+    // Actualizar las fechas de pago cada 30 segundos
+    setInterval(cargarFechasDePago, 30000); // 30,000 milisegundos = 30 segundos
+    </script>
+     <script src="/public/assets/js/MenuLate.js"></script>
+
 </body>
 
 </html>

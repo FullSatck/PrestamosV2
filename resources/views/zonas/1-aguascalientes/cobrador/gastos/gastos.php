@@ -14,19 +14,6 @@ if (isset($_SESSION["usuario_id"])) {
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
-<?php
-// Incluir el archivo de conexión a la base de datos
-include("../../../../../../controllers/conexion.php");
-
-// Consulta SQL para obtener todos los clientes con el nombre de la moneda
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
-        FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Aguascalientes'";
-
-$resultado = $conexion->query($sql);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,8 +22,8 @@ $resultado = $conexion->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
-    <title>Listado de Clientes</title>
+    <link rel="stylesheet" href="/public/assets/css/gastos.css">
+    <title>Lista de Gastos</title> 
 </head>
 
 <body id="body">
@@ -67,8 +54,7 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-          
-
+      
             <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
@@ -135,73 +121,59 @@ $resultado = $conexion->query($sql);
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Listado de Clientes</h1>
+        <h1>Lista de Gastos</h1>
+        <?php
+// Incluye la configuración de conexión a la base de datos
+include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-        </div>
+// Realiza la consulta para obtener los gastos con el nombre de la zona
+$sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
+        FROM Gastos G
+        INNER JOIN Zonas Z ON G.IDZona = Z.ID
+        WHERE IDZona = 1";
+$resultado = $conexion->query($sql);
 
-        <?php if ($resultado->num_rows > 0) { ?>
-            
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Domicilio</th>
-                <th>Teléfono</th>
-                <th>Referencias Personales</th>
-                <th>Moneda Preferida</th>
-                <th>Zona Asignada</th>
-                <th>Acciones</th>
-                <th>Pagos</th>
-            </tr>
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-            <tr>
-                <td><?= "REC 100" .$fila["ID"] ?></td>
-                <td><?= $fila["Nombre"] ?></td>
-                <td><?= $fila["Apellido"] ?></td>
-                <td><?= $fila["Domicilio"] ?></td>
-                <td><?= $fila["Telefono"] ?></td>
-                <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
-                <td><?= $fila["ZonaAsignada"] ?></td>
-                <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                <td><a
-                        href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                </td>
-            </tr>
-            <?php } ?>
-        </table>
-        <?php } else { ?>
-        <p>No se encontraron clientes en la base de datos.</p>
-        <?php } ?>
+// Crear una tabla HTML para mostrar las columnas de las filas
+echo '<table>';
+echo '<tr>';
+echo '<th>ID</th>';
+echo '<th>Zona</th>';
+echo '<th>Fecha</th>';
+echo '<th>Descripción</th>';
+echo '<th>Valor</th>';
+echo '</tr>';
+
+// Verifica si hay gastos en la base de datos
+if ($resultado->num_rows > 0) {
+    // Si hay gastos, itera a través de los resultados y muestra cada gasto
+    while ($fila = $resultado->fetch_assoc()) {
+        echo '<tr>';
+        echo '<td>' . $fila['ID'] . '</td>';
+        echo '<td>' . $fila['NombreZona'] . '</td>';
+        echo '<td>' . $fila['Fecha'] . '</td>';
+        echo '<td>' . $fila['Descripcion'] . '</td>'; 
+        echo "<td>" . number_format($fila['Valor'], 0, '.', '.') . "</td>"; // Formatear el monto
+        echo '</tr>';
+    }
+} else {
+    // Si no hay gastos, muestra una fila con celdas vacías
+    echo '<tr>';
+    echo '<td colspan="5">No se encontraron gastos en la base de datos.</td>';
+    echo '</tr>';
+}
+
+echo '</table>';
+
+// Cierra la conexión a la base de datos
+$conexion->close();
+?>
     </main>
 
-    <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
 
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
 
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
 
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
-    </script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
-   <script src="/public/assets/js/MenuLate.js"></script>
 </body>
 
 </html>
