@@ -36,7 +36,7 @@ if ($row = $result->fetch_assoc()) {
         // Valida la zona del usuario
         if (preg_match("/1/", $_SESSION['user_zone'])) {
             // El usuario es un cobrador de Aguascalientes
-            header("Location: /resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php");
+            header("Location: /resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php");
         } else if (preg_match("/Zona2/", $_SESSION['user_zone'])) {
 
             // El usuario es un cobrador de Zona2
