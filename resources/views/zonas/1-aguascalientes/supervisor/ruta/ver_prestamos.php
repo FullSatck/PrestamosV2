@@ -48,108 +48,102 @@ if ($sql === false) {
     <title>Listado de Préstamos</title>
 </head>
 
-<body>
-    <div class="menu">
-        <ion-icon name="menu-outline"></ion-icon>
-        <ion-icon name="close-circle-outline"></ion-icon>
-    </div>
-    <div class="barra-lateral">
-        <div>
-            <div class="nombre-pagina">
-                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
-                <span>Recaudo</span>
-            </div>
-            <button class="boton" id="volverAtras"> 
-                <ion-icon name="arrow-undo-outline"></ion-icon>
-                <span>&nbsp;Volver</span>
-            </button>
+<body id="body"> 
+
+    <header>
+        <div class="icon__menu">
+            <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <nav class="navegacion">
-            <ul> 
-                <li>
-                    <a href="/resources/views/admin/inicio/inicio.php">
-                        <ion-icon name="home-outline"></ion-icon>
-                        <span>Inicio</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
-                        <ion-icon name="people-outline"></ion-icon>
-                        <span>Usuarios</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/usuarios/registrar.php">
-                        <ion-icon name="person-add-outline"></ion-icon>
-                        <span>Registrar Usuario</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/clientes/lista_clientes.php">
-                        <ion-icon name="people-circle-outline"></ion-icon>
-                        <span>Clientes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
-                        <ion-icon name="person-circle-outline"></ion-icon>
-                        <span>Registrar Clientes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
-                        <ion-icon name="list-outline"></ion-icon>
-                        <span>Prestamos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/creditos/prestamos.php">
-                        <ion-icon name="cloud-upload-outline"></ion-icon>
-                        <span>Registrar Prestamos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/cobros/cobros.php">
-                        <ion-icon name="planet-outline"></ion-icon>
-                        <span>Zonas de cobro</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/gastos/gastos.php">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span>Gastos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/abonos/lista_super.php" class="hola">
-                        <ion-icon name="map-outline"></ion-icon>
-                        <span>Ruta</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/abonos/abonos.php">
-                        <ion-icon name="cloud-download-outline"></ion-icon>
-                        <span>Abonos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/retiros/retiros.php">
-                        <ion-icon name="cloud-done-outline"></ion-icon>
-                        <span>Retiros</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    </header>
 
-        <div>
-            <div class="linea"></div>
+    <div class="menu__side" id="menu_side">
 
-            <div class="modo-oscuro">
-            <div class="info">
-                    <ion-icon name="arrow-back-outline"></ion-icon>
-                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+            <h4>Recaudo</h4>
+        </div>
+
+        <div class="options__menu">
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php">
+                <div class="option">
+                    <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <h4>Inicio</h4>
                 </div>
-            </div>
+            </a> 
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/lista_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-people-group" title=""></i>
+                    <h4>Clientes</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/agregar_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-tag" title=""></i>
+                    <h4>Registrar Clientes</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/crudPrestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                    <h4>Prestamos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                    <h4>Registrar Prestamos</h4>
+                </div>
+            </a> 
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/gastos/gastos.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <h4>Gastos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/ruta/lista_super.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/abonos.php">
+                <div class="option">
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <h4>Abonos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Retiros</h4>
+                </div>
+            </a>
+
+
+
         </div>
 
     </div>
@@ -204,9 +198,7 @@ if ($sql === false) {
         window.history.back();
     });
     </script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="/menu/main.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 
