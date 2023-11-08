@@ -6,11 +6,12 @@ include '../../../../../../controllers/conexion.php';
 $clienteId = $_GET["clienteId"];
 
 // Prepara y ejecuta la consulta para obtener datos del cliente y préstamo
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.IdentificacionCURP, c.ZonaAsignada,
+$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.IdentificacionCURP, c.ZonaAsignada, c.Estado,
                p.ID AS IDPrestamo, p.TasaInteres, p.FechaInicio, p.FechaVencimiento, p.Zona, p.MontoAPagar, p.Cuota
         FROM clientes c
         LEFT JOIN prestamos p ON c.ID = p.IDCliente
         WHERE c.ID = $clienteId";
+
 
 $resultado = $conexion->query($sql);
 
@@ -22,7 +23,7 @@ if ($resultado->num_rows > 0) {
     echo json_encode($fila);
 } else {
     echo "No se encontraron datos del cliente y préstamo.";
-}
+}S
 
 // Cierra la conexión a la base de datos
 $conexion->close();
