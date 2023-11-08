@@ -27,21 +27,20 @@ if ($row = $result->fetch_assoc()) {
     if ($_SESSION["rol"] == 1) { // admin
         header("Location: /resources/views/admin/inicio/inicio.php");
 
-
 // SUPERVISOR 
 
     } else if ($_SESSION["rol"] == 2) { // supervisor
         // Valida la zona del usuario
-        if (preg_match("/01/", $_SESSION['user_zone'])) {
+        if (preg_match("/1-aguascalientes/", $_SESSION['user_zone'])) {
            // El usuario es un supervisor de Aguascalientes
            header("Location: /resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php");
-        } else if (preg_match("/02/", $_SESSION['user_zone'])) {
+        } else if (preg_match("/2-baja_california/", $_SESSION['user_zone'])) {
             // El usuario es un supervisor de Zona2
             header("Location: /resources/views/zonas/2-baja_california/supervisor/inicio/inicio.php");
-        } else if (preg_match("/03/", $_SESSION['user_zone'])) {
+        } else if (preg_match("/3-BajaCaliforniaSur/", $_SESSION['user_zone'])) {
             // El usuario es un supervisor de Zona3
             header("Location: /resources/views/zonas/3-BajaCaliforniaSur/supervisor/inicio/inicio.php");
-        } else if (preg_match("/04/", $_SESSION['user_zone'])) {
+        } else if (preg_match("/4/", $_SESSION['user_zone'])) {
             // El usuario es un supervisor de Zona4
             header("Location: /resources/views/zonas/4-Campeche/supervisor/inicio/inicio.php");
         } else if (preg_match("/5/", $_SESSION['user_zone'])) {
