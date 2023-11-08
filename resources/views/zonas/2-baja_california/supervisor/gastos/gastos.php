@@ -143,7 +143,7 @@ include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ru
 $sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
         FROM Gastos G
         INNER JOIN Zonas Z ON G.IDZona = Z.ID
-        WHERE IDZona = 1";
+        WHERE IDZona = 2";
 $resultado = $conexion->query($sql);
 
 // Crear una tabla HTML para mostrar las columnas de las filas
