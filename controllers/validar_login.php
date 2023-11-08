@@ -38,10 +38,10 @@ if ($row = $result->fetch_assoc()) {
         } else if (preg_match("/2/", $_SESSION['user_zone'])) {
             // El usuario es un supervisor de Zona2
             header("Location: /resources/views/zonas/2-baja_california/supervisor/inicio/inicio.php");
-        } else if (preg_match("/03/", $_SESSION['user_zone'])) {
+        } else if (preg_match("/3/", $_SESSION['user_zone'])) {
             // El usuario es un supervisor de Zona3
             header("Location: /resources/views/zonas/3-BajaCaliforniaSur/supervisor/inicio/inicio.php");
-        } else if (preg_match("/04/", $_SESSION['user_zone'])) {
+        } else if (preg_match("/4/", $_SESSION['user_zone'])) {
             // El usuario es un supervisor de Zona4
             header("Location: /resources/views/zonas/4-Campeche/supervisor/inicio/inicio.php");
         } else if (preg_match("/5/", $_SESSION['user_zone'])) {
