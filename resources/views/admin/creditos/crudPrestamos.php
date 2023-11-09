@@ -191,6 +191,7 @@ if (isset($_GET['mensaje'])) {
                     <div class="search-container">
                         <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
                         <button><a href="prestamosDesactivados.php" class="btn btn-primary">Desactivados</a></button>
+                        
                     </div>
 
 

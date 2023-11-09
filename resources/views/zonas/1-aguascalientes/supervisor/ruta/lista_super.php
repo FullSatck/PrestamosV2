@@ -7,7 +7,7 @@ require_once '../../../../../../controllers/conexion.php';
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location:../../../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión

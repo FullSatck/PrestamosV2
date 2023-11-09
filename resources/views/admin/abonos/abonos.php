@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-// Incluye el archivo de conexión a la base de datos (ajusta la ruta según sea necesario)
-require_once '../../../../controllers/conexion.php'; // Cambia esta ruta por la ubicación real de tu archivo de conexión
+// Validacion de rol para ingresar a la pagina 
+require_once '../../../../controllers/conexion.php'; 
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -41,8 +41,6 @@ if (!isset($_SESSION["usuario_id"])) {
     
    
 }
-
-
 
 ?>
 

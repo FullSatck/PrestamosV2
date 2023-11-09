@@ -2,9 +2,13 @@
 // Incluye tu archivo de conexión a la base de datos
 include '../../../../controllers/conexion.php';
 
-// Obtén el ID del cliente desde la solicitud GET
-$clienteId = $_GET["clienteId"];
-
+// Comprueba si se ha establecido el ID del cliente y es un número
+if (isset($_GET["clienteId"]) && is_numeric($_GET["clienteId"])) {
+    $clienteId = (int)$_GET["clienteId"];
+} else {
+    echo json_encode(array("error" => "ID de cliente no proporcionado o inválido."));
+    exit;
+}
 
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.IdentificacionCURP, c.ZonaAsignada, c.Estado,
                p.ID AS IDPrestamo, p.TasaInteres, p.FechaInicio, p.FechaVencimiento, p.Zona, p.MontoAPagar, p.Cuota
@@ -12,17 +16,19 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.Identifica
         LEFT JOIN prestamos p ON c.ID = p.IDCliente
         WHERE c.ID = $clienteId";
 
-$resultado = $conexion->query($sql);
-
-if ($resultado->num_rows > 0) {
-    $fila = $resultado->fetch_assoc();
-    if ($fila['Estado'] == 1) { // Verifica si el cliente está activo
-        echo json_encode($fila);
+if ($resultado = $conexion->query($sql)) {
+    if ($resultado->num_rows > 0) {
+        $fila = $resultado->fetch_assoc();
+        if ($fila['Estado'] == 1) {
+            echo json_encode($fila);
+        } else {
+            echo json_encode(array("error" => "Cliente inactivo"));
+        }
     } else {
-        echo json_encode(array("error" => "Cliente inactivo"));
+        echo json_encode(array("error" => "No se encontraron datos del cliente y préstamo."));
     }
 } else {
-    echo json_encode(array("error" => "No se encontraron datos del cliente y préstamo."));
+    echo json_encode(array("error" => "Error en la consulta SQL: " . $conexion->error));
 }
 
 $conexion->close();
