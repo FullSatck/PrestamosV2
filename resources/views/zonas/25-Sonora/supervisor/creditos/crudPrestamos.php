@@ -21,110 +21,110 @@ if (isset($_SESSION["usuario_id"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z"
-        crossorigin="anonymous"></script> 
+        crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/assets/css/crudpresta.css"> 
+    <link rel="stylesheet" href="/public/assets/css/crudpresta.css">
     <title>CRUD de Préstamos</title>
 
-    <body id="body"> 
+<body id="body">
 
-<header>
-    <div class="icon__menu">
-        <i class="fas fa-bars" id="btn_open"></i>
+    <header>
+        <div class="icon__menu">
+            <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+    </header>
+
+    <div class="menu__side" id="menu_side">
+
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+            <h4>Recaudo</h4>
+        </div>
+
+        <div class="options__menu">
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/inicio/inicio.php">
+                <div class="option">
+                    <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <h4>Inicio</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/clientes/lista_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-people-group" title=""></i>
+                    <h4>Clientes</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/clientes/agregar_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-tag" title=""></i>
+                    <h4>Registrar Clientes</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/creditos/crudPrestamos.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                    <h4>Prestamos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                    <h4>Registrar Prestamos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/gastos/gastos.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <h4>Gastos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/ruta/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/abonos/abonos.php">
+                <div class="option">
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <h4>Abonos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/25-Sonora/supervisor/retiros/retiros.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Retiros</h4>
+                </div>
+            </a>
+
+
+
+        </div>
+
     </div>
-</header>
-
-<div class="menu__side" id="menu_side">
-
-    <div class="name__page">
-        <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-        <h4>Recaudo</h4>
-    </div>
-
-    <div class="options__menu">
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/inicio/inicio.php">
-            <div class="option">
-                <i class="fa-solid fa-landmark" title="Inicio"></i>
-                <h4>Inicio</h4>
-            </div>
-        </a> 
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/usuarios/crudusuarios.php">
-            <div class="option">
-                <i class="fa-solid fa-users" title=""></i>
-                <h4>Usuarios</h4>
-            </div>
-        </a>
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/usuarios/registrar.php">
-            <div class="option">
-                <i class="fa-solid fa-user-plus" title=""></i>
-                <h4>Registrar Usuario</h4>
-            </div>
-        </a>
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/clientes/lista_clientes.php">
-            <div class="option">
-                <i class="fa-solid fa-people-group" title=""></i>
-                <h4>Clientes</h4>
-            </div>
-        </a>
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/clientes/agregar_clientes.php">
-            <div class="option">
-                <i class="fa-solid fa-user-tag" title=""></i>
-                <h4>Registrar Clientes</h4>
-            </div>
-        </a>
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/creditos/crudPrestamos.php" class="selected">
-            <div class="option">
-                <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                <h4>Prestamos</h4>
-            </div>
-        </a>
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/creditos/prestamos.php">
-            <div class="option">
-                <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                <h4>Registrar Prestamos</h4>
-            </div>
-        </a> 
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/gastos/gastos.php">
-            <div class="option">
-                <i class="fa-solid fa-sack-xmark" title=""></i>
-                <h4>Gastos</h4>
-            </div>
-        </a>
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/ruta/lista_super.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Ruta</h4>
-            </div>
-        </a>
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/abonos/abonos.php">
-            <div class="option">
-                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                <h4>Abonos</h4>
-            </div>
-        </a>
-
-        <a href="/resources/views/zonas/25-Sonora/supervisor/retiros/retiros.php">
-            <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
-                <h4>Retiros</h4>
-            </div>
-        </a>
-
-
-
-    </div>
-
-</div>
 
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
@@ -153,8 +153,8 @@ if (isset($_SESSION["usuario_id"])) {
                                         <th scope="col">Monto</th>
                                         <th scope="col">Interés</th>
                                         <th scope="col">Plazo</th>
-                                        <th scope="col">Moneda</th> 
-                                        <th scope="col">Estado</th> 
+                                        <th scope="col">Moneda</th>
+                                        <th scope="col">Estado</th>
                                         <th scope="col">Zona</th>
                                         <th scope="col">Deuda</th>
                                         <th scope="col">Frecuencia</th>
@@ -165,7 +165,12 @@ if (isset($_SESSION["usuario_id"])) {
                                 <tbody>
                                     <?php
                             include("../../../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Aguascalientes'");
+                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota 
+                         FROM prestamos 
+                         JOIN clientes ON prestamos.IDCliente = clientes.ID 
+                         WHERE prestamos.Zona = 'Sonora'
+                         ORDER BY prestamos.FechaVencimiento DESC");
+
                             while ($datos = $sql->fetch_object()) { ?>
                                     <tr>
                                         <td><?= $datos->ID ?></td>
@@ -173,13 +178,16 @@ if (isset($_SESSION["usuario_id"])) {
                                         <td><?= $datos->Monto ?></td>
                                         <td><?= $datos->TasaInteres ?></td>
                                         <td><?= $datos->Plazo ?></td>
-                                        <td><?= $datos->MonedaID ?></td> 
-                                        <td class="estado"><?= $datos->Estado ?></td> 
+                                        <td><?= $datos->MonedaID ?></td>
+                                        <td class="estado"><?= $datos->Estado ?></td>
                                         <td><?= $datos->Zona ?></td>
                                         <td><?= $datos->MontoAPagar ?></td>
                                         <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
-                                        <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td> <!-- Formatear MontoCuota -->
-                                        <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>"><ion-icon name="help-circle-outline"></ion-icon></a></td>
+                                        <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
+                                        <!-- Formatear MontoCuota -->
+                                        <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>">
+                                                <ion-icon name="help-circle-outline"></ion-icon>
+                                            </a></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -214,7 +222,7 @@ if (isset($_SESSION["usuario_id"])) {
         });
     });
     </script>
-     <script src="/public/assets/js/MenuLate.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 

@@ -53,11 +53,11 @@ if ($conexion->query($sql) === TRUE) {
     }
 
     // Redirigir al usuario a crudprestamo.php con un mensaje de éxito
-    header('Location: ../../resources/views/admin/creditos/crudPrestamos.php?mensaje=Solicitud de préstamo realizada con éxito');
+    header('Location: ../../../resources/views/zonas/1-aguascalientes/supervisor/creditos/crudPrestamos.php?mensaje=Solicitud de préstamo realizada con éxito');
     exit;
 } else {
     // Redirigir al usuario a crudprestamo.php con un mensaje de error
-    header('Location: ../../resources/views/admin/creditos/crudPrestamos.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
+    header('Location: ../../../resources/views/zonas/1-aguascalientes/supervisor/creditos/crudPrestamos.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
     exit;
 }
 

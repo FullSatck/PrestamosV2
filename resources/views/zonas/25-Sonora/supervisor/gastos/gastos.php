@@ -32,8 +32,8 @@ if (isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/resources/views/supervisor/gastos/agregar_gasto.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+        <a href="/resources/views/zonas/25-Sonora/supervisor/gastos/agregar_gasto.php" class="botonn">
+            <i class="fa-solid fa-plus-minus"></i>
             <span class="spann">Agregar Gasto</span>
         </a>
     </header>
@@ -143,7 +143,8 @@ include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ru
 $sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
         FROM Gastos G
         INNER JOIN Zonas Z ON G.IDZona = Z.ID
-        WHERE IDZona = 1";
+        WHERE IDZona = 25
+        ORDER BY G.ID DESC";
 $resultado = $conexion->query($sql);
 
 // Crear una tabla HTML para mostrar las columnas de las filas
