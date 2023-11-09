@@ -1,6 +1,6 @@
 <?php
 // Incluye tu archivo de conexión a la base de datos
-include("../../../../controllers/conexion.php");
+include("../../../../../../controllers/conexion.php");
 
 // Obtener la fecha actual en el formato de tu base de datos (por ejemplo, 'Y-m-d')
 $fecha_actual = date('Y-m-d');

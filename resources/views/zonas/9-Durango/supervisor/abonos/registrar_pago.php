@@ -1,6 +1,7 @@
 <?php
+session_start();
 // Incluir el archivo de conexión a la base de datos
-include '../../../../controllers/conexion.php';
+include '../../../../../../controllers/conexion.php';
 
 // Obtener los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
