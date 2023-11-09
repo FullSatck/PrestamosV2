@@ -132,7 +132,7 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
-        <form action="/controllers/super/procesar_prestamo/procesar_prestamo1.php" method="POST" class="form-container">
+        <form action="/controllers/super/procesar_prestamos/procesar_prestamo25.php" method="POST" class="form-container">
             <?php
             // Incluir el archivo de conexión a la base de datos
             include("../../../../../../controllers/conexion.php");
@@ -140,7 +140,7 @@ if (isset($_SESSION["usuario_id"])) {
             // Obtener la lista de clientes, monedas y zonas desde la base de datos
             $query_clientes = "SELECT ID, Nombre FROM Clientes";
             $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
-            $query_zonas = "SELECT Nombre FROM Zonas WHERE Nombre = 'Aguascalientes'";
+            $query_zonas = "SELECT Nombre FROM Zonas WHERE Nombre = 'Sonora'";
 
             $result_clientes = $conexion->query($query_clientes);
             $result_monedas = $conexion->query($query_monedas);
