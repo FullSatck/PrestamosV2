@@ -118,63 +118,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/retiros/retiros.php">
+            <a href="/resources/views/zonas/5-Chiapas/cobrador/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
