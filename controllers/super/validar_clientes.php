@@ -1,5 +1,5 @@
 <?php
-require_once("conexion.php"); // Incluye el archivo de conexión
+include '../conexion.php'; // Incluye el archivo de conexión
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recuperar datos del formulario
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conexion, $sql)) {
             // Redirige al usuario a la página de agregar zona con un mensaje de confirmación
-            header('Location: ../resources/views/admin/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
+            header('Location: ../../resources/views/zonas/1-aguascalientes/supervisor/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
             exit;
         } else {
             echo "Error al registrar el cliente: " . mysqli_error($conexion);

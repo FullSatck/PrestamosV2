@@ -1,6 +1,6 @@
 <?php
 // Incluir el archivo de conexión a la base de datos
-include 'conexion.php';
+include '../conexion.php';
 
 // Recuperar los datos del formulario
 $id_cliente = $_POST['id_cliente'];
@@ -11,26 +11,34 @@ $moneda_id = $_POST['moneda_id'];
 $fecha_inicio = $_POST['fecha_inicio'];
 $frecuencia_pago = $_POST['frecuencia_pago'];
 $zona = $_POST['zona'];
+$aplicar_comision = $_POST['aplicar_comision']; // Recuperar la selección del usuario sobre la comisión
+$valor_comision = isset($_POST['valor_comision']) ? floatval($_POST['valor_comision']) : 0; // Recuperar el valor de la comisión del formulario
 
 // Validar que la tasa de interés sea un número válido
 if (!is_numeric($tasa_interes)) {
-    echo "La tasa de interés no es válida.";
+    header('Location: ../../resources/views/zonas/1-aguascalientes/supervisor/creditos/prestamos.php?mensaje=La tasa de interés no es válida.');
     exit; // Detener la ejecución
 }
 
-// Calcular la fecha de vencimiento en función de la frecuencia de pago y el plazo
-$fecha_vencimiento = calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago);
-
-// Calcular el monto total a pagar
-// Fórmula: Monto Total a Pagar = Monto + (Monto * Tasa de Interés / 100)
+// Calcular el monto total a pagar (sin la comisión)
 $monto_total = $monto + ($monto * $tasa_interes / 100);
+
+// Inicializar la comisión
+$comision = 0;
+
+// Si el usuario eligió aplicar comisión, calcularla basada en el valor ingresado
+if ($aplicar_comision === 'si') {
+    $comision = $monto_total * ($valor_comision / 100);
+}
 
 // Calcular el monto de cada cuota
 $cuota = $monto_total / $plazo;
 
-$sql = "INSERT INTO prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona, FrecuenciaPago, MontoAPagar, Cuota, MontoCuota) 
-        VALUES ('$id_cliente', '$monto', '$tasa_interes', '$plazo', '$moneda_id', '$fecha_inicio', '$fecha_vencimiento', 'pendiente', NULL, '$zona', '$frecuencia_pago', '$monto_total', '$cuota', '$cuota')";
+// Calcular la fecha de vencimiento en función de la frecuencia de pago y el plazo
+$fecha_vencimiento = calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago);
 
+$sql = "INSERT INTO prestamos (IDCliente, Monto, TasaInteres, Plazo, MonedaID, FechaInicio, FechaVencimiento, Estado, CobradorAsignado, Zona, FrecuenciaPago, MontoAPagar, Cuota, MontoCuota, Comision) 
+        VALUES ('$id_cliente', '$monto', '$tasa_interes', '$plazo', '$moneda_id', '$fecha_inicio', '$fecha_vencimiento', 'pendiente', NULL, '$zona', '$frecuencia_pago', '$monto_total', '$cuota', '$cuota', '$comision')";
 
 if ($conexion->query($sql) === TRUE) {
     $id_prestamo = $conexion->insert_id; // Obtener el ID del préstamo recién insertado
@@ -44,9 +52,13 @@ if ($conexion->query($sql) === TRUE) {
         $conexion->query($sql_fecha_pago);
     }
 
-    echo "Solicitud de préstamo realizada con éxito. Monto Total a Pagar: $monto_total. Cada cuota es de: $cuota";
+    // Redirigir al usuario a crudprestamo.php con un mensaje de éxito
+    header('Location: ../../resources/views/admin/creditos/crudPrestamos.php?mensaje=Solicitud de préstamo realizada con éxito');
+    exit;
 } else {
-    echo "Error al solicitar el préstamo: " . $conexion->error;
+    // Redirigir al usuario a crudprestamo.php con un mensaje de error
+    header('Location: ../../resources/views/admin/creditos/crudPrestamos.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
+    exit;
 }
 
 // Cerrar la conexión a la base de datos
@@ -81,7 +93,7 @@ function calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago) {
 // Función para calcular las fechas de pago
 function calcularFechasPago($fecha_inicio, $frecuencia_pago, $plazo, $id_prestamo, $zona) {
     $fechasPago = array();
-    $fecha = new DateTime($fecha_inicio);
+    $fecha = new DateTime($fecha_inicio); 
 
     for ($i = 0; $i < $plazo; $i++) {
         $fechasPago[] = clone $fecha;
