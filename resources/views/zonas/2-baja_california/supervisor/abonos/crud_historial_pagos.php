@@ -58,102 +58,64 @@ if (isset($_GET['clienteId'])) {
 
         <div class="options__menu">
 
-<<<<<<< HEAD
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php">
-=======
             <a href="/resources/views/zonas/2-baja_california/Supervisor/inicio/inicio.php" class="selected">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-<<<<<<< HEAD
-          
-
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php" class="selected">
-=======
            
             <a href="/resources/views/zonas/2-baja_california/Supervisor/clientes/lista_clientes.php">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-<<<<<<< HEAD
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/agregar_clientes.php">
-=======
             <a href="/resources/views/zonas/2-baja_california/Supervisor/clientes/agregar_clientes.php">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-<<<<<<< HEAD
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/crudPrestamos.php">
-=======
             <a href="/resources/views/zonas/2-baja_california/Supervisor/creditos/crudPrestamos.php">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-<<<<<<< HEAD
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/prestamos.php">
-=======
             <a href="/resources/views/zonas/2-baja_california/Supervisor/creditos/prestamos.php">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-<<<<<<< HEAD
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/gastos/gastos.php">
-=======
             <a href="/resources/views/zonas/2-baja_california/Supervisor/gastos/gastos.php">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-<<<<<<< HEAD
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
-=======
             <a href="/resources/views/zonas/2-baja_california/Supervisor/ruta/lista_super.php">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-<<<<<<< HEAD
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/abonos/abonos.php">
-=======
             <a href="/resources/views/zonas/2-baja_california/Supervisor/abonos/abonos.php">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-<<<<<<< HEAD
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/retiros/retiros.php">
-=======
             <a href="/resources/views/zonas/2-baja_california/Supervisor/retiros/retiros.php">
->>>>>>> 55778081d058cb02dc1a645f3f0ead2bccf5e5f9
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
