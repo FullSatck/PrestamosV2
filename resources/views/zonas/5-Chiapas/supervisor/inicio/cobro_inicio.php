@@ -51,7 +51,7 @@ if ($sql === false) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/5-Chiapas/supervisor/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
