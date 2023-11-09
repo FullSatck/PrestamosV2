@@ -9,57 +9,60 @@ if (!isset($_SESSION["usuario_id"])) {
 
 include("../../../../../../controllers/conexion.php");
 
-$usuarioId = $_SESSION["usuario_id"];
+$usuarioId = $_SESSION["usuario_id"] ?? 0; // Asegurarse de que $usuarioId no sea null
 $saldoInicialUsuario = 0;
 $saldoNeto = 0;
 $zonaUsuario = '';
 $usuariosRolTres = [];
 
 // Preparar la consulta para obtener la zona del usuario y el saldo inicial en una sola llamada
-$sqlUsuarioInfo = "SELECT u.Zona, (SELECT Monto FROM retiros WHERE IDUsuario = u.ID LIMIT 1) AS Monto
+$sqlUsuarioInfo = "SELECT u.Zona, IFNULL((SELECT Monto FROM retiros WHERE IDUsuario = u.ID LIMIT 1), 0) AS Monto
                    FROM usuarios u WHERE u.ID = ?";
-$stmtUsuarioInfo = $conexion->prepare($sqlUsuarioInfo);
-$stmtUsuarioInfo->bind_param("i", $usuarioId);
-$stmtUsuarioInfo->execute();
-$resultadoUsuarioInfo = $stmtUsuarioInfo->get_result();
+if ($stmtUsuarioInfo = $conexion->prepare($sqlUsuarioInfo)) {
+    $stmtUsuarioInfo->bind_param("i", $usuarioId);
+    $stmtUsuarioInfo->execute();
+    $resultadoUsuarioInfo = $stmtUsuarioInfo->get_result();
 
-if ($filaUsuarioInfo = $resultadoUsuarioInfo->fetch_assoc()) {
-    $zonaUsuario = $filaUsuarioInfo['Zona'];
-    $saldoInicialUsuario = $filaUsuarioInfo['Monto'];
+    if ($filaUsuarioInfo = $resultadoUsuarioInfo->fetch_assoc()) {
+        $zonaUsuario = $filaUsuarioInfo['Zona'];
+        $saldoInicialUsuario = $filaUsuarioInfo['Monto'];
+    }
+    $stmtUsuarioInfo->close();
 }
 
 // Calcular el saldo neto restando todos los retiros de usuarios de la misma zona
-$sqlSaldoNeto = "SELECT (SELECT SUM(Monto) FROM retiros WHERE IDUsuario IN 
-                  (SELECT ID FROM usuarios WHERE Zona = ?)) AS TotalRetiros";
-$stmtSaldoNeto = $conexion->prepare($sqlSaldoNeto);
-$stmtSaldoNeto->bind_param("s", $zonaUsuario);
-$stmtSaldoNeto->execute();
-$resultadoSaldoNeto = $stmtSaldoNeto->get_result();
+$sqlSaldoNeto = "SELECT IFNULL((SELECT SUM(Monto) FROM retiros WHERE IDUsuario IN 
+                  (SELECT ID FROM usuarios WHERE Zona = ?)), 0) AS TotalRetiros";
+if ($stmtSaldoNeto = $conexion->prepare($sqlSaldoNeto)) {
+    $stmtSaldoNeto->bind_param("s", $zonaUsuario);
+    $stmtSaldoNeto->execute();
+    $resultadoSaldoNeto = $stmtSaldoNeto->get_result();
 
-if ($filaSaldoNeto = $resultadoSaldoNeto->fetch_assoc()) {
-    $totalRetiros = $filaSaldoNeto['TotalRetiros'];
-    $saldoNeto = $saldoInicialUsuario - $totalRetiros;
+    if ($filaSaldoNeto = $resultadoSaldoNeto->fetch_assoc()) {
+        $totalRetiros = $filaSaldoNeto['TotalRetiros'];
+        $saldoNeto = $saldoInicialUsuario - $totalRetiros;
+    }
+    $stmtSaldoNeto->close();
 }
 
 // Obtener usuarios con rol 3 de la misma zona y su monto de retiros
-$sqlUsuariosRolTres = "SELECT u.ID, u.Nombre, (SELECT SUM(Monto) FROM retiros WHERE IDUsuario = u.ID) AS MontoRetiros
+$sqlUsuariosRolTres = "SELECT u.ID, u.Nombre, IFNULL((SELECT SUM(Monto) FROM retiros WHERE IDUsuario = u.ID), 0) AS MontoRetiros
                        FROM usuarios u
                        WHERE u.Zona = ? AND u.RolID = '3'";
-$stmtUsuariosRolTres = $conexion->prepare($sqlUsuariosRolTres);
-$stmtUsuariosRolTres->bind_param("s", $zonaUsuario);
-$stmtUsuariosRolTres->execute();
-$resultadoUsuariosRolTres = $stmtUsuariosRolTres->get_result();
+if ($stmtUsuariosRolTres = $conexion->prepare($sqlUsuariosRolTres)) {
+    $stmtUsuariosRolTres->bind_param("s", $zonaUsuario);
+    $stmtUsuariosRolTres->execute();
+    $resultadoUsuariosRolTres = $stmtUsuariosRolTres->get_result();
 
-while ($filaUsuarioRolTres = $resultadoUsuariosRolTres->fetch_assoc()) {
-    array_push($usuariosRolTres, $filaUsuarioRolTres);
+    while ($filaUsuarioRolTres = $resultadoUsuariosRolTres->fetch_assoc()) {
+        $usuariosRolTres[] = $filaUsuarioRolTres; // Directamente asignamos el valor a la array
+    }
+    $stmtUsuariosRolTres->close();
 }
 
-// Cierra los statements y la conexión una sola vez al final
-$stmtUsuarioInfo->close();
-$stmtSaldoNeto->close();
-$stmtUsuariosRolTres->close();
 $conexion->close();
 ?>
+
 
 
 
@@ -184,14 +187,14 @@ $conexion->close();
             <div class="saldo-box">
                 <div class="saldo-item">
                     <h2>Saldo Inicial</h2>
-                    <p>$<?php echo number_format($saldoInicialUsuario, 0, '.', '.'); ?></p>
+                    <!-- Utiliza PHP para imprimir el saldo inicial -->
+                    <p>$<?php echo number_format($saldoInicialUsuario, 2, '.', '.'); ?></p>
                 </div>
-
                 <div class="saldo-item">
-                    <h2>Monto Neto</h2>
-                    <p class="p">$<?php echo number_format($saldoNeto, 0, '.', '.'); ?></p>
+                    <h2>Total Retiros</h2>
+                    <!-- Utiliza PHP para imprimir el saldo neto -->
+                    <p class="p">$<?php echo number_format($saldoNeto, 2, '.', '.'); ?></p>
                 </div>
-
             </div>
 
 
