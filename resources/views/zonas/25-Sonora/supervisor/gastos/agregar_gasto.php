@@ -6,13 +6,13 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 }
 
 
 // Incluye la configuración de conexión a la base de datos
-include "../../../../controllers/conexion.php";
+include "../../../../../../controllers/conexion.php";
 
 // Definir variables e inicializar con valores vacíos
 $id_zona = $fecha = $descripcion = $valor = "";
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Intentar ejecutar la declaración preparada
             if ($stmt->execute()) {
                 // Redirigir a la lista de gastos después de agregar uno nuevo
-                header("location: agregar_gastos.php");
+                header("location: gastos.php");
                 exit();
             } else {
                 echo "Algo salió mal. Por favor, inténtalo de nuevo más tarde.";
@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/gastos.css">
+    <link rel="stylesheet" href="/public/assets/css/agregar_gasto.css">
     <title>Lista de Gastos</title>
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
@@ -200,8 +200,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>
-        <h1>Agregar Gasto</h1>
+    <main class="main2">
+        <h1 class="h11">Agregar Gasto</h1>
 
         <div id="mensaje">
             <?php
@@ -218,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                $sql_zonas = "SELECT * FROM Zonas";
+                $sql_zonas = "SELECT * FROM Zonas WHERE Nombre = 'Sonora'";
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {
@@ -233,7 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group">
                 <label for="fecha">Fecha:</label>
-                <input type="text" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
+                <input type="date" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
                 <span class="help-block"><?php echo $fecha_err; ?></span>
             </div>
             <div class="form-group">
@@ -253,25 +253,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </main>
-
-    <script>
-    // Agregar un evento clic al botón
-    document.getElementById("volverAtras").addEventListener("click", function() {
-        window.history.back();
-    });
-    </script>
-
-    <script>
-    $(function() {
-        $("#fecha").datepicker({
-            dateFormat: "dd/mm/yy", // Formato de fecha deseado
-            showButtonPanel: true, // Muestra botones de "Hoy" y "Limpiar"
-        });
-    });
-    </script>
-
-
-
 
     <script src="/public/assets/js/MenuLate.js"></script>
 
