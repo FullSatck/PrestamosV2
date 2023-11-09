@@ -149,7 +149,7 @@ if (isset($_GET['mensaje'])) {
                 <th>Rol</th>
             </tr>
             <?php
-            $sql = $conexion->query("SELECT * FROM usuarios WHERE RolID = 3 AND Zona = 1");
+            $sql = $conexion->query("SELECT * FROM usuarios WHERE RolID = 3 AND Zona = 25");
 
                // Verificar si la consulta se realizó con éxito
                if ($sql === false) {

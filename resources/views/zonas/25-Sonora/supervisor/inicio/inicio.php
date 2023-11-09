@@ -126,77 +126,77 @@ mysqli_close($conexion);
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/registrar.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/prestamos.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/gastos/gastos.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
+            <a href="/resources/views/zonas/25-Sonora/supervisor/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
@@ -210,20 +210,18 @@ mysqli_close($conexion);
     </div>
 
     <main>
-        <h1>Inicio Supervisor</h1>
+        <h1>Inicio Supervisor de <Strong> Sonora</Strong></h1>
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
-                    </p>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
-                    </p>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-2">
@@ -235,8 +233,7 @@ mysqli_close($conexion);
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
-                    </p>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
         </div>
