@@ -13,6 +13,7 @@ var numeroTelefonoCliente;
 
 // Función para cargar los datos del cliente
 function cargarDatosCliente(clienteId) {
+    var clienteId = clienteIds[clienteActualIndex]; 
     $.ajax({
         url: "consulta.php?clienteId=" + clienteId,
         dataType: "json",
