@@ -1,5 +1,5 @@
 <?php
-require('../../../../public/assets/fpdf/fpdf.php'); // Asegúrate de que el archivo FPDF se encuentre en la ubicación correcta
+require('../../../../../../public/assets/fpdf/fpdf.php'); // Asegúrate de que el archivo FPDF se encuentre en la ubicación correcta
 
 // Asegúrate de que el archivo FPDF se encuentre en la ubicación correcta
 
@@ -15,7 +15,7 @@ $clienteId = $_GET['clienteId'];
 $prestamoId = $_GET['prestamoId'];
 $cantidadPago = isset($_GET['cantidadPago']) ? $_GET['cantidadPago'] : 'No se proporcionó una cantidad de pago.';
 
-require('../../../../controllers/conexion.php');
+require('../../../../../../controllers/conexion.php');
 
 // Consulta SQL para obtener los datos del cliente y el préstamo
 $query = "SELECT c.Nombre AS cliente_nombre, c.Apellido AS cliente_apellido, 

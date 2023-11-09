@@ -115,10 +115,6 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -216,6 +212,10 @@ mysqli_close($conexion);
                     <h4>Retiros</h4>
                 </div>
             </a>
+        <a href="/controllers/cerrar_sesion.php" class="botonn">
+            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+            <span class="spann">Cerrar Sesion</span>
+        </a>
         </div>
     </div>
 

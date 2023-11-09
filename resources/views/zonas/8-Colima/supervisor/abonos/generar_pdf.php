@@ -1,6 +1,6 @@
 <?php
-require('../../../../controllers/conexion.php');
-require('../../../../public/assets/fpdf/fpdf.php');
+require('../../../../../../controllers/conexion.php');
+require('../../../../../../public/assets/fpdf/fpdf.php');
 
 // Verificar si se ha proporcionado el ID de la factura en la URL y validar el valor
 if (isset($_GET['facturaId']) && is_numeric($_GET['facturaId'])) {
