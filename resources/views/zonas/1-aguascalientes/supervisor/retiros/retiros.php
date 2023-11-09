@@ -1,47 +1,11 @@
 <?php
 session_start();
 
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../../../controllers/conexion.php'; 
-
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'supervisor') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
 }
-
 
 include("../../../../../../controllers/conexion.php");
 
@@ -98,10 +62,7 @@ if ($stmtUsuariosRolTres = $conexion->prepare($sqlUsuariosRolTres)) {
 
 $conexion->close();
 ?>
-
-
-
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,6 +81,10 @@ $conexion->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        <a href="/resources/views/zonas/25-Sonora/supervisor/retiros/agregar_retiros.php" class="botonn">
+            <i class="fa-solid fa-plus-minus"></i>
+            <span class="spann">Agregar Retiro</span>
+        </a>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -239,12 +204,14 @@ $conexion->close();
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Monto Retiros</th>
+                    <th></th>
                 </tr>
                 <?php foreach ($usuariosRolTres as $usuario): ?>
                 <tr>
                     <td><?php echo $usuario['ID']; ?></td>
                     <td><?php echo $usuario['Nombre']; ?></td>
                     <td>$<?php echo number_format($usuario['MontoRetiros'], 0, '.', '.'); ?></td>
+                    <td><?php echo htmlspecialchars($retiro['Descripcion'] ?? ''); ?></td>
                 </tr>
                 <?php endforeach; ?>
             </table>
@@ -254,40 +221,6 @@ $conexion->close();
     </main>
 
     <script src="/public/assets/js/MenuLate.js"></script>
-
-</body>
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html>
-
-<head>
-
-</head>
-
-<body>
 
 </body>
 

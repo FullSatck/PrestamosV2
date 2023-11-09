@@ -62,10 +62,7 @@ if ($stmtUsuariosRolTres = $conexion->prepare($sqlUsuariosRolTres)) {
 
 $conexion->close();
 ?>
-
-
-
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,6 +81,10 @@ $conexion->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        <a href="/resources/views/zonas/25-Sonora/supervisor/retiros/agregar_retiros.php" class="botonn">
+            <i class="fa-solid fa-plus-minus"></i>
+            <span class="spann">Agregar Retiro</span>
+        </a>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -203,12 +204,14 @@ $conexion->close();
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Monto Retiros</th>
+                    <th></th>
                 </tr>
                 <?php foreach ($usuariosRolTres as $usuario): ?>
                 <tr>
                     <td><?php echo $usuario['ID']; ?></td>
                     <td><?php echo $usuario['Nombre']; ?></td>
                     <td>$<?php echo number_format($usuario['MontoRetiros'], 0, '.', '.'); ?></td>
+                    <td><?php echo htmlspecialchars($retiro['Descripcion'] ?? ''); ?></td>
                 </tr>
                 <?php endforeach; ?>
             </table>
@@ -218,40 +221,6 @@ $conexion->close();
     </main>
 
     <script src="/public/assets/js/MenuLate.js"></script>
-
-</body>
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html>
-
-<head>
-
-</head>
-
-<body>
 
 </body>
 
