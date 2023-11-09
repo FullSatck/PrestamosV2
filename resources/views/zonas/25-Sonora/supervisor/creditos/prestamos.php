@@ -132,7 +132,7 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
-        <form action="/controllers/super/procesar_prestamo.php" method="POST" class="form-container">
+        <form action="/controllers/super/procesar_prestamo/procesar_prestamo1.php" method="POST" class="form-container">
             <?php
             // Incluir el archivo de conexión a la base de datos
             include("../../../../../../controllers/conexion.php");
