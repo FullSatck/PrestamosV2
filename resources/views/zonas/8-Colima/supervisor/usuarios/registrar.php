@@ -127,7 +127,7 @@ if (isset($_SESSION["usuario_id"])) {
     </div>
     
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-    <main>
+    
         <!-- Contenido principal -->
         <main>
             <h2>Registro de Usuario</h2><br>
@@ -191,20 +191,12 @@ if (isset($_SESSION["usuario_id"])) {
             </form>
         </main>
 
-    </main>
+   
 
     <script>
-    $(document).ready(function() {
-        $("#RolID").on("change", function() {
-            var selectedRole = $(this).val();
-            var saldoInicialContainer = $("#saldo-inicial-container");
-            if (selectedRole === "2") {
-                saldoInicialContainer.show();
-            } else {
-                saldoInicialContainer.hide();
-            }
-        });
-    });
+   $(document).ready(function() {
+    $("#saldo-inicial-container").show(); // Muestra siempre el campo de saldo inicial
+});
     </script>
 
 <script src="/public/assets/js/MenuLate.js"></script>

@@ -214,29 +214,26 @@ mysqli_close($conexion);
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
-                    </p>
+                    <a href="###" class="titulo">Prestamos</a><br>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
-                    </p>
+                    <a href="###" class="titulo">Recaudos</a><br>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="##" class="titulo">Cuadro 3</a>
+                    <a href="###" class="titulo">Cuadro 3</a>
                     <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
-                    </p>
+                    <a href="###" class="titulo">Comision</a><br>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
         </div>
