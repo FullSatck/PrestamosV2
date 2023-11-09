@@ -3,63 +3,74 @@ session_start();
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../../../index.php");
     exit();
 }
 
-// Incluir el archivo de conexión a la base de datos
 include("../../../../../../controllers/conexion.php");
 
-// Obtener el saldo neto del administrador
-$sqlSaldoNetoAdmin = "SELECT Monto, Monto_Neto FROM saldo_admin WHERE IDUsuario = '1' LIMIT 1";
-$resultadoSaldoNetoAdmin = $conexion->query($sqlSaldoNetoAdmin);
-$saldoNetoAdmin = 0;
+$usuarioId = $_SESSION["usuario_id"] ?? 0; // Asegurarse de que $usuarioId no sea null
+$saldoInicialUsuario = 0;
+$saldoNeto = 0;
+$zonaUsuario = '';
+$usuariosRolTres = [];
 
-if ($resultadoSaldoNetoAdmin && $resultadoSaldoNetoAdmin->num_rows > 0) {
-    $filaSaldoNetoAdmin = $resultadoSaldoNetoAdmin->fetch_assoc();
-    $saldoNetoAdmin = $filaSaldoNetoAdmin['Monto_Neto'];
-}
+// Preparar la consulta para obtener la zona del usuario y el saldo inicial en una sola llamada
+$sqlUsuarioInfo = "SELECT u.Zona, IFNULL((SELECT Monto FROM retiros WHERE IDUsuario = u.ID LIMIT 1), 0) AS Monto
+                   FROM usuarios u WHERE u.ID = ?";
+if ($stmtUsuarioInfo = $conexion->prepare($sqlUsuarioInfo)) {
+    $stmtUsuarioInfo->bind_param("i", $usuarioId);
+    $stmtUsuarioInfo->execute();
+    $resultadoUsuarioInfo = $stmtUsuarioInfo->get_result();
 
-// Consulta SQL para obtener la lista de retiros con nombre de usuario, zona y monto
-$sqlRetiros = "SELECT r.ID AS RetiroID, u.Nombre AS UsuarioNombre, u.Zona, r.Monto
-                FROM retiros AS r
-                INNER JOIN usuarios AS u ON r.IDUsuario = u.ID";
-$resultadoRetiros = $conexion->query($sqlRetiros);
-
-// Iniciar transacción para actualizar el saldo neto del administrador
-$conexion->begin_transaction();
-
-try {
-    // Restar el monto asignado al supervisor del saldo neto del administrador
-    // y actualizar el saldo neto en la base de datos
-    while ($filaRetiro = $resultadoRetiros->fetch_assoc()) {
-        $saldoNetoAdmin -= $filaRetiro['Monto'];
-
-        // Actualizar el saldo neto en la base de datos para cada retiro
-        $sqlActualizarSaldoNeto = "UPDATE saldo_admin SET Monto_Neto = ? WHERE IDUsuario = '1'";
-        $stmtActualizarSaldoNeto = $conexion->prepare($sqlActualizarSaldoNeto);
-        $stmtActualizarSaldoNeto->bind_param("d", $saldoNetoAdmin);
-        $stmtActualizarSaldoNeto->execute();
+    if ($filaUsuarioInfo = $resultadoUsuarioInfo->fetch_assoc()) {
+        $zonaUsuario = $filaUsuarioInfo['Zona'];
+        $saldoInicialUsuario = $filaUsuarioInfo['Monto'];
     }
-    // Si todo fue bien, confirma los cambios
-    $conexion->commit();
-} catch (Exception $e) {
-    // Si algo salió mal, revierte la transacción
-    $conexion->rollback();
-    echo "Error al actualizar los saldos: " . $e->getMessage();
+    $stmtUsuarioInfo->close();
 }
 
-// Cerrar la conexión a la base de datos
-$conexion->close();
+// Calcular el saldo neto restando todos los retiros de usuarios de la misma zona
+$sqlSaldoNeto = "SELECT IFNULL((SELECT SUM(Monto) FROM retiros WHERE IDUsuario IN 
+                  (SELECT ID FROM usuarios WHERE Zona = ?)), 0) AS TotalRetiros";
+if ($stmtSaldoNeto = $conexion->prepare($sqlSaldoNeto)) {
+    $stmtSaldoNeto->bind_param("s", $zonaUsuario);
+    $stmtSaldoNeto->execute();
+    $resultadoSaldoNeto = $stmtSaldoNeto->get_result();
 
+    if ($filaSaldoNeto = $resultadoSaldoNeto->fetch_assoc()) {
+        $totalRetiros = $filaSaldoNeto['TotalRetiros'];
+        $saldoNeto = $saldoInicialUsuario - $totalRetiros;
+    }
+    $stmtSaldoNeto->close();
+}
+
+// Obtener usuarios con rol 3 de la misma zona y su monto de retiros
+$sqlUsuariosRolTres = "SELECT u.ID, u.Nombre, IFNULL((SELECT SUM(Monto) FROM retiros WHERE IDUsuario = u.ID), 0) AS MontoRetiros
+                       FROM usuarios u
+                       WHERE u.Zona = ? AND u.RolID = '3'";
+if ($stmtUsuariosRolTres = $conexion->prepare($sqlUsuariosRolTres)) {
+    $stmtUsuariosRolTres->bind_param("s", $zonaUsuario);
+    $stmtUsuariosRolTres->execute();
+    $resultadoUsuariosRolTres = $stmtUsuariosRolTres->get_result();
+
+    while ($filaUsuarioRolTres = $resultadoUsuariosRolTres->fetch_assoc()) {
+        $usuariosRolTres[] = $filaUsuarioRolTres; // Directamente asignamos el valor a la array
+    }
+    $stmtUsuariosRolTres->close();
+}
+
+$conexion->close();
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -67,7 +78,7 @@ $conexion->close();
     <link rel="stylesheet" href="/public/assets/css/retiros.css">
 </head>
 
-<body id="body"> 
+<body id="body">
 
     <header>
         <div class="icon__menu">
@@ -89,7 +100,7 @@ $conexion->close();
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
@@ -131,7 +142,7 @@ $conexion->close();
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/1-aguascalientes/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -172,78 +183,41 @@ $conexion->close();
 
     <main>
         <main>
-            <h1>Lista de Retiros</h1>
+            <h1>Retiros</h1>
             <div class="saldo-box">
                 <div class="saldo-item">
                     <h2>Saldo Inicial</h2>
-                    <p>$1.000.000</p>
+                    <!-- Utiliza PHP para imprimir el saldo inicial -->
+                    <p>$<?php echo number_format($saldoInicialUsuario, 2, '.', '.'); ?></p>
                 </div>
                 <div class="saldo-item">
-                    <h2>Monto Neto</h2>
-                    <p class="p">$2.000</p>
+                    <h2>Total Retiros</h2>
+                    <!-- Utiliza PHP para imprimir el saldo neto -->
+                    <p class="p">$<?php echo number_format($saldoNeto, 2, '.', '.'); ?></p>
                 </div>
             </div>
+
+
             <table>
-
-                <div class="search-container">
-                    <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-                </div>
                 <tr>
-                    <th>Nombre del Usuario</th>
-                    <th>Zona</th>
-                    <th>Monto</th>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Monto Retiros</th>
                 </tr>
-                <?php
-if ($resultadoRetiros) {
-  while ($fila = $resultadoRetiros->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . $fila['UsuarioNombre'] . "</td>";
-    echo "<td>" . $fila['Zona'] . "</td>";
-    echo "<td>" . number_format($fila['Monto'], 0, '.', '.') . "</td>"; // Formatear el monto
-    echo "</tr>";
-  }
-} else {
-  echo "Error en la consulta de retiros: " . $conexion->error;
-}
-?>
-
+                <?php foreach ($usuariosRolTres as $usuario): ?>
+                <tr>
+                    <td><?php echo $usuario['ID']; ?></td>
+                    <td><?php echo $usuario['Nombre']; ?></td>
+                    <td>$<?php echo number_format($usuario['MontoRetiros'], 0, '.', '.'); ?></td>
+                </tr>
+                <?php endforeach; ?>
             </table>
+
         </main>
 
     </main>
 
-    <script>
-    function buscarRetiros() {
-        var input = document.getElementById("busqueda");
-        var filtro = input.value.toLowerCase();
-        var tabla = document.querySelector("table");
-        var filas = tabla.getElementsByTagName("tr");
-
-        for (var i = 1; i < filas.length; i++) { // Empezamos desde 1 para omitir la fila de encabezados
-            var celdas = filas[i].getElementsByTagName("td");
-            var filaCoincide = false;
-
-            for (var j = 0; j < celdas.length; j++) {
-                var celda = celdas[j];
-                if (celda) {
-                    var textoCelda = celda.textContent || celda.innerText;
-                    if (textoCelda.toLowerCase().indexOf(filtro) > -1) {
-                        filaCoincide = true;
-                        break;
-                    }
-                }
-            }
-
-            if (filaCoincide) {
-                filas[i].style.display = "";
-            } else {
-                filas[i].style.display = "none";
-            }
-        }
-    }
-    </script>
-
-     <script src="/public/assets/js/MenuLate.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 
