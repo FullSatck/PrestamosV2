@@ -1,4 +1,4 @@
-25-Sonora<?php
+<?php
 session_start();
 
 // Verifica si el usuario está autenticado
@@ -137,7 +137,7 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/super/validar_clientes.php" method="POST"
+        <form action="/controllers/super/validar_clientes/validar_clientes25.php" method="POST"
             enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
@@ -199,7 +199,7 @@ if (isset($_SESSION["usuario_id"])) {
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM Zonas WHERE Nombre = 'Aguascalientes'";
+                $consultaZonas = "SELECT ID, Nombre FROM Zonas WHERE Nombre = 'Sonora'";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
