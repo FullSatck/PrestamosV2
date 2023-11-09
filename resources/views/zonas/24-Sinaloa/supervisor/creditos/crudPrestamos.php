@@ -43,77 +43,77 @@ if (isset($_SESSION["usuario_id"])) {
 
     <div class="options__menu">
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/inicio/inicio.php">
             <div class="option">
                 <i class="fa-solid fa-landmark" title="Inicio"></i>
                 <h4>Inicio</h4>
             </div>
         </a> 
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/usuarios/crudusuarios.php">
             <div class="option">
                 <i class="fa-solid fa-users" title=""></i>
                 <h4>Usuarios</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/registrar.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/usuarios/registrar.php">
             <div class="option">
                 <i class="fa-solid fa-user-plus" title=""></i>
                 <h4>Registrar Usuario</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/lista_clientes.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/clientes/lista_clientes.php">
             <div class="option">
                 <i class="fa-solid fa-people-group" title=""></i>
                 <h4>Clientes</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/agregar_clientes.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/clientes/agregar_clientes.php">
             <div class="option">
                 <i class="fa-solid fa-user-tag" title=""></i>
                 <h4>Registrar Clientes</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/crudPrestamos.php" class="selected">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/creditos/crudPrestamos.php" class="selected">
             <div class="option">
                 <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                 <h4>Prestamos</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/prestamos.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/creditos/prestamos.php">
             <div class="option">
                 <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                 <h4>Registrar Prestamos</h4>
             </div>
         </a> 
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/gastos/gastos.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/gastos/gastos.php">
             <div class="option">
                 <i class="fa-solid fa-sack-xmark" title=""></i>
                 <h4>Gastos</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/ruta/lista_super.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/ruta/lista_super.php">
             <div class="option">
                 <i class="fa-solid fa-map" title=""></i>
                 <h4>Ruta</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/abonos.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/abonos/abonos.php">
             <div class="option">
                 <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                 <h4>Abonos</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
+        <a href="/resources/views/zonas/24-Sinaloa/supervisor/retiros/retiros.php">
             <div class="option">
                 <i class="fa-solid fa-scale-balanced" title=""></i>
                 <h4>Retiros</h4>
@@ -165,7 +165,7 @@ if (isset($_SESSION["usuario_id"])) {
                                 <tbody>
                                     <?php
                             include("../../../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Aguascalientes'");
+                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Sinaloa'");
                             while ($datos = $sql->fetch_object()) { ?>
                                     <tr>
                                         <td><?= $datos->ID ?></td>

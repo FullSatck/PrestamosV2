@@ -126,7 +126,7 @@ mysqli_close($conexion);
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -135,56 +135,56 @@ mysqli_close($conexion);
 
          
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/retiros/retiros.php">
+            <a href="/resources/views/zonas/12-Hidalgo/cobrador/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
@@ -202,7 +202,7 @@ mysqli_close($conexion);
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
+                    <a href="/resources/views/zonas/12-Hidalgo/cobrador/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
                     <p>Mantenimiento
                     </p>
                 </div>

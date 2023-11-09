@@ -42,11 +42,7 @@ if (isset($_GET['clienteId'])) {
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
-        </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+        </div> 
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -58,15 +54,16 @@ if (isset($_GET['clienteId'])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-           
-            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
+          
+
+            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
@@ -127,6 +124,7 @@ if (isset($_GET['clienteId'])) {
         </div>
 
     </div>
+
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
