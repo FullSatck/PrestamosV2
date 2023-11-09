@@ -8,7 +8,7 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../index.php");
     exit();
-}
+}   
 
 
 // Incluye la configuración de conexión a la base de datos
