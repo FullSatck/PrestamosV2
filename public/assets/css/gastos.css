@@ -269,10 +269,7 @@ td a {
     border-radius: 8px;
 }
 
-td a:hover {
-    background: #007bff;
-    color: #fff;
-}
+  
 
 /* Estilos responsive */
 @media screen and (max-width: 600px) {
