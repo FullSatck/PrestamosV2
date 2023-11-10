@@ -1,14 +1,15 @@
 <?php
-require '../../../../controllers/conexion.php';
+require '../../../../controllers/conexion.php'; // Asegúrate de que esta ruta es correcta
 
 function obtenerCuotas($conn, $filtro) {
     $fechaHoy = date('Y-m-d');
     $diaHoy = date('j'); // Día del mes sin ceros iniciales
     $cuotas = [];
 
-    // Iniciar la consulta SQL base
-    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago
+    // Iniciar la consulta SQL base con JOIN para incluir el número de teléfono
+    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, c.Telefono
             FROM prestamos p
+            INNER JOIN clientes c ON p.IDCliente = c.ID
             WHERE p.FechaInicio <= ?";
 
     // Agregar filtro de estado
@@ -20,7 +21,7 @@ function obtenerCuotas($conn, $filtro) {
         $sql .= " AND p.Estado = 'nopagado'";
     }
 
-    // Preparar la consulta SQL sin la parte de la frecuencia de pago
+    // Preparar la consulta SQL
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $fechaHoy);
     $stmt->execute();
@@ -55,3 +56,4 @@ function obtenerCuotas($conn, $filtro) {
     $stmt->close();
     return $cuotas;
 }
+?>
