@@ -121,7 +121,7 @@ if (isset($_GET['mensaje'])) {
 
     <main>
         <div class="container">
-            <h1 class="mt-5">Formulario de Pago de Préstamos</h1>
+            <h1 class="mt-5">Abonos</h1>
 
           
 

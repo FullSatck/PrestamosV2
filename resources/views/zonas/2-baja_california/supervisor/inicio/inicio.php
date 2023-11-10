@@ -210,7 +210,7 @@ mysqli_close($conexion);
     </div>
 
     <main>
-        <h1>Inicio Supervisor</h1>
+        <h1>Inicio Supervisor de Baja California</h1>
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">

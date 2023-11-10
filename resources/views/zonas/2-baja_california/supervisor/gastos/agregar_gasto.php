@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty(trim($_POST["valor"]))) {
         $valor_err = "Por favor, ingrese el valor del gasto.";
     } else {
-        $valor = trim($_POST["valor"]);
+        $valor = trim($_POST["monto"]);
     }
 
     // Verificar si no hay errores de validación antes de insertar en la base de datos

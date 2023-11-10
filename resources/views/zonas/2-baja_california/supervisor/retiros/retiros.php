@@ -46,7 +46,7 @@ if ($stmtSaldoNeto = $conexion->prepare($sqlSaldoNeto)) {
 }
 
 // Obtener usuarios con rol 3 de la misma zona y su monto de retiros
-$sqlUsuariosRolTres = "SELECT u.ID, u.Nombre, IFNULL((SELECT SUM(Monto) FROM retiros WHERE IDUsuario = u.ID), 0) AS MontoRetiros
+$sqlUsuariosRolTres = "SELECT u.ID, u.Nombre, IFNULL((SELECT SUM(Monto) FROM retiros WHERE IDUsuario = u.ID), 0) AS MontoRetiros, IFNULL((SELECT descripcion FROM retiros WHERE IDUsuario = u.ID ORDER BY Fecha DESC LIMIT 1), '') AS Descripcion
                        FROM usuarios u
                        WHERE u.Zona = ? AND u.RolID = '3'";
 if ($stmtUsuariosRolTres = $conexion->prepare($sqlUsuariosRolTres)) {
@@ -62,7 +62,7 @@ if ($stmtUsuariosRolTres = $conexion->prepare($sqlUsuariosRolTres)) {
 
 $conexion->close();
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -204,17 +204,18 @@ $conexion->close();
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Monto Retiros</th>
-                    <th></th>
+                    <th>Descripción</th>
                 </tr>
                 <?php foreach ($usuariosRolTres as $usuario): ?>
                 <tr>
                     <td><?php echo $usuario['ID']; ?></td>
                     <td><?php echo $usuario['Nombre']; ?></td>
                     <td>$<?php echo number_format($usuario['MontoRetiros'], 0, '.', '.'); ?></td>
-                    <td><?php echo htmlspecialchars($retiro['Descripcion'] ?? ''); ?></td>
+                    <td><?php echo htmlspecialchars($usuario['Descripcion'] ?? ''); ?></td>
                 </tr>
                 <?php endforeach; ?>
             </table>
+
 
         </main>
 
