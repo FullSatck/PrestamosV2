@@ -32,9 +32,9 @@ if (isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
+        <a href="agregar_gasto.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
+            <span class="spann">Agregar Gasto</span>
         </a>
     </header>
 
@@ -130,7 +130,7 @@ include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ru
 $sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
         FROM Gastos G
         INNER JOIN Zonas Z ON G.IDZona = Z.ID
-        WHERE IDZona = 1";
+        WHERE IDZona = 2";
 $resultado = $conexion->query($sql);
 
 // Crear una tabla HTML para mostrar las columnas de las filas

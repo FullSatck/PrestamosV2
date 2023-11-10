@@ -127,7 +127,7 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/super/validar_clientes.php" method="POST"
+        <form action="/controllers/cob/validar_clientes/validar_clientes2.php" method="POST"
             enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
