@@ -107,7 +107,7 @@ $resultado = $conexion->query($sql);
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/gastos/gastos.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
@@ -178,7 +178,7 @@ $resultado = $conexion->query($sql);
                 <td><?= $fila["ZonaAsignada"] ?></td>
                 <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                 <td><a
-                        href="/resources/views/zonas/2-baja_california/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                        href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
                 </td>
             </tr>
             <?php } ?>

@@ -135,7 +135,7 @@ if ($sql === false) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas//supervisor/retiros/retiros.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
