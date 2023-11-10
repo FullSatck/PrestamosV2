@@ -267,7 +267,7 @@ mysqli_close($conexion);
             </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="filtros.php" class="titulo">Prestamos del dia </a>
+                    <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
                     <p>Mantenimiento</p>
                 </div>
             </div>
