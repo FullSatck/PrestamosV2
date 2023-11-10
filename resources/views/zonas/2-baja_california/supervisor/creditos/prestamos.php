@@ -44,77 +44,77 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/registrar.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/prestamos.php" class="selected">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/creditos/prestamos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/gastos/gastos.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
@@ -132,15 +132,15 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
-        <form action="/controllers/super/procesar_prestamo.php" method="POST" class="form-container">
+        <form action="/controllers/super/procesar_prestamo/procesar_prestamo2.php" method="POST" class="form-container">
             <?php
             // Incluir el archivo de conexión a la base de datos
             include("../../../../../../controllers/conexion.php");
 
             // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT ID, Nombre FROM Clientes WHERE ZonaAsignada = 'Aguascalientes'";
+            $query_clientes = "SELECT ID, Nombre FROM Clientes WHERE ZonaAsignada = 'Baja California'";
             $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
-            $query_zonas = "SELECT Nombre FROM Zonas WHERE Nombre = 'Aguascalientes'";
+            $query_zonas = "SELECT Nombre FROM Zonas WHERE Nombre = 'Baja California'";
 
             $result_clientes = $conexion->query($query_clientes);
             $result_monedas = $conexion->query($query_monedas);

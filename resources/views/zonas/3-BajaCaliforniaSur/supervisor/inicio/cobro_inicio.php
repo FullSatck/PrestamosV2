@@ -14,7 +14,7 @@ if (isset($_SESSION["usuario_id"])) {
 include("../../../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener los préstamos de la zona especificada con el nombre del cliente
-$sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID ORDER BY ID DESC WHERE Zona = 'Aguascalientes'");
+$sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID ORDER BY ID DESC WHERE Zona = 'Baja California Sur'");
 $sql->execute();
 
 // Verificar si la consulta se realizó con éxito

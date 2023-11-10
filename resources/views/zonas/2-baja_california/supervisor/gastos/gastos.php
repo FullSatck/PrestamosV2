@@ -32,8 +32,8 @@ if (isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/resources/views/supervisor/gastos/agregar_gasto.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+        <a href="/resources/views/zonas/2-baja_california/supervisor/gastos/agregar_gasto.php" class="botonn">
+            <i class="fa-solid fa-plus-minus"></i>
             <span class="spann">Agregar Gasto</span>
         </a>
     </header>
@@ -82,28 +82,28 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california2-baja_californiaitos/crudPrestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california2-baja_californiaitos/prestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/2-baja_california2-baja_californiaos/gastos.php" class="selected">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california2-baja_california/lista_super.php">
+            <a href="/resources/views/zonas/2-baja_california/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
@@ -143,7 +143,8 @@ include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ru
 $sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
         FROM Gastos G
         INNER JOIN Zonas Z ON G.IDZona = Z.ID
-        WHERE IDZona = 1";
+        WHERE IDZona = 2
+        ORDER BY G.ID DESC";
 $resultado = $conexion->query($sql);
 
 // Crear una tabla HTML para mostrar las columnas de las filas

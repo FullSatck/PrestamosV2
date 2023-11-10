@@ -1,5 +1,4 @@
 <?php
-session_start();
 // Incluye tu archivo de conexión a la base de datos
 include("../../../../../../controllers/conexion.php");
 

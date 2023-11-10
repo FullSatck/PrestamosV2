@@ -22,7 +22,7 @@ include("../../../../../../controllers/conexion.php");
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
         FROM Clientes c
         LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Aguascalientes'
+        WHERE c.ZonaAsignada = 'Baja California Sur'
         ORDER BY c.ID DESC";
 
 
@@ -58,7 +58,7 @@ $resultado = $conexion->query($sql);
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/inicio/inicio.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -79,28 +79,28 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/clientes/lista_clientes.php" class="selected">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/clientes/lista_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/creditos/prestamos.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
@@ -114,21 +114,21 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/supervisor/retiros/retiros.php">
+            <a href="/resources/views/zonas/3-BajaCaliforniaSur/supervisor/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
