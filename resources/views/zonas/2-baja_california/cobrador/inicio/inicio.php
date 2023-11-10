@@ -182,14 +182,7 @@ mysqli_close($conexion);
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/2-baja_california/cobrador/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
+            </a> 
 
 
 
@@ -198,7 +191,7 @@ mysqli_close($conexion);
     </div>
 
     <main>
-        <h1>Inicio cobrador</h1>
+        <h1>Inicio cobrador de Baja California</h1>
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
