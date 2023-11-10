@@ -143,7 +143,7 @@ include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ru
 $sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
         FROM Gastos G
         INNER JOIN Zonas Z ON G.IDZona = Z.ID
-        WHERE IDZona = 25
+        WHERE IDZona = 3
         ORDER BY G.ID DESC";
 $resultado = $conexion->query($sql);
 
