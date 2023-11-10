@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
     $conexion->begin_transaction();
 
     try {
-        // Consulta SQL para obtener el monto de la cuota del préstamo
+        // Consulta SQL para obtener el monto de la cuota del préstamo y el ID del cliente
         $sqlCuota = "SELECT MontoCuota, IDCliente FROM prestamos WHERE ID = ? AND Estado = 'pendiente'";
         $stmtCuota = $conexion->prepare($sqlCuota);
         $stmtCuota->bind_param("i", $prestamoId);
@@ -23,6 +23,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 
         if ($filaCuota = $resultadoCuota->fetch_assoc()) {
             $clienteId = $filaCuota['IDCliente'];
+
+            // Consulta SQL para obtener detalles del cliente
+            $sqlCliente = "SELECT Nombre, Telefono FROM clientes WHERE ID = ?";
+            $stmtCliente = $conexion->prepare($sqlCliente);
+            $stmtCliente->bind_param("i", $clienteId);
+            $stmtCliente->execute();
+            $resultadoCliente = $stmtCliente->get_result();
+            $cliente = $resultadoCliente->fetch_assoc();
+            $stmtCliente->close();
 
             // Consulta SQL para registrar el pago en la tabla 'historial_pagos'
             $sqlRegistrarPago = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, CURDATE(), ?, ?)";
@@ -59,7 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 
             // Si todo fue bien, confirmar la transacción
             $conexion->commit();
-            echo json_encode(["success" => true, "message" => "Pago procesado correctamente."]);
+            echo json_encode([
+                "success" => true, 
+                "message" => "Pago procesado correctamente.",
+                "clienteNombre" => $cliente['Nombre'],
+                "clienteTelefono" => $cliente['Telefono']
+            ]);
         } else {
             // Si no se encuentra el préstamo o ya está pagado
             throw new Exception("No se encontró el préstamo o ya está pagado.");
