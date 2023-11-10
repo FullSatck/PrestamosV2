@@ -63,7 +63,7 @@ if (isset($_GET['clienteId'])) {
 
           
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php" class="selected">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
@@ -105,7 +105,7 @@ if (isset($_GET['clienteId'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/abonos/abonos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>

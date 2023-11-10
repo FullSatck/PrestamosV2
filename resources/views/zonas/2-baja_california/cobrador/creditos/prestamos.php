@@ -48,7 +48,7 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -78,7 +78,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>

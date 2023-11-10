@@ -79,7 +79,7 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -122,7 +122,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/lista_super.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
