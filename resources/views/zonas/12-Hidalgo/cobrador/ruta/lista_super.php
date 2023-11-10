@@ -51,7 +51,7 @@ if (isset($_GET['mensaje'])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -60,62 +60,56 @@ if (isset($_GET['mensaje'])) {
 
           
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/12-Hidalgo/cobrador/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
+            
 
 
         </div>
@@ -146,7 +140,7 @@ if (isset($_GET['mensaje'])) {
                 <tbody>
                     <?php
                 include("../../../../../../controllers/conexion.php");
-                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 3 AND Zonas.ID = 1"); // Filtra por el ID del rol de supervisor (2)
+                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 3 AND Zonas.ID = 2"); // Filtra por el ID del rol de supervisor (2)
                 
                 // Verificar si la preparación de la consulta fue exitosa
                 if ($sql === false) {

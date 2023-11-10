@@ -6,13 +6,13 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 }
 
 
 // Incluye la configuración de conexión a la base de datos
-include "../../../../controllers/conexion.php";
+include "../../../../../../controllers/conexion.php";
 
 // Definir variables e inicializar con valores vacíos
 $id_zona = $fecha = $descripcion = $valor = "";
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Intentar ejecutar la declaración preparada
             if ($stmt->execute()) {
                 // Redirigir a la lista de gastos después de agregar uno nuevo
-                header("location: agregar_gastos.php");
+                header("location: gastos.php");
                 exit();
             } else {
                 echo "Algo salió mal. Por favor, inténtalo de nuevo más tarde.";
@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/gastos.css">
+    <link rel="stylesheet" href="/public/assets/css/agregar_gasto.css">
     <title>Lista de Gastos</title>
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
@@ -103,10 +103,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -118,69 +114,76 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/inicio/inicio.php" class="selected">
+        <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
+            </a> 
+
+            <a href="/resources/views/zonas/2-baja_california/cobrador/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
             </a>
 
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a>
+            </a> 
 
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/21-Queretaro/cobrador/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
+ 
 
 
         </div>
@@ -190,8 +193,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>
-        <h1>Agregar Gasto</h1>
+    <main class="main2">
+        <h1 class="h11">Agregar Gasto</h1>
 
         <div id="mensaje">
             <?php
@@ -208,7 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                $sql_zonas = "SELECT * FROM Zonas";
+                $sql_zonas = "SELECT * FROM Zonas WHERE Nombre = 'Baja california'";
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {
@@ -223,7 +226,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group">
                 <label for="fecha">Fecha:</label>
-                <input type="text" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
+                <input type="date" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
                 <span class="help-block"><?php echo $fecha_err; ?></span>
             </div>
             <div class="form-group">
@@ -243,25 +246,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </main>
-
-    <script>
-    // Agregar un evento clic al botón
-    document.getElementById("volverAtras").addEventListener("click", function() {
-        window.history.back();
-    });
-    </script>
-
-    <script>
-    $(function() {
-        $("#fecha").datepicker({
-            dateFormat: "dd/mm/yy", // Formato de fecha deseado
-            showButtonPanel: true, // Muestra botones de "Hoy" y "Limpiar"
-        });
-    });
-    </script>
-
-
-
 
     <script src="/public/assets/js/MenuLate.js"></script>
 

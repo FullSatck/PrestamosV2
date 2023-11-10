@@ -1,46 +1,15 @@
 <?php
 session_start();
 
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
-
 // Verifica si el usuario está autenticado
-if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
-    exit();
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
 } else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'cobrador') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../../../index.php");
+    exit();
 }
+
 
 // Verificar si se ha pasado un mensaje en la URL
 $mensaje = "";
@@ -82,7 +51,7 @@ if (isset($_GET['mensaje'])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -91,62 +60,56 @@ if (isset($_GET['mensaje'])) {
 
           
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/2-baja_california/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
+            
 
 
         </div>
@@ -177,7 +140,7 @@ if (isset($_GET['mensaje'])) {
                 <tbody>
                     <?php
                 include("../../../../../../controllers/conexion.php");
-                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 3 AND Zonas.ID = 1"); // Filtra por el ID del rol de supervisor (2)
+                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 3 AND Zonas.ID = 2"); // Filtra por el ID del rol de supervisor (2)
                 
                 // Verificar si la preparación de la consulta fue exitosa
                 if ($sql === false) {
