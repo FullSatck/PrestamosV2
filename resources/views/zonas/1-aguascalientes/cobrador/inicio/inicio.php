@@ -2,7 +2,7 @@
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../../../controllers/conexion.php'; 
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
