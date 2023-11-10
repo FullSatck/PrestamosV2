@@ -1,57 +1,25 @@
 <?php
 session_start();
-
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'admin') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
 }
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
+
+$idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
+
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Zonas</title>
+    <title>Listado de Ciudades</title>
     <link rel="stylesheet" href="/public/assets/css/cobros.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
@@ -163,40 +131,47 @@ if (!isset($_SESSION["usuario_id"])) {
     </div>
 
     <main>
-        <h2>Listado de Zonas</h2>
+        <h2>Listado de Ciudades</h2>
+
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Estado</th>
-                <th>Capital</th>
-                <th>CD Postal</th>
-            </tr>
-            <?php
-    // Realiza la conexión a la base de datos
-    include("../../../../controllers/conexion.php");
 
-    // Query SQL para obtener todas las zonas
-    $sql = "SELECT * FROM zonas";
-    $result = mysqli_query($conexion, $sql);
+        <?php
+        if ($idZona) {
+            echo "<div><p>Mostrando ciudades para la Zona ID: $idZona</p></div>";
+            
+            // Realizar la consulta SQL para obtener las ciudades de la zona especificada
+            $sql = "SELECT * FROM ciudades WHERE IDZona = ?";
+            if ($stmt = $conexion->prepare($sql)) {
+                $stmt->bind_param("i", $idZona);
+                $stmt->execute();
+                $resultado = $stmt->get_result();
 
-    // Muestra los datos en una tabla
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<tr 'zona-row'>";
-        echo "<td>REC-10" . $row["ID"] . "</td>"; 
-        echo "<td><a href='ciudades.php?zona=" . $row["ID"] . "'>" . $row["Nombre"] . "</a></td>";
-        echo "<td>" . $row["Capital"] . "</td>";
-        echo "<td>" . $row["CodigoPostal"] . "</td>";  
-        echo "</tr>";
-    }
+                echo "<table>";
+                echo "<tr><th>ID</th><th>Ciudad</th><th>CD Postal</th></tr>";
+                
+                // Verifica si hay ciudades en la base de datos para esta zona
+                if ($resultado->num_rows > 0) {
+                    while ($row = $resultado->fetch_assoc()) {
+                        echo "<tr 'zona-row'>";
+                        echo "<td>".'REC-10' . $row['ID'] . "</td>";
+                        echo "<td>" . $row['Nombre'] . "</td>";
+                        echo "<td>" . $row['codigoPostal'] . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='3'>No hay ciudades registradas para esta zona.</td></tr>";
+                }
+                echo "</table>";
 
-    // Cierra la conexión a la base de datos
-    mysqli_close($conexion);
-    ?>
-        </table>
-
+                $stmt->close();
+            }
+        } else {
+            echo "<p>Por favor, seleccione una zona para ver las ciudades correspondientes.</p>";
+        }
+        $conexion->close();
+        ?>
     </main>
 
     <script>
@@ -214,9 +189,7 @@ if (!isset($_SESSION["usuario_id"])) {
         });
     });
     </script>
-
     <script src="/public/assets/js/MenuLate.js"></script>
-
 </body>
 
 </html>
