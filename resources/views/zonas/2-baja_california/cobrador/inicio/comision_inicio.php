@@ -1,13 +1,13 @@
 <?php
 session_start();
- 
+
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../../../controllers/conexion.php'; 
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
@@ -41,85 +41,17 @@ if (!isset($_SESSION["usuario_id"])) {
     
    
 }
-
-// Incluye el archivo de conexión
+// Conectar a la base de datos
 include("../../../../controllers/conexion.php");
 
-// COBROS
-try {
-    // Consulta SQL para obtener la suma de MontoAPagar
-    $sqlCobros = "SELECT SUM(MontoAPagar) AS TotalMonto FROM prestamos";
+// Consulta SQL
+$sql = "SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.MontoAPagar, prestamos.Comision
+        FROM prestamos
+        INNER JOIN clientes ON prestamos.IDCliente = clientes.ID
+        WHERE Zona = 'Baja California'";
 
-    // Realizar la consulta
-    $resultCobros = mysqli_query($conexion, $sqlCobros);
-
-    if ($resultCobros) {
-        $rowCobros = mysqli_fetch_assoc($resultCobros);
-
-        // Obtener el total de cobros
-        $totalMonto = $rowCobros['TotalMonto'];
-
-        // Cierra la consulta de cobros
-        mysqli_free_result($resultCobros);
-    } else {
-        echo "Error en la consulta de cobros: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (cobros): " . $e->getMessage();
-}
-
-// INGRESOS
-try {
-    // Consulta SQL para obtener la suma de MontoPagado
-    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos";
-
-    // Realizar la consulta
-    $resultIngresos = mysqli_query($conexion, $sqlIngresos);
-
-    if ($resultIngresos) {
-        $rowIngresos = mysqli_fetch_assoc($resultIngresos);
-
-        // Obtener el total de ingresos
-        $totalIngresos = $rowIngresos['TotalIngresos'];
-
-        // Cierra la consulta de ingresos
-        mysqli_free_result($resultIngresos);
-    } else {
-        echo "Error en la consulta de ingresos: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
-}
-
-
-// COMISIONES
-try {
-    // Consulta SQL para obtener la suma de Comision
-    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos";
-
-    // Realizar la consulta
-    $resultComisiones = mysqli_query($conexion, $sqlComisiones);
-
-    if ($resultComisiones) {
-        $rowComisiones = mysqli_fetch_assoc($resultComisiones);
-
-        // Obtener el total de comisiones
-        $totalComisiones = $rowComisiones['TotalComisiones'];
-
-        // Cierra la consulta de comisiones
-        mysqli_free_result($resultComisiones);
-    } else {
-        echo "Error en la consulta de comisiones: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (comisiones): " . $e->getMessage();
-}
-
-
-
-
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
+// Ejecutar la consulta
+$result = $conexion->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -127,16 +59,10 @@ mysqli_close($conexion);
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio Admin</title>
-
-    <link rel="stylesheet" href="/public/assets/css/inicio.css">
+    <title>Recaudo</title>
+    <link rel="stylesheet" href="/public/assets/css/comision_inicio.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-
-
-
-
 </head>
 
 <body id="body">
@@ -166,7 +92,7 @@ mysqli_close($conexion);
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
+                    <h4>Saldo Incial</h4>
                 </div>
             </a>
 
@@ -242,57 +168,76 @@ mysqli_close($conexion);
                     <h4>Retiros</h4>
                 </div>
             </a>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
         </div>
     </div>
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Inicio Administrador</h1>
-        <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
-                    </p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?></p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
-                    </p>
-                </div>
-            </div>
+    <main>
 
+        <h1>Comisiones totales</h1>
+
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
+ 
+        
+        <table id="prestamos-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Cliente</th>
+                <th>Monto a Pagar</th>
+                <th>Comisión</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if ($result->num_rows > 0): ?>
+                <?php while($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $row['ID']; ?></td>
+                        <td><?php echo $row['NombreCliente']; ?></td>
+                        <td><?php echo number_format($row['MontoAPagar'], 0, '.', '.'); ?></td>
+                        <td><?php echo number_format($row['Comision'], 0, '.', '.'); ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="4">No hay préstamos registrados.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody> 
+    </table>
+
+
+        
          
-
-        </div>
-        </div>
-
-
     </main>
 
 
+    <script>
+// Función para filtrar las filas de la tabla
+function filterTable(event) {
+    var filter = event.target.value.toUpperCase();
+    var rows = document.querySelector("#prestamos-table tbody").rows;
+    
+    for (var i = 0; i < rows.length; i++) {
+        var firstCol = rows[i].cells[0].textContent.toUpperCase();
+        var secondCol = rows[i].cells[1].textContent.toUpperCase();
+        var thirdCol = rows[i].cells[2].textContent.toUpperCase();
+        var fourthCol = rows[i].cells[3].textContent.toUpperCase();
+        if (firstCol.indexOf(filter) > -1 || secondCol.indexOf(filter) > -1 || thirdCol.indexOf(filter) > -1 || fourthCol.indexOf(filter) > -1) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }      
+    }
+}
 
-
+document.querySelector('#search-input').addEventListener('keyup', filterTable, false);
+</script>
+    
     <script src="/public/assets/js/MenuLate.js"></script>
-
 </body>
 
 </html>
