@@ -76,10 +76,6 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
 
 </header>
 
-
-
-    
-
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
@@ -91,13 +87,14 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
             <div class="profile-details">
                 <!-- Mostrar los datos del cliente -->
                 <h1><strong><?= $fila["Nombre"] ?></strong></h1>
-                <p>Apellido: <strong><?= $fila["Apellido"] ?></strong></p>
+                <p>Apellido: <strong><?= $fila["Apellido"] ?></strong></p> 
+                <p>Curp: <strong><?= $fila["IdentificacionCURP"] ?></strong></p> 
                 <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
-                <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
-                <p>Historial Crediticio: <strong><?= $fila["HistorialCrediticio"] ?></strong> </p>
-                <p>Referencias Personales: <strong><?= $fila["ReferenciasPersonales"] ?></strong> </p>
+                <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p> 
                 <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
                 <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
+                <p>Ciudad: <strong><?= $fila["ciudad"] ?></strong></p>
+                <p>Asentamiento: <strong><?= $fila["asentamiento"] ?></strong></p>
             </div>
         </div>
 
