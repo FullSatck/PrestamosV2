@@ -12,6 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $referencias = $_POST["referencias"];
     $moneda = $_POST["moneda"];
     $zona_id = $_POST["zona"]; // Recuperar el ID de la zona desde el formulario
+    $ciudad = $_POST["ciudad"]; // Recuperar la ciudad desde el formulario
+    $asentamiento = $_POST["asentamiento"]; // Recuperar el asentamiento desde el formulario
 
     // Procesar la imagen del cliente
     if ($_FILES["imagen"]["error"] === 0) {
@@ -31,13 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $nombre_zona = $rowZona['Nombre'];
 
         // Insertar los datos en la tabla de clientes
-        $sql = "INSERT INTO clientes (Nombre, Apellido, IdentificacionCURP, Domicilio, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada, ImagenCliente)
-                VALUES ('$nombre', '$apellido', '$curp', '$domicilio', '$telefono', '$historial', '$referencias', '$moneda', '$nombre_zona', '$ruta_imagen')";
+        $sql = "INSERT INTO clientes (Nombre, Apellido, IdentificacionCURP, Domicilio, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada, Ciudad, Asentamiento, ImagenCliente)
+                VALUES ('$nombre', '$apellido', '$curp', '$domicilio', '$telefono', '$historial', '$referencias', '$moneda', '$nombre_zona', '$ciudad', '$asentamiento', '$ruta_imagen')";
 
         if (mysqli_query($conexion, $sql)) {
             // Redirige al usuario a la página de agregar zona con un mensaje de confirmación
             header('Location: ../resources/views/admin/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
-            exit;
+            exit();
         } else {
             echo "Error al registrar el cliente: " . mysqli_error($conexion);
         }

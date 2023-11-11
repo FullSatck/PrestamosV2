@@ -59,115 +59,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 <body id="body">
 
-    <header>
-        <div class="icon__menu">
-            <i class="fas fa-bars" id="btn_open"></i>
-        </div>
-    </header>
-
-    <div class="menu__side" id="menu_side">
-
-        <div class="name__page">
-            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-            <h4>Recaudo</h4>
-        </div>
-
-        <div class="options__menu">
-
-            <a href="/resources/views/admin/inicio/inicio.php">
-                <div class="option">
-                    <i class="fa-solid fa-landmark" title="Inicio"></i>
-                    <h4>Inicio</h4>
-                </div>
-            </a>
-
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Incial</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/usuarios/crudusuarios.php">
-                <div class="option">
-                    <i class="fa-solid fa-users" title=""></i>
-                    <h4>Usuarios</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/usuarios/registrar.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-plus" title=""></i>
-                    <h4>Registrar Usuario</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/clientes/lista_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-people-group" title=""></i>
-                    <h4>Clientes</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/clientes/agregar_clientes.php" class="selected">
-                <div class="option">
-                    <i class="fa-solid fa-user-tag" title=""></i>
-                    <h4>Registrar Clientes</h4>
-                </div>
-            </a>
-            <a href="/resources/views/admin/creditos/crudPrestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                    <h4>Prestamos</h4>
-                </div>
-            </a>
-            <a href="/resources/views/admin/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
-            <a href="/resources/views/admin/cobros/cobros.php">
-                <div class="option">
-                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
-                    <h4>Zonas de cobro</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/gastos/gastos.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
-                    <h4>Gastos</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/ruta/lista_super.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
-            <a href="/resources/views/admin/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-        </div>
-
-    </div>
-    <script src="/public/assets/js/MenuLate.js"></script>
-
-
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+    <!-- ACA VA EL CONTENIDO DEL MENU -->
 
     <main>
         <div id="mensaje-emergente" style="display: none;">
@@ -248,6 +140,19 @@ if (!isset($_SESSION["usuario_id"])) {
             </div>
 
             <div class="input-container">
+                <label for="ciudad">Ciudad:</label>
+                <select id="ciudad" name="ciudad">
+                    <!-- Options will be dynamically added here -->
+                </select>
+            </div>
+
+            <div class="input-container">
+                <label for="asentamiento">Asentamiento:</label>
+                <input type="text" id="asentamiento" name="asentamiento" required>
+            </div>
+
+
+            <div class="input-container">
                 <label for="imagen">Imagen del Cliente:</label>
                 <input type="file" id="imagen" name="imagen">
             </div>
@@ -259,6 +164,36 @@ if (!isset($_SESSION["usuario_id"])) {
 
 
     </main>
+
+    <script>
+    document.getElementById('zona').addEventListener('change', function() {
+        var IDZona = this.value;
+        var ciudadSelect = document.getElementById('ciudad');
+
+        // Clear existing options
+        ciudadSelect.innerHTML = '';
+
+        if (IDZona) {
+            // AJAX request to fetch cities
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'fetch_cities.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    var cities = JSON.parse(this.responseText);
+                    cities.forEach(function(city) {
+                        var option = document.createElement('option');
+                        option.value = city.id;
+                        option.textContent = city.nombre;
+                        ciudadSelect.appendChild(option);
+                    });
+                }
+            };
+            xhr.send('IDZona=' + IDZona);
+        }
+    });
+    </script>
+
 
     <script>
     document.getElementById("curp").addEventListener("input", function() {
@@ -287,7 +222,8 @@ if (!isset($_SESSION["usuario_id"])) {
                         mensajeEmergente.style.display = "block";
                         mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
                         // Configura el enlace para ir al perfil con el ID
-                        enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta.cliente_id;
+                        enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta
+                            .cliente_id;
                     } else {
                         // Si el cliente no existe, oculta el mensaje de error y restablece el enlace
                         mensajeEmergente.style.display = "none";
@@ -306,7 +242,7 @@ if (!isset($_SESSION["usuario_id"])) {
     });
     </script>
 
-   
+
     <script src="/public/assets/js/mensaje.js"></script>
 
 </body>
