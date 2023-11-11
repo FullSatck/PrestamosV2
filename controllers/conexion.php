@@ -13,9 +13,9 @@ if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 // Puedes descomentar las siguientes líneas para confirmar que la conexión es efectiva
-/*
-else {
-    echo "Conexión efectiva";
-}
-*/
+
+// else {
+//     echo "Conexión efectiva";
+// }
+
 ?>
