@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_FILES["imagen"]["error"] === 0) {
         $imagen_nombre = $_FILES["imagen"]["name"];
         $imagen_temporal = $_FILES["imagen"]["tmp_name"];
-        $ruta_imagen = "../../public/assets/img/imgclient/imgclient" . $imagen_nombre;
+        $ruta_imagen = "../../../public/assets/img/imgclient/imgclient" . $imagen_nombre;
         move_uploaded_file($imagen_temporal, $ruta_imagen);
     } else {
         $ruta_imagen = "";
