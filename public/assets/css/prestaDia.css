@@ -1,0 +1,138 @@
+/* Estilos Generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #ada6a6;
+    color: #fff;
+    padding: 20px 0;
+    
+}
+
+header a {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgb(131, 127, 127);
+    color: #fff;
+    margin-right: 5px;
+}
+
+main {
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+/* Estilos del Formulario */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+select, input[type="submit"] {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex: 1;
+}
+
+input[type="submit"] {
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: #555;
+}
+
+/* Estilos de la Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    max-width: 100%;
+}
+
+th, td {
+    padding: 10px; /* Reducción del relleno para pantallas más pequeñas */
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #747474;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #dcdcdc;
+}
+
+/* Estilos para los enlaces en la última columna */
+td a {
+    background: #adadad;
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.3s ease;
+    padding: 7px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+}
+
+td a:hover {
+    background: #707070;
+    color: #000000;
+} 
+button {
+    background-color: rgb(131, 127, 127);
+    border: none; 
+    padding: 10px 16px; 
+    border-radius: 20px; 
+  }
+  
+  
+  button a {
+    text-decoration: none; 
+    color: #fff; 
+  }
+  
+
+/* Estilos de los Botones */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgb(131, 127, 127);
+    color: #fff;
+    margin-right: 5px;
+}
+
+button:hover {
+    background-color: #888;
+}
+

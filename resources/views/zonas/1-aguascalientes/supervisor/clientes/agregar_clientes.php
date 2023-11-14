@@ -16,7 +16,7 @@ if (!isset($_SESSION["usuario_id"])) {
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+     
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -47,7 +47,7 @@ if (!isset($_SESSION["usuario_id"])) {
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -56,7 +56,7 @@ if (!isset($_SESSION["usuario_id"])) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
-<body id="body"> 
+<body id="body">
 
     <header>
         <div class="icon__menu">
@@ -78,7 +78,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
@@ -120,7 +120,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/1-aguascalientes/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -223,7 +223,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
             <div class="input-container">
                 <label for="zona">Zona:</label>
-                <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
+                <select id="zona" name="zona" required>
                     <?php
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
@@ -236,6 +236,28 @@ if (!isset($_SESSION["usuario_id"])) {
                 }
                 ?>
                 </select>
+            </div>
+
+            <div class="input-container">
+                <label for="ciudad">Ciudad:</label>
+                <select id="ciudad" name="ciudad" required>
+                    <?php
+                // Incluye el archivo de conexión a la base de datos
+                include("../../../../../../controllers/conexion.php");
+                // Consulta SQL para obtener las zonas
+                $consultaZonas = "SELECT * FROM ciudades WHERE iDZona = 1";
+                $resultZonas = mysqli_query($conexion, $consultaZonas);
+                // Genera las opciones del menú desplegable para Zona
+                while ($row = mysqli_fetch_assoc($resultZonas)) {
+                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                }
+                ?>
+                </select>
+            </div>
+
+            <div class="input-container">
+                <label for="asentamiento">Asentamiento:</label>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento" required>
             </div>
 
             <div class="input-container">

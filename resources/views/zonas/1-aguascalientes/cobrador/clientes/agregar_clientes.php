@@ -18,7 +18,7 @@ if (isset($_SESSION["usuario_id"])) {
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -55,7 +55,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-        
+
             <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
@@ -105,7 +105,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            
+
 
 
         </div>
@@ -121,7 +121,7 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/cob/validar_clientes/validar_clientes2.php" method="POST"
+        <form action="/controllers/cob/validar_clientes/validar_clientes1.php" method="POST"
             enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
@@ -191,6 +191,29 @@ if (isset($_SESSION["usuario_id"])) {
                 }
                 ?>
                 </select>
+            </div>
+
+            <div class="input-container">
+                <label for="ciudad">Ciudad:</label>
+                <select id="ciudad" name="ciudad" required>
+                    <?php
+                // Incluye el archivo de conexión a la base de datos
+                include("../../../../../../controllers/conexion.php");
+                // Consulta SQL para obtener las zonas
+                $consultaZonas = "SELECT * FROM ciudades WHERE iDZona = 1";
+                $resultZonas = mysqli_query($conexion, $consultaZonas);
+                // Genera las opciones del menú desplegable para Zona
+                while ($row = mysqli_fetch_assoc($resultZonas)) {
+                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                }
+                ?>
+                </select>
+            </div>
+
+            <div class="input-container">
+                <label for="asentamiento">Asentamiento:</label>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
+                    required>
             </div>
 
             <div class="input-container">
