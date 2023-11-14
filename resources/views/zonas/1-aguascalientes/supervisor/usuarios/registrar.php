@@ -141,16 +141,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
+            </a> 
 
         </div>
 
@@ -161,7 +152,7 @@ if (!isset($_SESSION["usuario_id"])) {
         <!-- Contenido principal -->
         <main>
             <h2>Registro de Usuario</h2><br>
-            <form action="/controllers/super/validar_registro-1.php" method="post">
+            <form action="/controllers/super/validar_registro/validar_registro-1.php" method="post">
                 <div class="input-container">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese su nombre" required>

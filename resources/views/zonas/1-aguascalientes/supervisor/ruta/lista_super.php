@@ -148,16 +148,7 @@ if (isset($_GET['mensaje'])) {
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
+ 
         </div>
 
     </div>
@@ -211,7 +202,7 @@ if (isset($_GET['mensaje'])) {
                         <td><?= $datos->Rol ?></td>
                         <td>
                             <!-- Botón para ver los cobradores de la zona -->
-                            <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver
+                            <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">
                                 Prestamos</a>
                             <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
                         </td>

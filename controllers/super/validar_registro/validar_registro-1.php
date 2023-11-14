@@ -1,6 +1,6 @@
 <?php
 // Incluye el archivo de conexión a la base de datos
-include("../../../conexion.php");
+include("../../conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["registrar_usuario"])) {
     // Recoge los datos del formulario

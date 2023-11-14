@@ -58,7 +58,7 @@ $resultado = $conexion->query($sql);
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -236,7 +236,7 @@ $resultado = $conexion->query($sql);
             <?php } else { ?>
             <p>No se encontraron clientes en la base de datos.</p>
             <?php } ?>
-            </div>
+        </div>
     </main>
 
     <script>

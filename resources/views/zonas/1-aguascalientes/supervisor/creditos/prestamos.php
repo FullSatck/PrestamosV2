@@ -142,15 +142,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/2-baja_california/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
+ 
 
         </div>
 
@@ -161,7 +153,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
-        <form action="/controllers/super/procesar_prestamo/procesar_prestamo1.php" method="POST" class="form-container">
+        <form action="/controllers/super/procesar_prestamos/procesar_prestamo1.php" method="POST" class="form-container">
             <?php
             // Incluir el archivo de conexión a la base de datos
             include("../../../../../../controllers/conexion.php");
