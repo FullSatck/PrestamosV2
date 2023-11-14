@@ -105,14 +105,14 @@ if (!isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/admin/clientes/lista_clientes.php" class="selected">
+            <a href="/resources/views/admin/clientes/lista_clientes.php" >
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/admin/clientes/agregar_clientes.php">
+            <a href="/resources/views/admin/clientes/agregar_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>

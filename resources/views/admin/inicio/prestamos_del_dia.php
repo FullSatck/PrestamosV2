@@ -15,7 +15,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Préstamos</title>
-    <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
+    <link rel="stylesheet" href="/public/assets/css/prestaDia.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -23,7 +23,18 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body >
+
+    <header>
+        <a href="/controllers/cerrar_sesion.php" class="botonn">
+            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+            <span class="spann">Cerrar Sesion</span>
+        </a>
+    </header>
+
+    
+    <main>
+
     <h1>Cuotas del Día</h1>
     <form action="prestamos_del_dia.php" method="get">
         <select name="filtro">
@@ -117,7 +128,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             </div>
         </div>
     </div>
-
+</main>
     <!-- Script para manejar la lógica del modal y el pago -->
     <script>
     var globalPrestamoId = 0;
