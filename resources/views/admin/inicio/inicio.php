@@ -272,6 +272,12 @@ mysqli_close($conexion);
                     <p>Version beta</p>
                 </div>
             </div>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="#" class="titulo">Contabilidad </a>
+                    <p>Mantenimiento</p>
+                </div>
+            </div>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>

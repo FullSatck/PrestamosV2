@@ -23,10 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
         $stmtPrestamo->close();
 
         if ($filaPrestamo) {
-            if ($montoPagado > $filaPrestamo['MontoAPagar']) {
-                throw new Exception("El monto pagado excede el monto pendiente.");
-            }
-
             $clienteId = $filaPrestamo['IDCliente'];
 
             // Obtener el nombre y el número de teléfono del cliente
@@ -47,30 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $stmtPago->execute();
             $stmtPago->close();
 
-            // Actualizar el monto pendiente en la tabla 'prestamos'
-            $sqlActualizarMonto = "UPDATE prestamos SET MontoAPagar = MontoAPagar - ? WHERE ID = ?";
-            $stmtActualizar = $conexion->prepare($sqlActualizarMonto);
-            $stmtActualizar->bind_param("di", $montoPagado, $prestamoId);
-            $stmtActualizar->execute();
-            $stmtActualizar->close();
-
-            // Verificar si el préstamo ha sido pagado completamente
-            $sqlCheckCompleto = "SELECT MontoAPagar FROM prestamos WHERE ID = ?";
-            $stmtCheck = $conexion->prepare($sqlCheckCompleto);
-            $stmtCheck->bind_param("i", $prestamoId);
-            $stmtCheck->execute();
-            $resultadoCheck = $stmtCheck->get_result();
-            $filaCheck = $resultadoCheck->fetch_assoc();
-            $stmtCheck->close();
-
-            if ($filaCheck['MontoAPagar'] <= 0) {
-                // Actualizar el estado del préstamo a 'pagado'
-                $sqlActualizarEstado = "UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?";
-                $stmtEstado = $conexion->prepare($sqlActualizarEstado);
-                $stmtEstado->bind_param("i", $prestamoId);
-                $stmtEstado->execute();
-                $stmtEstado->close();
-            }
+            // Actualizar el estado del préstamo a 'pagado' inmediatamente después de recibir un pago
+            $sqlActualizarEstado = "UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?";
+            $stmtEstado = $conexion->prepare($sqlActualizarEstado);
+            $stmtEstado->bind_param("i", $prestamoId);
+            $stmtEstado->execute();
+            $stmtEstado->close();
 
             // Confirmar la transacción
             $conexion->commit();
