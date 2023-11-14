@@ -4,9 +4,6 @@ include '../../../../controllers/conexion.php';
 
 header('Content-Type: application/json');
 
-// Depuración: Verificar los datos POST recibidos
-error_log("Datos POST recibidos: " . print_r($_POST, true));
-
 // Verificar si se han enviado los datos necesarios
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['montoPagado'])) {
     $prestamoId = $_POST['prestamoId'];
@@ -17,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 
     try {
         // Consulta SQL para obtener el monto pendiente del préstamo
-        $sqlPrestamo = "SELECT MontoAPagar, IDCliente FROM prestamos WHERE ID = ? AND Estado = 'pendiente'";
+        $sqlPrestamo = "SELECT MontoAPagar, IDCliente, Pospuesto FROM prestamos WHERE ID = ? AND Estado = 'pendiente'";
         $stmtPrestamo = $conexion->prepare($sqlPrestamo);
         $stmtPrestamo->bind_param("i", $prestamoId);
         $stmtPrestamo->execute();
@@ -28,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
         if ($filaPrestamo) {
             $clienteId = $filaPrestamo['IDCliente'];
             $montoTotalAPagar = $filaPrestamo['MontoAPagar'];
+            $esPospuesto = $filaPrestamo['Pospuesto'];
 
             // Obtener el nombre y el número de teléfono del cliente
             $sqlCliente = "SELECT Nombre, Telefono FROM clientes WHERE ID = ?";
@@ -64,6 +62,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             }
             $stmtActualizarPrestamo->execute();
             $stmtActualizarPrestamo->close();
+
+            // Actualizar el estado de 'Pospuesto' si el préstamo estaba pospuesto
+            if ($esPospuesto) {
+                $sqlActualizarPospuesto = "UPDATE prestamos SET Pospuesto = 0 WHERE ID = ?";
+                $stmtActualizarPospuesto = $conexion->prepare($sqlActualizarPospuesto);
+                $stmtActualizarPospuesto->bind_param("i", $prestamoId);
+                $stmtActualizarPospuesto->execute();
+                $stmtActualizarPospuesto->close();
+            }
 
             // Confirmar la transacción
             $conexion->commit();
