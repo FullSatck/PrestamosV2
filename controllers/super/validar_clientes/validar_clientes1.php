@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($imagen_temporal, $ruta_imagen);
     } else {
         $ruta_imagen = "";
-    }
+    } 
 
     // Consulta SQL para obtener el nombre de la zona y de la ciudad
     $consultaZona = "SELECT Nombre FROM zonas WHERE ID = $zona_id";
