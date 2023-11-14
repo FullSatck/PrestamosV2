@@ -9,15 +9,20 @@ body {
 }
 
 header {
-    background: #333;
+    background: #ada6a6;
     color: #fff;
-    padding: 10px 0;
-    text-align: center;
+    padding: 20px 0;
+    
 }
 
 header a {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgb(131, 127, 127);
     color: #fff;
-    text-decoration: none;
+    margin-right: 5px;
 }
 
 main {
