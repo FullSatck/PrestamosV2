@@ -137,7 +137,7 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/super/validar_clientes.php" method="POST"
+        <form action="/controllers/super/validar_clientes/validar_clientes6.php" method="POST"
             enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
@@ -207,6 +207,28 @@ if (isset($_SESSION["usuario_id"])) {
                 }
                 ?>
                 </select>
+            </div>
+
+            <div class="input-container">
+                <label for="ciudad">Ciudad:</label>
+                <select id="ciudad" name="ciudad" required>
+                    <?php
+                // Incluye el archivo de conexión a la base de datos
+                include("../../../../../../controllers/conexion.php");
+                // Consulta SQL para obtener las zonas
+                $consultaZonas = "SELECT * FROM ciudades WHERE iDZona = 6";
+                $resultZonas = mysqli_query($conexion, $consultaZonas);
+                // Genera las opciones del menú desplegable para Zona
+                while ($row = mysqli_fetch_assoc($resultZonas)) {
+                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                }
+                ?> 
+                </select>
+            </div>
+
+            <div class="input-container">
+                <label for="asentamiento">Asentamiento:</label>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento" required>
             </div>
 
             <div class="input-container">
