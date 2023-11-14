@@ -105,7 +105,7 @@ if (!isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/admin/clientes/lista_clientes.php" >
+            <a href="/resources/views/admin/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
@@ -187,7 +187,7 @@ if (!isset($_SESSION["usuario_id"])) {
                 <label for="apellido">Apellido:</label>
                 <input type="text" id="apellido" name="apellido" required>
             </div>
- 
+
             <div class="input-container">
                 <label for="curp">Identificación CURP:</label>
                 <input type="text" id="curp" name="curp" required>
@@ -251,7 +251,17 @@ if (!isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="ciudad">Ciudad:</label>
                 <select id="ciudad" name="ciudad">
-                    <!-- Options will be dynamically added here -->
+                    <?php
+                // Incluye el archivo de conexión a la base de datos
+                include("../../../../controllers/conexion.php");
+                // Consulta SQL para obtener las zonas
+                $consultaZonas = "SELECT * FROM ciudades";
+                $resultZonas = mysqli_query($conexion, $consultaZonas);
+                // Genera las opciones del menú desplegable para Zona
+                while ($row = mysqli_fetch_assoc($resultZonas)) {
+                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                }
+                ?>
                 </select>
             </div>
 
@@ -350,7 +360,7 @@ if (!isset($_SESSION["usuario_id"])) {
         }
     });
     </script>
-      <script src="/public/assets/js/MenuLate.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 
     <script src="/public/assets/js/mensaje.js"></script>
