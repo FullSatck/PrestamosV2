@@ -43,77 +43,77 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/inicio/inicio.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/usuarios/registrar.php" class="selected">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/usuarios/registrar.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/creditos/prestamos.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/gastos/gastos.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
+            <a href="/resources/views/zonas/7-Coahuila/supervisor/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
@@ -155,7 +155,7 @@ if (isset($_SESSION["usuario_id"])) {
                         // Incluye el archivo de conexión a la base de datos
                         include("../../../../../../controllers/conexion.php");
                         // Consulta SQL para obtener las zonas
-                        $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Aguascalientes'";
+                        $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Coahuila'";
                         $resultZonas = mysqli_query($conexion, $consultaZonas);
                         // Genera las opciones del menú desplegable para Zona
                         while ($row = mysqli_fetch_assoc($resultZonas)) {
@@ -170,7 +170,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <select id="RolID" name="RolID" required>
                         <?php
                         // Consulta SQL para obtener las opciones de roles
-                        $consultaRoles = "SELECT ID, Nombre FROM Roles WHERE ID = 3";
+                        $consultaRoles = "SELECT ID, Nombre FROM Roles WHERE ID = 2";
                         $resultRoles = mysqli_query($conexion, $consultaRoles);
                         // Genera las opciones del menú desplegable para Rol
                         while ($row = mysqli_fetch_assoc($resultRoles)) {
