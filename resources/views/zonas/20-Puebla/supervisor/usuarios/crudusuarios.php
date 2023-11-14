@@ -147,7 +147,7 @@ if (isset($_GET['mensaje'])) {
                              FROM usuarios u
                              LEFT JOIN zonas z ON u.Zona = z.ID
                              LEFT JOIN roles r ON u.RolID = r.ID
-                             WHERE u.RolID = 3 AND u.Zona = 1
+                             WHERE u.RolID = 3 AND u.Zona = 20
                              ORDER BY u.ID DESC");
 
     // Verificar si la consulta se realizó con éxito
