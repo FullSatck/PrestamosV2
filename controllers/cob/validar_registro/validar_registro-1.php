@@ -1,6 +1,6 @@
 <?php
 // Incluye el archivo de conexión a la base de datos
-include("../conexion.php");
+include("../../../conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["registrar_usuario"])) {
     // Recoge los datos del formulario
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["registrar_usuario"])) 
 
     // Validación de datos
     if (empty($nombre) || empty($apellido) || empty($email) || empty($contrasena)) {
-        header("Location: ../../resources/views/admin/usuarios/crudusuarios.php?mensaje=Por favor, complete todos los campos.");
+        header("Location: ../../../resources/views/zonas/1-aguascalientes/usuarios/crudusuarios.php?mensaje=Por favor, complete todos los campos.");
         exit();
     } else {
         // Realiza la inserción en la base de datos
@@ -31,10 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["registrar_usuario"])) 
                                        VALUES ($ultimoID, $saldoInicial, '$fechaActual')";
                 mysqli_query($conexion, $insertSaldoInicial);
             }
-            header("Location: ../../resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php?mensaje=Usuario registrado con éxito.");
+            header("Location: ../../../resources/views/zonas/1-aguascalientes/supervisor/usuarios/crudusuarios.php?mensaje=Usuario registrado con éxito.");
             exit();
         } else {
-            header("Location: ../../resources/views/admin/usuarios/crudusuarios.php?mensaje=Error al registrar el usuario: " . mysqli_error($conexion));
+            header("Location: ../../../resources/views/admin/usuarios/crudusuarios.php?mensaje=Error al registrar el usuario: " . mysqli_error($conexion));
             exit();
         }
     }
