@@ -187,7 +187,7 @@ if (!isset($_SESSION["usuario_id"])) {
                 <label for="apellido">Apellido:</label>
                 <input type="text" id="apellido" name="apellido" required>
             </div>
-
+ 
             <div class="input-container">
                 <label for="curp">Identificación CURP:</label>
                 <input type="text" id="curp" name="curp" required>
