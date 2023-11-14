@@ -166,6 +166,7 @@ if (!isset($_SESSION["usuario_id"])) {
         </div>
 
         <h1>Registro de Clientes</h1>
+        
         <form action="/controllers/super/validar_clientes/validar_clientes1.php" method="POST"
             enctype="multipart/form-data">
             <div class="input-container">
@@ -251,7 +252,7 @@ if (!isset($_SESSION["usuario_id"])) {
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
                     echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                 }
-                ?>
+                ?> 
                 </select>
             </div>
 
@@ -321,7 +322,7 @@ if (!isset($_SESSION["usuario_id"])) {
     </script>
 
     <script src="/public/assets/js/MenuLate.js"></script>
-    <script src="/public/assets/js/mensaje.js"></script>
+   
 
 </body>
 

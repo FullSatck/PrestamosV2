@@ -14,7 +14,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Préstamos</title>
+    <title>Prestamos del dia </title>
     <link rel="stylesheet" href="/public/assets/css/prestaDia.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -47,6 +47,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     </form>
 
     <?php if (count($cuotasHoy) > 0): ?>
+        <div class="table-scroll-container">
     <table>
         <thead>
             <tr>
@@ -58,7 +59,8 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
                 <th>Monto Cuota</th>
                 <th>Fecha Inicio</th>
                 <th>Frecuencia Pago</th>
-                <th>Acciones</th>
+                <th>Pagar</th>
+                <th>Mas Tarde</th>
             </tr>
         </thead>
         <tbody>
@@ -78,7 +80,8 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal"
                         onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
                         Pagar
-                    </button>
+                    </button></td>
+                    <td>
                     <?php if (!$cuota['Pospuesto']): ?>
                     <button type="button" class="btn btn-warning" onclick="posponerPago(<?php echo $cuota['ID']; ?>)">
                         Pagar Más Tarde
@@ -92,6 +95,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <?php else: ?>
     <p>No hay cuotas pendientes para hoy.</p>
     <?php endif; ?>
+    </div>
 
     <!-- Modal de Confirmación de Pago -->
     <div class="modal fade" id="confirmPaymentModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"

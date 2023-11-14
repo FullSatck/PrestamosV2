@@ -22,7 +22,8 @@ include("../../../../../../controllers/conexion.php");
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Baja California'";
+        WHERE c.ZonaAsignada = 'Baja California' 
+        ORDER BY c.ID DESC";
 
 $resultado = $conexion->query($sql);
 ?>
@@ -144,8 +145,7 @@ $resultado = $conexion->query($sql);
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Domicilio</th>
-                <th>Teléfono</th>
-                <th>Referencias Personales</th>
+                <th>Teléfono</th> 
                 <th>Moneda Preferida</th>
                 <th>Zona Asignada</th>
                 <th>Acciones</th>
@@ -157,8 +157,7 @@ $resultado = $conexion->query($sql);
                 <td><?= $fila["Nombre"] ?></td>
                 <td><?= $fila["Apellido"] ?></td>
                 <td><?= $fila["Domicilio"] ?></td>
-                <td><?= $fila["Telefono"] ?></td>
-                <td><?= $fila["ReferenciasPersonales"] ?></td>
+                <td><?= $fila["Telefono"] ?></td> 
                 <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
                 <td><?= $fila["ZonaAsignada"] ?></td>
                 <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>

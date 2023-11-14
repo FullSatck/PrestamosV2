@@ -285,12 +285,7 @@ mysqli_close($conexion);
                     </p>
                 </div>
             </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="#" class="titulo">Contabilidad </a>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
+        
 
         </div>
          

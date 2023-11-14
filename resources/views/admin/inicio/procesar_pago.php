@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 
     try {
         // Consulta SQL para obtener el monto pendiente del préstamo
-        $sqlPrestamo = "SELECT MontoAPagar, IDCliente FROM prestamos WHERE ID = ? AND Estado = 'pendiente'";
+        $sqlPrestamo = "SELECT MontoAPagar, IDCliente FROM prestamos WHERE ID = ?";
         $stmtPrestamo = $conexion->prepare($sqlPrestamo);
         $stmtPrestamo->bind_param("i", $prestamoId);
         $stmtPrestamo->execute();
@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 
         if ($filaPrestamo) {
             $clienteId = $filaPrestamo['IDCliente'];
+            $montoAPagar = $filaPrestamo['MontoAPagar'];
 
             // Obtener el nombre y el número de teléfono del cliente
             $sqlCliente = "SELECT Nombre, Telefono FROM clientes WHERE ID = ?";
@@ -43,12 +44,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $stmtPago->execute();
             $stmtPago->close();
 
-            // Actualizar el estado del préstamo a 'pagado' inmediatamente después de recibir un pago
-            $sqlActualizarEstado = "UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?";
-            $stmtEstado = $conexion->prepare($sqlActualizarEstado);
-            $stmtEstado->bind_param("i", $prestamoId);
-            $stmtEstado->execute();
-            $stmtEstado->close();
+            // Actualizar el monto pendiente del préstamo
+            $montoRestante = $montoAPagar - $montoPagado;
+            if ($montoRestante <= 0) {
+                // Si se ha cubierto el total, cambiar el estado del préstamo a 'pagado'
+                $sqlActualizarEstado = "UPDATE prestamos SET Estado = 'pagado', MontoAPagar = 0 WHERE ID = ?";
+            } else {
+                // Si no, solo actualizar el monto pendiente
+                $sqlActualizarEstado = "UPDATE prestamos SET MontoAPagar = ? WHERE ID = ?";
+                $stmtEstado = $conexion->prepare($sqlActualizarEstado);
+                $stmtEstado->bind_param("di", $montoRestante, $prestamoId);
+                $stmtEstado->execute();
+                $stmtEstado->close();
+            }
 
             // Confirmar la transacción
             $conexion->commit();
