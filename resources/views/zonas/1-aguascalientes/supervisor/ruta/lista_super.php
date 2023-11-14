@@ -59,7 +59,7 @@ if (isset($_GET['mensaje'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
-    <title>Abonos</title>
+    <title>Cobradores</title>
 </head>
 
 <body id="body">
