@@ -22,7 +22,7 @@ include("../../../../../../controllers/conexion.php");
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Baja California' 
+        WHERE c.ZonaAsignada = 'Aguascalientes' 
         ORDER BY c.ID DESC";
 
 $resultado = $conexion->query($sql);

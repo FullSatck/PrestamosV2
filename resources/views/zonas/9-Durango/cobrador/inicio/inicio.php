@@ -65,7 +65,7 @@ try {
 // COMISIONES
 try {
     // Consulta SQL para obtener la suma de Comision
-    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos WHERE Zona = 'Aguascalientes'";
+    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos WHERE Zona = 'Durango'";
 
     // Realizar la consulta
     $resultComisiones = mysqli_query($conexion, $sqlComisiones);
@@ -126,7 +126,7 @@ mysqli_close($conexion);
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/9-Durango/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -135,49 +135,49 @@ mysqli_close($conexion);
 
          
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/9-Durango/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/9-Durango/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/9-Durango/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/9-Durango/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/9-Durango/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/9-Durango/cobrador/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/9-Durango/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -195,7 +195,7 @@ mysqli_close($conexion);
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
+                    <a href="/resources/views/zonas/9-Durango/cobrador/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
                     <p>Mantenimiento
                     </p>
                 </div>

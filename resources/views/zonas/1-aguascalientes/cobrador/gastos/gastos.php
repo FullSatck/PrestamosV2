@@ -124,7 +124,7 @@ include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ru
 $sql = "SELECT g.ID, z.Nombre AS nombreZona, g.Fecha, g.Descripcion, g.Valor 
         FROM Gastos g
         INNER JOIN zonas z ON g.IDZona = z.ID
-        WHERE iDZona = 2
+        WHERE iDZona = 1
         ORDER BY G.ID DESC";
 $resultado = $conexion->query($sql);
 

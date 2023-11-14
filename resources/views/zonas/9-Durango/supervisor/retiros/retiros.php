@@ -81,7 +81,7 @@ $conexion->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/resources/views/zonas/25-Sonora/supervisor/retiros/agregar_retiros.php" class="botonn">
+        <a href="/resources/views/zonas/9-Durango/supervisor/retiros/agregar_retiros.php" class="botonn">
             <i class="fa-solid fa-plus-minus"></i>
             <span class="spann">Agregar Retiro</span>
         </a>

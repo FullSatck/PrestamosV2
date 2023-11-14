@@ -181,12 +181,7 @@ $conexion->close();
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
+            
 
 
 

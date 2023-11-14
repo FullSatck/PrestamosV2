@@ -183,7 +183,7 @@ if (isset($_SESSION["usuario_id"])) {
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Baja California'";
+                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Aguascalientes'";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
