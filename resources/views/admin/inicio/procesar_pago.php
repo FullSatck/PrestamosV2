@@ -13,16 +13,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
     $conexion->begin_transaction();
 
     try {
-        // Consulta SQL para obtener el monto de la cuota del préstamo
-        $sqlCuota = "SELECT MontoCuota, IDCliente FROM prestamos WHERE ID = ? AND Estado = 'pendiente'";
-        $stmtCuota = $conexion->prepare($sqlCuota);
-        $stmtCuota->bind_param("i", $prestamoId);
-        $stmtCuota->execute();
-        $resultadoCuota = $stmtCuota->get_result();
-        $stmtCuota->close();
+        // Consulta SQL para obtener el monto pendiente del préstamo
+        $sqlPrestamo = "SELECT MontoAPagar, IDCliente FROM prestamos WHERE ID = ? AND Estado = 'pendiente'";
+        $stmtPrestamo = $conexion->prepare($sqlPrestamo);
+        $stmtPrestamo->bind_param("i", $prestamoId);
+        $stmtPrestamo->execute();
+        $resultadoPrestamo = $stmtPrestamo->get_result();
+        $filaPrestamo = $resultadoPrestamo->fetch_assoc();
+        $stmtPrestamo->close();
 
-        if ($filaCuota = $resultadoCuota->fetch_assoc()) {
-            $clienteId = $filaCuota['IDCliente'];
+        if ($filaPrestamo) {
+            if ($montoPagado > $filaPrestamo['MontoAPagar']) {
+                throw new Exception("El monto pagado excede el monto pendiente.");
+            }
+
+            $clienteId = $filaPrestamo['IDCliente'];
 
             // Obtener el nombre y el número de teléfono del cliente
             $sqlCliente = "SELECT Nombre, Telefono FROM clientes WHERE ID = ?";
@@ -35,40 +40,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $clienteTelefono = $filaCliente['Telefono'];
             $stmtCliente->close();
 
-            // Consulta SQL para registrar el pago en la tabla 'historial_pagos'
+            // Registrar el pago en la tabla 'historial_pagos'
             $sqlRegistrarPago = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, CURDATE(), ?, ?)";
             $stmtPago = $conexion->prepare($sqlRegistrarPago);
             $stmtPago->bind_param("idi", $clienteId, $montoPagado, $prestamoId);
             $stmtPago->execute();
             $stmtPago->close();
 
-            // Consulta SQL para actualizar el monto pendiente en la tabla 'prestamos'
+            // Actualizar el monto pendiente en la tabla 'prestamos'
             $sqlActualizarMonto = "UPDATE prestamos SET MontoAPagar = MontoAPagar - ? WHERE ID = ?";
             $stmtActualizar = $conexion->prepare($sqlActualizarMonto);
             $stmtActualizar->bind_param("di", $montoPagado, $prestamoId);
             $stmtActualizar->execute();
             $stmtActualizar->close();
 
-            // Verificar si el préstamo ha sido pagado completamente y actualizar el estado
+            // Verificar si el préstamo ha sido pagado completamente
             $sqlCheckCompleto = "SELECT MontoAPagar FROM prestamos WHERE ID = ?";
             $stmtCheck = $conexion->prepare($sqlCheckCompleto);
             $stmtCheck->bind_param("i", $prestamoId);
             $stmtCheck->execute();
             $resultadoCheck = $stmtCheck->get_result();
+            $filaCheck = $resultadoCheck->fetch_assoc();
             $stmtCheck->close();
 
-            if ($filaCheck = $resultadoCheck->fetch_assoc()) {
-                if ($filaCheck['MontoAPagar'] <= 0) {
-                    // Actualizar el estado del préstamo a 'pagado'
-                    $sqlActualizarEstado = "UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?";
-                    $stmtEstado = $conexion->prepare($sqlActualizarEstado);
-                    $stmtEstado->bind_param("i", $prestamoId);
-                    $stmtEstado->execute();
-                    $stmtEstado->close();
-                }
+            if ($filaCheck['MontoAPagar'] <= 0) {
+                // Actualizar el estado del préstamo a 'pagado'
+                $sqlActualizarEstado = "UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?";
+                $stmtEstado = $conexion->prepare($sqlActualizarEstado);
+                $stmtEstado->bind_param("i", $prestamoId);
+                $stmtEstado->execute();
+                $stmtEstado->close();
             }
 
-            // Si todo fue bien, confirmar la transacción y enviar respuesta
+            // Confirmar la transacción
             $conexion->commit();
             echo json_encode([
                 "success" => true, 
@@ -78,19 +82,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
                 "montoPagado" => $montoPagado
             ]);
         } else {
-            // Si no se encuentra el préstamo o ya está pagado
             throw new Exception("No se encontró el préstamo o ya está pagado.");
         }
     } catch (Exception $e) {
-        // Si algo sale mal, revertir la transacción
         $conexion->rollback();
         echo json_encode(["success" => false, "message" => "Error al procesar el pago: " . $e->getMessage()]);
     }
 } else {
-    // Si no se reciben los datos necesarios por POST
     echo json_encode(["success" => false, "message" => "Datos POST necesarios no recibidos."]);
 }
 
-// Cerrar la conexión a la base de datos
 $conexion->close();
 ?>

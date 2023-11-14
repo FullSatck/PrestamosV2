@@ -7,7 +7,6 @@ $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'todos';
 // Obtener las cuotas del día con el filtro aplicado
 $cuotasHoy = obtenerCuotas($conexion, $filtro);
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -17,8 +16,6 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Préstamos</title>
     <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -27,10 +24,6 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
 </head>
 
 <body>
-
-
-
-
     <h1>Cuotas del Día</h1>
     <form action="prestamos_del_dia.php" method="get">
         <select name="filtro">
@@ -63,13 +56,15 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
                 <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
                 <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
                 <td>
-                    <!-- Botón que activa el modal de confirmación de pago -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal"
                         onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
                         Pagar
                     </button>
-
-
+                    <?php if (!$cuota['Pospuesto']): ?>
+                    <button type="button" class="btn btn-warning" onclick="posponerPago(<?php echo $cuota['ID']; ?>)">
+                        Pagar Más Tarde
+                    </button>
+                    <?php endif; ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -79,8 +74,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <p>No hay cuotas pendientes para hoy.</p>
     <?php endif; ?>
 
-
-
+    <!-- Modal de Confirmación de Pago -->
     <div class="modal fade" id="confirmPaymentModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -101,6 +95,8 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             </div>
         </div>
     </div>
+
+    <!-- Modal de WhatsApp -->
     <div class="modal fade" id="whatsappModal" tabindex="-1" role="dialog" aria-labelledby="whatsappModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -122,62 +118,81 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
         </div>
     </div>
 
-
-
     <!-- Script para manejar la lógica del modal y el pago -->
     <script>
-  // Variables globales para almacenar el ID del préstamo y el monto de la cuota
-var globalPrestamoId = 0;
-var globalMontoCuota = 0;
+    var globalPrestamoId = 0;
+    var globalMontoCuota = 0;
 
-function setPrestamoId(prestamoId, montoCuota) {
-    globalPrestamoId = prestamoId;
-    globalMontoCuota = montoCuota;
-}
+    function setPrestamoId(prestamoId, montoCuota) {
+        globalPrestamoId = prestamoId;
+        globalMontoCuota = montoCuota;
+    }
 
-$(document).ready(function() {
-    $('#confirmPaymentButton').click(function() {
-        procesarPago(globalPrestamoId, globalMontoCuota);
+    $(document).ready(function() {
+        $('#confirmPaymentButton').click(function() {
+            procesarPago(globalPrestamoId, globalMontoCuota);
+        });
     });
-});
 
-function procesarPago(prestamoId, montoCuota) {
-    $.ajax({
-        url: 'procesar_pago.php', // Asegúrate de que esta URL es correcta
-        type: 'POST',
-        data: {
-            prestamoId: prestamoId,
-            montoPagado: montoCuota
-        },
-        dataType: 'json',
-        success: function(response) {
-            if(response.success) {
-                $('#confirmPaymentModal').modal('hide');
-                // Mostrar modal de WhatsApp
-                $('#whatsappModal').modal('show');
-                // Agregar los detalles del cliente al modal
-                $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ', Monto Pagado: ' + response.montoPagado);
-                // Preparar el botón de WhatsApp
-                $('#sendWhatsappButton').off('click').on('click', function() {
-                    var mensajeWhatsapp = 'Hola ' + response.clienteNombre + ', hemos recibido tu pago de ' + response.montoPagado + '.';
-                    window.open('https://wa.me/' + response.clienteTelefono + '?text=' + encodeURIComponent(mensajeWhatsapp));
-                });
-            } else {
-                alert(response.message);
+    function procesarPago(prestamoId, montoCuota) {
+        $.ajax({
+            url: 'procesar_pago.php', // Asegúrate de que esta URL es correcta
+            type: 'POST',
+            data: {
+                prestamoId: prestamoId,
+                montoPagado: montoCuota
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    $('#confirmPaymentModal').modal('hide');
+                    // Mostrar modal de WhatsApp
+                    $('#whatsappModal').modal('show');
+                    // Agregar los detalles del cliente al modal
+                    $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ', Monto Pagado: ' +
+                        response.montoPagado);
+                    // Preparar el botón de WhatsApp
+                    $('#sendWhatsappButton').off('click').on('click', function() {
+                        var mensajeWhatsapp = 'Hola ' + response.clienteNombre +
+                            ', hemos recibido tu pago de ' + response.montoPagado + '.';
+                        window.open('https://wa.me/' + response.clienteTelefono + '?text=' +
+                            encodeURIComponent(mensajeWhatsapp));
+                    });
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error AJAX:', error);
+                alert('Ocurrió un error al procesar el pago.');
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error AJAX:', error);
-            alert('Ocurrió un error al procesar el pago.');
-        }
-    });
-}
+        });
+    }
 
+    function posponerPago(prestamoId) {
+        $.ajax({
+            url: 'posponer_pago.php', // Asegúrate de que esta URL es correcta
+            type: 'POST',
+            data: {
+                prestamoId: prestamoId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    alert('Pago pospuesto exitosamente.');
+                    // Recargar la página o actualizar la tabla de préstamos
+                    location.reload();
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error AJAX:', error);
+                alert('Ocurrió un error al posponer el pago.');
+            }
+        });
+    }
     </script>
-
-
 </body>
-
-
 
 </html>

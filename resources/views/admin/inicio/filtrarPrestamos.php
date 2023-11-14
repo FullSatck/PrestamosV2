@@ -5,12 +5,26 @@ function obtenerCuotas($conexion, $filtro) {
     $fechaHoy = date('Y-m-d');
     $cuotas = array();
 
-    // Consulta para obtener los préstamos y verificar los pagos realizados
-    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago,
+    // Consulta SQL para obtener los préstamos según el filtro
+    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
                    (SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
                    (SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
             FROM prestamos p
-            WHERE p.FechaInicio <= ? AND p.Estado != 'pagado'";
+            WHERE p.FechaInicio <= ?";
+
+    // Modificar la consulta según el filtro
+    switch ($filtro) {
+        case 'pagado':
+            $sql .= " AND p.Estado = 'pagado'";
+            break;
+        case 'pendiente':
+            $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0";
+            break;
+        case 'nopagado':
+            $sql .= " AND p.Pospuesto = 1";
+            break;
+    }
+
     // Preparar la consulta SQL
     $stmt = $conexion->prepare($sql);
     if (!$stmt) {
@@ -24,12 +38,11 @@ function obtenerCuotas($conexion, $filtro) {
         $resultado = $stmt->get_result();
 
         while ($fila = $resultado->fetch_assoc()) {
-            // Verificar si la cuota ha sido pagada hoy
-            if ($filtro == 'pagado' && $fila['PagadoHoy'] == 0) continue;
+            // Verificar si la cuota ha sido pagada hoy (solo para filtro 'pendiente')
             if ($filtro == 'pendiente' && $fila['PagadoHoy'] > 0) continue;
 
-            // Calcular si hoy es un día de pago según la frecuencia
-            if (!esDiaDePago($fila['FechaInicio'], $fila['FrecuenciaPago'], $fechaHoy)) continue;
+            // Calcular si hoy es un día de pago según la frecuencia (solo para filtro 'pendiente')
+            if ($filtro == 'pendiente' && !esDiaDePago($fila['FechaInicio'], $fila['FrecuenciaPago'], $fechaHoy)) continue;
 
             // Agregar la fila al array de cuotas
             $cuotas[] = $fila;
@@ -64,9 +77,4 @@ function esDiaDePago($fechaInicio, $frecuenciaPago, $fechaHoy) {
             return false;
     }
 }
-
-// Ejemplo de uso
-$cuotasPendientes = obtenerCuotas($conexion, 'pendiente');
-$cuotasPagadas = obtenerCuotas($conexion, 'pagado');
-
 ?>
