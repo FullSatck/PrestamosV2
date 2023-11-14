@@ -148,9 +148,15 @@ if (isset($_SESSION["usuario_id"])) {
                                 </thead>
                                 <tbody>
                                     <?php
+<<<<<<< HEAD
+                            include("../../../../../../controllers/conexion.php");
+                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS nombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Aguascalientes' AND estadoP = 1");
+                            while ($datos = $sql->fetch_object()) { ?>
+=======
                                     include("../../../../../../controllers/conexion.php");
                                     $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS nombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Aguascalientes' AND estadoP = 1");
                                     while ($datos = $sql->fetch_object()) { ?>
+>>>>>>> 6e5291a02c2829b1c3440ad6fd1cbc7f0507b8ca
                                     <tr>
                                         <td><?= $datos->ID ?></td>
                                         <td><?= $datos->nombreCliente ?></td> <!-- Aquí se cambia a 'nombreCliente' -->

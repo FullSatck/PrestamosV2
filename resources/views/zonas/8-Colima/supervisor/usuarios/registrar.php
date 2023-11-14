@@ -113,12 +113,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/8-Colima/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
+            
 
 
 
