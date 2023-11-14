@@ -6,7 +6,7 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ if (isset($_GET['mensaje'])) {
 }
 
 // Conectar a la base de datos
-include("../../../../controllers/conexion.php");
+include("../../../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener los préstamos de la zona especificada con el nombre del cliente
 $sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID WHERE P.Zona = ?");
@@ -42,18 +42,20 @@ if ($sql === false) {
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <title>Listado de Préstamos</title>
 </head>
 
-<body id="body"> 
+<body id="body">
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -70,7 +72,7 @@ if ($sql === false) {
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
@@ -112,7 +114,7 @@ if ($sql === false) {
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -134,7 +136,7 @@ if ($sql === false) {
                     <h4>Abonos</h4>
                 </div>
             </a>
- 
+
         </div>
 
     </div>
