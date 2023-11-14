@@ -58,7 +58,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/perfil_cliente.css">
@@ -68,94 +68,92 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
 </head>
 
 <body>
-<body id="body">
 
-<header>
-   
+    <body id="body">
 
+        <header>
 
-</header>
+        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
 
+        </header>
 
+        <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    
-
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
-    <main>
-        <div class="profile-container">
-            <div class="profile-image"><br><br><br>
-                <!-- Mostrar la foto del cliente -->
-                <img src="<?= $imagen_cliente ?>" alt="Foto del Cliente">
+        <main>
+            <div class="profile-container">
+                <div class="profile-image"><br><br><br>
+                    <!-- Mostrar la foto del cliente -->
+                    <img src="<?= $imagen_cliente ?>" alt="Foto del Cliente">
+                </div>
+                <div class="profile-details">
+                    <!-- Mostrar los datos del cliente -->
+                    <h1><strong><?= $fila["Nombre"] ?></strong></h1>
+                    <p>Apellido: <strong><?= $fila["Apellido"] ?></strong></p>
+                    <p>Curp: <strong><?= $fila["IdentificacionCURP"] ?></strong></p>
+                    <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
+                    <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
+                    <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
+                    <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
+                    <p>Ciudad: <strong><?= $fila["ciudad"] ?></strong></p>
+                    <p>Asentamiento: <strong><?= $fila["asentamiento"] ?></strong></p>
+                </div>
             </div>
-            <div class="profile-details">
-                <!-- Mostrar los datos del cliente -->
-                <h1><strong><?= $fila["Nombre"] ?></strong></h1>
-                <p>Apellido: <strong><?= $fila["Apellido"] ?></strong></p>
-                <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
-                <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
-                <p>Historial Crediticio: <strong><?= $fila["HistorialCrediticio"] ?></strong> </p>
-                <p>Referencias Personales: <strong><?= $fila["ReferenciasPersonales"] ?></strong> </p>
-                <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
-                <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
+
+            <!-- Agregar una sección para mostrar los préstamos del cliente -->
+            <div class="profile-loans">
+                <h2>Préstamos del Cliente</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID del Préstamo</th>
+                            <th>Monto</th>
+                            <th>Tasa de Interés</th>
+                            <th>Plazo</th>
+                            <th>Frecuencia de Pago</th> <!-- Agregar Frecuencia de Pago -->
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha de Vencimiento</th>
+                            <th>Estado</th>
+                            <th>Pagos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
+                        <tr>
+                            <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
+                            <td><?= $fila_prestamo["Monto"] ?></td>
+                            <td><?= $fila_prestamo["TasaInteres"] ?></td>
+                            <td><?= $fila_prestamo["Plazo"] ?></td>
+                            <td><?= $fila_prestamo["FrecuenciaPago"] ?></td> <!-- Mostrar Frecuencia de Pago -->
+                            <td><?= $fila_prestamo["FechaInicio"] ?></td>
+                            <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
+                            <td><?= $fila_prestamo["Estado"] ?></td>
+                            <td><a href="dias_pago.php?id=<?= $fila_prestamo["ID"]; ?>">Pagos</a></td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
             </div>
-        </div>
+        </main>
 
-        <!-- Agregar una sección para mostrar los préstamos del cliente -->
-        <div class="profile-loans">
-            <h2>Préstamos del Cliente</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID del Préstamo</th>
-                        <th>Monto</th>
-                        <th>Tasa de Interés</th>
-                        <th>Plazo</th>
-                        <th>Frecuencia de Pago</th> <!-- Agregar Frecuencia de Pago -->
-                        <th>Fecha de Inicio</th>
-                        <th>Fecha de Vencimiento</th>
-                        <th>Estado</th>
-                        <th>Pagos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
-                    <tr>
-                        <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
-                        <td><?= $fila_prestamo["Monto"] ?></td>
-                        <td><?= $fila_prestamo["TasaInteres"] ?></td>
-                        <td><?= $fila_prestamo["Plazo"] ?></td>
-                        <td><?= $fila_prestamo["FrecuenciaPago"] ?></td> <!-- Mostrar Frecuencia de Pago -->
-                        <td><?= $fila_prestamo["FechaInicio"] ?></td>
-                        <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
-                        <td><?= $fila_prestamo["Estado"] ?></td>
-                        <td><a href="dias_pago.php?id=<?= $fila_prestamo["ID"]; ?>">Pagos</a></td>
-                    </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-        </div>
-    </main>
-
-    <script>
+        <script>
         // Agregar un evento clic al botón
         document.getElementById("volverAtras").addEventListener("click", function() {
             window.history.back();
         });
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const profileImage = document.querySelector('.profile-image img');
+        </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileImage = document.querySelector('.profile-image img');
 
-        // Agrega un controlador de eventos para hacer clic en la imagen
-        profileImage.addEventListener('click', function() {
-            profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
+            // Agrega un controlador de eventos para hacer clic en la imagen
+            profileImage.addEventListener('click', function() {
+                profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
+            });
         });
-    });
-    </script>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script> 
-</body>
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+        </script>
+    </body>
 
 </html>

@@ -1,83 +1,32 @@
 <?php
 session_start();
 
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
-
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'admin') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
 }
 
-// Incluir el archivo de conexión a la base de datos
 include("../../../../controllers/conexion.php");
 
-// Consulta SQL para obtener el saldo inicial y el saldo neto del administrador
-$sqlSaldoAdmin = "SELECT Monto, Monto_Neto FROM saldo_admin LIMIT 1";
-$resultadoSaldoAdmin = $conexion->query($sqlSaldoAdmin);
-$saldoAdmin = 0; // Valor por defecto si no se encuentra el saldo
-$montoNetoAdmin = 0; // Valor por defecto si no se encuentra el saldo neto
+// Consulta SQL para obtener los datos
+$sql = "SELECT ID, IDUsuario, Monto, Monto_Neto FROM saldo_admin";
+$result = $conexion->query($sql);
 
-if ($resultadoSaldoAdmin && $resultadoSaldoAdmin->num_rows > 0) {
-    $filaSaldoAdmin = $resultadoSaldoAdmin->fetch_assoc();
-    $saldoAdmin = $filaSaldoAdmin['Monto'];
-    $montoNetoAdmin = $filaSaldoAdmin['Monto_Neto'];
+if ($result->num_rows > 0) {
+    // Recorrer los resultados
+    while($row = $result->fetch_assoc()) {
+        // Asignar los valores a las variables
+        $monto = $row["Monto"];
+        $monto_neto = $row["Monto_Neto"];
+    }
+} else {
+    echo "0 resultados";
 }
 
-// Consulta SQL para obtener la lista de retiros con nombre de usuario, zona y monto
-$sqlRetiros = "SELECT u.Nombre AS UsuarioNombre, u.Zona, r.Monto
-              FROM retiros AS r
-              INNER JOIN usuarios AS u ON r.IDUsuario = u.ID";
-
-$resultadoRetiros = $conexion->query($sqlRetiros);
-
-// Calcular el monto total de los retiros
-$sqlMontoTotalRetiros = "SELECT SUM(Monto) AS MontoTotal FROM retiros";
-$resultadoMontoTotalRetiros = $conexion->query($sqlMontoTotalRetiros);
-$montoTotalRetiros = 0;
-
-if ($resultadoMontoTotalRetiros && $resultadoMontoTotalRetiros->num_rows > 0) {
-    $filaMontoTotalRetiros = $resultadoMontoTotalRetiros->fetch_assoc();
-    $montoTotalRetiros = $filaMontoTotalRetiros['MontoTotal'];
-}
-
-// Calcular el saldo total
-$saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
-
+ 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -97,9 +46,110 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        <a href="/resources/views/admin/retiros/agregar_retiros.php" class="botonn">
+            <i class="fa-solid fa-plus-minus"></i>
+            <span class="spann">Agregar Retiro</span>
+        </a>
     </header>
 
-    <div class="menu__side" id="menu_side">
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+    <main>
+        <h1>Lista de Retiros</h1>
+        <div class="saldo-box">
+            <div class="saldo-item">
+                <h2>Saldo Inicial</h2>
+                <p>$<?php echo number_format($monto, 2, '.', '.'); ?></p>
+            </div>
+            <div class="saldo-item">
+                <h2>Monto Neto</h2>
+                <p class="p">$<?php echo number_format($monto_neto, 2, '.', '.'); ?></p>
+            </div>
+        </div>
+
+        <?php 
+
+// Consulta SQL para obtener los datos de la tabla 'retiros'
+$sql = "SELECT ID, IDUsuario, Fecha, Monto, descripcion FROM retiros";
+$result = $conexion->query($sql);
+
+if ($result->num_rows > 0) {
+    // Iniciar la tabla HTML con estilos
+    echo "<div class='table-container'>";
+    echo "<table class='styled-table'>";
+    echo "<thead>";
+    echo "<tr><th>ID</th><th>ID Usuario</th><th>Fecha</th><th>Monto</th><th>Descripción</th></tr>";
+    echo "</thead>";
+    echo "<tbody>";
+
+    // Recorrer los resultados y mostrar cada fila en la tabla
+    while($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row["ID"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["IDUsuario"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["Fecha"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["Monto"]) . "</td>";
+        $descripcion = !is_null($row['descripcion']) ? htmlspecialchars($row['descripcion']) : '';
+        echo "</tr>";
+    }
+
+    // Finalizar la tabla
+    echo "</tbody>";
+    echo "</table>";
+    echo "</div>";
+} else {
+    echo "<p>No se encontraron resultados.</p>";
+}
+
+// Cerrar la conexión a la base de datos
+$conexion->close();
+?>
+
+    </main>
+    <script src="/public/assets/js/MenuLate.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+<div class="menu__side" id="menu_side">
 
         <div class="name__page">
             <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
@@ -195,119 +245,4 @@ $saldoTotal = $montoNetoAdmin - $montoTotalRetiros;
                 </div>
             </a>
         </div>
-    </div>
-
-
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
-    <main>
-        <main>
-            <h1>Lista de Retiros</h1>
-            <div class="saldo-box">
-                <div class="saldo-item">
-                    <h2>Saldo Inicial</h2>
-                    <p>$<?php echo $saldoAdmin; ?></p>
-                </div>
-                <div class="saldo-item">
-                    <h2>Monto Neto</h2>
-                    <p class="p">$<?php echo $montoNetoAdmin; ?></p>
-                </div>
-            </div>
-            <table>
-
-                <div class="search-container">
-                    <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-                </div>
-                <tr>
-                    <th>Nombre del Usuario</th>
-                    <th>Zona</th>
-                    <th>Monto</th>
-                </tr>
-                <?php
-if ($resultadoRetiros) {
-  while ($fila = $resultadoRetiros->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . $fila['UsuarioNombre'] . "</td>";
-    echo "<td>" . $fila['Zona'] . "</td>";
-    echo "<td>" . number_format($fila['Monto'], 0, '.', '.') . "</td>"; // Formatear el monto
-    echo "</tr>";
-  }
-} else {
-  echo "Error en la consulta de retiros: " . $conexion->error;
-}
-?>
-
-            </table>
-        </main>
-
-    </main>
-
-    <script>
-    function buscarRetiros() {
-        var input = document.getElementById("busqueda");
-        var filtro = input.value.toLowerCase();
-        var tabla = document.querySelector("table");
-        var filas = tabla.getElementsByTagName("tr");
-
-        for (var i = 1; i < filas.length; i++) { // Empezamos desde 1 para omitir la fila de encabezados
-            var celdas = filas[i].getElementsByTagName("td");
-            var filaCoincide = false;
-
-            for (var j = 0; j < celdas.length; j++) {
-                var celda = celdas[j];
-                if (celda) {
-                    var textoCelda = celda.textContent || celda.innerText;
-                    if (textoCelda.toLowerCase().indexOf(filtro) > -1) {
-                        filaCoincide = true;
-                        break;
-                    }
-                }
-            }
-
-            if (filaCoincide) {
-                filas[i].style.display = "";
-            } else {
-                filas[i].style.display = "none";
-            }
-        }
-    }
-    </script>
-    <script src="/public/assets/js/MenuLate.js"></script>
-
-</body>
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html>
-
-<head>
-
-</head>
-
-<body>
-
-</body>
-
-</html>
+    </div> -->

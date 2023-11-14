@@ -84,7 +84,7 @@ $conexion->close();
         <a href="/resources/views/zonas/2-baja_california/supervisor/retiros/agregar_retiros.php" class="botonn">
             <i class="fa-solid fa-plus-minus"></i>
             <span class="spann">Agregar Retiro</span>
-        </a>
+        </a> 
     </header>
 
     <div class="menu__side" id="menu_side">

@@ -29,13 +29,12 @@ if (isset($_SESSION["usuario_id"])) {
     <body id="body">
 
         <header>
-            <div class="icon__menu">
-                <i class="fas fa-bars" id="btn_open"></i>
-            </div>
 
-        </header> 
+            <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+
+        </header>
         <main>
-    <?php
+            <?php
     // Incluir el archivo de conexión a la base de datos
     require_once("conexion.php");
 
@@ -58,8 +57,8 @@ if (isset($_SESSION["usuario_id"])) {
             // Calcular las fechas de pago
             $fechasPago = calcularFechasPago($fechaInicio, $frecuenciaPago, $plazo);
 
-            // Mostrar las fechas de pago en una tabla
-            echo "<div class='container'>";
+            // Mostrar las fechas de pago en una tabla 
+            echo "<div class='table-scroll-container' id='profile-loans'>";
             echo "<h1>Fechas de Pago</h1>"; 
             echo "<table>";
             echo "<tr><th>Frecuencia</th><th>Fecha</th><th>Cuota</th><th>Frecuencia de Pago</th><th>Pagado</th></tr>";
@@ -86,7 +85,7 @@ if (isset($_SESSION["usuario_id"])) {
                 $numeroFecha++;
             }
             echo "</table>";
-            echo "</div>";
+            echo "</div>"; 
 
             // Si la suma de los pagos es igual al total a pagar, actualizar el estado del préstamo
             if ($sumaPagos >= $totalAPagar) {
@@ -144,7 +143,7 @@ if (isset($_SESSION["usuario_id"])) {
     // Cerrar la conexión a la base de datos
     $conexion->close();
     ?>
-</main>
+        </main>
 
     </body>
 

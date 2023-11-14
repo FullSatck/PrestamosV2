@@ -9,15 +9,9 @@
 }
 
 body{
-    margin-left: 80px;
-    margin-top: 80px;
-    transition: margin-left 300ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
-}
-
-main{
     padding: 20px;
 }
-
+ 
 header{
     width: 100%;
     height: 80px;
@@ -29,176 +23,26 @@ header{
     z-index: 200;
 }
 
-.icon__menu{
-    width: 50px;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: translateX(10px);
-}
-
-.icon__menu i{
-    font-size: 20px;
-    cursor: pointer;
-    position: absolute;
-}
-
-.menu__side{
-    width: 80px;
-    height: 100%;
-    background: rgb(131, 127, 127);
-    position: fixed;
-    top: 0;
-    left: 0;
+.back-link {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px 0;
+    background-color: #747474;
     color: white;
-    font-size: 18px;
-    z-index: 300;
-    overflow: hidden;
-    overflow-y: scroll;
-    border-right: 20px solid rgb(131, 127, 127);
-    transition: all 300ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
 }
 
-/*Ocultar scroll para chrome, safari y opera*/
-.menu__side::-webkit-scrollbar{
-    display: none;
+.back-link:hover {
+    background-color: #585858;
 }
 
-/*Ocultar scroll para IE, Edge y Firefox*/
-.menu__side{
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+.back-link:active {
+    background-color: rgb(17, 0, 255);
 }
 
-
-.name__page{
-    padding: 20px 30px;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.name__page i{
-    width: 20px;
-    margin-right: 20px;
-}
-
-.options__menu{
-    padding: 20px 30px;
-    position: absolute;
-    top: 80px;
-}
-
-.options__menu a{
-    color: #ffffff;
-    cursor: default;
-    display: block;
-    position: relative;
-    transition: color 300ms;
-}
-
-.options__menu a:hover{
-    color: #646262;
-}
-
-.options__menu .option{
-    padding: 20px 0px;
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-.options__menu .option i{
-    width: 20px;
-    margin-right: 20px;
-    cursor: pointer;
-}
-
-.options__menu .option h4{
-    font-weight: 300;
-    cursor: pointer;
-}
-
-a.selected{
-    color: #fff;
-}
-
-.selected:before{
-    content: '';
-    width: 3px;
-    height: 80%;
-    background: white;
-    position: absolute;
-    top: 10%;
-    left: -30px;
-}
-
-/*Clases para usar en JavaScript*/
-
-.body_move{
-    margin-left: 250px;
-}
-
-.menu__side_move{
-    width: 250px;
-}
-
-.cuadros-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.cuadros-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  padding: 20px;
-}
-
-.cuadro {
-  border: 1px solid #ccc;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.cuadro:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
-}
-
-.cuadro-1-1 {
-  background-color: rgba(255, 255, 255, 0.8);
-  color: #333;
-  padding: 8px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.titulo {
-  font-size: 22px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 15px;
-}
-.logo-image {
-    max-width: 100px; /* Establece el ancho máximo deseado para el logo */
-    max-height: 30px; /* Establece la altura máxima deseada para el logo */
-    display: block; /* Asegura que la imagen se muestre como un bloque */
-    margin: 0 auto; /* Centra la imagen horizontalmente en su contenedor */
-}
 
 /* Encabezado */
 h1 {
@@ -316,26 +160,6 @@ table th {
 }
 
 @media screen and (max-width: 600px) {
-    .cuadros-container {
-        flex-direction: column;
-    }
-
-    .cuadro {
-        width: 100%;
-        max-width: 100%;
-    }
-   
-        .body_move{
-            margin-left: 0px;
-        }
-    
-        .menu__side_move{
-            width: 80px;
-            left: -80px;
-        }
-
-  
-
     /* Ajustes para el perfil */
     .profile-container {
         flex-direction: column; /* Colocar elementos uno debajo del otro */
