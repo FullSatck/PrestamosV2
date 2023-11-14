@@ -10,9 +10,9 @@ function obtenerCuotas($conexion, $filtro) {
     c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
     (SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
     (SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
-FROM prestamos p
-INNER JOIN clientes c ON p.IDCliente = c.ID
-WHERE p.FechaInicio <= ?";
+       FROM prestamos p
+         INNER JOIN clientes c ON p.IDCliente = c.ID
+           WHERE p.FechaInicio <= ?";
 
 
 
