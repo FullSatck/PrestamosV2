@@ -116,15 +116,7 @@ if (isset($_GET['mensaje'])) {
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
+            </a> 
 
 
         </div>

@@ -155,17 +155,7 @@ $resultado = $conexion->query($sql);
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
+            </a> 
         </div>
 
     </div>
@@ -181,8 +171,9 @@ $resultado = $conexion->query($sql);
         </div>
 
         <?php if ($resultado->num_rows > 0) { ?>
-            
-        <table>
+          
+        <div class="table-scroll-container">
+        <table> 
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
@@ -215,6 +206,7 @@ $resultado = $conexion->query($sql);
         <?php } else { ?>
         <p>No se encontraron clientes en la base de datos.</p>
         <?php } ?>
+        </div>
     </main>
 
     <script>

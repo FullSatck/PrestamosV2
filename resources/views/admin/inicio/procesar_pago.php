@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 
     try {
         // Consulta SQL para obtener el monto pendiente del préstamo
-        $sqlPrestamo = "SELECT MontoAPagar, IDCliente FROM prestamos WHERE ID = ?";
+        $sqlPrestamo = "SELECT MontoAPagar, IDCliente, Pospuesto FROM prestamos WHERE ID = ? AND Estado = 'pendiente'";
         $stmtPrestamo = $conexion->prepare($sqlPrestamo);
         $stmtPrestamo->bind_param("i", $prestamoId);
         $stmtPrestamo->execute();
@@ -24,7 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 
         if ($filaPrestamo) {
             $clienteId = $filaPrestamo['IDCliente'];
-            $montoAPagar = $filaPrestamo['MontoAPagar'];
+            $montoTotalAPagar = $filaPrestamo['MontoAPagar'];
+            $esPospuesto = $filaPrestamo['Pospuesto'];
 
             // Obtener el nombre y el número de teléfono del cliente
             $sqlCliente = "SELECT Nombre, Telefono FROM clientes WHERE ID = ?";
@@ -44,18 +45,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $stmtPago->execute();
             $stmtPago->close();
 
-            // Actualizar el monto pendiente del préstamo
-            $montoRestante = $montoAPagar - $montoPagado;
+            // Descontar el monto pagado del total a pagar
+            $montoRestante = $montoTotalAPagar - $montoPagado;
+
+            // Preparar la consulta para actualizar el monto total a pagar y, si es necesario, el estado del préstamo
             if ($montoRestante <= 0) {
-                // Si se ha cubierto el total, cambiar el estado del préstamo a 'pagado'
-                $sqlActualizarEstado = "UPDATE prestamos SET Estado = 'pagado', MontoAPagar = 0 WHERE ID = ?";
+                // Si el monto restante es cero o menor, el préstamo se considera pagado
+                $sqlActualizarPrestamo = "UPDATE prestamos SET MontoAPagar = 0, Estado = 'pagado' WHERE ID = ?";
+                $stmtActualizarPrestamo = $conexion->prepare($sqlActualizarPrestamo);
+                $stmtActualizarPrestamo->bind_param("i", $prestamoId);
             } else {
-                // Si no, solo actualizar el monto pendiente
-                $sqlActualizarEstado = "UPDATE prestamos SET MontoAPagar = ? WHERE ID = ?";
-                $stmtEstado = $conexion->prepare($sqlActualizarEstado);
-                $stmtEstado->bind_param("di", $montoRestante, $prestamoId);
-                $stmtEstado->execute();
-                $stmtEstado->close();
+                // Si aún queda monto por pagar, solo actualizamos el monto
+                $sqlActualizarPrestamo = "UPDATE prestamos SET MontoAPagar = ? WHERE ID = ?";
+                $stmtActualizarPrestamo = $conexion->prepare($sqlActualizarPrestamo);
+                $stmtActualizarPrestamo->bind_param("di", $montoRestante, $prestamoId);
+            }
+            $stmtActualizarPrestamo->execute();
+            $stmtActualizarPrestamo->close();
+
+            // Actualizar el estado de 'Pospuesto' si el préstamo estaba pospuesto
+            if ($esPospuesto) {
+                $sqlActualizarPospuesto = "UPDATE prestamos SET Pospuesto = 0 WHERE ID = ?";
+                $stmtActualizarPospuesto = $conexion->prepare($sqlActualizarPospuesto);
+                $stmtActualizarPospuesto->bind_param("i", $prestamoId);
+                $stmtActualizarPospuesto->execute();
+                $stmtActualizarPospuesto->close();
             }
 
             // Confirmar la transacción

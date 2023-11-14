@@ -33,7 +33,7 @@ if (isset($_SESSION["usuario_id"])) {
       $nuevoOrden = $_POST["nuevoOrden"];
       
       // Actualizar el orden en la base de datos (debes adaptar esto a tu estructura)
-      $sqlUpdate = "UPDATE nueva_lista_pagos SET Orden = ? WHERE Zona = ?";
+      $sqlUpdate = "UPDATE nueva_lista_pagos SET Orden = ? WHERE Zona = 'Aguascalientes'";
       $stmt = $conexion->prepare($sqlUpdate);
       $stmt->bind_param("is", $nuevoOrden, $nombreZona);
       
@@ -122,7 +122,11 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
+<<<<<<< HEAD
             <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+=======
+            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/ruta.php">
+>>>>>>> 6e5291a02c2829b1c3440ad6fd1cbc7f0507b8ca
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>

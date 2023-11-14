@@ -113,7 +113,11 @@ if ($sql === false) {
                 </div>
             </a>
 
+<<<<<<< HEAD
             <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+=======
+            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/ruta.php">
+>>>>>>> 6e5291a02c2829b1c3440ad6fd1cbc7f0507b8ca
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>

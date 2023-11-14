@@ -32,8 +32,8 @@ if (isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="agregar_gasto.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+        <a href="/resources/views/zonas/1-aguascalientes/cobrador/gastos/agregar_gasto.php" class="botonn">
+            <i class="fa-solid fa-plus-minus"></i>
             <span class="spann">Agregar Gasto</span>
         </a>
     </header>
@@ -47,14 +47,27 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php" class="selected">
+        <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
+            </a> 
+
+            <a href="/resources/views/zonas/1-aguascalientes/cobrador/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
             </a>
 
-      
+            <a href="/resources/views/zonas/1-aguascalientes/cobrador/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
@@ -81,16 +94,16 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a>
+            </a> 
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/1-aguascalientes/cobrador/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
@@ -102,10 +115,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
- 
-
-
+            </a> 
 
         </div>
 
@@ -121,14 +131,22 @@ if (isset($_SESSION["usuario_id"])) {
 include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
 // Realiza la consulta para obtener los gastos con el nombre de la zona
+<<<<<<< HEAD
 $sql = "SELECT g.ID, z.Nombre AS nombreZona, g.Fecha, g.Descripcion, g.Valor 
         FROM Gastos g
         INNER JOIN zonas z ON g.IDZona = z.ID
         WHERE iDZona = 1
+=======
+$sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
+        FROM Gastos G
+        INNER JOIN Zonas Z ON G.IDZona = Z.ID
+        WHERE IDZona = 1
+>>>>>>> 6e5291a02c2829b1c3440ad6fd1cbc7f0507b8ca
         ORDER BY G.ID DESC";
 $resultado = $conexion->query($sql);
 
 // Crear una tabla HTML para mostrar las columnas de las filas
+echo '<div class="search-container">';
 echo '<table>';
 echo '<tr>';
 echo '<th>ID</th>';
@@ -158,9 +176,7 @@ if ($resultado->num_rows > 0) {
 }
 
 echo '</table>';
-
-// Cierra la conexión a la base de datos
-$conexion->close();
+echo '</div>';
 ?>
     </main>
 

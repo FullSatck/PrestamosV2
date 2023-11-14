@@ -170,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
@@ -182,9 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
- 
-
+            </a> 
 
         </div>
 
@@ -211,7 +209,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
+<<<<<<< HEAD
                 $sql_zonas = "SELECT * FROM zonas WHERE Nombre = 'Aguascalientes'";
+=======
+                $sql_zonas = "SELECT * FROM Zonas WHERE Nombre = 'Aguascalientes'";
+>>>>>>> 6e5291a02c2829b1c3440ad6fd1cbc7f0507b8ca
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {
