@@ -2,7 +2,7 @@
 require 'filtrarPrestamos.php'; // Asegúrate de que este archivo contiene la función obtenerCuotas actualizada
 
 // Obtener el filtro desde la URL si está presente, de lo contrario, usar 'todos'
-$filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'todos';
+$filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'pendiente';
 
 // Obtener las cuotas del día con el filtro aplicado
 $cuotasHoy = obtenerCuotas($conexion, $filtro);
@@ -26,9 +26,9 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
 <body >
 
     <header>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
+        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
+            <span class="spann">Volver al Inicio</span>
         </a>
     </header>
 
@@ -38,7 +38,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <h1>Cuotas del Día</h1>
     <form action="prestamos_del_dia.php" method="get">
         <select name="filtro">
-            <option value="todos" <?php echo $filtro == 'todos' ? 'selected' : ''; ?>>Todos</option>
+            <!-- <option value="todos" <?php echo $filtro == 'todos' ? 'selected' : ''; ?>>Todos</option> -->
             <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
             <option value="pendiente" <?php echo $filtro == 'pendiente' ? 'selected' : ''; ?>>Pendientes</option>
             <option value="nopagado" <?php echo $filtro == 'nopagado' ? 'selected' : ''; ?>>No Pagados</option>
@@ -50,8 +50,11 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <table>
         <thead>
             <tr>
-                <th>ID Préstamo</th>
-                <th>ID Cliente</th>
+            <th>ID Préstamo</th>
+               
+                <th>Nombre Cliente</th>
+                <th>Domicilio</th>
+                <th>Teléfono</th>
                 <th>Monto Cuota</th>
                 <th>Fecha Inicio</th>
                 <th>Frecuencia Pago</th>
@@ -61,12 +64,17 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
         <tbody>
             <?php foreach ($cuotasHoy as $cuota): ?>
             <tr>
+            <tr>
                 <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
-                <td><?php echo htmlspecialchars($cuota['IDCliente']); ?></td>
+                <!-- <td><?php echo htmlspecialchars($cuota['IDCliente']); ?></td> -->
+                <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
+                <td><?php echo htmlspecialchars($cuota['DireccionCliente']); ?></td>
+                <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
                 <td><?php echo htmlspecialchars($cuota['MontoCuota']); ?></td>
                 <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
                 <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
                 <td>
+                
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal"
                         onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
                         Pagar
