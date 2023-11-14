@@ -14,12 +14,11 @@ function obtenerCuotas($conexion, $filtro) {
          INNER JOIN clientes c ON p.IDCliente = c.ID
            WHERE p.FechaInicio <= ?";
 
-
-
     // Modificar la consulta según el filtro
     switch ($filtro) {
         case 'pagado':
-            $sql .= " AND p.Estado = 'pagado'";
+            // Cambiar la condición para incluir préstamos que han sido pagados hoy
+            $sql .= " AND EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
             break;
         case 'pendiente':
             $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0";
@@ -35,7 +34,13 @@ function obtenerCuotas($conexion, $filtro) {
         echo "Error al preparar la consulta: " . $conexion->error;
         return array();
     }
-    $stmt->bind_param("ss", $fechaHoy, $fechaHoy);
+
+    // Ajustar el bind_param según el filtro
+    if ($filtro == 'pagado') {
+        $stmt->bind_param("s", $fechaHoy); // Un solo parámetro para 'pagado'
+    } else {
+        $stmt->bind_param("ss", $fechaHoy, $fechaHoy); // Dos parámetros para 'pendiente' y 'nopagado'
+    }
 
     // Ejecutar la consulta
     if ($stmt->execute()) {
