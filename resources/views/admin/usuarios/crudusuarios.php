@@ -43,7 +43,7 @@ if (!isset($_SESSION["usuario_id"])) {
 }
  
 // Consulta para obtener la lista de usuarios
-$usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE Estado = 'activo'");
+$usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE estado = 'activo'");
 
 if ($usuariosSQL === false) {
     die("Error en la consulta SQL: " . $conexion->error);

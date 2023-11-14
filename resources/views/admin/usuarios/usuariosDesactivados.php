@@ -2,8 +2,7 @@
 session_start();
 include("../../../../controllers/conexion.php");
 
-<?php
-session_start();
+
 
 // Validacion de rol para ingresar a la pagina 
 require_once '../../../../controllers/conexion.php'; 
@@ -46,7 +45,7 @@ if (!isset($_SESSION["usuario_id"])) {
    
 }
 // Consulta para obtener la lista de usuarios
-$usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE Estado = 'inactivo'");
+$usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE estado = 'inactivo'");
 
 if ($usuariosSQL === false) {
     die("Error en la consulta SQL: " . $conexion->error);

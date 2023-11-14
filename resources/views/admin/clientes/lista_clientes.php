@@ -50,8 +50,8 @@ if (!isset($_SESSION["usuario_id"])) {
 include("../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener todos los clientes con el nombre de la moneda
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada, c.Estado FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID WHERE c.Estado = 1";
+$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada, c.Estado FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID WHERE c.Estado = 1";
 $resultado = $conexion->query($sql);
 ?>
 

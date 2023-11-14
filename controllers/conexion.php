@@ -1,9 +1,9 @@
 <?php
 // Conexión al servidor con usuario, contraseña y base de datos
 $servidor = "localhost";
-$usuario = "root";
-$contrasena = "";
-$dbnombre = "prestamos";
+$usuario = "u673362221_root";
+$contrasena = "Cass123*";
+$dbnombre = "u673362221_prestamos";
 
 // Crear la conexión
 $conexion = new mysqli($servidor, $usuario, $contrasena, $dbnombre);

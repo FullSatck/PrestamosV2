@@ -50,7 +50,7 @@ if (!isset($_SESSION["usuario_id"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista Clientes</title>
+    <title>Prestamos</title>
 
     <link rel="stylesheet" href="/public/assets/css/prestamo.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
@@ -179,9 +179,9 @@ if (!isset($_SESSION["usuario_id"])) {
     include("../../../../controllers/conexion.php");
 
     // Obtener la lista de clientes activos, monedas y zonas desde la base de datos
-    $query_clientes = "SELECT ID, Nombre FROM Clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
-    $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
-    $query_zonas = "SELECT Nombre FROM Zonas";
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
+    $query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
+    $query_zonas = "SELECT Nombre FROM zonas";
 
     $result_clientes = $conexion->query($query_clientes);
     $result_monedas = $conexion->query($query_monedas);

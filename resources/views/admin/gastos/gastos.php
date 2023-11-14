@@ -177,9 +177,9 @@ if (!isset($_SESSION["usuario_id"])) {
 include "../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
 // Realiza la consulta para obtener los gastos con el nombre de la zona
-$sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
-        FROM Gastos G
-        INNER JOIN Zonas Z ON G.IDZona = Z.ID";
+$sql = "SELECT g.ID, z.Nombre AS nombreZona, g.Fecha, g.Descripcion, g.Valor 
+        FROM gastos g
+        INNER JOIN zonas z ON g.IDZona = z.ID";
 $resultado = $conexion->query($sql);
 
 // Crear una tabla HTML para mostrar las columnas de las filas

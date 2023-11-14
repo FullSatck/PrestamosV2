@@ -269,7 +269,7 @@ mysqli_close($conexion);
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
-                    <p>Mantenimiento</p>
+                    <p>Version beta</p>
                 </div>
             </div>
             <div class="cuadro cuadro-4">
@@ -277,6 +277,12 @@ mysqli_close($conexion);
                     <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
                     <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
                     </p>
+                </div>
+            </div>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="#" class="titulo">Contabilidad </a>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
 

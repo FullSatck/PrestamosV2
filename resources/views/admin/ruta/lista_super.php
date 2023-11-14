@@ -58,7 +58,7 @@ if (isset($_GET['mensaje'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-    <title>Abonos</title>
+    <title>lista supervisores</title>
 </head>
 
 <body>
@@ -193,7 +193,7 @@ if (isset($_GET['mensaje'])) {
                     <tbody>
                         <?php
                 include("../../../../controllers/conexion.php");
-                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 2"); // Filtra por el ID del rol de supervisor (2)
+                $sql = $conexion->prepare("SELECT usuarios.ID, usuarios.Nombre, usuarios.Apellido, usuarios.Email, zonas.Nombre AS zona, roles.Nombre AS rol FROM usuarios JOIN zonas ON usuarios.Zona = zonas.ID JOIN roles ON usuarios.RolID = roles.ID WHERE roles.ID = 2"); // Filtra por el ID del rol de supervisor (2)
                 
                 // Verificar si la preparación de la consulta fue exitosa
                 if ($sql === false) {
@@ -218,11 +218,11 @@ if (isset($_GET['mensaje'])) {
                             <td><?= $datos->Rol ?></td>
                             <td>
                                 <!-- Botón para ver los cobradores de la zona -->
-                                <a href="ver_cobradores.php?zona=<?= urlencode($datos->Zona) ?>"
+                                <a href="ver_cobradores.php?zona=<?= urlencode($datos->zona) ?>"
                                     class="btn btn-primary">Ver Cobradores</a>
-                                <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>"
+                                <a href="ver_prestamos.php?zona=<?= urlencode($datos->zona) ?>"
                                     class="btn btn-primary">Ver Prestamos</a>
-                                <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
+                                <a href="ruta.php?zona=<?= urlencode($datos->zona) ?>" class="btn btn-primary">Ruta</a>
                             </td>
                         </tr>
                         <?php } ?>

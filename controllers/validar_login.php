@@ -9,7 +9,7 @@ $email = mysqli_real_escape_string($conexion, $_POST["email"]);
 $contrasena = mysqli_real_escape_string($conexion, $_POST["contrasena"]);
 
 // Realiza la consulta a la base de datos
-$query = "SELECT * FROM usuarios WHERE Email = ? AND Password = ? AND Estado = 'activo'";
+$query = "SELECT * FROM usuarios WHERE Email = ? AND Password = ? AND estado = 'activo'";
 $stmt = $conexion->prepare($query);
 $stmt->bind_param("ss", $email, $contrasena);
 $stmt->execute();

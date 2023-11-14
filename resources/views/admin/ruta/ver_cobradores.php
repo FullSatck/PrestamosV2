@@ -56,7 +56,7 @@ if (isset($_GET['zona'])) {
     include("../../../../controllers/conexion.php");
 
     // Consulta para obtener los usuarios con rol 2 (supervisores) en la zona especificada
-    $sql = $conexion->prepare("SELECT U.ID, U.Nombre, U.Apellido, U.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios U JOIN Roles ON U.RolID = Roles.ID JOIN Zonas ON U.Zona = Zonas.ID WHERE U.RolID = 3 AND Zonas.Nombre = ?");
+    $sql = $conexion->prepare("SELECT u.ID, u.Nombre, u.Apellido, u.Email, zonas.Nombre AS zona, roles.Nombre AS rol FROM usuarios u JOIN roles ON u.RolID = roles.ID JOIN zonas ON u.Zona = zonas.ID WHERE u.rolID = 3 AND zonas.Nombre = ?");
     $sql->bind_param("s", $nombreZona);
     $sql->execute();
     $result = $sql->get_result();
@@ -228,8 +228,8 @@ if (isset($_GET['zona'])) {
                         </table>
                         <?php
             } else {
-                // Mostrar un mensaje si no se encontraron supervisores en la zona
-                echo "No se encontraron supervisores para la zona: " . $nombreZona;
+                // Mostrar un mensaje si no se encontraron cobradores en la zona
+                echo "No se encontraron cobradores para la zona: " . $nombreZona;
             }
             ?>
                     </div>
