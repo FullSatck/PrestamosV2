@@ -170,7 +170,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <select id="RolID" name="RolID" required>
                         <?php
                         // Consulta SQL para obtener las opciones de roles
-                        $consultaRoles = "SELECT ID, Nombre FROM Roles WHERE ID = 2";
+                        $consultaRoles = "SELECT ID, Nombre FROM Roles WHERE ID = 3";
                         $resultRoles = mysqli_query($conexion, $consultaRoles);
                         // Genera las opciones del menú desplegable para Rol
                         while ($row = mysqli_fetch_assoc($resultRoles)) {
