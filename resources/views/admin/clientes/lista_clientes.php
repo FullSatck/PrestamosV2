@@ -53,7 +53,7 @@ include("../../../../controllers/conexion.php");
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada, c.Estado FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID WHERE c.Estado = 1 ORDER BY c.ID DESC";
 $resultado = $conexion->query($sql);
-?>
+?> 
 
 <!DOCTYPE html>
 <html lang="en">
