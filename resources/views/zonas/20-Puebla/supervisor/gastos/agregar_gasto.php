@@ -183,16 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/25-Sonora/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
+ 
         </div>
 
     </div>
