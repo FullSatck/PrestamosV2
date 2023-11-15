@@ -197,7 +197,7 @@ $resultado = $conexion->query($sql);
             <table>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
+                    <th>Nombre</th> 
                     <th>Apellido</th>
                     <th>Domicilio</th>
                     <th>Teléfono</th>

@@ -116,7 +116,7 @@ if (isset($_GET['mensaje'])) {
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a> 
+            </a>
 
 
         </div>
@@ -132,51 +132,51 @@ if (isset($_GET['mensaje'])) {
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Zona</th>
-                <th>Rol</th>
-            </tr>
-            <?php
-    // Ajustamos la consulta SQL para incluir los nombres de la zona y el rol
-    $sql = $conexion->query("SELECT u.ID, u.Nombre, u.Apellido, u.Email, z.Nombre AS NombreZona, r.Nombre AS NombreRol 
-                             FROM usuarios u
-                             LEFT JOIN zonas z ON u.Zona = z.ID
-                             LEFT JOIN roles r ON u.RolID = r.ID
-                             WHERE u.RolID = 3 AND u.Zona = 20
-                             ORDER BY u.ID DESC");
+        <div class="table-scroll-container">
+            <table class="table-container">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Zona</th>
+                    <th>Rol</th>
+                </tr>
+                <?php
+                 // Ajustamos la consulta SQL para incluir los nombres de la zona y el rol
+                 $sql = $conexion->query("SELECT u.ID, u.Nombre, u.Apellido, u.Email, z.Nombre AS NombreZona, r.Nombre AS NombreRol 
+                                          FROM usuarios u
+                                          LEFT JOIN zonas z ON u.Zona = z.ID
+                                          LEFT JOIN roles r ON u.RolID = r.ID
+                                          WHERE u.RolID = 3 AND u.Zona = 20
+                                          ORDER BY u.ID DESC");
 
-    // Verificar si la consulta se realizó con éxito
-    if ($sql === false) {
-        die("Error en la consulta SQL: " . $conexion->error);
-    }
+                 // Verificar si la consulta se realizó con éxito
+                 if ($sql === false) {
+                     die("Error en la consulta SQL: " . $conexion->error);
+                 }
 
-    // Verificar si la consulta devolvió resultados
-    if ($sql->num_rows > 0) {
-        $rowCount = 0; // Contador de filas
-        while ($datos = $sql->fetch_object()) { 
-            $rowCount++; // Incrementar el contador de filas
-            ?>
-            <tr class="row<?= $rowCount ?>">
-                <td><?= "REC 100" . $datos->ID ?></td>
-                <td><?= $datos->Nombre ?></td>
-                <td><?= $datos->Apellido ?></td>
-                <td><?= $datos->Email ?></td>
-                <td><?= $datos->NombreZona // Cambiado para mostrar el nombre de la zona ?></td>
-                <td><?= $datos->NombreRol // Cambiado para mostrar el nombre del rol ?></td>
-            </tr>
-            <?php } 
-    } else {
-        echo "No se encontraron resultados.";
-    }
-    ?>
-        </table>
-
-
+                 // Verificar si la consulta devolvió resultados
+                 if ($sql->num_rows > 0) {
+                     $rowCount = 0; // Contador de filas
+                     while ($datos = $sql->fetch_object()) { 
+                         $rowCount++; // Incrementar el contador de filas
+                         ?>
+                <tr class="row<?= $rowCount ?>">
+                    <td><?= "REC 100" . $datos->ID ?></td>
+                    <td><?= $datos->Nombre ?></td>
+                    <td><?= $datos->Apellido ?></td>
+                    <td><?= $datos->Email ?></td>
+                    <td><?= $datos->NombreZona // Cambiado para mostrar el nombre de la zona ?></td>
+                    <td><?= $datos->NombreRol // Cambiado para mostrar el nombre del rol ?></td>
+                </tr>
+                <?php } 
+                 } else {
+                     echo "No se encontraron resultados.";
+                 }
+                 ?>
+            </table>
+        </div>
     </main>
 
     <script>

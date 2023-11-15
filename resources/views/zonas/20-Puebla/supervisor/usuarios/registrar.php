@@ -141,7 +141,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
                 </div>
                 <div class="input-container">
-                    <label for="zona">Zona:</label>
+                    <label for="zona">Estado:</label>
                     <select id="zona" name="zona" required>
                         <?php
                         // Incluye el archivo de conexión a la base de datos
@@ -170,12 +170,7 @@ if (isset($_SESSION["usuario_id"])) {
                         }
                         ?>
                     </select>
-                </div>
-
-                <div class="input-container" id="saldo-inicial-container" style="display: none;">
-                    <label for="saldo-inicial">Saldo Inicial:</label>
-                    <input type="text" id="saldo-inicial" name="saldo-inicial" placeholder="Por favor ingrese el saldo inicial">
-                </div>
+                </div> 
 
                 <div class="btn-container">
                     <button type="submit" name="registrar_usuario">Registrar</button>

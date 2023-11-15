@@ -158,13 +158,8 @@ if (isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="historial">Historial Crediticio:</label>
                 <textarea id="historial" name="historial" rows="4"></textarea>
-            </div>
-
-            <div class="input-container">
-                <label for="referencias">Referencias Personales:</label>
-                <textarea id="referencias" name="referencias" rows="4"></textarea>
-            </div>
-
+            </div> 
+            
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
                 <select id="moneda" name="moneda">
