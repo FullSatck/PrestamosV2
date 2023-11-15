@@ -165,6 +165,7 @@ $result = $conexion->query($sql);
 
 if ($result->num_rows > 0) {
     // Iniciar la tabla HTML con estilos
+    echo "<div class='table-scroll-container'>";
     echo "<div class='table-container'>";
     echo "<table class='styled-table'>";
     echo "<thead>";
@@ -187,6 +188,7 @@ while($row = $result->fetch_assoc()) {
     // Finalizar la tabla
     echo "</tbody>";
     echo "</table>";
+    echo "</div>";
     echo "</div>";
 } else {
     echo "<p>No se encontraron resultados.</p>";
