@@ -17,7 +17,7 @@ function obtenerCuotas($conexion, $filtro) {
     // Modificar la consulta según el filtro
     switch ($filtro) {
         case 'pagado':
-            $sql .= " AND (p.Estado = 'pagado' OR EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?))";
+            $sql .= " AND (p.Estado = '' OR EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?))";
             break;
             case 'pendiente':
                 $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
