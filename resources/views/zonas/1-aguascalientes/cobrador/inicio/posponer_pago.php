@@ -1,5 +1,5 @@
 <?php
-include '../../../../../../controllers/conexion.php';
+include '../../../../controllers/conexion.php';
 
 header('Content-Type: application/json');
 

@@ -26,7 +26,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
 <body>
 
     <header>
-        <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php" class="botonn">
+    <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -180,16 +180,11 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
         $('#confirmPaymentButton').click(function() {
             procesarPago(globalPrestamoId, globalMontoCuota);
         });
-
-        $('#confirmPaymentModal, #whatsappModal').on('hidden.bs.modal', function() {
-            // Recargar la página cuando se cierra cualquiera de los modales
-            location.reload();
-        });
     });
 
     function procesarPago(prestamoId, montoCuota) {
         $.ajax({
-            url: 'procesar_pago.php',
+            url: 'procesar_pago.php', // Asegúrate de que esta URL es correcta
             type: 'POST',
             data: {
                 prestamoId: prestamoId,
@@ -199,8 +194,18 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             success: function(response) {
                 if (response.success) {
                     $('#confirmPaymentModal').modal('hide');
-                    mostrarModalWhatsapp(response.clienteNombre, response.montoPagado, response
-                        .clienteTelefono);
+                    // Mostrar modal de WhatsApp
+                    $('#whatsappModal').modal('show');
+                    // Agregar los detalles del cliente al modal
+                    $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ', Monto Pagado: ' +
+                        response.montoPagado);
+                    // Preparar el botón de WhatsApp
+                    $('#sendWhatsappButton').off('click').on('click', function() {
+                        var mensajeWhatsapp = 'Hola ' + response.clienteNombre +
+                            ', hemos recibido tu pago de ' + response.montoPagado + '.';
+                        window.open('https://wa.me/' + response.clienteTelefono + '?text=' +
+                            encodeURIComponent(mensajeWhatsapp));
+                    });
                 } else {
                     alert(response.message);
                 }
@@ -214,7 +219,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
 
     function posponerPago(prestamoId) {
         $.ajax({
-            url: 'posponer_pago.php',
+            url: 'posponer_pago.php', // Asegúrate de que esta URL es correcta
             type: 'POST',
             data: {
                 prestamoId: prestamoId
@@ -222,7 +227,9 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    mostrarModalPosponer();
+                    // Mostrar el modal de pago pospuesto
+                    $('#postponePaymentModal').modal('show');
+                    actualizarTablaPrestamos(); // Actualizar la tabla
                 } else {
                     alert(response.message);
                 }
@@ -233,22 +240,17 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             }
         });
     }
-
-    function mostrarModalWhatsapp(clienteNombre, montoPagado, clienteTelefono) {
-        $('#whatsappModal').modal('show');
-        $('#clienteDetalles').text('Nombre: ' + clienteNombre + ', Monto Pagado: ' + montoPagado);
-        $('#sendWhatsappButton').off('click').on('click', function() {
-            var mensajeWhatsapp = 'Hola ' + clienteNombre + ', hemos recibido tu pago de ' + montoPagado + '.';
-            window.open('https://wa.me/' + clienteTelefono + '?text=' + encodeURIComponent(mensajeWhatsapp));
+    $(document).ready(function() {
+        // Evento al cerrar el modal de WhatsApp
+        $('#whatsappModal').on('hidden.bs.modal', function() {
+            location.reload(); // Recargar la página
         });
-    }
 
-    function mostrarModalPosponer() {
-        // Aquí puedes personalizar tu modal de posponer pago
-        alert('Pago pospuesto exitosamente. El préstamo ha sido movido a No Pagados.');
-    }
-
-    // Agrega aquí cualquier otra función JS que necesites
+        // Evento al cerrar el modal de Pago Pospuesto
+        $('#postponePaymentModal').on('hidden.bs.modal', function() {
+            location.reload(); // Recargar la página
+        });
+    });
     </script>
 </body>
 
