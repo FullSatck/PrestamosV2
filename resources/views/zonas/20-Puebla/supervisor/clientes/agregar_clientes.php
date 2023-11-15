@@ -184,7 +184,7 @@ if (isset($_SESSION["usuario_id"])) {
             </div>
 
             <div class="input-container">
-                <label for="zona">Zona:</label>
+                <label for="zona">Estado:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                 // Incluye el archivo de conexión a la base de datos
@@ -198,10 +198,10 @@ if (isset($_SESSION["usuario_id"])) {
                 }
                 ?>
                 </select>
-            </div>
+            </div> 
 
             <div class="input-container">
-                <label for="ciudad">Ciudad:</label>
+                <label for="ciudad">Municipio:</label>
                 <select id="ciudad" name="ciudad" required>
                     <?php
                 // Incluye el archivo de conexión a la base de datos
@@ -213,13 +213,14 @@ if (isset($_SESSION["usuario_id"])) {
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
                     echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                 }
-                ?> 
+                ?>
                 </select>
             </div>
 
             <div class="input-container">
-                <label for="asentamiento">Asentamiento:</label>
-                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento" required>
+                <label for="asentamiento">Colonia:</label>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
+                    required>
             </div>
 
             <div class="input-container">
