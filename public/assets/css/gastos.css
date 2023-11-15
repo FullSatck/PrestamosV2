@@ -157,6 +157,16 @@ a.selected{
   justify-content: center;
   padding: 20px;
 }
+/* Estilos para la tabla */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
+}
+ 
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
 
 .cuadro {
   border: 1px solid #ccc;

@@ -124,6 +124,7 @@ if (isset($_GET['mensaje'])) {
         <h1 class="text-center">Listado de Cobradores</h1>
 
         <div class="container-fluid">
+        <div class="table-scroll-container">
 
             <!-- Resto del código de la tabla -->
             <table class="table">
@@ -174,12 +175,14 @@ if (isset($_GET['mensaje'])) {
                 </tbody>
             </table>
         </div>
+       
 
         <!-- Paginación -->
         <div id="pagination" class="text-center">
             <ul class="pagination">
                 <!-- Los botones de paginación se generarán aquí -->
             </ul>
+        </div>
         </div>
         </div>
     </main>

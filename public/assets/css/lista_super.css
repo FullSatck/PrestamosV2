@@ -274,6 +274,16 @@ h1.text-center {
 .register-button {
     margin-bottom: 10px;
 }
+/* Estilos para la tabla */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
+}
+ 
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
 
 /* Media query para pantallas más pequeñas */
 @media screen and (max-width: 600px) {

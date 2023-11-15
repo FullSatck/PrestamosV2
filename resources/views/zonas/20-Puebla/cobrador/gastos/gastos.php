@@ -116,6 +116,7 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <h1>Lista de Gastos</h1>
+        <div class="table-scroll-container">
         <?php
 // Incluye la configuración de conexión a la base de datos
 include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
@@ -127,6 +128,7 @@ $sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor
         WHERE IDZona = 2
         ORDER BY G.ID DESC";
 $resultado = $conexion->query($sql);
+
 
 // Crear una tabla HTML para mostrar las columnas de las filas
 echo '<table>';
@@ -162,6 +164,7 @@ echo '</table>';
 // Cierra la conexión a la base de datos
 $conexion->close();
 ?>
+</div>
     </main>
 
 
