@@ -1,117 +1,53 @@
 <?php
 session_start();
- 
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'admin') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
 }
 
-// Incluye el archivo de conexión
-include("../../../../controllers/conexion.php");
+// Incluye la configuración de conexión a la base de datos
+require_once '../../../../controllers/conexion.php'; 
 
-// COBROS
-try {
-    $sqlCobros = "SELECT SUM(MontoAPagar) AS TotalMonto FROM prestamos";
-    $resultCobros = mysqli_query($conexion, $sqlCobros);
-    $totalMonto = 0; // Inicializar totalMonto
+// El usuario está autenticado, obtén el ID del usuario de la sesión
+$usuario_id = $_SESSION["usuario_id"];
 
-    if ($resultCobros && $rowCobros = mysqli_fetch_assoc($resultCobros)) {
-        $totalMonto = $rowCobros['TotalMonto'] ?? 0; // Asignar valor o cero si es null
-        mysqli_free_result($resultCobros);
+// Preparar la consulta para obtener el rol del usuario
+$stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+$stmt->bind_param("i", $usuario_id);
+
+// Ejecutar la consulta
+$stmt->execute();
+$resultado = $stmt->get_result();
+$fila = $resultado->fetch_assoc();
+
+$stmt->close();
+
+// Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
+if (!$fila || $fila['Nombre'] !== 'admin') {
+    header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+    exit();
+}
+
+// Función para obtener la suma de una columna de una tabla
+function obtenerSuma($conexion, $tabla, $columna) {
+    $sql = "SELECT SUM($columna) AS Total FROM $tabla";
+    $resultado = mysqli_query($conexion, $sql);
+    if ($resultado) {
+        $fila = mysqli_fetch_assoc($resultado);
+        mysqli_free_result($resultado);
+        return $fila['Total'] ?? 0; // Devuelve 0 si es null
     } else {
-        echo "Error en la consulta de cobros: " . mysqli_error($conexion);
+        echo "Error en la consulta: " . mysqli_error($conexion);
+        return 0;
     }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (cobros): " . $e->getMessage();
 }
 
-
-// INGRESOS
-try {
-    // Consulta SQL para obtener la suma de MontoPagado
-    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos"; 
-    $resultIngresos = mysqli_query($conexion, $sqlIngresos);
-
-    if ($resultIngresos) {
-        $rowIngresos = mysqli_fetch_assoc($resultIngresos);
-
-        // Obtener el total de ingresos
-        $totalIngresos = $rowIngresos['TotalIngresos'];
-
-        // Cierra la consulta de ingresos
-        mysqli_free_result($resultIngresos);
-    } else {
-        echo "Error en la consulta de ingresos: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
-}
-
-
-// COMISIONES
-try {
-    // Consulta SQL para obtener la suma de Comision
-    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos";
-
-    // Realizar la consulta
-    $resultComisiones = mysqli_query($conexion, $sqlComisiones);
-
-    if ($resultComisiones) {
-        $rowComisiones = mysqli_fetch_assoc($resultComisiones);
-
-        // Obtener el total de comisiones
-        $totalComisiones = $rowComisiones['TotalComisiones'];
-
-        // Cierra la consulta de comisiones
-        mysqli_free_result($resultComisiones);
-    } else {
-        echo "Error en la consulta de comisiones: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (comisiones): " . $e->getMessage();
-}
-
-
-
-
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
+// Obtener los totales
+$totalMonto = obtenerSuma($conexion, "prestamos", "MontoAPagar");
+$totalIngresos = obtenerSuma($conexion, "historial_pagos", "MontoPagado");
+$totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
 ?>
 
 <!DOCTYPE html>
