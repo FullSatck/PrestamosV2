@@ -3,12 +3,10 @@ session_start();
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../index.php");
     exit();
 }
 
-// Incluye la configuración de conexión a la base de datos
 include "../../../../controllers/conexion.php";
 
 // Definir variables e inicializar con valores vacíos
@@ -47,11 +45,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO Retiros (IDUsuario, Fecha, Monto, Descripcion) VALUES (?, ?, ?, ?)";
 
         if ($stmt = $conexion->prepare($sql)) {
-            // Vincular las variables a la declaración preparada como parámetros
             $stmt->bind_param("isds", $_SESSION["usuario_id"], $fecha, $monto, $descripcion);
 
             // Intentar ejecutar la declaración preparada
             if ($stmt->execute()) {
+                // Actualizar el saldo neto
+                $sql_saldo = "SELECT Monto_Neto FROM saldo_admin LIMIT 1";
+                $resultado_saldo = $conexion->query($sql_saldo);
+                if ($resultado_saldo->num_rows > 0) {
+                    $fila_saldo = $resultado_saldo->fetch_assoc();
+                    $monto_neto_actual = $fila_saldo["Monto_Neto"];
+                    $nuevo_monto_neto = $monto_neto_actual - $monto;
+
+                    $sql_update = "UPDATE saldo_admin SET Monto_Neto = ?";
+                    if ($stmt_update = $conexion->prepare($sql_update)) {
+                        $stmt_update->bind_param("d", $nuevo_monto_neto);
+                        $stmt_update->execute();
+                        $stmt_update->close();
+                    }
+                }
+
                 // Redirigir a la lista de retiros después de agregar uno nuevo
                 header("location: retiros.php");
                 exit();
@@ -59,19 +72,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Algo salió mal. Por favor, inténtelo de nuevo más tarde.";
             }
 
-            // Cerrar la declaración
             $stmt->close();
         }
     }
 
-    // Cerrar la conexión
     $conexion->close();
 }
 ?>
 
-
-
- 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,12 +88,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/agregar_retiro.css">
-    <title>Lista de Gastos</title>
+    <title>Agregar Retiro</title>
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
 <body id="body">
-
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
@@ -101,96 +108,94 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="options__menu">
 
-    <a href="/resources/views/admin/inicio/inicio.php">
-        <div class="option">
-            <i class="fa-solid fa-landmark" title="Inicio"></i>
-            <h4>Inicio</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/inicio/inicio.php">
+                <div class="option">
+                    <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <h4>Inicio</h4>
+                </div>
+            </a>
 
-    <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-        <div class="option">
-            <i class="fa-solid fa-sack-dollar" title=""></i>
-            <h4>Saldo Incial</h4>
-        </div>
-    </a>
+            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-dollar" title=""></i>
+                    <h4>Saldo Incial</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/usuarios/crudusuarios.php">
-        <div class="option">
-            <i class="fa-solid fa-users" title=""></i>
-            <h4>Usuarios</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/usuarios/registrar.php">
-        <div class="option">
-            <i class="fa-solid fa-user-plus" title=""></i>
-            <h4>Registrar Usuario</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/clientes/lista_clientes.php">
-        <div class="option">
-            <i class="fa-solid fa-people-group" title=""></i>
-            <h4>Clientes</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/clientes/lista_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-people-group" title=""></i>
+                    <h4>Clientes</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/clientes/agregar_clientes.php">
-        <div class="option">
-            <i class="fa-solid fa-user-tag" title=""></i>
-            <h4>Registrar Clientes</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/creditos/crudPrestamos.php">
-        <div class="option">
-            <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-            <h4>Prestamos</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/creditos/prestamos.php">
-        <div class="option">
-            <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-            <h4>Registrar Prestamos</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/cobros/cobros.php">
-        <div class="option">
-            <i class="fa-solid fa-arrow-right-to-city" title=""></i>
-            <h4>Zonas de cobro</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-tag" title=""></i>
+                    <h4>Registrar Clientes</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                    <h4>Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                    <h4>Registrar Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/cobros/cobros.php">
+                <div class="option">
+                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
+                    <h4>Zonas de cobro</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/gastos/gastos.php">
-        <div class="option">
-            <i class="fa-solid fa-sack-xmark" title=""></i>
-            <h4>Gastos</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/gastos/gastos.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <h4>Gastos</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/ruta/lista_super.php">
-        <div class="option">
-            <i class="fa-solid fa-map" title=""></i>
-            <h4>Ruta</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/ruta/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/abonos/abonos.php">
-        <div class="option">
-            <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-            <h4>Abonos</h4>
+            <a href="/resources/views/admin/abonos/abonos.php">
+                <div class="option">
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <h4>Abonos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/retiros/retiros.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Retiros</h4>
+                </div>
+            </a>
         </div>
-    </a>
-    <a href="/resources/views/admin/retiros/retiros.php" class="selected">
-        <div class="option">
-            <i class="fa-solid fa-scale-balanced" title=""></i>
-            <h4>Retiros</h4>
-        </div>
-    </a>
-</div>
-</div> 
-
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+    </div>
 
     <main class="main2">
         <h1 class="h11">Agregar Retiro</h1>
@@ -216,7 +221,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <textarea name="descripcion" id="descripcion" class="form-control"><?php echo $descripcion; ?></textarea>
+                <textarea name="descripcion" id="descripcion"
+                    class="form-control"><?php echo $descripcion; ?></textarea>
                 <span class="help-block"><?php echo $descripcion_err; ?></span>
             </div>
             <div class="form-group">
@@ -227,7 +233,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </main>
 
     <script src="/public/assets/js/MenuLate.js"></script>
-
 </body>
 
 </html>
