@@ -26,7 +26,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
 <body>
 
     <header>
-        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>

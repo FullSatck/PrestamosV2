@@ -6,13 +6,17 @@ function obtenerCuotas($conexion, $filtro) {
     $cuotas = array();
 
     // Consulta SQL base
-    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
-    c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
-    (SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
-    (SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
-       FROM prestamos p
-         INNER JOIN clientes c ON p.IDCliente = c.ID
-           WHERE p.FechaInicio <= ?";
+   // Consulta SQL base
+$sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
+c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
+(SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
+(SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
+   FROM prestamos p
+     INNER JOIN clientes c ON p.IDCliente = c.ID
+       WHERE p.FechaInicio <= ? AND p.Zona = 'Aguascalientes'"; // Aquí se añade la condición para la zona
+
+
+
 
     // Modificar la consulta según el filtro
     switch ($filtro) {
