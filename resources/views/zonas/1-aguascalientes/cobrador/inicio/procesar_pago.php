@@ -1,6 +1,6 @@
 <?php
 // Incluir el archivo de conexión a la base de datos
-include '../../../../controllers/conexion.php';
+include '../../../../../../controllers/conexion.php';
 
 header('Content-Type: application/json');
 

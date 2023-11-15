@@ -1,5 +1,5 @@
 <?php
-require '../../../../controllers/conexion.php';
+require '../../../../../../controllers/conexion.php';
 
 function obtenerCuotas($conexion, $filtro) {
     $fechaHoy = date('Y-m-d');
