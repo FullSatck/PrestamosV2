@@ -200,10 +200,11 @@ mysqli_close($conexion);
                     </p>
                 </div>
             </div>
-            <div class="cuadro cuadro-3">
+
+            <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p>Mantenimiento</p>
+                    <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <p>Version beta</p>
                 </div>
             </div>
 
