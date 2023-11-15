@@ -6,6 +6,9 @@ $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'pendiente';
 
 // Obtener las cuotas del día con el filtro aplicado
 $cuotasHoy = obtenerCuotas($conexion, $filtro);
+
+// Obtener conteos de préstamos
+$conteosPrestamos = contarPrestamosPorEstado($conexion);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,6 +23,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
@@ -35,7 +39,17 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
 
     <main>
 
+
         <h1>Cuotas del Día</h1>
+
+        <!-- Canvas para el gráfico -->
+
+<!-- Contenedor para el gráfico con un estilo personalizado -->
+<div style="width: 400px; height: 400px;">
+        <canvas id="miGrafico"></canvas>
+    </div>
+
+
         <form action="prestamos_del_dia.php" method="get">
             <select name="filtro">
                 <!-- <option value="todos" <?php echo $filtro == 'todos' ? 'selected' : ''; ?>>Todos</option> -->
@@ -165,7 +179,57 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             </div>
         </div>
 
+
     </main>
+    <script>
+        var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
+        console.log(conteosPrestamos); // Para depuración
+
+        var maxPendiente = parseInt(conteosPrestamos.pendiente, 10);
+        var maxPagado = parseInt(conteosPrestamos.pagado, 10);
+        var maxNoPagado = parseInt(conteosPrestamos.nopagado, 10);
+        var maxValor = Math.max(maxPendiente, maxPagado, maxNoPagado);
+
+        var ctx = document.getElementById('miGrafico').getContext('2d');
+        var miGrafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Pendientes', 'Pagados', 'No Pagados'],
+                datasets: [{
+                    label: 'Estado de los Préstamos',
+                    data: [maxPendiente, maxPagado, maxNoPagado],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    barThickness: 50,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: maxValor + 1
+                    },
+                    x: {
+                        barPercentage: 0.5
+                    }
+                }
+            }
+        });
+    </script>
+
+
     <!-- Script para manejar la lógica del modal y el pago -->
     <script>
     var globalPrestamoId = 0;

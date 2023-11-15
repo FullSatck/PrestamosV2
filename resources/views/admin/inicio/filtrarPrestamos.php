@@ -88,4 +88,46 @@ function esDiaDePago($fechaInicio, $frecuenciaPago, $fechaHoy) {
             return false;
     }
 }
+function contarPrestamosPorEstado($conexion) {
+    $conteos = ['pendiente' => 0, 'pagado' => 0, 'nopagado' => 0];
+    $fechaHoy = date('Y-m-d');
+
+    // Contar préstamos pendientes
+    $sqlPendiente = "SELECT COUNT(*) AS conteo FROM prestamos p
+                     WHERE p.FechaInicio <= ? AND p.Estado = 'pendiente' AND p.Pospuesto = 0
+                     AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+    $stmt = $conexion->prepare($sqlPendiente);
+    $stmt->bind_param("ss", $fechaHoy, $fechaHoy);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $conteos['pendiente'] = $fila['conteo'];
+    }
+
+    // Contar préstamos pagados
+    $sqlPagado = "SELECT COUNT(*) AS conteo FROM prestamos p
+                  WHERE EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+    $stmt = $conexion->prepare($sqlPagado);
+    $stmt->bind_param("s", $fechaHoy);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $conteos['pagado'] = $fila['conteo'];
+    }
+
+    // Contar préstamos no pagados
+    $sqlNoPagado = "SELECT COUNT(*) AS conteo FROM prestamos p
+                    WHERE p.Pospuesto = 1";
+    $stmt = $conexion->prepare($sqlNoPagado);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $conteos['nopagado'] = $fila['conteo'];
+    }
+
+    $stmt->close();
+    return $conteos;
+}
+
+
 ?>

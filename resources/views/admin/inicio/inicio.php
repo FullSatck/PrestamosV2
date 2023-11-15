@@ -47,19 +47,12 @@ include("../../../../controllers/conexion.php");
 
 // COBROS
 try {
-    // Consulta SQL para obtener la suma de MontoAPagar
     $sqlCobros = "SELECT SUM(MontoAPagar) AS TotalMonto FROM prestamos";
-
-    // Realizar la consulta
     $resultCobros = mysqli_query($conexion, $sqlCobros);
+    $totalMonto = 0; // Inicializar totalMonto
 
-    if ($resultCobros) {
-        $rowCobros = mysqli_fetch_assoc($resultCobros);
-
-        // Obtener el total de cobros
-        $totalMonto = $rowCobros['TotalMonto'];
-
-        // Cierra la consulta de cobros
+    if ($resultCobros && $rowCobros = mysqli_fetch_assoc($resultCobros)) {
+        $totalMonto = $rowCobros['TotalMonto'] ?? 0; // Asignar valor o cero si es null
         mysqli_free_result($resultCobros);
     } else {
         echo "Error en la consulta de cobros: " . mysqli_error($conexion);
@@ -68,12 +61,11 @@ try {
     echo "Error de conexión a la base de datos (cobros): " . $e->getMessage();
 }
 
+
 // INGRESOS
 try {
     // Consulta SQL para obtener la suma de MontoPagado
-    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos";
-
-    // Realizar la consulta
+    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos"; 
     $resultIngresos = mysqli_query($conexion, $sqlIngresos);
 
     if ($resultIngresos) {
@@ -253,6 +245,7 @@ mysqli_close($conexion);
     <main>
         <h1>Inicio Administrador</h1>
         <div class="cuadros-container">
+
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
@@ -260,29 +253,33 @@ mysqli_close($conexion);
                     </p>
                 </div>
             </div>
+
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
                     <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?></p>
                 </div>
             </div>
+
+            <div class="cuadro cuadro-4">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
+                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
+                    </p>
+                </div>
+            </div>
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
                     <p>Version beta</p>
                 </div>
             </div>
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="#" class="titulo">Contabilidad </a>
                     <p>Mantenimiento</p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
-                    </p>
                 </div>
             </div>
         
