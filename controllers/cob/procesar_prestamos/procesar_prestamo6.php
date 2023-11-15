@@ -16,7 +16,7 @@ $valor_comision = isset($_POST['valor_comision']) ? floatval($_POST['valor_comis
 
 // Validar que la tasa de interés sea un número válido
 if (!is_numeric($tasa_interes)) {
-    header('Location: ../../../resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php?mensaje=La tasa de interés no es válida.');
+    header('Location: ../../../resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php?mensaje=La tasa de interés no es válida.');
     exit; // Detener la ejecución
 }
 
@@ -53,11 +53,11 @@ if ($conexion->query($sql) === TRUE) {
     }
 
     // Redirigir al usuario a crudprestamo.php con un mensaje de éxito
-    header('Location: ../../../resources/views/zonas/2-baja_california/cobrador/creditos/crudPrestamos.php?mensaje=Solicitud de préstamo realizada con éxito');
+    header('Location: ../../../resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php?mensaje=Solicitud de préstamo realizada con éxito');
     exit;
 } else {
     // Redirigir al usuario a crudprestamo.php con un mensaje de error
-    header('Location: ../../../resources/views/zonas/2-baja_california/cobrador/creditos/crudPrestamos.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
+    header('Location: ../../../resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
     exit;
 }
 
