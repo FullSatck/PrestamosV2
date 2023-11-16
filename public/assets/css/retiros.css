@@ -123,6 +123,40 @@ header{
 a.selected{
     color: #fff;
 }
+.botonn { 
+    text-decoration: none;
+    color: #fff;
+    background-color: #3498db;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Icono con Font Awesome */
+  .fa-right-to-bracket {
+    transform: rotate(180deg);
+  }
+  
+  /* Cambio de color al pasar el ratón por encima */
+  .botonn:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Estilo para el texto dentro del enlace */
+  .spann {
+    font-weight: bold;
+  }
+  
+
+
+.button{
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
 
 .selected:before{
     content: '';

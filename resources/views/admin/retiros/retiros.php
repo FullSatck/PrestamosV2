@@ -42,9 +42,15 @@ if ($result->num_rows > 0) {
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+            
+           
         </div>
+        <a href="/resources/views/admin/retiros/agregar_retiros.php" class="botonn">
+        <i class="fa-solid fa-plus"></i>
+            <span class="spann">Agregar retiro</span>
+        </a>
     </header>
-
+   
     <div class="menu__side" id="menu_side">
 
         <div class="name__page">
