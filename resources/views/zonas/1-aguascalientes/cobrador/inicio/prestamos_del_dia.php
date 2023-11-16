@@ -168,89 +168,85 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     </main>
     <!-- Script para manejar la lógica del modal y el pago -->
     <script>
-    var globalPrestamoId = 0;
-    var globalMontoCuota = 0;
+   var globalPrestamoId = 0;
+var globalMontoCuota = 0;
 
-    function setPrestamoId(prestamoId, montoCuota) {
-        globalPrestamoId = prestamoId;
-        globalMontoCuota = montoCuota;
-    }
+function setPrestamoId(prestamoId, montoCuota) {
+    globalPrestamoId = prestamoId;
+    globalMontoCuota = montoCuota;
+}
 
-    $(document).ready(function() {
-        $('#confirmPaymentButton').click(function() {
-            procesarPago(globalPrestamoId, globalMontoCuota);
-        });
+$(document).ready(function() {
+    $('#confirmPaymentButton').click(function() {
+        procesarPago(globalPrestamoId, globalMontoCuota);
     });
 
-    function procesarPago(prestamoId, montoCuota) {
-        $.ajax({
-            url: 'procesar_pago.php', // Asegúrate de que esta URL es correcta
-            type: 'POST',
-            data: {
-                prestamoId: prestamoId,
-                montoPagado: montoCuota
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    $('#confirmPaymentModal').modal('hide');
-                    // Mostrar modal de WhatsApp
-                    $('#whatsappModal').modal('show');
-                    // Agregar los detalles del cliente al modal
-                    $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ', Monto Pagado: ' +
-                        response.montoPagado);
-                    // Preparar el botón de WhatsApp
-                    $('#sendWhatsappButton').off('click').on('click', function() {
-                        var mensajeWhatsapp = 'Hola ' + response.clienteNombre +
-                            ', hemos recibido tu pago de ' + response.montoPagado + '.';
-                        window.open('https://wa.me/' + response.clienteTelefono + '?text=' +
-                            encodeURIComponent(mensajeWhatsapp));
-                    });
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error AJAX:', error);
-                alert('Ocurrió un error al procesar el pago.');
-            }
-        });
-    }
-
-    function posponerPago(prestamoId) {
-        $.ajax({
-            url: 'posponer_pago.php', // Asegúrate de que esta URL es correcta
-            type: 'POST',
-            data: {
-                prestamoId: prestamoId
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    // Mostrar el modal de pago pospuesto
-                    $('#postponePaymentModal').modal('show');
-                    actualizarTablaPrestamos(); // Actualizar la tabla
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error AJAX:', error);
-                alert('Ocurrió un error al posponer el pago.');
-            }
-        });
-    }
-    $(document).ready(function() {
-        // Evento al cerrar el modal de WhatsApp
-        $('#whatsappModal').on('hidden.bs.modal', function() {
-            location.reload(); // Recargar la página
-        });
-
-        // Evento al cerrar el modal de Pago Pospuesto
-        $('#postponePaymentModal').on('hidden.bs.modal', function() {
-            location.reload(); // Recargar la página
-        });
+    $('#confirmPaymentModal, #whatsappModal').on('hidden.bs.modal', function () {
+        // Recargar la página cuando se cierra cualquiera de los modales
+        location.reload();
     });
+});
+
+function procesarPago(prestamoId, montoCuota) {
+    $.ajax({
+        url: 'procesar_pago.php',
+        type: 'POST',
+        data: {
+            prestamoId: prestamoId,
+            montoPagado: montoCuota
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                $('#confirmPaymentModal').modal('hide');
+                mostrarModalWhatsapp(response.clienteNombre, response.montoPagado, response.clienteTelefono);
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error AJAX:', error);
+            alert('Ocurrió un error al procesar el pago.');
+        }
+    });
+}
+
+function posponerPago(prestamoId) {
+    $.ajax({
+        url: 'posponer_pago.php',
+        type: 'POST',
+        data: { prestamoId: prestamoId },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                mostrarModalPosponer();
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error AJAX:', error);
+            alert('Ocurrió un error al posponer el pago.');
+        }
+    });
+}
+
+function mostrarModalWhatsapp(clienteNombre, montoPagado, clienteTelefono) {
+    $('#whatsappModal').modal('show');
+    $('#clienteDetalles').text('Nombre: ' + clienteNombre + ', Monto Pagado: ' + montoPagado);
+    $('#sendWhatsappButton').off('click').on('click', function() {
+        var mensajeWhatsapp = 'Hola ' + clienteNombre + ', hemos recibido tu pago de ' + montoPagado + '.';
+        window.open('https://wa.me/' + clienteTelefono + '?text=' + encodeURIComponent(mensajeWhatsapp));
+    });
+}
+
+function mostrarModalPosponer() {
+    // Aquí puedes personalizar tu modal de posponer pago
+    alert('Pago pospuesto exitosamente. El préstamo ha sido movido a No Pagados.');
+}
+
+// Agrega aquí cualquier otra función JS que necesites
+
     </script>
 </body>
 
