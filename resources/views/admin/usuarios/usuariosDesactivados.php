@@ -1,8 +1,5 @@
 <?php
-session_start();
-include("../../../../controllers/conexion.php");
 
-<?php
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
