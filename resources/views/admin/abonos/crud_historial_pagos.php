@@ -61,6 +61,7 @@ if (isset($_GET['clienteId'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/curdFaturas.css">  
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <title>Historial de Pagos</title>
 </head>
 
