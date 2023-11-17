@@ -66,8 +66,6 @@ $result = $conexion->query($sql);
 
             <div class="options__menu">
 
-
-
             <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
@@ -131,8 +129,7 @@ $result = $conexion->query($sql);
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a> 
-
+            </a>
 
             </div>
         </div>
@@ -157,7 +154,7 @@ $result = $conexion->query($sql);
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . "REC-100" . $row["id"] . "</td>";
-                echo "<td><a href='tu_pagina.php?id=" . $row["id"] . "'>" . $row["nombre"] . "</a></td>";
+                echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'>" . $row["nombre"] . "</a></td>";
                 echo "</tr>";
             }
         } else {
@@ -172,10 +169,6 @@ $result = $conexion->query($sql);
         </main>
 
         <script src="/public/assets/js/MenuLate.js"></script>
-
-
-
-
     </body>
 
     </html>
@@ -188,3 +181,7 @@ $result = $conexion->query($sql);
 
 
 
+
+
+
+    <!--   -->

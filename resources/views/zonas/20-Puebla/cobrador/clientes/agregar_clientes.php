@@ -18,7 +18,7 @@ if (isset($_SESSION["usuario_id"])) {
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -55,7 +55,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-        
+
             <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
@@ -112,7 +112,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            
+
 
 
         </div>
@@ -128,7 +128,7 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/cob/validar_clientes/validar_clientes2.php" method="POST"
+        <form action="/controllers/cob/validar_clientes/validar_clientes20.php" method="POST"
             enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
@@ -222,6 +222,28 @@ if (isset($_SESSION["usuario_id"])) {
                 <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
                     required>
             </div>
+
+            <div class="input-container">
+                <label for="cartera_id">Cartera:</label>
+                <select id="cartera_id" name="cartera_id" required>
+                    <option value="">Escoge cartera</option>
+                    <?php
+        // Incluye el archivo de conexión a la base de datos
+        include("../../../../../../controllers/conexion.php");
+        
+        // Consulta SQL para obtener las carteras
+        $consultaCarteras = "SELECT id, nombre FROM carteras";
+        $resultCarteras = mysqli_query($conexion, $consultaCarteras);
+        
+        // Genera las opciones del menú desplegable para las carteras
+        while ($row = mysqli_fetch_assoc($resultCarteras)) {
+            echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
+        }
+        ?>
+                </select>
+            </div>
+
+
 
             <div class="input-container">
                 <label for="imagen">Imagen del Cliente:</label>
