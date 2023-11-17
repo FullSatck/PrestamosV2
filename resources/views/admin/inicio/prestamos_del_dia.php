@@ -138,11 +138,33 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
                         <p id="clienteDetalles"></p> <!-- Detalles del cliente -->
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="button" class="btn btn-primary" id="sendWhatsappButton">Enviar a WhatsApp</button>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Modal de Pago Pospuesto -->
+        <div class="modal fade" id="postponePaymentModal" tabindex="-1" role="dialog"
+            aria-labelledby="postponePaymentModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="postponePaymentModalLabel">Pago Pospuesto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        El pago ha sido pospuesto exitosamente. El préstamo ha sido movido a No Pagados.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
     <!-- Script para manejar la lógica del modal y el pago -->
     <script>
@@ -205,9 +227,9 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    alert('Pago pospuesto exitosamente. El préstamo ha sido movido a No Pagados.');
-                    // Recargar la página o actualizar la tabla de préstamos
-                    location.reload();
+                    // Mostrar el modal de pago pospuesto
+                    $('#postponePaymentModal').modal('show');
+                    actualizarTablaPrestamos(); // Actualizar la tabla
                 } else {
                     alert(response.message);
                 }
@@ -218,6 +240,17 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             }
         });
     }
+    $(document).ready(function() {
+        // Evento al cerrar el modal de WhatsApp
+        $('#whatsappModal').on('hidden.bs.modal', function() {
+            location.reload(); // Recargar la página
+        });
+
+        // Evento al cerrar el modal de Pago Pospuesto
+        $('#postponePaymentModal').on('hidden.bs.modal', function() {
+            location.reload(); // Recargar la página
+        });
+    });
     </script>
 </body>
 
