@@ -97,6 +97,13 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
+            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Cartera</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
