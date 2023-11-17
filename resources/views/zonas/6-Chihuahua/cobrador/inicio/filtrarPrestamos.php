@@ -1,22 +1,17 @@
 <?php
-require '../../../../../../controllers/conexion.php';
+require '../../../../controllers/conexion.php';
 
 function obtenerCuotas($conexion, $filtro) {
     $fechaHoy = date('Y-m-d');
     $cuotas = array();
 
     // Consulta SQL base
-// Consulta SQL base
-$sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
-c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
-(SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
-(SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
-   FROM prestamos p
-     INNER JOIN clientes c ON p.IDCliente = c.ID
-       WHERE p.FechaInicio <= ? AND p.Zona = 'Chihuahua'"; // Aquí se añade la condición para la zona
-
-// El resto del código permanece igual
-
+    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
+    c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
+    (SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy
+       FROM prestamos p
+         INNER JOIN clientes c ON p.IDCliente = c.ID
+           WHERE p.FechaInicio <= ?";
 
     // Modificar la consulta según el filtro
     switch ($filtro) {

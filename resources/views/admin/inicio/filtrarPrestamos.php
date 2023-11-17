@@ -17,15 +17,16 @@ function obtenerCuotas($conexion, $filtro) {
     // Modificar la consulta según el filtro
     switch ($filtro) {
         case 'pagado':
-            // Añadir condición para 'pagado'
-            $sql .= " AND EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+            $sql .= " AND (p.Estado = 'pagado' OR EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?))";
             break;
-        case 'pendiente':
-            $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0";
-            break;
-        case 'nopagado':
-            $sql .= " AND p.Pospuesto = 1";
-            break;
+            case 'pendiente':
+                $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+                break;
+            
+                case 'nopagado':
+                    $sql .= " AND p.Pospuesto = 1";
+                    break;
+                
     }
 
     // Preparar la consulta SQL
@@ -36,11 +37,12 @@ function obtenerCuotas($conexion, $filtro) {
     }
 
     // Ajustar el bind_param según el filtro
-    if ($filtro == 'pagado') {
-        $stmt->bind_param("sss", $fechaHoy, $fechaHoy, $fechaHoy); // Tres parámetros para 'pagado'
-    } else {
-        $stmt->bind_param("ss", $fechaHoy, $fechaHoy); // Dos parámetros para 'pendiente' y 'nopagado'
-    }
+  
+if ($filtro == 'pagado' || $filtro == 'pendiente') {
+    $stmt->bind_param("sss", $fechaHoy, $fechaHoy, $fechaHoy); // Tres parámetros para 'pagado' y 'pendiente'
+} else {
+    $stmt->bind_param("ss", $fechaHoy, $fechaHoy); // Dos parámetros para 'nopagado'
+}
 
     // Ejecutar la consulta
     if ($stmt->execute()) {

@@ -168,85 +168,87 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     </main>
     <!-- Script para manejar la lógica del modal y el pago -->
     <script>
-   var globalPrestamoId = 0;
-var globalMontoCuota = 0;
+    var globalPrestamoId = 0;
+    var globalMontoCuota = 0;
 
-function setPrestamoId(prestamoId, montoCuota) {
-    globalPrestamoId = prestamoId;
-    globalMontoCuota = montoCuota;
-}
+    function setPrestamoId(prestamoId, montoCuota) {
+        globalPrestamoId = prestamoId;
+        globalMontoCuota = montoCuota;
+    }
 
-$(document).ready(function() {
-    $('#confirmPaymentButton').click(function() {
-        procesarPago(globalPrestamoId, globalMontoCuota);
+    $(document).ready(function() {
+        $('#confirmPaymentButton').click(function() {
+            procesarPago(globalPrestamoId, globalMontoCuota);
+        });
+
+        $('#confirmPaymentModal, #whatsappModal').on('hidden.bs.modal', function() {
+            // Recargar la página cuando se cierra cualquiera de los modales
+            location.reload();
+        });
     });
 
-    $('#confirmPaymentModal, #whatsappModal').on('hidden.bs.modal', function () {
-        // Recargar la página cuando se cierra cualquiera de los modales
-        location.reload();
-    });
-});
-
-function procesarPago(prestamoId, montoCuota) {
-    $.ajax({
-        url: 'procesar_pago.php',
-        type: 'POST',
-        data: {
-            prestamoId: prestamoId,
-            montoPagado: montoCuota
-        },
-        dataType: 'json',
-        success: function(response) {
-            if (response.success) {
-                $('#confirmPaymentModal').modal('hide');
-                mostrarModalWhatsapp(response.clienteNombre, response.montoPagado, response.clienteTelefono);
-            } else {
-                alert(response.message);
+    function procesarPago(prestamoId, montoCuota) {
+        $.ajax({
+            url: 'procesar_pago.php',
+            type: 'POST',
+            data: {
+                prestamoId: prestamoId,
+                montoPagado: montoCuota
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    $('#confirmPaymentModal').modal('hide');
+                    mostrarModalWhatsapp(response.clienteNombre, response.montoPagado, response
+                        .clienteTelefono);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error AJAX:', error);
+                alert('Ocurrió un error al procesar el pago.');
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error AJAX:', error);
-            alert('Ocurrió un error al procesar el pago.');
-        }
-    });
-}
+        });
+    }
 
-function posponerPago(prestamoId) {
-    $.ajax({
-        url: 'posponer_pago.php',
-        type: 'POST',
-        data: { prestamoId: prestamoId },
-        dataType: 'json',
-        success: function(response) {
-            if (response.success) {
-                mostrarModalPosponer();
-            } else {
-                alert(response.message);
+    function posponerPago(prestamoId) {
+        $.ajax({
+            url: 'posponer_pago.php',
+            type: 'POST',
+            data: {
+                prestamoId: prestamoId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    mostrarModalPosponer();
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error AJAX:', error);
+                alert('Ocurrió un error al posponer el pago.');
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error AJAX:', error);
-            alert('Ocurrió un error al posponer el pago.');
-        }
-    });
-}
+        });
+    }
 
-function mostrarModalWhatsapp(clienteNombre, montoPagado, clienteTelefono) {
-    $('#whatsappModal').modal('show');
-    $('#clienteDetalles').text('Nombre: ' + clienteNombre + ', Monto Pagado: ' + montoPagado);
-    $('#sendWhatsappButton').off('click').on('click', function() {
-        var mensajeWhatsapp = 'Hola ' + clienteNombre + ', hemos recibido tu pago de ' + montoPagado + '.';
-        window.open('https://wa.me/' + clienteTelefono + '?text=' + encodeURIComponent(mensajeWhatsapp));
-    });
-}
+    function mostrarModalWhatsapp(clienteNombre, montoPagado, clienteTelefono) {
+        $('#whatsappModal').modal('show');
+        $('#clienteDetalles').text('Nombre: ' + clienteNombre + ', Monto Pagado: ' + montoPagado);
+        $('#sendWhatsappButton').off('click').on('click', function() {
+            var mensajeWhatsapp = 'Hola ' + clienteNombre + ', hemos recibido tu pago de ' + montoPagado + '.';
+            window.open('https://wa.me/' + clienteTelefono + '?text=' + encodeURIComponent(mensajeWhatsapp));
+        });
+    }
 
-function mostrarModalPosponer() {
-    // Aquí puedes personalizar tu modal de posponer pago
-    alert('Pago pospuesto exitosamente. El préstamo ha sido movido a No Pagados.');
-}
+    function mostrarModalPosponer() {
+        // Aquí puedes personalizar tu modal de posponer pago
+        alert('Pago pospuesto exitosamente. El préstamo ha sido movido a No Pagados.');
+    }
 
-// Agrega aquí cualquier otra función JS que necesites
-
+    // Agrega aquí cualquier otra función JS que necesites
     </script>
 </body>
 

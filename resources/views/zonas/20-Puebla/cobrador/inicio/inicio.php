@@ -191,7 +191,7 @@ mysqli_close($conexion);
     </div>
 
     <main>
-        <h1>Inicio cobrador de Baja California</h1>
+        <h1>Inicio cobrador de Puebla</h1>
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
