@@ -170,7 +170,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
