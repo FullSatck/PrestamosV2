@@ -117,6 +117,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                             <th>Perfil</th>
                             <th>Pagar</th>
                             <th>Mas Tarde</th>
+                            <th>Pagar cantida</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -142,7 +143,14 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                                 <td>
                                     <?php if ($filtro != 'pagado' && !$cuota['Pospuesto']) : ?>
                                         <button type="button" class="btn btn-warning" onclick="posponerPago(<?php echo $cuota['ID']; ?>)">
-                                        Más Tarde
+                                            Más Tarde
+                                        </button>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($filtro != 'pagado') : ?>
+                                        <button type="button" class="btn btn-success" onclick="abrirModalPago(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
+                                            Pagar Cantidad 
                                         </button>
                                     <?php endif; ?>
                                 </td>
@@ -217,6 +225,32 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                     </div>
                 </div>
             </div>
+            <!-- Modal para ingresar la cantidad personalizada -->
+            <div class="modal fade" id="customPaymentModal" tabindex="-1" role="dialog" aria-labelledby="customPaymentModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="customPaymentModalLabel">Pagar Cantidad Personalizada</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="customPaymentForm">
+                                <div class="form-group">
+                                    <label for="customAmount">Ingrese la cantidad:</label>
+                                    <input type="number" class="form-control" id="customAmount" name="customAmount" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="procesarPagoPersonalizado()">Pagar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
 
     </main>
@@ -266,11 +300,11 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                 }
             }
         });
-    </script>
+   
 
 
-    <!-- Script para manejar la lógica del modal y el pago -->
-    <script>
+    // <!-- Script para manejar la lógica del modal y el pago -->
+  
         var globalPrestamoId = 0;
         var globalMontoCuota = 0;
 
@@ -354,6 +388,27 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                 location.reload(); // Recargar la página
             });
         });
+
+        // Función para abrir el modal de pago personalizado
+        function abrirModalPago(prestamoId, montoCuota) {
+            globalPrestamoId = prestamoId;
+            globalMontoCuota = montoCuota;
+            $('#customPaymentModal').modal('show');
+        }
+
+        // Función para procesar el pago personalizado
+        function procesarPagoPersonalizado() {
+            var customAmount = $('#customAmount').val();
+
+            if (customAmount <= 0) {
+                alert('Ingrese una cantidad válida.');
+                return;
+            }
+
+            // Realiza el pago personalizado
+            procesarPago(globalPrestamoId, customAmount);
+            $('#customPaymentModal').modal('hide');
+        }
     </script>
 </body>
 
