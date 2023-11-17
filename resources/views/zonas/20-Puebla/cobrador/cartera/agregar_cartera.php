@@ -5,14 +5,14 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
      // Incluye la configuración de conexión a la base de datos
- require_once '../../../../controllers/conexion.php'; 
+ require_once '../../../../../../controllers/conexion.php'; 
 
     // Obtener los datos del formulario
     $nombre = $_POST["nombre"];
-    $idZona = $_POST["idZona"];
+    $idZona = $_POST["zona"];
 
     // Preparar la consulta para insertar una nueva cartera
-    $stmt = $conexion->prepare("INSERT INTO cartera (nombre, IDZona) VALUES (?, ?)");
+    $stmt = $conexion->prepare("INSERT INTO carteras (nombre, zona) VALUES (?, ?)");
     $stmt->bind_param("si", $nombre, $idZona);
 
     // Ejecutar la consulta
@@ -45,13 +45,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
             <?php
                 // Incluye el archivo de conexión a la base de datos
-                include("../../../../controllers/conexion.php");
+                include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM zonas";
+                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE iD = 20";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
                 }
                 ?>
         </select><br><br>

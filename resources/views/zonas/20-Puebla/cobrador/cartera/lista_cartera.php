@@ -8,7 +8,7 @@ session_start();
  }
  
  // Incluye la configuración de conexión a la base de datos
- require_once '../../../../controllers/conexion.php'; 
+ require_once '../../../../../../controllers/conexion.php'; 
  
  // El usuario está autenticado, obtén el ID del usuario de la sesión
  $usuario_id = $_SESSION["usuario_id"];
@@ -25,13 +25,13 @@ session_start();
  $stmt->close();
  
  // Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
- if (!$fila || $fila['Nombre'] !== 'admin') {
+ if (!$fila || $fila['Nombre'] !== 'cobrador') {
      header("Location: /ruta_a_pagina_de_error_o_inicio.php");
      exit();
  }
 
 // Consulta SQL para obtener las carteras
-$sql = "SELECT id, nombre, IDZona FROM cartera";
+$sql = "SELECT id, nombre, zona FROM carteras";
 $result = $conexion->query($sql);
 ?>
 
@@ -156,7 +156,7 @@ $result = $conexion->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row["id"] . "</td>";
+                echo "<td>" . "REC-100" . $row["id"] . "</td>";
                 echo "<td><a href='tu_pagina.php?id=" . $row["id"] . "'>" . $row["nombre"] . "</a></td>";
                 echo "</tr>";
             }
@@ -188,53 +188,3 @@ $result = $conexion->query($sql);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-    <?php
-// Cerrar la conexión con la base de datos
-$conexion->close();
-?>

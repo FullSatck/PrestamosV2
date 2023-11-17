@@ -137,8 +137,10 @@ $resultado = $conexion->query($sql);
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
+        <div class="header2">
         <h1>Listado de Clientes</h1>
-
+        <h4>Cobrador</h4>
+        </div>
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
