@@ -2,12 +2,12 @@
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../../../controllers/conexion.php';
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+    header("Location: ../../../../index.php");
     exit();
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
@@ -33,7 +33,7 @@ if (!isset($_SESSION["usuario_id"])) {
     $rol_usuario = $fila['Nombre'];
 
     // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'cobrador') {
+    if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
@@ -46,11 +46,10 @@ require 'filtrarPrestamos.php'; // Asegúrate de que este archivo contiene la fu
 $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'pendiente';
 
 // Obtener las cuotas del día con el filtro aplicado
-$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Puebla');
+$cuotasHoy = obtenerCuotas($conexion, $filtro);
 
 // Obtener conteos de préstamos
-$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
-
+$conteosPrestamos = contarPrestamosPorEstado($conexion);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -59,7 +58,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prestamos del día</title>
+    <title>Prestamos del dia </title>
     <link rel="stylesheet" href="/public/assets/css/prestaDia.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -72,22 +71,29 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
 <body>
 
     <header>
-        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
     </header>
 
+
     <main>
+
+
         <h1>Cuotas del Día</h1>
 
         <!-- Canvas para el gráfico -->
+
+        <!-- Contenedor para el gráfico con un estilo personalizado -->
         <div class="grafico-contenedor" style="width: 400px; height: 400px;">
             <canvas id="miGrafico"></canvas>
         </div>
 
+
         <form action="prestamos_del_dia.php" method="get">
             <select name="filtro">
+                <!-- <option value="todos" <?php echo $filtro == 'todos' ? 'selected' : ''; ?>>Todos</option> -->
                 <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
                 <option value="pendiente" <?php echo $filtro == 'pendiente' ? 'selected' : ''; ?>>Pendientes</option>
                 <option value="nopagado" <?php echo $filtro == 'nopagado' ? 'selected' : ''; ?>>No Pagados</option>
@@ -101,6 +107,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
                     <thead>
                         <tr>
                             <th>ID Préstamo</th>
+
                             <th>Nombre Cliente</th>
                             <th>Domicilio</th>
                             <th>Teléfono</th>
@@ -110,7 +117,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
                             <th>Perfil</th>
                             <th>Pagar</th>
                             <th>Mas Tarde</th>
-                            <th>Pagar cantidad</th>
+                            <th>Pagar cantida</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,6 +157,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
+
                 </table>
             <?php else : ?>
                 <p>No hay cuotas pendientes para hoy.</p>
@@ -243,17 +251,19 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
                 </div>
             </div>
 
+
+
     </main>
     <script>
-          var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
+        var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
         console.log(conteosPrestamos); // Para depuración
 
-        var ctx = document.getElementById('miGrafico').getContext('2d');
         var maxPendiente = parseInt(conteosPrestamos.pendiente, 10);
         var maxPagado = parseInt(conteosPrestamos.pagado, 10);
         var maxNoPagado = parseInt(conteosPrestamos.nopagado, 10);
         var maxValor = Math.max(maxPendiente, maxPagado, maxNoPagado);
 
+        var ctx = document.getElementById('miGrafico').getContext('2d');
         var miGrafico = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -290,6 +300,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
                 }
             }
         });
+   
 
 
     // <!-- Script para manejar la lógica del modal y el pago -->
@@ -402,4 +413,3 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
 </body>
 
 </html>
- 
