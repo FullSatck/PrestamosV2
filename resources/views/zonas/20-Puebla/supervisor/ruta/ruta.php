@@ -6,13 +6,13 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 }
 
 
   // Incluye tu archivo de conexión a la base de datos
-  include("../../../../controllers/conexion.php");
+  include("../../../../../../controllers/conexion.php");
 
   // Obtener el nombre de la zona desde la URL
   if (isset($_GET['zona'])) {
@@ -54,16 +54,21 @@ if (isset($_SESSION["usuario_id"])) {
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <title>Lista de Fechas de Pago</title>
     <link rel="stylesheet" href="/public/assets/css/ruta.css">
 </head>
 
-<body id="body"> 
+<body id="body">
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -80,7 +85,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
@@ -122,7 +127,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -143,7 +148,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a> 
+            </a>
 
         </div>
 
@@ -159,10 +164,10 @@ if (isset($_SESSION["usuario_id"])) {
     </main>
 
     <script>
-        // Agregar un evento clic al botón
-        document.getElementById("volverAtras").addEventListener("click", function() {
-            window.history.back();
-        });
+    // Agregar un evento clic al botón
+    document.getElementById("volverAtras").addEventListener("click", function() {
+        window.history.back();
+    });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -184,7 +189,7 @@ if (isset($_SESSION["usuario_id"])) {
     // Actualizar las fechas de pago cada 30 segundos
     setInterval(cargarFechasDePago, 30000); // 30,000 milisegundos = 30 segundos
     </script>
-     <script src="/public/assets/js/MenuLate.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 
