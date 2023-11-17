@@ -160,14 +160,7 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/admin/cartera/lista_cartera.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/admin/abonos/abonos.php">
                 <div class="option">
