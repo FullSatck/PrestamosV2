@@ -2,7 +2,7 @@
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -12,11 +12,11 @@ if (!isset($_SESSION["usuario_id"])) {
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
     $usuario_id = $_SESSION["usuario_id"];
-    
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -31,15 +31,13 @@ if (!isset($_SESSION["usuario_id"])) {
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 
 require 'filtrarPrestamos.php'; // Asegúrate de que este archivo contiene la función obtenerCuotas actualizada
@@ -87,10 +85,10 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
         <!-- Canvas para el gráfico -->
 
-<!-- Contenedor para el gráfico con un estilo personalizado -->
-<div class="grafico-contenedor" style="width: 400px; height: 400px;">
-        <canvas id="miGrafico"></canvas>
-    </div>
+        <!-- Contenedor para el gráfico con un estilo personalizado -->
+        <div class="grafico-contenedor" style="width: 400px; height: 400px;">
+            <canvas id="miGrafico"></canvas>
+        </div>
 
 
         <form action="prestamos_del_dia.php" method="get">
@@ -103,124 +101,122 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             <input type="submit" value="Filtrar">
         </form>
 
-        <?php if (count($cuotasHoy) > 0): ?>
-        <div class="table-scroll-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID Préstamo</th>
+        <?php if (count($cuotasHoy) > 0) : ?>
+            <div class="table-scroll-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Préstamo</th>
 
-                        <th>Nombre Cliente</th>
-                        <th>Domicilio</th>
-                        <th>Teléfono</th>
-                        <th>Monto Cuota</th>
-                        <th>Fecha Inicio</th>
-                        <th>Frecuencia Pago</th>
-                        <th>Pagar</th>
-                        <th>Mas Tarde</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($cuotasHoy as $cuota): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
-                        <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
-                        <td><?php echo htmlspecialchars($cuota['DireccionCliente']); ?></td>
-                        <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
-                        <td><?php echo htmlspecialchars($cuota['MontoCuota']); ?></td>
-                        <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
-                        <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
-                        <td>
-                            <?php if ($filtro != 'pagado'): ?>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#confirmPaymentModal"
-                                onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
-                                Pagar
-                            </button>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <?php if ($filtro != 'pagado' && !$cuota['Pospuesto']): ?>
-                            <button type="button" class="btn btn-warning"
-                                onclick="posponerPago(<?php echo $cuota['ID']; ?>)">
-                                Pagar Más Tarde
-                            </button>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                            <th>Nombre Cliente</th>
+                            <th>Domicilio</th>
+                            <th>Teléfono</th>
+                            <th>Monto Cuota</th>
+                            <th>Fecha Inicio</th>
+                            <th>Frecuencia Pago</th>
+                            <th>Perfil</th>
+                            <th>Pagar</th>
+                            <th>Mas Tarde</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($cuotasHoy as $cuota) : ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
+                                <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
+                                <td><?php echo htmlspecialchars($cuota['DireccionCliente']); ?></td>
+                                <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
+                                <td><?php echo htmlspecialchars($cuota['MontoCuota']); ?></td>
+                                <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
+                                <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
+                                <td>
+                                    <a href="../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                    <?php if ($filtro != 'pagado') : ?>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal" onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
+                                        Pagar
+                                    </button>
+                                <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($filtro != 'pagado' && !$cuota['Pospuesto']) : ?>
+                                        <button type="button" class="btn btn-warning" onclick="posponerPago(<?php echo $cuota['ID']; ?>)">
+                                        Más Tarde
+                                        </button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
 
-            </table>
-            <?php else: ?>
-            <p>No hay cuotas pendientes para hoy.</p>
+                </table>
+            <?php else : ?>
+                <p>No hay cuotas pendientes para hoy.</p>
             <?php endif; ?>
-        </div>
+            </div>
 
-        <!-- Modal de Confirmación de Pago -->
-        <div class="modal fade" id="confirmPaymentModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Confirmar Pago</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Está seguro de que desea procesar este pago?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="confirmPaymentButton">Confirmar Pago</button>
+            <!-- Modal de Confirmación de Pago -->
+            <div class="modal fade" id="confirmPaymentModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">Confirmar Pago</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Está seguro de que desea procesar este pago?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="confirmPaymentButton">Confirmar Pago</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Modal de WhatsApp -->
-        <div class="modal fade" id="whatsappModal" tabindex="-1" role="dialog" aria-labelledby="whatsappModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="whatsappModalLabel">Enviar a WhatsApp</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Enviar recibo a WhatsApp del cliente.</p>
-                        <p id="clienteDetalles"></p> <!-- Detalles del cliente -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" id="sendWhatsappButton">Enviar a WhatsApp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal de Pago Pospuesto -->
-        <div class="modal fade" id="postponePaymentModal" tabindex="-1" role="dialog"
-            aria-labelledby="postponePaymentModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="postponePaymentModalLabel">Pago Pospuesto</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        El pago ha sido pospuesto exitosamente. El préstamo ha sido movido a No Pagados.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <!-- Modal de WhatsApp -->
+            <div class="modal fade" id="whatsappModal" tabindex="-1" role="dialog" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="whatsappModalLabel">Enviar a WhatsApp</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Enviar recibo a WhatsApp del cliente.</p>
+                            <p id="clienteDetalles"></p> <!-- Detalles del cliente -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" id="sendWhatsappButton">Enviar a WhatsApp</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <!-- Modal de Pago Pospuesto -->
+            <div class="modal fade" id="postponePaymentModal" tabindex="-1" role="dialog" aria-labelledby="postponePaymentModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="postponePaymentModalLabel">Pago Pospuesto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            El pago ha sido pospuesto exitosamente. El préstamo ha sido movido a No Pagados.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
     </main>
@@ -275,89 +271,89 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
     <!-- Script para manejar la lógica del modal y el pago -->
     <script>
-    var globalPrestamoId = 0;
-    var globalMontoCuota = 0;
+        var globalPrestamoId = 0;
+        var globalMontoCuota = 0;
 
-    function setPrestamoId(prestamoId, montoCuota) {
-        globalPrestamoId = prestamoId;
-        globalMontoCuota = montoCuota;
-    }
+        function setPrestamoId(prestamoId, montoCuota) {
+            globalPrestamoId = prestamoId;
+            globalMontoCuota = montoCuota;
+        }
 
-    $(document).ready(function() {
-        $('#confirmPaymentButton').click(function() {
-            procesarPago(globalPrestamoId, globalMontoCuota);
+        $(document).ready(function() {
+            $('#confirmPaymentButton').click(function() {
+                procesarPago(globalPrestamoId, globalMontoCuota);
+            });
         });
-    });
 
-    function procesarPago(prestamoId, montoCuota) {
-        $.ajax({
-            url: 'procesar_pago.php', // Asegúrate de que esta URL es correcta
-            type: 'POST',
-            data: {
-                prestamoId: prestamoId,
-                montoPagado: montoCuota
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    $('#confirmPaymentModal').modal('hide');
-                    // Mostrar modal de WhatsApp
-                    $('#whatsappModal').modal('show');
-                    // Agregar los detalles del cliente al modal
-                    $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ', Monto Pagado: ' +
-                        response.montoPagado);
-                    // Preparar el botón de WhatsApp
-                    $('#sendWhatsappButton').off('click').on('click', function() {
-                        var mensajeWhatsapp = 'Hola ' + response.clienteNombre +
-                            ', hemos recibido tu pago de ' + response.montoPagado + '.';
-                        window.open('https://wa.me/' + response.clienteTelefono + '?text=' +
-                            encodeURIComponent(mensajeWhatsapp));
-                    });
-                } else {
-                    alert(response.message);
+        function procesarPago(prestamoId, montoCuota) {
+            $.ajax({
+                url: 'procesar_pago.php', // Asegúrate de que esta URL es correcta
+                type: 'POST',
+                data: {
+                    prestamoId: prestamoId,
+                    montoPagado: montoCuota
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        $('#confirmPaymentModal').modal('hide');
+                        // Mostrar modal de WhatsApp
+                        $('#whatsappModal').modal('show');
+                        // Agregar los detalles del cliente al modal
+                        $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ', Monto Pagado: ' +
+                            response.montoPagado);
+                        // Preparar el botón de WhatsApp
+                        $('#sendWhatsappButton').off('click').on('click', function() {
+                            var mensajeWhatsapp = 'Hola ' + response.clienteNombre +
+                                ', hemos recibido tu pago de ' + response.montoPagado + '.';
+                            window.open('https://wa.me/' + response.clienteTelefono + '?text=' +
+                                encodeURIComponent(mensajeWhatsapp));
+                        });
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error AJAX:', error);
+                    alert('Ocurrió un error al procesar el pago.');
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error AJAX:', error);
-                alert('Ocurrió un error al procesar el pago.');
-            }
-        });
-    }
+            });
+        }
 
-    function posponerPago(prestamoId) {
-        $.ajax({
-            url: 'posponer_pago.php', // Asegúrate de que esta URL es correcta
-            type: 'POST',
-            data: {
-                prestamoId: prestamoId
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    // Mostrar el modal de pago pospuesto
-                    $('#postponePaymentModal').modal('show');
-                    actualizarTablaPrestamos(); // Actualizar la tabla
-                } else {
-                    alert(response.message);
+        function posponerPago(prestamoId) {
+            $.ajax({
+                url: 'posponer_pago.php', // Asegúrate de que esta URL es correcta
+                type: 'POST',
+                data: {
+                    prestamoId: prestamoId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Mostrar el modal de pago pospuesto
+                        $('#postponePaymentModal').modal('show');
+                        actualizarTablaPrestamos(); // Actualizar la tabla
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error AJAX:', error);
+                    alert('Ocurrió un error al posponer el pago.');
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error AJAX:', error);
-                alert('Ocurrió un error al posponer el pago.');
-            }
-        });
-    }
-    $(document).ready(function() {
-        // Evento al cerrar el modal de WhatsApp
-        $('#whatsappModal').on('hidden.bs.modal', function() {
-            location.reload(); // Recargar la página
-        });
+            });
+        }
+        $(document).ready(function() {
+            // Evento al cerrar el modal de WhatsApp
+            $('#whatsappModal').on('hidden.bs.modal', function() {
+                location.reload(); // Recargar la página
+            });
 
-        // Evento al cerrar el modal de Pago Pospuesto
-        $('#postponePaymentModal').on('hidden.bs.modal', function() {
-            location.reload(); // Recargar la página
+            // Evento al cerrar el modal de Pago Pospuesto
+            $('#postponePaymentModal').on('hidden.bs.modal', function() {
+                location.reload(); // Recargar la página
+            });
         });
-    });
     </script>
 </body>
 
