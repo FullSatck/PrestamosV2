@@ -252,7 +252,7 @@ if (!isset($_SESSION["usuario_id"])) {
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
                     echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                 }
-                ?>
+                ?> 
                 </select>
             </div>
 
