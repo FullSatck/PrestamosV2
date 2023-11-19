@@ -22,7 +22,7 @@ include("../../../../../../controllers/conexion.php");
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
         FROM Clientes c
         LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Aguascalientes'
+        WHERE c.ZonaAsignada = 'Coahuila'
         ORDER BY c.ID DESC";
 
 
@@ -178,7 +178,7 @@ $resultado = $conexion->query($sql);
                 <td><?= $fila["ZonaAsignada"] ?></td>
                 <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                 <td><a
-                        href="/resources/views/zonas/1-aguascalientes/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                        href="/resources/views/zonas/7-Coahuila/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
                 </td>
             </tr>
             <?php } ?>

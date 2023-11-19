@@ -65,7 +65,7 @@ try {
 // COMISIONES
 try {
     // Consulta SQL para obtener la suma de Comision
-    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos WHERE Zona = 'Aguascalientes'";
+    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos WHERE Zona = 'Coahuila'";
 
     // Realizar la consulta
     $resultComisiones = mysqli_query($conexion, $sqlComisiones);
