@@ -119,7 +119,7 @@ $result = $conexion->query($sql);
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php" class="selected">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
+                   <i class="fa-regular fa-address-book"></i>
                     <h4>Cartera</h4>
                 </div>
             </a>

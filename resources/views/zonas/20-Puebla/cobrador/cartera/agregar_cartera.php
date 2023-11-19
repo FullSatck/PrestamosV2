@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/lista_super.css">
+    <link rel="stylesheet" href="/public/assets/css/agregar_cartera.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <title>Agregar Cartera</title>
 </head>
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="options__menu">
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -103,17 +103,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -127,16 +127,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
 
-
+ 
         <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-        <main>
-        <h2>Agregar Nueva Cartera</h2>
-    <form method="post" action="agregar_cartera.php">
+        <main class="main2">
+
+        <h2 class="h11">Agregar Nueva Cartera</h2>
+
+        <form method="post" action="agregar_cartera.php">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre"><br><br>
 
-        <label for="zona">Zona:</label>
+        <label for="zona">Estado:</label>
         <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
             <?php
                 // Incluye el archivo de conexión a la base de datos
