@@ -7,7 +7,15 @@ body {
     margin: 0;
     padding: 0;
 }
-
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
+}
+ 
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
 header {
     background: #ada6a6;
     color: #fff;
