@@ -7,21 +7,20 @@ body {
     margin: 0;
     padding: 0;
 }
-
 .table-container {
     margin-top: 20px;
     overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
 }
-
+ 
 .table-scroll-container {
     overflow-x: auto; /* Habilita el desplazamiento horizontal */
     margin-top: 20px;
 }
-
 header {
     background: #ada6a6;
     color: #fff;
     padding: 20px 0;
+    
 }
 
 header a {
@@ -52,8 +51,7 @@ form {
     margin-bottom: 20px;
 }
 
-select,
-input[type="submit"] {
+select, input[type="submit"] {
     padding: 10px;
     margin-right: 10px;
     border: 1px solid #ddd;
@@ -81,8 +79,7 @@ table {
     max-width: 100%;
 }
 
-th,
-td {
+th, td {
     padding: 10px; /* Reducción del relleno para pantallas más pequeñas */
     text-align: left;
     border-bottom: 1px solid #ccc;
@@ -117,19 +114,20 @@ td a {
 td a:hover {
     background: #707070;
     color: #000000;
-}
-
+} 
 button {
     background-color: rgb(131, 127, 127);
-    border: none;
-    padding: 10px 16px;
-    border-radius: 20px;
-}
-
-button a {
-    text-decoration: none;
-    color: #fff;
-}
+    border: none; 
+    padding: 10px 16px; 
+    border-radius: 20px; 
+  }
+  
+  
+  button a {
+    text-decoration: none; 
+    color: #fff; 
+  }
+  
 
 /* Estilos de los Botones */
 button {
@@ -163,34 +161,9 @@ button:hover {
     width: 100%;
     height: 100%;
 }
-
 @media (max-width: 768px) {
-    /* Aplicar estilos específicos para dispositivos móviles aquí */
-
-    /* Por ejemplo, hacer que la tabla sea de ancho completo */
-    table {
-        width: 100%;
-    }
-
-    /* Hacer que los elementos de la tabla se muestren en bloques uno debajo del otro */
-    th,
-    td {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-        text-align: center; /* Alineación centrada para el encabezado en dispositivos móviles */
-    }
-
-    /* Estilos adicionales según sea necesario para dispositivos móviles */
-
-    /* Estilos para el encabezado de la tabla en dispositivos móviles */
-    th {
-        background-color: #747474;
-        color: #ffffff;
-        font-weight: bold;
-        padding: 10px; /* Aumentar el relleno para mejorar la apariencia */
-        border-radius: 0; /* Eliminar los bordes redondeados en dispositivos móviles */
-        border: none; /* Eliminar los bordes en dispositivos móviles */
-        margin: 0; /* Eliminar el margen en dispositivos móviles */
+    .grafico-contenedor {
+        max-width: 100%;
+        height: 300px;
     }
 }
