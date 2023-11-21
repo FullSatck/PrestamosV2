@@ -63,6 +63,9 @@ $resultado = $conexion->query($sql);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
     <title>Lista Clientes</title>
 
     <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
@@ -239,6 +242,8 @@ $resultado = $conexion->query($sql);
             <?php } ?>
             </div>
     </main>
+    <script src="/public/assets/js/MenuLate.js"></script>
+
     
 
     <script>
@@ -263,11 +268,7 @@ $resultado = $conexion->query($sql);
         });
     });
     </script>
-    <script src="/public/assets/js/MenuLate.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
-
+   
 </body>
 
 </html>
