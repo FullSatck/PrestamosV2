@@ -198,7 +198,7 @@ if (!isset($_SESSION["usuario_id"])) {
             </select><br>
 
             <label for="monto">Monto:</label>
-            <input type="text" name="monto" id="monto" required><br>
+            <input type="text" name="monto" id="monto" required oninput="calcularMontoPagar()"><br>
 
             <label for="tasa_interes">Tasa de Interés (%):</label>
             <input type="text" name="TasaInteres" id="TasaInteres" required><br>
