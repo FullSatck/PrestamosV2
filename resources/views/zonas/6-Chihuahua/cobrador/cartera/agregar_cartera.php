@@ -48,6 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="agregar_cartera.php">
                 <span>Agregar Cartera</span>
             </a>
+
+            <h1> 
+            <?php echo $_SESSION['nombre'];?>
+            <span>Cobrador</span>
+        </h1>
+
         </header>
 
         <div class="menu__side" id="menu_side">

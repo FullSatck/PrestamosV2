@@ -43,6 +43,12 @@ if (isset($_GET['mensaje'])) {
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Cerrar Sesion</span>
         </a>
+
+        <h1> 
+            <?php echo $_SESSION['nombre'];?>
+            <span>Cobrador</span>
+        </h1>
+
     </header>
 
     <div class="menu__side" id="menu_side">
