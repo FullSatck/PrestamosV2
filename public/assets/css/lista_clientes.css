@@ -149,6 +149,15 @@ a.selected{
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
+}
+ 
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
 
 .cuadros-container {
   display: flex;
@@ -203,11 +212,14 @@ a.selected{
 
 /* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
 
+.header2{
+     background-color: #f4f4f4;
+     color: #000000;
+     padding: 15px; /* Reducción del relleno para pantallas más pequeñas */
+}
 
-h1 {
-    background-color: #f4f4f4;
-    color: #000000;
-    padding: 15px; /* Reducción del relleno para pantallas más pequeñas */
+h4{
+    color: gray;
 }
 
 /* Estilos para el mensaje */

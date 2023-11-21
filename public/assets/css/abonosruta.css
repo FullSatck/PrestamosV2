@@ -211,6 +211,17 @@ a.selected{
 }
 
 
+/* Estilos para la tabla */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
+}
+ 
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
+
 
 /* Estilos generales */
 
