@@ -65,9 +65,10 @@ if (isset($_GET['id'])) {
             <div class="icon__menu">
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
-            <a href="agregar_cartera.php">
-                <span>Agregar Cartera</span>
-            </a>
+            <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+            <!--<a href="##">
+                <span>Agregar Cliente</span>
+            </a> -->
         </header>
 
         <div class="menu__side" id="menu_side">
@@ -123,17 +124,17 @@ if (isset($_GET['id'])) {
                     </div>
                 </a>
 
-                <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php">
+                <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                     <div class="option">
                         <i class="fa-solid fa-map" title=""></i>
-                        <h4>Ruta</h4>
+                        <h4>Enrutada</h4>
                     </div>
                 </a>
 
                 <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php" class="selected">
                     <div class="option">
-                        <i class="fa-solid fa-map" title=""></i>
-                        <h4>Cartera</h4>
+                        <i class="fa-regular fa-address-book"></i>
+                        <h4>Cobros</h4>
                     </div>
                 </a>
 

@@ -27,7 +27,7 @@ if (isset($_GET['mensaje'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
-    <title>Abonos</title>
+    <title>Cobradores</title>
 </head>
 
 <body id="body">
@@ -131,21 +131,20 @@ if (isset($_GET['mensaje'])) {
         <div class="container-fluid">
 
             <!-- Resto del código de la tabla -->
-            <table class="table">
+            <div class="table-scroll-container"></div>
+            <table class="table-container">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Zona</th>
-                        <th scope="col">Rol</th>
+                        <th scope="col">Apellido</th> 
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                 include("../../../../../../controllers/conexion.php");
-                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 3 AND Zonas.ID = 20"); // Filtra por el ID del rol de supervisor (2)
+                $sql = $conexion->prepare("SELECT usuarios.ID, usuarios.Nombre, usuarios.Apellido, usuarios.Email, zonas.Nombre AS zona, roles.Nombre AS rol FROM usuarios JOIN zonas ON usuarios.Zona = zonas.ID JOIN roles ON usuarios.RolID = roles.ID WHERE roles.ID = 3 AND zonas.ID = 20"); // Filtra por el ID del rol de supervisor (2)
                 
                 // Verificar si la preparación de la consulta fue exitosa
                 if ($sql === false) {
@@ -165,19 +164,16 @@ if (isset($_GET['mensaje'])) {
                     <tr class="row<?= $rowCount ?>">
                         <td><?= "REC 100" .$datos->ID ?></td>
                         <td><?= $datos->Nombre ?></td>
-                        <td><?= $datos->Apellido ?></td>
-                        <td><?= $datos->Zona ?></td>
-                        <td><?= $datos->Rol ?></td>
+                        <td><?= $datos->Apellido ?></td> 
                         <td>
-                            <!-- Botón para ver los cobradores de la zona -->
-                            <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver
-                                Prestamos</a>
-                            <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
+                            <!-- Botón para ver los cobradores de la zona --> 
+                            <a href="ruta.php" class="btn btn-primary">Enrutada</a>
                         </td>
                     </tr>
                     <?php } ?>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <!-- Paginación -->

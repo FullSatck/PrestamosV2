@@ -129,9 +129,9 @@ if (isset($_SESSION["usuario_id"])) {
             include("../../../../../../controllers/conexion.php");
 
             // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT ID, Nombre FROM Clientes WHERE ZonaAsignada = 'Chihuahua'";
-            $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
-            $query_zonas = "SELECT Nombre FROM Zonas WHERE Nombre = 'Chihuahua'";
+            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Chihuahua'";
+            $query_monedas = "SELECT iD, nombre, simbolo FROM monedas";
+            $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Chihuahua'";
 
             $result_clientes = $conexion->query($query_clientes);
             $result_monedas = $conexion->query($query_monedas);
@@ -141,7 +141,7 @@ if (isset($_SESSION["usuario_id"])) {
             <select name="id_cliente" required>
                 <?php
                 while ($row = $result_clientes->fetch_assoc()) {
-                    echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+                    echo "<option value='" . $row['iD'] . "'>" . $row['nombre'] . "</option>";
                 }
                 ?>
             </select><br>
@@ -169,7 +169,7 @@ if (isset($_SESSION["usuario_id"])) {
                 <?php
                 while ($row = $result_monedas->fetch_assoc()) {
                     // Agregar el símbolo de la moneda como un atributo data-*
-                    echo "<option value='" . $row['ID'] . "' data-simbolo='" . $row['Simbolo'] . "'>" . $row['Nombre'] . "</option>";
+                    echo "<option value='" . $row['iD'] . "' data-simbolo='" . $row['simbolo'] . "'>" . $row['nombre'] . "</option>";
                 }
                 ?>
             </select><br>
@@ -181,11 +181,11 @@ if (isset($_SESSION["usuario_id"])) {
 
 
 
-            <label for="zona">Zona:</label>
+            <label for="zona">Estado:</label>
             <select name="zona" required>
                 <?php
                 while ($row = $result_zonas->fetch_assoc()) {
-                    echo "<option value='" . $row['Nombre'] . "'>" . $row['Nombre'] . "</option>";
+                    echo "<option value='" . $row['nombre'] . "'>" . $row['nombre'] . "</option>";
                 }
                 ?>
             </select><br>

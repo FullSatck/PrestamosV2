@@ -27,7 +27,7 @@ if (isset($_GET['mensaje'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Usuarios</title>
 
-    <link rel="stylesheet" href="/public/assets/css-Super/lista_usuarios.css">
+    <link rel="stylesheet" href="/public/assets/css/lista_usuarios.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 

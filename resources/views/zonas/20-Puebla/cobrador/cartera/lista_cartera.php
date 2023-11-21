@@ -31,7 +31,7 @@ session_start();
  }
 
 // Consulta SQL para obtener las carteras
-$sql = "SELECT id, nombre, zona FROM carteras";
+$sql = "SELECT id, nombre, zona FROM carteras WHERE zona =20";
 $result = $conexion->query($sql);
 ?>
 
@@ -53,7 +53,7 @@ $result = $conexion->query($sql);
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
             <a href="agregar_cartera.php">
-                <span>Agregar Cartera</span>
+                <span>Agregar Cobro</span>
             </a>
         </header>
 
@@ -66,7 +66,9 @@ $result = $conexion->query($sql);
 
             <div class="options__menu">
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="selected">
+
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -110,17 +112,17 @@ $result = $conexion->query($sql);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php" class="selected">
                 <div class="option">
-                   <i class="fa-regular fa-address-book"></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -129,7 +131,8 @@ $result = $conexion->query($sql);
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
+            </a> 
+
 
             </div>
         </div>
@@ -139,7 +142,7 @@ $result = $conexion->query($sql);
 
         <main>
             <!-- Botón para volver a la página anterior -->
-            <h1 class="text-center">Lista de Carteras</h1>
+            <h1 class="text-center">Cobros</h1>
 
             <div class="container-fluid">
 
@@ -169,6 +172,10 @@ $result = $conexion->query($sql);
         </main>
 
         <script src="/public/assets/js/MenuLate.js"></script>
+
+
+
+
     </body>
 
     </html>
@@ -184,4 +191,50 @@ $result = $conexion->query($sql);
 
 
 
-    <!--   -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+    <?php
+// Cerrar la conexión con la base de datos
+$conexion->close();
+?>

@@ -24,10 +24,9 @@ include("conexion.php");
 $id_cliente = $_GET['id'];
 
 // Consulta SQL para obtener los detalles del cliente con el nombre de la moneda
-$sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS NombreCiudad
+$sql = "SELECT c.*, m.Nombre AS MonedaNombre 
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-        LEFT JOIN ciudades ciu ON c.ID = ciu.ID
         WHERE c.ID = $id_cliente";
 
 $resultado = $conexion->query($sql);
@@ -94,9 +93,9 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
                     <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
                     <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
-                    <p>Estado: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
-                    <p>Municipio: <strong><?= $fila["NombreCiudad"] ?></strong></p>
-                    <p>Colonia: <strong><?= $fila["asentamiento"] ?></strong></p>
+                    <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
+                    <p>Ciudad: <strong><?= $fila["ciudad"] ?></strong></p>
+                    <p>Asentamiento: <strong><?= $fila["asentamiento"] ?></strong></p>
                 </div>
             </div>
 

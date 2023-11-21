@@ -19,9 +19,9 @@ if (isset($_SESSION["usuario_id"])) {
 include("../../../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener todos los clientes con el nombre de la moneda
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
-        FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID
+$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS moneda, c.ZonaAsignada 
+        FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
         WHERE c.ZonaAsignada = 'Chihuahua'
         ORDER BY c.ID DESC";
 
@@ -141,7 +141,7 @@ $resultado = $conexion->query($sql);
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
-
+<div class="table-scroll-container">
         <?php if ($resultado->num_rows > 0) { ?>
             
         <table>
@@ -165,7 +165,7 @@ $resultado = $conexion->query($sql);
                 <td><?= $fila["Domicilio"] ?></td>
                 <td><?= $fila["Telefono"] ?></td>
                 <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
+                <td><?= $fila["moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
                 <td><?= $fila["ZonaAsignada"] ?></td>
                 <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                 <td><a
@@ -177,6 +177,7 @@ $resultado = $conexion->query($sql);
         <?php } else { ?>
         <p>No se encontraron clientes en la base de datos.</p>
         <?php } ?>
+        </div>
     </main>
 
     <script>

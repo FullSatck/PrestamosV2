@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verificar si no hay errores de validación antes de insertar en la base de datos
     if (empty($id_zona_err) && empty($descripcion_err) && empty($valor_err)) {
         // Preparar la declaración de inserción
-        $sql = "INSERT INTO Gastos (IDZona, Fecha, Descripcion, Valor) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO gastos (iDZona, fecha, descripcion, valor) VALUES (?, ?, ?, ?)";
 
         if ($stmt = $conexion->prepare($sql)) {
             // Vincular las variables a la declaración preparada como parámetros
@@ -170,17 +170,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -218,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                $sql_zonas = "SELECT * FROM Zonas WHERE Nombre = 'Chihuahua'";
+                $sql_zonas = "SELECT * FROM zonas WHERE nombre = 'Chihuahua'";
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {

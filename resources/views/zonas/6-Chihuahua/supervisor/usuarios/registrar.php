@@ -140,7 +140,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
                 </div>
                 <div class="input-container">
-                    <label for="zona">Zona:</label>
+                    <label for="zona">Estado:</label>
                     <select id="zona" name="zona" required>
                         <?php
                         // Incluye el archivo de conexión a la base de datos
@@ -161,20 +161,15 @@ if (isset($_SESSION["usuario_id"])) {
                     <select id="RolID" name="RolID" required>
                         <?php
                         // Consulta SQL para obtener las opciones de roles
-                        $consultaRoles = "SELECT ID, Nombre FROM Roles WHERE ID = 3";
+                        $consultaRoles = "SELECT iD, nombre FROM roles WHERE iD = 3";
                         $resultRoles = mysqli_query($conexion, $consultaRoles);
                         // Genera las opciones del menú desplegable para Rol
                         while ($row = mysqli_fetch_assoc($resultRoles)) {
-                            echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                            echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
                         }
                         ?>
                     </select>
-                </div>
-
-                <div class="input-container" id="saldo-inicial-container" style="display: none;">
-                    <label for="saldo-inicial">Saldo Inicial:</label>
-                    <input type="text" id="saldo-inicial" name="saldo-inicial" placeholder="Por favor ingrese el saldo inicial">
-                </div>
+                </div> 
 
                 <div class="btn-container">
                     <button type="submit" name="registrar_usuario">Registrar</button>

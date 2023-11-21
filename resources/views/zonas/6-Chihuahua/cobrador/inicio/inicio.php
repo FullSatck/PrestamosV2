@@ -170,17 +170,17 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -198,7 +198,7 @@ mysqli_close($conexion);
     </div>
 
     <main>
-        <h1>Inicio cobrador de Baja California</h1>
+        <h1>Inicio cobrador de Chihuahua</h1>
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">

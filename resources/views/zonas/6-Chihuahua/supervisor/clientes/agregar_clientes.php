@@ -158,12 +158,7 @@ if (isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="historial">Historial Crediticio:</label>
                 <textarea id="historial" name="historial" rows="4"></textarea>
-            </div>
-
-            <div class="input-container">
-                <label for="referencias">Referencias Personales:</label>
-                <textarea id="referencias" name="referencias" rows="4"></textarea>
-            </div>
+            </div> 
 
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
@@ -184,24 +179,24 @@ if (isset($_SESSION["usuario_id"])) {
             </div>
 
             <div class="input-container">
-                <label for="zona">Zona:</label>
+                <label for="zona">Estado:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM Zonas WHERE Nombre = 'Chihuahua'";
+                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Chihuahua'";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
                 }
                 ?>
                 </select>
             </div>
 
             <div class="input-container">
-                <label for="ciudad">Ciudad:</label>
+                <label for="ciudad">Municipio:</label>
                 <select id="ciudad" name="ciudad" required>
                     <?php
                 // Incluye el archivo de conexión a la base de datos

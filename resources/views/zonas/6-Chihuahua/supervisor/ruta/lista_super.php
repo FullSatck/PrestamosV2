@@ -106,7 +106,7 @@ if (isset($_GET['mensaje'])) {
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
 
@@ -135,16 +135,14 @@ if (isset($_GET['mensaje'])) {
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Zona</th>
-                        <th scope="col">Rol</th>
+                        <th scope="col">Apellido</th> 
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                 include("../../../../../../controllers/conexion.php");
-                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 3 AND Zonas.ID = 6"); // Filtra por el ID del rol de supervisor (2)
+                $sql = $conexion->prepare("SELECT usuarios.ID, usuarios.Nombre, usuarios.Apellido, usuarios.Email, zonas.Nombre AS zona, roles.Nombre AS rol FROM usuarios JOIN zonas ON usuarios.Zona = zonas.ID JOIN roles ON usuarios.RolID = roles.ID WHERE roles.ID = 3 AND zonas.ID = 6"); // Filtra por el ID del rol de supervisor (2)
                 
                 // Verificar si la preparación de la consulta fue exitosa
                 if ($sql === false) {
@@ -164,14 +162,10 @@ if (isset($_GET['mensaje'])) {
                     <tr class="row<?= $rowCount ?>">
                         <td><?= "REC 100" .$datos->ID ?></td>
                         <td><?= $datos->Nombre ?></td>
-                        <td><?= $datos->Apellido ?></td>
-                        <td><?= $datos->Zona ?></td>
-                        <td><?= $datos->Rol ?></td>
+                        <td><?= $datos->Apellido ?></td> 
                         <td>
-                            <!-- Botón para ver los cobradores de la zona -->
-                            <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver
-                                Prestamos</a>
-                            <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
+                            <!-- Botón para ver los cobradores de la zona --> 
+                            <a href="ruta.php" class="btn btn-primary">Enrutar</a>
                         </td>
                     </tr>
                     <?php } ?>

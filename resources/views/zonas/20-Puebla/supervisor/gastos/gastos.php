@@ -130,11 +130,11 @@ if (isset($_SESSION["usuario_id"])) {
 include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
 // Realiza la consulta para obtener los gastos con el nombre de la zona
-$sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
-        FROM Gastos G
-        INNER JOIN Zonas Z ON G.IDZona = Z.ID
-        WHERE IDZona = 20
-        ORDER BY G.ID DESC";
+$sql = "SELECT g.ID, z.Nombre AS nombreZona, g.Fecha, g.Descripcion, g.Valor 
+        FROM gastos g
+        INNER JOIN zonas z ON g.IDZona = z.ID
+        WHERE iDZona = 20
+        ORDER BY g.ID DESC";
 $resultado = $conexion->query($sql);
 
 // Crear una tabla HTML para mostrar las columnas de las filas
@@ -153,7 +153,7 @@ if ($resultado->num_rows > 0) {
     while ($fila = $resultado->fetch_assoc()) {
         echo '<tr>';
         echo '<td>' . $fila['ID'] . '</td>';
-        echo '<td>' . $fila['NombreZona'] . '</td>';
+        echo '<td>' . $fila['nombreZona'] . '</td>';
         echo '<td>' . $fila['Fecha'] . '</td>';
         echo '<td>' . $fila['Descripcion'] . '</td>'; 
         echo "<td>" . number_format($fila['Valor'], 0, '.', '.') . "</td>"; // Formatear el monto

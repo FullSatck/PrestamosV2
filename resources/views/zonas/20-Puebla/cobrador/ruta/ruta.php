@@ -10,6 +10,14 @@
     </script>
     <title>Lista de Pagos Pendientes para Hoy</title>
     <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
+    
+
+        <style>
+        /* Agrega estilos específicos si es necesario */
+        #lista-pagos tbody tr {
+            cursor: move;
+        }
+        </style>
 </head>
 
 <body>
@@ -22,13 +30,6 @@
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Cerrar Sesion</span>
         </a>
-
-        <style>
-        /* Agrega estilos específicos si es necesario */
-        #lista-pagos tbody tr {
-            cursor: move;
-        }
-        </style>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -86,14 +87,14 @@
             <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -106,16 +107,18 @@
         </div>
     </div>
 
+<script src="/public/assets/js/MenuLate.js"></script>
 
     <main>
-        <h2>Pagos para Hoy</h2>
+        <h2>Orden de pagos</h2>
 
         <!-- <button onclick="guardarCambios()">Guardar Cambios</button> -->
 
         <div id="aviso-guardado" class="aviso">
             Nuevo orden guardado.
         </div><br>
-
+        
+        <div class="table-scroll-container">
         <table id="lista-pagos">
         <thead>
             <tr>
@@ -162,6 +165,7 @@
             ?>
         </tbody>
     </table>
+    </div>
 
     </main>
 
@@ -200,6 +204,8 @@
         $('#aviso-guardado').fadeIn().delay(3000).fadeOut(); // Mostrar por 2 segundos y luego ocultar
     }
     </script>
+    
+    
 </body>
 
 </html>

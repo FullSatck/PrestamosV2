@@ -124,7 +124,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
                                 <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
                                 <td>
-                                    <a href="../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                    <a href="../../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
                                 </td>
                                 <td>

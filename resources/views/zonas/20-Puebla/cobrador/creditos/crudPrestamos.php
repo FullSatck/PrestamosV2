@@ -47,7 +47,7 @@ if (isset($_SESSION["usuario_id"])) {
 
     <div class="options__menu">
 
-        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="selected">
+        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
             <div class="option">
                 <i class="fa-solid fa-landmark" title="Inicio"></i>
                 <h4>Inicio</h4>
@@ -69,7 +69,7 @@ if (isset($_SESSION["usuario_id"])) {
             </div>
         </a>
 
-        <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
+        <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php" class="selected">
             <div class="option">
                 <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                 <h4>Prestamos</h4>
@@ -90,17 +90,17 @@ if (isset($_SESSION["usuario_id"])) {
             </div>
         </a>
 
-        <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php">
+        <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
             <div class="option">
                 <i class="fa-solid fa-map" title=""></i>
-                <h4>Ruta</h4>
+                <h4>Enrutada</h4>
             </div>
         </a>
 
         <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 

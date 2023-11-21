@@ -185,11 +185,11 @@ if (isset($_SESSION["usuario_id"])) {
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM Zonas WHERE Nombre = 'Puebla'";
+                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Puebla'";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
                 }
                 ?>
                 </select>

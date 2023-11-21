@@ -26,7 +26,7 @@ if (isset($_GET['mensaje'])) {
 include("../../../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener los préstamos de la zona especificada con el nombre del cliente
-$sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID WHERE P.Zona = ?");
+$sql = $conexion->prepare("SELECT p.ID, c.Nombre AS nombreCliente, p.Zona, p.Monto FROM prestamos p INNER JOIN clientes c ON p.IDCliente = c.ID WHERE p.Zona = ?");
 $sql->bind_param("s", $nombreZona);
 $sql->execute();
 
@@ -126,7 +126,7 @@ if ($sql === false) {
             <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
@@ -151,7 +151,8 @@ if ($sql === false) {
             <div class="row">
 
                 <div class="col-md-9">
-                    <table class="table">
+                    <div class="table-scroll-container">
+                    <table class="table-container">
                         <thead>
                             <tr>
                                 <th scope="col">ID del Préstamo</th>
@@ -169,7 +170,7 @@ if ($sql === false) {
                         ?>
                             <tr class="row<?= $rowCount ?>">
                                 <td><?= "Prestamo " . $datos['ID'] ?></td>
-                                <td><?= $datos['NombreCliente'] ?></td>
+                                <td><?= $datos['nombreCliente'] ?></td>
                                 <td><?= $datos['Zona'] ?></td>
                                 <td><?= $datos['Monto'] ?></td>
                             </tr>
@@ -180,6 +181,7 @@ if ($sql === false) {
                     ?>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

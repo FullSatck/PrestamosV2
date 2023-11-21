@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/agregar_cartera.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-    <title>Agregar Cartera</title>
+    <title>Agregar Cobro</title>
 </head>
 
 <body>
@@ -45,9 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="icon__menu">
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
-            <a href="agregar_cartera.php">
-                <span>Agregar Cartera</span>
-            </a>
+            <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+            <!--<a href="agregar_cartera.php">
+                <span>Agregar Ciente</span>
+            </a>-->
         </header>
 
         <div class="menu__side" id="menu_side">
@@ -112,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php" class="selected">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
+                    <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
@@ -132,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <main class="main2">
 
-        <h2 class="h11">Agregar Nueva Cartera</h2>
+        <h2 class="h11">Agregar Nuevo Cobro</h2>
 
         <form method="post" action="agregar_cartera.php">
         <label for="nombre">Nombre:</label>

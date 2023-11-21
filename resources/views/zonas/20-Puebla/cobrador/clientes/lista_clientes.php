@@ -20,8 +20,8 @@ include("../../../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener todos los clientes con el nombre de la moneda
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
-        FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID
+        FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
         WHERE c.ZonaAsignada = 'Puebla'";
 
 $resultado = $conexion->query($sql);
@@ -60,7 +60,7 @@ $resultado = $conexion->query($sql);
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -69,7 +69,7 @@ $resultado = $conexion->query($sql);
 
 
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
@@ -104,17 +104,17 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -137,10 +137,8 @@ $resultado = $conexion->query($sql);
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <div class="header2">
         <h1>Listado de Clientes</h1>
-        <h4>Cobrador</h4>
-        </div>
+
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
@@ -155,8 +153,7 @@ $resultado = $conexion->query($sql);
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Domicilio</th>
-                    <th>Teléfono</th>
-                    <th>Referencias Personales</th>
+                    <th>Teléfono</th> 
                     <th>Moneda Preferida</th>
                     <th>Zona Asignada</th>
                     <th>Acciones</th>
@@ -168,8 +165,7 @@ $resultado = $conexion->query($sql);
                     <td><?= $fila["Nombre"] ?></td>
                     <td><?= $fila["Apellido"] ?></td>
                     <td><?= $fila["Domicilio"] ?></td>
-                    <td><?= $fila["Telefono"] ?></td>
-                    <td><?= $fila["ReferenciasPersonales"] ?></td>
+                    <td><?= $fila["Telefono"] ?></td> 
                     <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
                     <td><?= $fila["ZonaAsignada"] ?></td>
                     <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>

@@ -48,7 +48,7 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -63,7 +63,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
@@ -91,17 +91,17 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -158,12 +158,7 @@ if (isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="historial">Historial Crediticio:</label>
                 <textarea id="historial" name="historial" rows="4"></textarea>
-            </div>
-
-            <div class="input-container">
-                <label for="referencias">Referencias Personales:</label>
-                <textarea id="referencias" name="referencias" rows="4"></textarea>
-            </div>
+            </div> 
 
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
@@ -190,11 +185,11 @@ if (isset($_SESSION["usuario_id"])) {
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM Zonas WHERE Nombre = 'Chihuahua'";
+                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Chihuahua'";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
                 }
                 ?>
                 </select>
@@ -221,6 +216,26 @@ if (isset($_SESSION["usuario_id"])) {
                 <label for="asentamiento">Colonia:</label>
                 <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
                     required>
+            </div>
+            
+            <div class="input-container">
+                <label for="cartera_id">Cartera:</label>
+                <select id="cartera_id" name="cartera_id" required>
+                    <option value="">Escoge cartera</option>
+                    <?php
+        // Incluye el archivo de conexión a la base de datos
+        include("../../../../../../controllers/conexion.php");
+        
+        // Consulta SQL para obtener las carteras
+        $consultaCarteras = "SELECT id, nombre FROM carteras WHERE zona = 6";
+        $resultCarteras = mysqli_query($conexion, $consultaCarteras);
+        
+        // Genera las opciones del menú desplegable para las carteras
+        while ($row = mysqli_fetch_assoc($resultCarteras)) {
+            echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
+        }
+        ?>
+                </select>
             </div>
 
             <div class="input-container">

@@ -54,7 +54,7 @@ if (isset($_GET['mensaje'])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -97,21 +97,21 @@ if (isset($_GET['mensaje'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>

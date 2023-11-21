@@ -47,7 +47,7 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -83,24 +83,24 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cartera</h4>
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -129,11 +129,11 @@ if (isset($_SESSION["usuario_id"])) {
 include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
 // Realiza la consulta para obtener los gastos con el nombre de la zona
-$sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
-        FROM Gastos G
-        INNER JOIN Zonas Z ON G.IDZona = Z.ID
-        WHERE IDZona = 2
-        ORDER BY G.ID DESC";
+$sql = "SELECT g.ID, z.Nombre AS nombreZona, g.Fecha, g.Descripcion, g.Valor 
+        FROM gastos g
+        INNER JOIN zonas z ON g.IDZona = z.ID
+        WHERE iDZona = 20
+        ORDER BY g.ID DESC";
 $resultado = $conexion->query($sql);
 
 
@@ -153,7 +153,7 @@ if ($resultado->num_rows > 0) {
     while ($fila = $resultado->fetch_assoc()) {
         echo '<tr>';
         echo '<td>' . $fila['ID'] . '</td>';
-        echo '<td>' . $fila['NombreZona'] . '</td>';
+        echo '<td>' . $fila['nombreZona'] . '</td>';
         echo '<td>' . $fila['Fecha'] . '</td>';
         echo '<td>' . $fila['Descripcion'] . '</td>'; 
         echo "<td>" . number_format($fila['Valor'], 0, '.', '.') . "</td>"; // Formatear el monto

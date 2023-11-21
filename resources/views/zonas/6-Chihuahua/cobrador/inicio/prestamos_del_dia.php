@@ -72,7 +72,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 <body>
 
     <header>
-        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -124,7 +124,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                                 <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
                                 <td>
-                                    <a href="../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                    <a href="../../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
                                 </td>
                                 <td>
