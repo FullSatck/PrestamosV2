@@ -209,11 +209,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-<<<<<<< HEAD
-                $sql_zonas = "SELECT * FROM zonas WHERE Nombre = 'Aguascalientes'";
-=======
-                $sql_zonas = "SELECT * FROM Zonas WHERE Nombre = 'Aguascalientes'";
->>>>>>> 6e5291a02c2829b1c3440ad6fd1cbc7f0507b8ca
+ 
+ 
+                $sql_zonas = "SELECT * FROM Zonas WHERE Nombre = 'Aguascalientes'"; 
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {
