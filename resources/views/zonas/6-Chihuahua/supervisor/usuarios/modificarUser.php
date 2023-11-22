@@ -112,6 +112,15 @@ if (isset($_GET['id'])) {
             <i class="fa-solid fa-right-to-bracket"></i>
             <span>&nbsp;Volver</span>
         </button>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span>Supervisor<span>";
+        }
+        ?>
+        </div>
+        
     </header>
 
     <div class="menu__side" id="menu_side">
