@@ -152,7 +152,7 @@ $stmt->close();
         <!-- Contenido principal -->
         <main>
             <h2>Registro de Usuario</h2><br>
-            <form action="/controllers/super/validar_registro/validar_registro-20.php" method="post">
+            <form action="/controllers/super/validar_registro/validar_registro-31.php" method="post">
                 <div class="input-container">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" placeholder="Por favor ingrese su nombre" required>
@@ -176,7 +176,7 @@ $stmt->close();
                         // Incluye el archivo de conexión a la base de datos
                         include("../../../../../../controllers/conexion.php");
                         // Consulta SQL para obtener las zonas
-                        $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Puebla'";
+                        $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Zacatecas'";
                         $resultZonas = mysqli_query($conexion, $consultaZonas);
                         // Genera las opciones del menú desplegable para Zona
                         while ($row = mysqli_fetch_assoc($resultZonas)) {
