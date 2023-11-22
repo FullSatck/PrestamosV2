@@ -10,6 +10,19 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
 // Verificar si se ha pasado un mensaje en la URL
 $mensaje = "";
@@ -20,6 +33,7 @@ if (isset($_GET['mensaje'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,21 +47,20 @@ if (isset($_GET['mensaje'])) {
     <link rel="stylesheet" href="/public/assets/css/abonos.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
+
 <body id="body">
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
-
-        <h1> 
-            <?php echo $_SESSION['nombre'];?>
-            <span>Cobrador</span>
-        </h1>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+        </div>
 
     </header>
 
@@ -60,6 +73,13 @@ if (isset($_GET['mensaje'])) {
 
         <div class="options__menu">
 
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
@@ -67,7 +87,7 @@ if (isset($_GET['mensaje'])) {
                 </div>
             </a>
 
-           
+
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
@@ -123,7 +143,7 @@ if (isset($_GET['mensaje'])) {
                     <h4>Abonos</h4>
                 </div>
             </a>
- 
+
 
 
 
@@ -136,7 +156,7 @@ if (isset($_GET['mensaje'])) {
         <div class="container">
             <h1 class="mt-5">Formulario de Pago de Préstamos</h1>
 
-          
+
 
             <!-- Información del cliente -->
             <div id="cliente-info" class="mt-4">
@@ -278,7 +298,7 @@ if (isset($_GET['mensaje'])) {
                         <!-- Agregar un botón para compartir la factura por WhatsApp -->
 
                         <button type="button" class="btn btn-primary" id="compartirPorWhatsAppButton">
-                            Compartir por WhatsApp 
+                            Compartir por WhatsApp
                         </button>
 
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>

@@ -7,6 +7,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      // Incluye la configuración de conexión a la base de datos
  require_once '../../../../../../controllers/conexion.php'; 
 
+ $usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
     // Obtener los datos del formulario
     $nombre = $_POST["nombre"];
     $idZona = $_POST["zona"];
@@ -49,11 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span>Agregar Cartera</span>
             </a>
 
-            <h1> 
-            <?php echo $_SESSION['nombre'];?>
-            <span>Cobrador</span>
-        </h1>
-
+            <div class="nombre-usuario">
+                <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+            </div>
         </header>
 
         <div class="menu__side" id="menu_side">
@@ -65,88 +79,95 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="options__menu">
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
+            <a href="/controllers/cerrar_sesion.php">
                 <div class="option">
-                    <i class="fa-solid fa-landmark" title="Inicio"></i>
-                    <h4>Inicio</h4>
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
                 </div>
             </a>
 
-         
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
+                    <div class="option">
+                        <i class="fa-solid fa-landmark" title="Inicio"></i>
+                        <h4>Inicio</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-people-group" title=""></i>
-                    <h4>Clientes</h4>
-                </div>
-            </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-tag" title=""></i>
-                    <h4>Registrar Clientes</h4>
-                </div>
-            </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                    <h4>Prestamos</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
+                    <div class="option">
+                        <i class="fa-solid fa-people-group" title=""></i>
+                        <h4>Clientes</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
+                    <div class="option">
+                        <i class="fa-solid fa-user-tag" title=""></i>
+                        <h4>Registrar Clientes</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
-                    <h4>Gastos</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                        <h4>Prestamos</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                        <h4>Registrar Prestamos</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="selected">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Cobros</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-sack-xmark" title=""></i>
+                        <h4>Gastos</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
+                    <div class="option">
+                        <i class="fa-solid fa-map" title=""></i>
+                        <h4>Enrutada</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="selected">
+                    <div class="option">
+                        <i class="fa-solid fa-map" title=""></i>
+                        <h4>Cobros</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                        <h4>Abonos</h4>
+                    </div>
+                </a>
 
             </div>
         </div>
 
- 
+
         <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
         <main class="main2">
 
-        <h2 class="h11">Agregar Nueva Cartera</h2>
+            <h2 class="h11">Agregar Nueva Cartera</h2>
 
-        <form method="post" action="agregar_cartera.php">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre"><br><br>
+            <form method="post" action="agregar_cartera.php">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre"><br><br>
 
-        <label for="zona">Estado:</label>
-        <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
-            <?php
+                <label for="zona">Estado:</label>
+                <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
+                    <?php
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
@@ -157,15 +178,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
                 }
                 ?>
-        </select><br><br>
+                </select><br><br>
 
-        <input type="submit" value="Agregar">
-    </form>
+                <input type="submit" value="Agregar">
+            </form>
         </main>
 
         <script src="/public/assets/js/MenuLate.js"></script>
     </body>
 
     </html>
-
- 
