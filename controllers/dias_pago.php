@@ -10,6 +10,21 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+// Incluir el archivo de conexión a la base de datos
+require_once("conexion.php");
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
@@ -32,11 +47,17 @@ if (isset($_SESSION["usuario_id"])) {
 
             <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
 
+            <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
+        </div>
+
         </header>
         <main>
             <?php
-    // Incluir el archivo de conexión a la base de datos
-    require_once("conexion.php");
 
     // Obtener el ID del préstamo desde el parámetro GET
     if (isset($_GET['id']) && is_numeric($_GET['id'])) {

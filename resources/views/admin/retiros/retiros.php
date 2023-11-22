@@ -9,6 +9,18 @@ if (!isset($_SESSION["usuario_id"])) {
 
 include("../../../../controllers/conexion.php");
 
+$usuario_id = $_SESSION["usuario_id"];
+
+    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // Consulta SQL para obtener los datos
 $sql = "SELECT * FROM saldo_admin";
 $result = $conexion->query($sql);
@@ -42,16 +54,25 @@ if ($result->num_rows > 0) {
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
-            
-           
+
+
         </div>
         <a href="/resources/views/admin/retiros/agregar_retiros.php" class="botonn">
-        <i class="fa-solid fa-plus"></i>
+            <i class="fa-solid fa-plus"></i>
             <span class="spann">Agregar retiro</span>
         </a>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
+        </div>
     </header>
-   
+
     <div class="menu__side" id="menu_side">
+
+
 
         <div class="name__page">
             <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
@@ -59,6 +80,13 @@ if ($result->num_rows > 0) {
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
