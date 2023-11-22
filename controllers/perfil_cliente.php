@@ -22,15 +22,20 @@ include("conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
-$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+// Asumiendo que la tabla de roles se llama 'roles' y tiene las columnas 'id' y 'nombre_rol'
+$sql_nombre = "SELECT usuarios.nombre, roles.nombre FROM usuarios INNER JOIN roles ON usuarios.rolID = roles.id WHERE usuarios.id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
 $resultado = $stmt->get_result();
+
 if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
+    $_SESSION["nombre"] = $fila["nombre"]; // Guarda el nombre del rol en la sesión
 }
 $stmt->close();
+
+
 
 // Obtener el ID del cliente desde el parámetro GET
 $id_cliente = $_GET['id'];
@@ -85,15 +90,17 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
 
         <header>
 
-        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+            <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
 
-        <div class="nombre-usuario">
-            <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
-        </div>
+            <div class="nombre-usuario">
+                <?php
+    if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
+        echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
+    }
+    ?>
+            </div>
+
+
 
         </header>
 
