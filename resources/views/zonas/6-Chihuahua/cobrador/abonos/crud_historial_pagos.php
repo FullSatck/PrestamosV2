@@ -78,7 +78,7 @@ if (isset($_GET['clienteId'])) {
                     <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
                     <h4>Cerrar Sesion</h4>
                 </div>
-            </a>
+            </a>        
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
                 <div class="option">
