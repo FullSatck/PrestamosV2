@@ -13,6 +13,16 @@ require_once '../../../../controllers/conexion.php';
 // El usuario está autenticado, obtén el ID del usuario de la sesión
 $usuario_id = $_SESSION["usuario_id"];
 
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // Preparar la consulta para obtener el rol del usuario
 $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
 $stmt->bind_param("i", $usuario_id);
@@ -29,6 +39,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     header("Location: /ruta_a_pagina_de_error_o_inicio.php");
     exit();
 }
+
 
 // Función para obtener la suma de una columna de una tabla
 function obtenerSuma($conexion, $tabla, $columna) {
@@ -61,10 +72,7 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
 
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-
-
-
-
+ 
 </head>
 
 <body id="body">
@@ -73,10 +81,14 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -86,7 +98,16 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
             <h4>Recaudo</h4>
         </div>
 
+         
+
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+            <div class="option">
+                <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/inicio/inicio.php" class="selected">
                 <div class="option">
@@ -160,7 +181,7 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/abonos/abonos.php">
                 <div class="option">
@@ -168,14 +189,14 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
                     <h4>Abonos</h4>
                 </div>
             </a>
-            
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
-       
+
         </div>
     </div>
 
@@ -194,7 +215,8 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?></p>
+                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
+                    </p>
                 </div>
             </div>
 
@@ -219,10 +241,10 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
                     <p>Mantenimiento</p>
                 </div>
             </div>
-        
+
 
         </div>
-         
+
 
         </div>
         </div>
