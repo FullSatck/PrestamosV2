@@ -17,6 +17,26 @@ $mensaje = "";
 if (isset($_GET['mensaje'])) {
     $mensaje = $_GET['mensaje'];
 }
+include("../../../../../../controllers/conexion.php");
+
+$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS moneda, c.ZonaAsignada 
+        FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
+        WHERE c.ZonaAsignada = 'Chihuahua'
+        ORDER BY c.ID DESC";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +57,15 @@ if (isset($_GET['mensaje'])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span>Supervisor<span>";
+        }
+        ?>
+        </div>
+
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -48,6 +77,12 @@ if (isset($_GET['mensaje'])) {
 
         <div class="options__menu">
 
+        <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
