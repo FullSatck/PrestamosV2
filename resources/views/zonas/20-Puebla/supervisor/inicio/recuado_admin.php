@@ -38,7 +38,7 @@ $stmt->close();
     <link rel="stylesheet" href="/public/assets/css/recaudo_admin.css">
 </head>
 
-<body id="body"> 
+<body id="body">
 
     <header>
         <div class="icon__menu">
@@ -62,7 +62,7 @@ $stmt->close();
 
         <div class="options__menu">
 
-        <a href="/controllers/cerrar_sesion.php">
+            <a href="/controllers/cerrar_sesion.php">
                 <div class="option">
                     <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
                     <h4>Cerrar Sesion</h4>
@@ -73,7 +73,7 @@ $stmt->close();
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
@@ -115,7 +115,7 @@ $stmt->close();
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -137,7 +137,7 @@ $stmt->close();
                     <h4>Abonos</h4>
                 </div>
             </a>
- 
+
 
         </div>
 
@@ -256,7 +256,7 @@ mysqli_close($conexion);
     });
     </script>
 
-<script src="/public/assets/js/MenuLate.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 
