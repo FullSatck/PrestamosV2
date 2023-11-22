@@ -10,14 +10,28 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -27,11 +41,18 @@ if (isset($_SESSION["usuario_id"])) {
     <link rel="stylesheet" href="/public/assets/css/prestamo.css">
 </head>
 
-<body id="body"> 
+<body id="body">
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
         </div>
     </header>
 
@@ -44,12 +65,19 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
@@ -91,7 +119,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -113,7 +141,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <h4>Abonos</h4>
                 </div>
             </a>
- 
+
         </div>
 
     </div>
@@ -123,7 +151,8 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
-        <form action="/controllers/super/procesar_prestamos/procesar_prestamo20.php" method="POST" class="form-container">
+        <form action="/controllers/super/procesar_prestamos/procesar_prestamo20.php" method="POST"
+            class="form-container">
             <?php
             // Incluir el archivo de conexión a la base de datos
             include("../../../../../../controllers/conexion.php");
@@ -201,7 +230,7 @@ if (isset($_SESSION["usuario_id"])) {
 
             <input type="submit" value="Hacer préstamo" class="calcular-button">
         </form>
-    </main> 
+    </main>
 
     <script>
     function calcularMontoPagar() {
@@ -244,7 +273,7 @@ if (isset($_SESSION["usuario_id"])) {
     }
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
-    
+
 
 </body>
 

@@ -1,3 +1,30 @@
+<?php
+session_start();
+
+// Verifica si el usuario está autenticado
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../../../index.php");
+    exit();
+
+}include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +37,12 @@
     </script>
     <title>Lista de Pagos Pendientes para Hoy</title>
     <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
+    <style>
+    /* Agrega estilos específicos si es necesario */
+    #lista-pagos tbody tr {
+        cursor: move;
+    }
+    </style>
 </head>
 
 <body>
@@ -18,14 +51,15 @@
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-         <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
 
-        <style>
-        /* Agrega estilos específicos si es necesario */
-        #lista-pagos tbody tr {
-            cursor: move;
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
         }
-        </style>
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -36,6 +70,13 @@
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
                 <div class="option">
@@ -120,17 +161,17 @@
         </div><br>
 
         <table id="lista-pagos">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Fecha de Pago</th>
-                <th>Enrutar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Fecha de Pago</th>
+                    <th>Enrutar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
             include "../../../../../../controllers/conexion.php";
 
             $fecha_actual = date("Y-m-d");
@@ -163,8 +204,8 @@
             $stmt->close();
             $conexion->close();
             ?>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
     </main>
 
