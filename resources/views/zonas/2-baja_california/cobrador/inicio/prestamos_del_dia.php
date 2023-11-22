@@ -85,7 +85,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
 <body>
 
     <header>
-    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="botonn">
+    <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>

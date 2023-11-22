@@ -7,7 +7,7 @@ function obtenerCuotas($conexion, $filtro)
     $cuotas = array();
 
     // Consulta SQL base
-    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
+    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto, p.mas_tarde,
     c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
     c.IdentificacionCURP, p.MontoAPagar AS MontoAPagar, p.Montocuota AS MontoCuota,
     (SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
@@ -18,17 +18,25 @@ function obtenerCuotas($conexion, $filtro)
 
     // Modificar la consulta según el filtro
     switch ($filtro) {
+
+
         case 'pagado':
             $sql .= " AND (p.Estado = '' OR EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?))";
             break;
         case 'pendiente':
-            $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+            $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) AND p.mas_tarde = 0";
             break;
+
 
         case 'nopagado':
             $sql .= " AND p.Pospuesto = 1";
+
+            break;
+        case 'mas-tarde':
+            $sql .= " AND p.mas_tarde = 1"; // Asumiendo que 'mas_tarde' es una columna booleana
             break;
     }
+
 
     // Preparar la consulta SQL
     $stmt = $conexion->prepare($sql);
@@ -127,6 +135,17 @@ function contarPrestamosPorEstado($conexion)
     if ($fila = $resultado->fetch_assoc()) {
         $conteos['nopagado'] = $fila['conteo'];
     }
+
+    // Contar préstamos 'mas-tarde'
+    $sqlMasTarde = "SELECT COUNT(*) AS conteo FROM prestamos p
+       WHERE p.mas_tarde = 1";
+    $stmt = $conexion->prepare($sqlMasTarde);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $conteos['mas-tarde'] = $fila['conteo'];
+    }
+
 
     $stmt->close();
     return $conteos;
