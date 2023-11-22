@@ -171,6 +171,9 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
             <?php endif; ?>
             </div>
 
+
+            <!-- MODALES -->
+
             <!-- Modal de Confirmación de Pago -->
             <div class="modal fade" id="confirmPaymentModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -182,7 +185,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                             </button>
                         </div>
                         <div class="modal-body">
-                            ¿Está seguro de que desea procesar este pago?
+                            <strong> ¿Está seguro de que desea procesar este pago?</strong><br>
                             <div>
                                 <strong>Cliente:</strong> <span id="modalClienteNombre"></span><br>
                                 <strong>Dirección:</strong> <span id="modalClienteDireccion"></span><br>
