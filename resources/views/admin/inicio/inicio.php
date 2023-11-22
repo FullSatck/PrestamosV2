@@ -72,7 +72,7 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
 
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
- 
+
 </head>
 
 <body id="body">
@@ -98,14 +98,14 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
             <h4>Recaudo</h4>
         </div>
 
-         
+
 
         <div class="options__menu">
 
             <a href="/controllers/cerrar_sesion.php">
-            <div class="option">
-                <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                <h4>Cerrar Sesion</h4>
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
                 </div>
             </a>
 

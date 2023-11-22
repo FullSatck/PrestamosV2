@@ -12,6 +12,16 @@ if (!isset($_SESSION["usuario_id"])) {
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
     $usuario_id = $_SESSION["usuario_id"];
+
+    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
     
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -63,7 +73,15 @@ if (!isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-    </header> 
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
+        </div>
+    </header>
 
     <div class="menu__side" id="menu_side">
 
@@ -73,6 +91,13 @@ if (!isset($_SESSION["usuario_id"])) {
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
@@ -178,7 +203,8 @@ if (!isset($_SESSION["usuario_id"])) {
                 </div>
                 <div class="input-container">
                     <label for "apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido" required>
+                    <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido"
+                        required>
                 </div>
                 <div class="input-container">
                     <label for="email">Correo Electrónico:</label>
@@ -186,7 +212,8 @@ if (!isset($_SESSION["usuario_id"])) {
                 </div>
                 <div class="input-container">
                     <label for="contrasena">Contraseña:</label>
-                    <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave"
+                        required>
                 </div>
                 <div class="input-container">
                     <label for="zona">Zona:</label>
@@ -222,7 +249,8 @@ if (!isset($_SESSION["usuario_id"])) {
 
                 <div class="input-container" id="saldo-inicial-container" style="display: none;">
                     <label for="saldo-inicial">Saldo Inicial:</label>
-                    <input type="text" id="saldo-inicial" name="saldo-inicial" placeholder="Por favor ingrese el saldo inicial">
+                    <input type="text" id="saldo-inicial" name="saldo-inicial"
+                        placeholder="Por favor ingrese el saldo inicial">
                 </div>
 
                 <div class="btn-container">
