@@ -16,7 +16,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("location: dias_pagos.php");
     exit();
 }
-
+ 
 // Incluir el archivo de conexión a la base de datos
 include("conexion.php");
 
