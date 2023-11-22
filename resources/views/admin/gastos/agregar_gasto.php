@@ -285,22 +285,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="input-container">
-                <label for="ciudad">Municipio:</label>
+                <label for="ciudad">Municipio:</label><br>
                 <select id="ciudad" name="ciudad" class="zona" required>
                     <option value="">Seleccionar Municipio</option>
                     <?php
-    $consultaCiudades = "SELECT Nombre FROM ciudades";
-    $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
-    while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
-        echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
-    }
-    ?>
+                    $consultaCiudades = "SELECT Nombre FROM ciudades";
+                    $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
+                    while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
+                        echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
+                    }
+                    ?>
                 </select>
 
             </div>
 
             <div class="input-container">
-                <label for="asentamiento">Colonia:</label>
+                <label for="asentamiento">Colonia:</label><br>
                 <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
                     required>
             </div>

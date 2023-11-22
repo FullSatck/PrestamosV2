@@ -243,22 +243,26 @@ h1 {
     font-weight: bold;
 }
 
-.form-container select,
-.form-container input[type="text"],
-.form-container input[type="number"] {
+/* Estilos comunes para inputs y selects */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select {
     width: 100%;
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-.form-container select {
+/* Ajustes adicionales para select */
+.form-group select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     background: transparent url('arrow.png') no-repeat scroll right center;
 }
+
 
 .result-container {
     margin-top: 20px;
