@@ -10,6 +10,8 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include("../../../../../../controllers/conexion.php");
+
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS moneda, c.ZonaAsignada 
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
@@ -81,7 +83,7 @@ if (isset($_GET['mensaje'])) {
 
         <div class="options__menu">
 
-        <a href="/controllers/cerrar_sesion.php">
+<a href="/controllers/cerrar_sesion.php">
                 <div class="option">
                     <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
                     <h4>Cerrar Sesion</h4>
