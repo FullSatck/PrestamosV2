@@ -1,3 +1,40 @@
+<?php
+session_start();
+
+
+// Verifica si el usuario está autenticado
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../../../index.php");
+    exit();
+}
+
+
+// Incluye el archivo de conexión
+include("../../../../../../controllers/conexion.php");
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
+
+
+
+// Cierra la conexión a la base de datos
+mysqli_close($conexion);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,14 +47,12 @@
     </script>
     <title>Lista de Pagos Pendientes para Hoy</title>
     <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
-    
-
-        <style>
-        /* Agrega estilos específicos si es necesario */
-        #lista-pagos tbody tr {
-            cursor: move;
-        }
-        </style>
+    <style>
+    /* Agrega estilos específicos si es necesario */
+    #lista-pagos tbody tr {
+        cursor: move;
+    }
+    </style>
 </head>
 
 <body>
@@ -26,10 +61,14 @@
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+        
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -40,6 +79,13 @@
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
@@ -107,7 +153,7 @@
         </div>
     </div>
 
-<script src="/public/assets/js/MenuLate.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
     <main>
         <h2>Orden de pagos</h2>
@@ -117,20 +163,20 @@
         <div id="aviso-guardado" class="aviso">
             Nuevo orden guardado.
         </div><br>
-        
+
         <div class="table-scroll-container">
-        <table id="lista-pagos">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Fecha de Pago</th>
-                <th>Enrutar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
+            <table id="lista-pagos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Fecha de Pago</th>
+                        <th>Enrutar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
             include "../../../../../../controllers/conexion.php";
 
             $fecha_actual = date("Y-m-d");
@@ -163,9 +209,9 @@
             $stmt->close();
             $conexion->close();
             ?>
-        </tbody>
-    </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
 
     </main>
 
@@ -204,8 +250,8 @@
         $('#aviso-guardado').fadeIn().delay(3000).fadeOut(); // Mostrar por 2 segundos y luego ocultar
     }
     </script>
-    
-    
+
+
 </body>
 
 </html>

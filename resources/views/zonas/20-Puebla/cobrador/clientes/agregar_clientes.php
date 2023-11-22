@@ -10,6 +10,20 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
@@ -18,7 +32,7 @@ if (isset($_SESSION["usuario_id"])) {
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -33,10 +47,13 @@ if (isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -48,6 +65,13 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
@@ -55,7 +79,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-        
+
             <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
@@ -112,7 +136,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            
+
 
 
         </div>
@@ -158,7 +182,7 @@ if (isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="historial">Historial Crediticio:</label>
                 <textarea id="historial" name="historial" rows="4"></textarea>
-            </div> 
+            </div>
 
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>

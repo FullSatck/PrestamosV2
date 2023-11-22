@@ -10,14 +10,28 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -32,11 +46,15 @@ if (isset($_SESSION["usuario_id"])) {
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+        </div> 
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -48,6 +66,13 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
@@ -55,7 +80,7 @@ if (isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-          
+
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
@@ -112,7 +137,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <h4>Abonos</h4>
                 </div>
             </a>
- 
+
 
 
         </div>
@@ -137,7 +162,7 @@ if (isset($_SESSION["usuario_id"])) {
             $result_monedas = $conexion->query($query_monedas);
             $result_zonas = $conexion->query($query_zonas);
             ?>
-         <label for="id_cliente">Cliente:</label>
+            <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php
                 while ($row = $result_clientes->fetch_assoc()) {
@@ -201,7 +226,7 @@ if (isset($_SESSION["usuario_id"])) {
 
             <input type="submit" value="Hacer préstamo" class="calcular-button">
         </form>
-    </main> 
+    </main>
 
     <script>
     function calcularMontoPagar() {
@@ -244,7 +269,7 @@ if (isset($_SESSION["usuario_id"])) {
     }
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
-    
+
 
 </body>
 
