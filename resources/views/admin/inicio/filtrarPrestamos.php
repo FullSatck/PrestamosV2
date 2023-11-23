@@ -136,6 +136,17 @@ function contarPrestamosPorEstado($conexion)
         $conteos['nopagado'] = $fila['conteo'];
     }
 
+    // Contar préstamos 'mas-tarde'
+    $sqlMasTarde = "SELECT COUNT(*) AS conteo FROM prestamos p
+       WHERE p.mas_tarde = 1";
+    $stmt = $conexion->prepare($sqlMasTarde);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $conteos['mas-tarde'] = $fila['conteo'];
+    }
+
+
     $stmt->close();
     return $conteos;
 }

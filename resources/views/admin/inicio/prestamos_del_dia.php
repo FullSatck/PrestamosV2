@@ -337,48 +337,54 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
         var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
         console.log(conteosPrestamos); // Para depuración
 
-        var maxPendiente = parseInt(conteosPrestamos.pendiente, 10);
-        var maxPagado = parseInt(conteosPrestamos.pagado, 10);
-        var maxNoPagado = parseInt(conteosPrestamos.nopagado, 10);
-        var maxValor = Math.max(maxPendiente, maxPagado, maxNoPagado);
+        var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
+    console.log(conteosPrestamos); // Para depuración
 
-        var ctx = document.getElementById('miGrafico').getContext('2d');
-        var miGrafico = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Pendientes', 'Pagados', 'No Pagados'],
-                datasets: [{
-                    label: 'Estado de los Préstamos',
-                    data: [maxPendiente, maxPagado, maxNoPagado],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
-                    ],
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    barThickness: 50,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: maxValor + 1
-                    },
-                    x: {
-                        barPercentage: 0.5
-                    }
+    var maxPendiente = parseInt(conteosPrestamos.pendiente, 10);
+    var maxPagado = parseInt(conteosPrestamos.pagado, 10);
+    var maxNoPagado = parseInt(conteosPrestamos.nopagado, 10);
+    var maxMasTarde = parseInt(conteosPrestamos['mas-tarde'], 10); // Nuevo conteo para "Mas Tarde"
+    var maxValor = Math.max(maxPendiente, maxPagado, maxNoPagado, maxMasTarde); // Actualizado
+
+    var ctx = document.getElementById('miGrafico').getContext('2d');
+    var miGrafico = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Pendientes', 'Pagados', 'No Pagados', 'Mas Tarde'],
+            datasets: [{
+                label: 'Estado de los Préstamos',
+                data: [maxPendiente, maxPagado, maxNoPagado, maxMasTarde], 
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(123, 123, 192, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(123, 123, 192, 4)' 
+                ],
+                borderWidth: 1,
+                borderRadius: 5,
+                barThickness: 50,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: maxValor + 1
+                },
+                x: {
+                    barPercentage: 0.5
                 }
             }
-        });
+        }
+    });
 
         // Manejador para el botón de confirmar pago
         $('#confirmPaymentButton').click(function() {
@@ -556,7 +562,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
         });
     });
 });
-
+ 
 
 function pasarMasTarde(prestamoId) {
     $.ajax({
