@@ -69,13 +69,14 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prestamos del dia </title>
-    <link rel="stylesheet" href="/public/assets/css/prestaDia.css">
+   
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/public/assets/css/prestaDia.css">
 </head>
 
 <body>
@@ -113,10 +114,13 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
         <form action="prestamos_del_dia.php" method="get">
             <select name="filtro">
-                <!-- <option value="todos" <?php echo $filtro == 'todos' ? 'selected' : ''; ?>>Todos</option> -->
+               
                 <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
                 <option value="pendiente" <?php echo $filtro == 'pendiente' ? 'selected' : ''; ?>>Pendientes</option>
                 <option value="nopagado" <?php echo $filtro == 'nopagado' ? 'selected' : ''; ?>>No Pagados</option>
+                <option value="mas-tarde" <?php echo $filtro == 'mas-tarde' ? 'selected' : ''; ?>>Mas Tarde</option>
+
+            
             </select>
             <input type="submit" value="Filtrar">
         </form>
@@ -127,7 +131,6 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                     <thead>
                         <tr>
                             <th>ID Préstamo</th>
-
                             <th>Nombre Cliente</th>
                             <th>Domicilio</th>
                             <th>Teléfono</th>
@@ -136,13 +139,15 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                             <th>Frecuencia Pago</th>
                             <th>Perfil</th>
                             <th>Pagar</th>
-                            <th>Mas Tarde</th>
+                            <th>No pago</th>
                             <th>Pagar cantida</th>
+                            <th>Posponer pago</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($cuotasHoy as $cuota) : ?>
-                            <tr>
+                            <tr >
                                 <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['DireccionCliente']); ?></td>
@@ -164,7 +169,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                                 <td>
                                     <?php if ($filtro != 'pagado' && !$cuota['Pospuesto']) : ?>
                                         <button type="button" class="btn btn-warning" onclick="abrirModalPosponerPago(<?php echo $cuota['ID']; ?>, '<?php echo $cuota['MontoCuota']; ?>', '<?php echo $cuota['NombreCliente']; ?>', '<?php echo $cuota['DireccionCliente']; ?>', '<?php echo $cuota['TelefonoCliente']; ?>', '<?php echo $cuota['IdentificacionCURP']; ?>', <?php echo $cuota['MontoAPagar']; ?>)">
-                                            Mas Tarde
+                                            No pago
                                         </button>
 
 
@@ -180,6 +185,14 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
                                     <?php endif; ?>
                                 </td>
+                                <td>
+                                    <?php if ($filtro != 'pagado') : ?>
+                                        <button type="button" class="btn btn-secondary btn-mas-tarde" data-prestamoid="<?php echo $cuota['ID']; ?>">
+                                            Pasar Más Tarde
+                                        </button>
+                                    <?php endif; ?>
+                                </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -209,8 +222,8 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                                 <strong>CURP:</strong> <span id="modalClienteCURP"></span><br>
                                 <strong>Total a Prestamo:</strong> <span id="modalMontoAPagar"></span><br>
                                 <strong>Monto Cuota:</strong>
-                            <strong><span id="modalMontoCuota" class="monto-cuota-rojo"></span><br></strong>
-                                
+                                <strong><span id="modalMontoCuota" class="monto-cuota-rojo"></span><br></strong>
+
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -520,6 +533,47 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             procesarPago(globalPrestamoId, customAmount);
             $('#customPaymentModal').modal('hide');
         }
+
+    // FUNCION DE PARA EL PRESTAMO PARA PASAR MAS TARDE 
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var botonesMasTarde = document.querySelectorAll('.btn-mas-tarde');
+
+    botonesMasTarde.forEach(function(boton) {
+        // Obtener el valor del filtro actual
+        var filtroActual = document.querySelector('select[name="filtro"]').value;
+
+        // Comprobar si el filtro es diferente de "mas-tarde" antes de mostrar el botón
+        if (filtroActual !== 'mas-tarde') {
+            boton.style.display = 'block'; // Mostrar el botón
+        } else {
+            boton.style.display = 'none'; // Ocultar el botón
+        }
+
+        boton.addEventListener('click', function() {
+            var prestamoId = this.getAttribute('data-prestamoid');
+            pasarMasTarde(prestamoId);
+        });
+    });
+});
+
+
+function pasarMasTarde(prestamoId) {
+    $.ajax({
+        url: 'mas_tarde.php', // Asegúrate de que esta ruta sea correcta
+        type: 'POST',
+        data: { prestamoId: prestamoId },
+        success: function(response) {
+            alert('El préstamo ha sido marcado para pasar más tarde.');
+            location.reload(); // Recarga la página para reflejar los cambios
+        },
+        error: function() {
+            alert('Error al procesar la solicitud.');
+        }
+    });
+}
+
+
     </script>
 </body>
 
