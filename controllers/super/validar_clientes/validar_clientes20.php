@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ejecutar la consulta
     if (mysqli_query($conexion, $sql)) {
-        header('Location: ../../../resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
+        header('Location: ../../../resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php?mensaje=Cliente guardado exitosamente');
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conexion);
     }

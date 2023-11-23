@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conexion, $sql)) {
             // Redirige al usuario a la página de agregar zona con un mensaje de confirmación
-            header('Location: ../../../resources/views/zonas/2-baja_california/supervisor/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
+            header('Location: ../../../resources/views/zonas/2-baja_california/supervisor/creditos/prestamos.php?mensaje=Cliente guardado exitosamente');
             exit;
         } else {
             echo "Error al registrar el cliente: " . mysqli_error($conexion);

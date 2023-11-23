@@ -120,9 +120,9 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
                     <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
                     <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
-                    <p>Zona Asignada: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
-                    <p>Ciudad: <strong><?= $fila["ciudad"] ?></strong></p>
-                    <p>Asentamiento: <strong><?= $fila["asentamiento"] ?></strong></p>
+                    <p>Estado: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
+                    <p>Municipio: <strong><?= $fila["ciudad"] ?></strong></p>
+                    <p>Cononia: <strong><?= $fila["asentamiento"] ?></strong></p>
                 </div>
             </div>
 

@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ejecutar la consulta
     if (mysqli_query($conexion, $sql)) {
-        header('Location: ../../../resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
+        header('Location: ../../../resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php?mensaje=Cliente guardado exitosamente');
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conexion);
     }
