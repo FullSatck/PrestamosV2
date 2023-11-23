@@ -30,17 +30,43 @@ if (isset($_SESSION['cambio_estado_mensaje'])) {
 <head>
     <meta charset="UTF-8">
     <title>Cambiar Estado del Sistema</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/Estadosistema.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
+     
+        <header>
+    <div class="nombre-usuario">
+              <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+        }
+        ?>
+    </div>
+    <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
+        <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+        <span class="spann">Volver al Inicio</span>
+    </a>
+</header><br><br>
+
+
     <div class="container">
-        <h1>Cambiar Estado del Sistema</h1>
+        <h1>Apagar o Encender Sistema </h1>
 
         <?php if ($mensajeConfirmacion) : ?>
-            <strong><div id="mensajeConfirmacion" class="mensaje-confirmacion">
-                <?php echo $mensajeConfirmacion; ?>
-            </div></strong>
+            <strong>
+                <div id="mensajeConfirmacion" class="mensaje-confirmacion">
+                    <?php echo $mensajeConfirmacion; ?>
+                </div>
+            </strong>
         <?php endif; ?>
 
         <strong>
