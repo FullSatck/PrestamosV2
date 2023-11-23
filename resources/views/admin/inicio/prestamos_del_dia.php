@@ -14,14 +14,14 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
 
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -88,14 +88,14 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
-     
+
 
 
     <main>
@@ -163,7 +163,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                                 </td>
                                 <td>
                                     <?php if ($filtro != 'pagado' && !$cuota['Pospuesto']) : ?>
-                                        <button type="button" class="btn btn-warning" onclick="abrirModalPosponerPago(<?php echo $cuota['ID']; ?>, '<?php echo $cuota['NombreCliente']; ?>', '<?php echo $cuota['DireccionCliente']; ?>', '<?php echo $cuota['TelefonoCliente']; ?>', '<?php echo $cuota['IdentificacionCURP']; ?>', <?php echo $cuota['MontoAPagar']; ?>)">
+                                        <button type="button" class="btn btn-warning" onclick="abrirModalPosponerPago(<?php echo $cuota['ID']; ?>, '<?php echo $cuota['MontoCuota']; ?>', '<?php echo $cuota['NombreCliente']; ?>', '<?php echo $cuota['DireccionCliente']; ?>', '<?php echo $cuota['TelefonoCliente']; ?>', '<?php echo $cuota['IdentificacionCURP']; ?>', <?php echo $cuota['MontoAPagar']; ?>)">
                                             Mas Tarde
                                         </button>
 
@@ -201,13 +201,16 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                             </button>
                         </div>
                         <div class="modal-body">
-                            ¿Está seguro de que desea procesar este pago?
+                            <strong> ¿Está seguro de que desea procesar este pago?</strong><br>
                             <div>
                                 <strong>Cliente:</strong> <span id="modalClienteNombre"></span><br>
                                 <strong>Dirección:</strong> <span id="modalClienteDireccion"></span><br>
                                 <strong>Teléfono:</strong> <span id="modalClienteTelefono"></span><br>
                                 <strong>CURP:</strong> <span id="modalClienteCURP"></span><br>
-                                <strong>Monto a Pagar:</strong> <span id="modalMontoAPagar"></span>
+                                <strong>Total a Prestamo:</strong> <span id="modalMontoAPagar"></span><br>
+                                <strong>Monto Cuota:</strong>
+                            <strong><span id="modalMontoCuota" class="monto-cuota-rojo"></span><br></strong>
+                                
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -253,12 +256,15 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
                         <!-- ... -->
                         <div class="modal-body">
-                            <strong> ¿Está seguro de que desea posponer el pago de este préstamo?</strong>
+                            <strong> ¿Está seguro de que desea posponer el pago de este préstamo?</strong><br>
                             <strong>Cliente:</strong> <span id="postponeModalClienteNombre"></span><br>
                             <strong>Dirección:</strong> <span id="postponeModalClienteDireccion"></span><br>
                             <strong>Teléfono:</strong> <span id="postponeModalClienteTelefono"></span><br>
                             <strong>CURP:</strong> <span id="postponeModalClienteCURP"></span><br>
-                            <strong>Monto a Pagar:</strong> <span id="postponeModalMontoAPagar"></span>
+                            <strong>Total a Prestamo:</strong> <span id="postponeModalMontoAPagar"></span>
+                            <strong>Monto Cuota:</strong>
+                            <strong><span id="postponeModalMontoCuota" class="monto-cuota-rojo"></span><br></strong>
+
 
 
                         </div>
@@ -289,7 +295,10 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                                 <strong>Dirección:</strong> <span id="customModalClienteDireccion"></span><br>
                                 <strong>Teléfono:</strong> <span id="customModalClienteTelefono"></span><br>
                                 <strong>CURP:</strong> <span id="customModalClienteCURP"></span><br>
-                                <strong>Monto a Pagar:</strong> <span id="customModalMontoAPagar"></span><br>
+                                <strong>Total Prestamo:</strong> <strong><span id="customModalMontoAPagar" class="Total-pagar"></span></strong><br>
+                                <strong>Monto Cuota:</strong>
+                                <strong><span id="customModalMontoCuota" class="monto-cuota-rojo"></span><br></strong>
+
                             </div><br>
                             <form id="customPaymentForm">
                                 <div class="form-group">
@@ -395,6 +404,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             $('#modalClienteTelefono').text(telefonoCliente);
             $('#modalClienteCURP').text(identificacionCURP);
             $('#modalMontoAPagar').text(montoAPagar);
+            $('#modalMontoCuota').text(montoCuota);
         }
 
         function procesarPago(prestamoId, montoCuota) {
@@ -432,7 +442,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             });
         }
 
-        function abrirModalPosponerPago(prestamoId, nombreCliente, direccionCliente, telefonoCliente, identificacionCURP, montoAPagar) {
+        function abrirModalPosponerPago(prestamoId, montoCuota, nombreCliente, direccionCliente, telefonoCliente, identificacionCURP, montoAPagar) {
 
             globalPrestamoId = prestamoId;
 
@@ -442,6 +452,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             $('#postponeModalClienteTelefono').text(telefonoCliente);
             $('#postponeModalClienteCURP').text(identificacionCURP);
             $('#postponeModalMontoAPagar').text(montoAPagar);
+            $('#postponeModalMontoCuota').text(montoCuota);
 
             // Mostrar el modal de Posponer Pago
             $('#postponePaymentModal').modal('show');
@@ -483,6 +494,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             $('#customModalClienteTelefono').text(telefonoCliente);
             $('#customModalClienteCURP').text(identificacionCURP);
             $('#customModalMontoAPagar').text(montoAPagar);
+            $('#customModalMontoCuota').text(montoCuota);
 
             // Configurar el botón de WhatsApp para abrir el modal de WhatsApp con el número correcto
             $('#sendWhatsappButton').off('click').on('click', function() {

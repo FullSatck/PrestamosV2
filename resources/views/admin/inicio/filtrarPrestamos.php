@@ -9,7 +9,7 @@ function obtenerCuotas($conexion, $filtro)
     // Consulta SQL base
     $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
     c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
-    c.IdentificacionCURP, p.MontoCuota AS MontoAPagar,
+    c.IdentificacionCURP, p.MontoAPagar AS MontoAPagar, p.Montocuota AS MontoCuota,
     (SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
     (SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
     FROM prestamos p
