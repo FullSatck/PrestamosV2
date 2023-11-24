@@ -101,14 +101,7 @@ $stmt->close();
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php" class="selected">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
@@ -154,7 +147,7 @@ $stmt->close();
             include("../../../../../../controllers/conexion.php");
 
             // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Puebla'";
+            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Puebla' ORDER BY ID DESC LIMIT 1";
             $query_monedas = "SELECT iD, nombre, simbolo FROM monedas";
             $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Puebla'";
 
