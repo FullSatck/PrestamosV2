@@ -5,7 +5,7 @@ function obtenerCuotas($conexion, $filtro) {
     $fechaHoy = date('Y-m-d');
     $cuotas = array();
 
-    // Consulta SQL para obtener los préstamos según el filtro
+    // Consulta SQL base
     $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
     c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
     (SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
@@ -17,7 +17,7 @@ function obtenerCuotas($conexion, $filtro) {
     // Modificar la consulta según el filtro
     switch ($filtro) {
         case 'pagado':
-            // Cambiar la condición para incluir préstamos que han sido pagados hoy
+            // Añadir condición para 'pagado'
             $sql .= " AND EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
             break;
         case 'pendiente':
@@ -37,7 +37,7 @@ function obtenerCuotas($conexion, $filtro) {
 
     // Ajustar el bind_param según el filtro
     if ($filtro == 'pagado') {
-        $stmt->bind_param("s", $fechaHoy); // Un solo parámetro para 'pagado'
+        $stmt->bind_param("sss", $fechaHoy, $fechaHoy, $fechaHoy); // Tres parámetros para 'pagado'
     } else {
         $stmt->bind_param("ss", $fechaHoy, $fechaHoy); // Dos parámetros para 'pendiente' y 'nopagado'
     }

@@ -64,33 +64,34 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($cuotasHoy as $cuota): ?>
-            <tr>
-            <tr>
-                <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
-                <!-- <td><?php echo htmlspecialchars($cuota['IDCliente']); ?></td> -->
-                <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
-                <td><?php echo htmlspecialchars($cuota['DireccionCliente']); ?></td>
-                <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
-                <td><?php echo htmlspecialchars($cuota['MontoCuota']); ?></td>
-                <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
-                <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
-                <td>
-                
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal"
-                        onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
-                        Pagar
-                    </button></td>
-                    <td>
-                    <?php if (!$cuota['Pospuesto']): ?>
-                    <button type="button" class="btn btn-warning" onclick="posponerPago(<?php echo $cuota['ID']; ?>)">
-                        Pagar Más Tarde
-                    </button>
-                    <?php endif; ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
+    <?php foreach ($cuotasHoy as $cuota): ?>
+    <tr>
+        <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
+        <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
+        <td><?php echo htmlspecialchars($cuota['DireccionCliente']); ?></td>
+        <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
+        <td><?php echo htmlspecialchars($cuota['MontoCuota']); ?></td>
+        <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
+        <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
+        <td>
+            <?php if ($filtro != 'pagado'): ?>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal"
+                    onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
+                    Pagar
+                </button>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if ($filtro != 'pagado' && !$cuota['Pospuesto']): ?>
+                <button type="button" class="btn btn-warning" onclick="posponerPago(<?php echo $cuota['ID']; ?>)">
+                    Pagar Más Tarde
+                </button>
+            <?php endif; ?>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</tbody>
+
     </table>
     <?php else: ?>
     <p>No hay cuotas pendientes para hoy.</p>
@@ -193,28 +194,29 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
     }
 
     function posponerPago(prestamoId) {
-        $.ajax({
-            url: 'posponer_pago.php', // Asegúrate de que esta URL es correcta
-            type: 'POST',
-            data: {
-                prestamoId: prestamoId
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    alert('Pago pospuesto exitosamente.');
-                    // Recargar la página o actualizar la tabla de préstamos
-                    location.reload();
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error AJAX:', error);
-                alert('Ocurrió un error al posponer el pago.');
+    $.ajax({
+        url: 'posponer_pago.php', // Asegúrate de que esta URL es correcta
+        type: 'POST',
+        data: {
+            prestamoId: prestamoId
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                alert('Pago pospuesto exitosamente. El préstamo ha sido movido a No Pagados.');
+                // Recargar la página o actualizar la tabla de préstamos
+                location.reload();
+            } else {
+                alert(response.message);
             }
-        });
-    }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error AJAX:', error);
+            alert('Ocurrió un error al posponer el pago.');
+        }
+    });
+}
+
     </script>
 </body>
 
