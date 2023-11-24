@@ -189,10 +189,6 @@ button:hover {
     color: rgb(123, 141, 21);
   }
   
-  .mas-tarde {
-    background-color: red !important;
-}
-
 
     
 @media (max-width: 768px) {
