@@ -24,8 +24,10 @@ function obtenerCuotas($conexion, $filtro)
             $sql .= " AND (p.Estado = '' OR EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?))";
             break;
         case 'pendiente':
-            $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) AND p.mas_tarde = 0";
-            break;
+            case 'pendiente':
+                $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) AND p.mas_tarde = 0";
+                break;
+            
 
 
         case 'nopagado':
@@ -104,8 +106,8 @@ function contarPrestamosPorEstado($conexion)
     $fechaHoy = date('Y-m-d');
 
     // Contar préstamos pendientes
-    $sqlPendiente = "SELECT COUNT(*) AS conteo FROM prestamos p
-                     WHERE p.FechaInicio <= ? AND p.Estado = 'pendiente' AND p.Pospuesto = 0
+    $sqlPendiente = "SELECT COUNT(*) AS conteo FROM prestamos p 
+                     WHERE p.FechaInicio <= ? AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND p.mas_tarde = 0 
                      AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
     $stmt = $conexion->prepare($sqlPendiente);
     $stmt->bind_param("ss", $fechaHoy, $fechaHoy);

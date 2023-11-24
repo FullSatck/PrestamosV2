@@ -69,7 +69,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prestamos del dia </title>
-   
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -114,13 +114,13 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
         <form action="prestamos_del_dia.php" method="get">
             <select name="filtro">
-               
+
                 <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
                 <option value="pendiente" <?php echo $filtro == 'pendiente' ? 'selected' : ''; ?>>Pendientes</option>
                 <option value="nopagado" <?php echo $filtro == 'nopagado' ? 'selected' : ''; ?>>No Pagados</option>
                 <option value="mas-tarde" <?php echo $filtro == 'mas-tarde' ? 'selected' : ''; ?>>Mas Tarde</option>
 
-            
+
             </select>
             <input type="submit" value="Filtrar">
         </form>
@@ -147,7 +147,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                     </thead>
                     <tbody>
                         <?php foreach ($cuotasHoy as $cuota) : ?>
-                            <tr >
+                            <tr>
                                 <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['DireccionCliente']); ?></td>
@@ -327,6 +327,27 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                     </div>
                 </div>
             </div>
+            <!-- Modal para Pasar Préstamo a Más Tarde -->
+            <div class="modal fade" id="postponeLoanModal" tabindex="-1" role="dialog" aria-labelledby="postponeLoanModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="postponeLoanModalLabel">Pasar Préstamo a Más Tarde</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Está seguro de que desea pasar el préstamo <span id="postponeLoanId"></span> a más tarde?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" onclick="confirmPostponeLoan()">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
 
 
@@ -334,57 +355,56 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
     </main>
     <script>
+     
+
         var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
         console.log(conteosPrestamos); // Para depuración
 
-        var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
-    console.log(conteosPrestamos); // Para depuración
+        var maxPendiente = parseInt(conteosPrestamos.pendiente, 10);
+        var maxPagado = parseInt(conteosPrestamos.pagado, 10);
+        var maxNoPagado = parseInt(conteosPrestamos.nopagado, 10);
+        var maxMasTarde = parseInt(conteosPrestamos['mas-tarde'], 10); 
+        var maxValor = Math.max(maxPendiente, maxPagado, maxNoPagado, maxMasTarde); 
 
-    var maxPendiente = parseInt(conteosPrestamos.pendiente, 10);
-    var maxPagado = parseInt(conteosPrestamos.pagado, 10);
-    var maxNoPagado = parseInt(conteosPrestamos.nopagado, 10);
-    var maxMasTarde = parseInt(conteosPrestamos['mas-tarde'], 10); // Nuevo conteo para "Mas Tarde"
-    var maxValor = Math.max(maxPendiente, maxPagado, maxNoPagado, maxMasTarde); // Actualizado
-
-    var ctx = document.getElementById('miGrafico').getContext('2d');
-    var miGrafico = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Pendientes', 'Pagados', 'No Pagados', 'Mas Tarde'],
-            datasets: [{
-                label: 'Estado de los Préstamos',
-                data: [maxPendiente, maxPagado, maxNoPagado, maxMasTarde], 
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(123, 123, 192, 0.6)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(123, 123, 192, 4)' 
-                ],
-                borderWidth: 1,
-                borderRadius: 5,
-                barThickness: 50,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: maxValor + 1
-                },
-                x: {
-                    barPercentage: 0.5
+        var ctx = document.getElementById('miGrafico').getContext('2d');
+        var miGrafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Pendientes', 'Pagados', 'No Pagados', 'Mas Tarde'],
+                datasets: [{
+                    label: 'Estado de los Préstamos',
+                    data: [maxPendiente, maxPagado, maxNoPagado, maxMasTarde],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(123, 123, 192, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(123, 123, 192, 4)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    barThickness: 50,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: maxValor + 1
+                    },
+                    x: {
+                        barPercentage: 0.5
+                    }
                 }
             }
-        }
-    });
+        });
 
         // Manejador para el botón de confirmar pago
         $('#confirmPaymentButton').click(function() {
@@ -428,7 +448,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
         function procesarPago(prestamoId, montoCuota) {
             $.ajax({
-                url: 'procesar_pago.php', // Asegúrate de que esta URL es correcta
+                url: 'procesar_pago.php',
                 type: 'POST',
                 data: {
                     prestamoId: prestamoId,
@@ -540,46 +560,54 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             $('#customPaymentModal').modal('hide');
         }
 
-    // FUNCION DE PARA EL PRESTAMO PARA PASAR MAS TARDE 
+        // FUNCION DE PARA EL PRESTAMO PARA PASAR MAS TARDE 
 
-    document.addEventListener('DOMContentLoaded', function() {
-    var botonesMasTarde = document.querySelectorAll('.btn-mas-tarde');
+        document.addEventListener('DOMContentLoaded', function() {
+            var botonesMasTarde = document.querySelectorAll('.btn-mas-tarde');
 
-    botonesMasTarde.forEach(function(boton) {
-        // Obtener el valor del filtro actual
-        var filtroActual = document.querySelector('select[name="filtro"]').value;
+            botonesMasTarde.forEach(function(boton) {
+                // Obtener el valor del filtro actual
+                var filtroActual = document.querySelector('select[name="filtro"]').value;
 
-        // Comprobar si el filtro es diferente de "mas-tarde" antes de mostrar el botón
-        if (filtroActual !== 'mas-tarde') {
-            boton.style.display = 'block'; // Mostrar el botón
-        } else {
-            boton.style.display = 'none'; // Ocultar el botón
-        }
+                // Comprobar si el filtro es diferente de "mas-tarde" antes de mostrar el botón
+                if (filtroActual !== 'mas-tarde') {
+                    boton.style.display = 'block'; // Mostrar el botón
+                } else {
+                    boton.style.display = 'none'; // Ocultar el botón
+                }
 
-        boton.addEventListener('click', function() {
-            var prestamoId = this.getAttribute('data-prestamoid');
-            pasarMasTarde(prestamoId);
+                boton.addEventListener('click', function() {
+                    var prestamoId = this.getAttribute('data-prestamoid');
+                    pasarMasTarde(prestamoId);
+                });
+            });
         });
-    });
-});
- 
 
-function pasarMasTarde(prestamoId) {
-    $.ajax({
-        url: 'mas_tarde.php', // Asegúrate de que esta ruta sea correcta
-        type: 'POST',
-        data: { prestamoId: prestamoId },
-        success: function(response) {
-            alert('El préstamo ha sido marcado para pasar más tarde.');
-            location.reload(); // Recarga la página para reflejar los cambios
-        },
-        error: function() {
-            alert('Error al procesar la solicitud.');
+
+        function pasarMasTarde(prestamoId) {
+            $('#postponeLoanId').text(prestamoId); // Establece el ID del préstamo en el modal
+            $('#postponeLoanModal').modal('show'); // Muestra el modal
         }
-    });
-}
 
+        function confirmPostponeLoan() {
+            var prestamoId = $('#postponeLoanId').text();
 
+            $.ajax({
+                url: 'mas_tarde.php', // Asegúrate de que esta ruta sea correcta
+                type: 'POST',
+                data: {
+                    prestamoId: prestamoId
+                },
+                success: function(response) {
+                    // Manejar respuesta
+                    $('#postponeLoanModal').modal('hide');
+                    location.reload(); // O actualizar la tabla de préstamos según sea necesario
+                },
+                error: function() {
+                    alert('Error al procesar la solicitud.');
+                }
+            });
+        }
     </script>
 </body>
 
