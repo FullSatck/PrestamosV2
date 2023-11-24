@@ -239,7 +239,7 @@ h1 {
 #pago-form,
 form,
 .form-group {
-    margin-top: 20px;
+    margin-top: 0;
 }
 
 .form-row {

@@ -133,7 +133,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-         
+
 
             <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
                 <div class="option">
@@ -182,7 +182,7 @@ mysqli_close($conexion);
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a> 
+            </a>
 
 
 
@@ -195,9 +195,8 @@ mysqli_close($conexion);
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p>Mantenimiento
-                    </p>
+                    <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-3">
