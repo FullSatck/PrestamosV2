@@ -44,7 +44,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 
   // Incluye tu archivo de conexión a la base de datos
-  include("../../../../controllers/conexion.php");
+  include("../../../../../../controllers/conexion.php");
 
   // Obtener el nombre de la zona desde la URL
   if (isset($_GET['zona'])) {
@@ -176,15 +176,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
+ 
 
         </div>
 

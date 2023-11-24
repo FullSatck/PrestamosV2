@@ -58,7 +58,7 @@ if (isset($_GET['mensaje'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Usuarios</title>
 
-    <link rel="stylesheet" href="/public/assets/css-Super/lista_usuarios.css">
+    <link rel="stylesheet" href="/public/assets/css/lista_usuarios.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
@@ -147,17 +147,7 @@ if (isset($_GET['mensaje'])) {
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/1-aguascalientes/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
+            </a> 
         </div>
 
     </div>
@@ -171,6 +161,7 @@ if (isset($_GET['mensaje'])) {
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
 
+        <div class="table-scroll-container">
         <table>
             <tr>
                 <th>ID</th>
@@ -215,7 +206,7 @@ if (isset($_GET['mensaje'])) {
     ?>
         </table>
 
-
+</div>
     </main>
 
     <script>

@@ -22,7 +22,7 @@ include("../../../../../../controllers/conexion.php");
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Baja California' 
+        WHERE c.ZonaAsignada = 'Aguascalientes' 
         ORDER BY c.ID DESC";
 
 $resultado = $conexion->query($sql);
@@ -105,7 +105,7 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
