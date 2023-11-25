@@ -112,20 +112,18 @@ if (isset($_GET['id'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Usuario</title>
-    <link rel="stylesheet" href="/public/assets/css-Super/modificarUSER.css">
+    <link rel="stylesheet" href="/public/assets/css/modificarUSER.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
 <body id="body">
 
-    <header>
+<header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <button class="volver" id="volverAtras">
-            <i class="fa-solid fa-right-to-bracket"></i>
-            <span>&nbsp;Volver</span>
-        </button>
+
+        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
 
         <div class="nombre-usuario">
             <?php
@@ -145,83 +143,76 @@ if (isset($_GET['id'])) {
 
         <div class="options__menu">
 
-        <a href="/controllers/cerrar_sesion.php">
+            <a href="/controllers/cerrar_sesion.php">
                 <div class="option">
                     <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
                     <h4>Cerrar Sesion</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/supervisor/inicio/inicio.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/supervisor/usuarios/crudusuarios.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/supervisor/usuarios/registrar.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/supervisor/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
+            </a> 
 
-            <a href="/resources/views/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/supervisor/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
- 
+
 
         </div>
 

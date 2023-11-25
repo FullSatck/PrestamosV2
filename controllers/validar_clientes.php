@@ -36,13 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO clientes (Nombre, Apellido, IdentificacionCURP, Domicilio, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada, Ciudad, Asentamiento, ImagenCliente)
                 VALUES ('$nombre', '$apellido', '$curp', '$domicilio', '$telefono', '$historial', '$referencias', '$moneda', '$nombre_zona', '$ciudad', '$asentamiento', '$ruta_imagen')";
 
-        if (mysqli_query($conexion, $sql)) {
-            // Redirige al usuario a la página de agregar zona con un mensaje de confirmación
-            header('Location: ../resources/views/admin/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
-            exit();
-        } else {
-            echo "Error al registrar el cliente: " . mysqli_error($conexion);
-        }
+    if (mysqli_query($conexion, $sql)) {
+       $ultimo_id_cliente = mysqli_insert_id($conexion);
+       header('Location: ../resources/views/admin/creditos/prestamos.php?cliente_id=' . $ultimo_id_cliente);
+       exit();
+       } else {
+              echo "Error al registrar el cliente: " . mysqli_error($conexion);
+         }
     } else {
         echo "Error al obtener el nombre de la zona.";
     }

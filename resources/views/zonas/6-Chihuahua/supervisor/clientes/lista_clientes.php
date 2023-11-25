@@ -29,7 +29,7 @@ $stmt->close();
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS moneda, c.ZonaAsignada 
         FROM clientes c
         LEFT JOIN monedas m ON c.monedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Puebla'
+        WHERE c.ZonaAsignada = 'Chihuhua'
         ORDER BY c.ID DESC";
 
 
@@ -80,70 +80,63 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/registrar.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php" class="selected">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
+ 
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -190,7 +183,7 @@ $resultado = $conexion->query($sql);
                     <td><?= $fila["ZonaAsignada"] ?></td>
                     <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                     <td><a
-                            href="/resources/views/zonas/20-Puebla/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                            href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
                     </td>
                 </tr>
                 <?php } ?>

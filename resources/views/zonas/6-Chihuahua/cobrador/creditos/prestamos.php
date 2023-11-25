@@ -24,6 +24,14 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
+// ID DEL CLIENTE
+if (isset($_GET['cliente_id'])) {
+    $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+} else {
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1";
+}
+
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
@@ -73,7 +81,7 @@ $stmt->close();
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -82,56 +90,49 @@ $stmt->close();
 
 
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
+            </a> 
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php" class="selected">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Enrutada</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -148,28 +149,37 @@ $stmt->close();
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
-        <form action="/controllers/cob/procesar_prestamos/procesar_prestamo20.php" method="POST" class="form-container">
-            <?php
-            // Incluir el archivo de conexión a la base de datos
-            include("../../../../../../controllers/conexion.php");
+        <form action="/controllers/cob/procesar_prestamos/procesar_prestamo6.php" method="POST" class="form-container">
+        <?php
+// Incluir el archivo de conexión a la base de datos
+include("../../../../controllers/conexion.php");
 
-            // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Puebla'";
-            $query_monedas = "SELECT iD, nombre, simbolo FROM monedas";
-            $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Puebla'";
+// ID DEL CLIENTE
+if (isset($_GET['cliente_id'])) {
+    $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+} else {
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
+}
 
-            $result_clientes = $conexion->query($query_clientes);
-            $result_monedas = $conexion->query($query_monedas);
-            $result_zonas = $conexion->query($query_zonas);
-            ?>
+// Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
+$result_clientes = $conexion->query($query_clientes);
+$query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
+$query_zonas = "SELECT Nombre FROM zonas";
+
+$result_monedas = $conexion->query($query_monedas);
+$result_zonas = $conexion->query($query_zonas);
+?>
+
             <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php
-                while ($row = $result_clientes->fetch_assoc()) {
-                    echo "<option value='" . $row['iD'] . "'>" . $row['nombre'] . "</option>";
-                }
-                ?>
+    while ($row = $result_clientes->fetch_assoc()) {
+        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+    }
+    ?>
             </select><br>
+
 
             <label for="monto">Monto:</label>
             <input type="text" name="monto" id="monto" required><br>

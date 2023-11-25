@@ -87,7 +87,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -95,56 +95,56 @@ mysqli_close($conexion);
             </a>
 
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php" class="selected">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Enrutar</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -185,7 +185,7 @@ mysqli_close($conexion);
                     FROM fechas_pago 
                     INNER JOIN prestamos ON fechas_pago.IDPrestamo = prestamos.ID 
                     INNER JOIN clientes ON prestamos.IDCliente = clientes.ID 
-                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Puebla'";
+                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Chihuhua'";
 
             $stmt = $conexion->prepare($sql);
             $stmt->bind_param("s", $fecha_actual);

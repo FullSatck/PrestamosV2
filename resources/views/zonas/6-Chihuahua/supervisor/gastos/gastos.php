@@ -46,7 +46,7 @@ $stmt->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/agregar_gasto.php" class="botonn">
+        <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/agregar_gasto.php" class="botonn">
             <i class="fa-solid fa-plus-minus"></i>
             <span class="spann">Agregar Gasto</span>
         </a>
@@ -76,70 +76,63 @@ $stmt->close();
                 </div>
             </a>
 
-        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
+        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/registrar.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
+            </a>  
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a> 
-
-            <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php" class="selected">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -163,7 +156,7 @@ $stmt->close();
         $sql = "SELECT g.ID, z.Nombre AS nombreZona, g.Ciudad, g.Asentamiento, g.Fecha, g.Descripcion, g.Valor
                 FROM gastos g
                 INNER JOIN zonas z ON g.IDZona = z.ID
-                WHERE g.IDZona = 20
+                WHERE g.IDZona = 6
                 ORDER BY g.ID DESC";
         $resultado = $conexion->query($sql);
 
