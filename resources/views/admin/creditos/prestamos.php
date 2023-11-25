@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Validacion de rol para ingresar a la pagina 
+// Validación de rol para ingresar a la página
 require_once '../../../../controllers/conexion.php'; 
 
 // Verifica si el usuario está autenticado
@@ -14,19 +14,27 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
+    // ID DEL CLIENTE
+    if (isset($_GET['cliente_id'])) {
+        $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+        $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+    } else {
+        $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1";
+    }
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -48,10 +56,9 @@ $stmt->close();
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +75,7 @@ $stmt->close();
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
@@ -200,27 +207,35 @@ $stmt->close();
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="/controllers/procesar_prestamo.php" method="POST" class="form-container">
             <?php
-    // Incluir el archivo de conexión a la base de datos
-    include("../../../../controllers/conexion.php");
+// Incluir el archivo de conexión a la base de datos
+include("../../../../controllers/conexion.php");
 
-    // Obtener la lista de clientes activos, monedas y zonas desde la base de datos
+// ID DEL CLIENTE
+if (isset($_GET['cliente_id'])) {
+    $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+} else {
     $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
-    $query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
-    $query_zonas = "SELECT Nombre FROM zonas";
+}
 
-    $result_clientes = $conexion->query($query_clientes);
-    $result_monedas = $conexion->query($query_monedas);
-    $result_zonas = $conexion->query($query_zonas);
+// Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
+$result_clientes = $conexion->query($query_clientes);
+$query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
+$query_zonas = "SELECT Nombre FROM zonas";
+
+$result_monedas = $conexion->query($query_monedas);
+$result_zonas = $conexion->query($query_zonas);
 ?>
 
             <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php
-        while ($row = $result_clientes->fetch_assoc()) {
-            echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
-        }
-        ?>
+    while ($row = $result_clientes->fetch_assoc()) {
+        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+    }
+    ?>
             </select><br>
+
 
             <label for="monto">Monto:</label>
             <input type="text" name="monto" id="monto" required oninput="calcularMontoPagar()"><br>
@@ -279,7 +294,7 @@ $stmt->close();
                 <p>Plazo: <span id="plazo_mostrado">0 días</span></p>
                 <p>Frecuencia de Pago: <span id="frecuencia_pago_mostrada">Diario</span></p>
                 <p>Cantidad a Pagar por Cuota: <span id="cantidad_por_cuota">0.00</span></p>
-                <p>Moneda: <span id="moneda_simbolo">USD</span></p> 
+                <p>Moneda: <span id="moneda_simbolo">USD</span></p>
             </div>
 
             <input type="submit" value="Hacer préstamo" class="calcular-button">
