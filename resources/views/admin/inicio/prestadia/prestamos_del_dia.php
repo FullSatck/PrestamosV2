@@ -138,7 +138,6 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                             <th>Fecha Inicio</th>
                             <th>Frecuencia Pago</th>
                             <th>Perfil</th>
-                            <th>Perfil</th>
                             <th>Pagar</th>
                             <th>No pago</th>
                             <th>Pagar cantida</th>
