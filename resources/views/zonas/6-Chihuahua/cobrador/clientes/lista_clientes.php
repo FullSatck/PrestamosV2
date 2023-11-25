@@ -28,7 +28,7 @@ $stmt->close();
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Puebla'";
+        WHERE c.ZonaAsignada = 'Chihuahua'";
 
 $resultado = $conexion->query($sql);
 ?>

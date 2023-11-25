@@ -153,7 +153,7 @@ $stmt->close();
         $sql = "SELECT g.ID, z.Nombre AS nombreZona, g.Ciudad, g.Asentamiento, g.Fecha, g.Descripcion, g.Valor
                 FROM gastos g
                 INNER JOIN zonas z ON g.IDZona = z.ID
-                WHERE g.IDZona = 20
+                WHERE g.IDZona = 6
                 ORDER BY g.ID DESC";
         $resultado = $conexion->query($sql);
 

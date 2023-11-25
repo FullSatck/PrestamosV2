@@ -185,7 +185,7 @@ mysqli_close($conexion);
                     FROM fechas_pago 
                     INNER JOIN prestamos ON fechas_pago.IDPrestamo = prestamos.ID 
                     INNER JOIN clientes ON prestamos.IDCliente = clientes.ID 
-                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Puebla'";
+                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Chihuhua'";
 
             $stmt = $conexion->prepare($sql);
             $stmt->bind_param("s", $fecha_actual);

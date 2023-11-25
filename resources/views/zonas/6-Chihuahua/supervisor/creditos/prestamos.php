@@ -24,6 +24,14 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
+// ID DEL CLIENTE
+if (isset($_GET['cliente_id'])) {
+    $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+} else {
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1";
+}
+
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
@@ -147,25 +155,33 @@ $stmt->close();
         <form action="/controllers/super/procesar_prestamos/procesar_prestamo20.php" method="POST"
             class="form-container">
             <?php
-            // Incluir el archivo de conexión a la base de datos
-            include("../../../../../../controllers/conexion.php");
+// Incluir el archivo de conexión a la base de datos
+include("../../../../controllers/conexion.php");
 
-            // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Puebla'";
-            $query_monedas = "SELECT iD, nombre, simbolo FROM monedas";
-            $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Puebla'";
+// ID DEL CLIENTE
+if (isset($_GET['cliente_id'])) {
+    $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+} else {
+    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
+}
 
-            $result_clientes = $conexion->query($query_clientes);
-            $result_monedas = $conexion->query($query_monedas);
-            $result_zonas = $conexion->query($query_zonas);
-            ?>
+// Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
+$result_clientes = $conexion->query($query_clientes);
+$query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
+$query_zonas = "SELECT Nombre FROM zonas";
+
+$result_monedas = $conexion->query($query_monedas);
+$result_zonas = $conexion->query($query_zonas);
+?>
+
             <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php
-                while ($row = $result_clientes->fetch_assoc()) {
-                    echo "<option value='" . $row['iD'] . "'>" . $row['nombre'] . "</option>";
-                }
-                ?>
+    while ($row = $result_clientes->fetch_assoc()) {
+        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+    }
+    ?>
             </select><br>
 
             <label for="monto">Monto:</label>
@@ -203,7 +219,7 @@ $stmt->close();
 
 
 
-            <label for="zona">Zona:</label>
+            <label for="zona">Estado:</label>
             <select name="zona" required>
                 <?php
                 while ($row = $result_zonas->fetch_assoc()) {
