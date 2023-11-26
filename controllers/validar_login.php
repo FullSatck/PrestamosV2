@@ -137,6 +137,24 @@ if ($row = $result->fetch_assoc()) {
             case "25":
                 header("Location: /resources/views/zonas/25-Sonora/supervisor/inicio/inicio.php");
                 break;
+            case "26":
+                header("Location: /resources/views/zonas/26-Tabasco/supervisor/inicio/inicio.php");
+                break;
+            case "27":
+                header("Location: /resources/views/zonas/27-Tamaulipas/supervisor/inicio/inicio.php");
+                break;
+            case "28":
+                header("Location: /resources/views/zonas/28-Tlaxcala/supervisor/inicio/inicio.php");
+                break;
+            case "29":
+                header("Location: /resources/views/zonas/29-Veracruz/supervisor/inicio/inicio.php");
+                break;
+            case "30":
+                header("Location: /resources/views/zonas/30-Yucatan/supervisor/inicio/inicio.php");
+                break;
+            case "31":
+                header("Location: /resources/views/zonas/31-Zacatecas/supervisor/inicio/inicio.php");
+                break;    
                 // Agrega casos para otros números de zona aquí
             default:
                 // El usuario es un supervisor de otra zona, agrega el redireccionamiento apropiado aquí
@@ -224,7 +242,25 @@ if ($row = $result->fetch_assoc()) {
             case "25":
                 header("Location: /resources/views/zonas/25-Sonora/cobrador/inicio/inicio.php");
                 break;
-                // Agrega casos para otros números de zona aquí
+            case "26":
+                header("Location: /resources/views/zonas/26-Tabasco/cobrador/inicio/inicio.php");
+                break;
+            case "27":
+                header("Location: /resources/views/zonas/27-Tamaulipas/cobrador/inicio/inicio.php");
+                break;
+            case "28":
+                header("Location: /resources/views/zonas/28-Tlaxcala/cobrador/inicio/inicio.php");
+                break;
+            case "29":
+                header("Location: /resources/views/zonas/29-Veracruz/cobrador/inicio/inicio.php");
+                 break;
+            case "30":
+                header("Location: /resources/views/zonas/30-Yucatan/cobrador/inicio/inicio.php");
+                break;
+            case "31":
+                header("Location: /resources/views/zonas/31-Zacatecas/cobrador/inicio/inicio.php");
+                break;
+            // Agrega casos para otros números de zona aquí
             default:
                 // El usuario es un cobrador de otra zona, agrega el redireccionamiento apropiado aquí
                 header("Location: /cobrador_default_dashboard.php");
