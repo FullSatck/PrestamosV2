@@ -163,7 +163,7 @@ mysqli_close($conexion);
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <a href="/resources/views/zonas/7-Coahuila/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
                     <p>Version beta</p>
                 </div>
             </div>

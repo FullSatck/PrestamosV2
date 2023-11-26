@@ -230,7 +230,7 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
                     <p>Version beta</p>
                 </div>
             </div>
@@ -244,7 +244,7 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
             </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="apagarSist.php" class="titulo">Apagar Sistema </a>
+                    <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
                    
                 </div>
             </div>

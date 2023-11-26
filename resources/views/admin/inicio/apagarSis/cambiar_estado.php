@@ -2,7 +2,7 @@
 session_start();
 
 // Incluye el archivo de conexión a la base de datos
-include("../../../../controllers/conexion.php");
+include("../../../../../controllers/conexion.php");
 
 // Verifica si el usuario es administrador
 if ($_SESSION["rol"] != 1) {

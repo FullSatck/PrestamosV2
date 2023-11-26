@@ -1,5 +1,5 @@
 <?php
-require '../../../../controllers/conexion.php';
+require '../../../../../../../controllers/conexion.php';
 
 function obtenerCuotas($conexion, $filtro)
 {
@@ -31,7 +31,7 @@ function obtenerCuotas($conexion, $filtro)
 
 
         case 'nopagado':
-            $sql .= " AND p.Pospuesto = 1";
+            $sql .= " AND p.Pospuesto = 1  " ;
 
             break;
         case 'mas-tarde':
@@ -118,7 +118,7 @@ function contarPrestamosPorEstado($conexion)
     }
 
     // Contar préstamos pagados
-    $sqlPagado = "SELECT COUNT(*) AS conteo FROM prestamos p
+    $sqlPagado = "SELECT COUNT(*) AS conteo FROM prestamos p 
                   WHERE EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
     $stmt = $conexion->prepare($sqlPagado);
     $stmt->bind_param("s", $fechaHoy);

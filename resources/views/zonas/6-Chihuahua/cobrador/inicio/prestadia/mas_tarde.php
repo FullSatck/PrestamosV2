@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../../../controllers/conexion.php';
+require_once  '../../../../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado y tiene permisos
 

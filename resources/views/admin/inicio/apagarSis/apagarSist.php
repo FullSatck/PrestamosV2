@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../../../../controllers/conexion.php");
+include("../../../../../controllers/conexion.php");
 
 // Inicializa la variable
 $estadoActual = 'inactivo'; // Valor por defecto
@@ -51,7 +51,7 @@ if (isset($_SESSION['cambio_estado_mensaje'])) {
         }
         ?>
     </div>
-    <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
+    <a href="/resources/views/admin/inicio//inicio.php" class="botonn">
         <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
         <span class="spann">Volver al Inicio</span>
     </a>

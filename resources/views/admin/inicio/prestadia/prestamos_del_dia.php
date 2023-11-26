@@ -2,12 +2,12 @@
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php';
+require_once '../../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../index.php");
     exit();
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
@@ -138,6 +138,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                             <th>Fecha Inicio</th>
                             <th>Frecuencia Pago</th>
                             <th>Perfil</th>
+                            <th>Perfil</th>
                             <th>Pagar</th>
                             <th>No pago</th>
                             <th>Pagar cantida</th>
@@ -156,9 +157,10 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                                 <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
                                 <td>
-                                    <a href="../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                    <a href="../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
                                 </td>
+                           
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal" onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>, '<?php echo htmlspecialchars($cuota['NombreCliente']); ?>', '<?php echo htmlspecialchars($cuota['DireccionCliente']); ?>', '<?php echo htmlspecialchars($cuota['TelefonoCliente']); ?>', '<?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?>', '<?php echo htmlspecialchars($cuota['MontoAPagar']); ?>')">
                                         Pagar
@@ -354,6 +356,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
 
     </main>
+   
     <script>
      
 

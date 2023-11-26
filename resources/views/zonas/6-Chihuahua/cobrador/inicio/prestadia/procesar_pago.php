@@ -1,6 +1,6 @@
 <?php
 // Incluir el archivo de conexión a la base de datos
-include '../../../../controllers/conexion.php';
+require_once  '../../../../../../../controllers/conexion.php';
 
 header('Content-Type: application/json');
 
@@ -48,6 +48,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             // Descontar el monto pagado del total a pagar
             $montoRestante = $montoTotalAPagar - $montoPagado;
 
+            // Insertar los detalles del pago en la tabla 'facturas'
+            $sqlInsertarFactura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, CURDATE(), ?, ?)";
+            $stmtFactura = $conexion->prepare($sqlInsertarFactura);
+            $montoDeuda = $montoRestante > 0 ? $montoRestante : 0; // Si el monto restante es negativo, se establece a 0
+            $stmtFactura->bind_param("iddi", $clienteId, $montoTotalAPagar, $montoPagado, $montoDeuda);
+            $stmtFactura->execute();
+            $stmtFactura->close();
+
             // Preparar la consulta para actualizar el monto total a pagar y, si es necesario, el estado del préstamo
             if ($montoRestante <= 0) {
                 // Si el monto restante es cero o menor, el préstamo se considera pagado
@@ -79,7 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
                 $stmtActualizarPospuesto->close();
             }
 
-
             // Confirmar la transacción
             $conexion->commit();
             echo json_encode([
@@ -101,3 +108,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 }
 
 $conexion->close();
+?>
