@@ -10,6 +10,19 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
@@ -39,89 +52,94 @@ if (isset($_SESSION["usuario_id"])) {
     <div class="name__page">
         <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
         <h4>Recaudo</h4>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
+        </div>
     </div>
 
     <div class="options__menu">
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/inicio/inicio.php">
+    <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
+        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
             <div class="option">
                 <i class="fa-solid fa-landmark" title="Inicio"></i>
                 <h4>Inicio</h4>
             </div>
         </a> 
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/usuarios/crudusuarios.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
             <div class="option">
                 <i class="fa-solid fa-users" title=""></i>
                 <h4>Usuarios</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/usuarios/registrar.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/registrar.php">
             <div class="option">
                 <i class="fa-solid fa-user-plus" title=""></i>
                 <h4>Registrar Usuario</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/clientes/lista_clientes.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php">
             <div class="option">
                 <i class="fa-solid fa-people-group" title=""></i>
                 <h4>Clientes</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/clientes/agregar_clientes.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php">
             <div class="option">
                 <i class="fa-solid fa-user-tag" title=""></i>
                 <h4>Registrar Clientes</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/creditos/crudPrestamos.php" class="selected">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/crudPrestamos.php" class="selected">
             <div class="option">
                 <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                 <h4>Prestamos</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/creditos/prestamos.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php">
             <div class="option">
                 <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                 <h4>Registrar Prestamos</h4>
             </div>
         </a> 
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/gastos/gastos.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
             <div class="option">
                 <i class="fa-solid fa-sack-xmark" title=""></i>
                 <h4>Gastos</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/ruta/lista_super.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
             <div class="option">
                 <i class="fa-solid fa-map" title=""></i>
                 <h4>Ruta</h4>
             </div>
         </a>
 
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/abonos/abonos.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
             <div class="option">
                 <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                 <h4>Abonos</h4>
             </div>
-        </a>
-
-        <a href="/resources/views/zonas/18-NuevoLeon/supervisor/retiros/retiros.php">
-            <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
-                <h4>Retiros</h4>
-            </div>
-        </a>
-
-
-
+        </a> 
     </div>
 
 </div>
@@ -165,7 +183,7 @@ if (isset($_SESSION["usuario_id"])) {
                                 <tbody>
                                     <?php
                             include("../../../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Aguascalientes'");
+                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Puebla'");
                             while ($datos = $sql->fetch_object()) { ?>
                                     <tr>
                                         <td><?= $datos->ID ?></td>

@@ -24,6 +24,7 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
+
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 <!DOCTYPE html>
@@ -45,7 +46,6 @@ $stmt->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-
         <div class="nombre-usuario">
             <?php
         if (isset($_SESSION["nombre_usuario"])) {
@@ -53,7 +53,6 @@ $stmt->close();
         }
         ?>
         </div>
-
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -72,7 +71,7 @@ $stmt->close();
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -80,56 +79,56 @@ $stmt->close();
             </a>
 
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutar</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -181,7 +180,7 @@ $stmt->close();
                                 <tbody>
                                     <?php
                             include("../../../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Chihuahua' AND EstadoP = 1");
+                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Puebla' AND EstadoP = 1");
                             while ($datos = $sql->fetch_object()) { ?>
                                     <tr>
                                         <td><?= $datos->ID ?></td>

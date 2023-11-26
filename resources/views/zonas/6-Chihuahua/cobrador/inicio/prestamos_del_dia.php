@@ -4,7 +4,14 @@ session_start();
 // Validacion de rol para ingresar a la pagina 
 require_once '../../../../../../controllers/conexion.php';
 
-$usuario_id = $_SESSION["usuario_id"];
+// Verifica si el usuario está autenticado
+if (!isset($_SESSION["usuario_id"])) {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../../../index.php");
+    exit();
+} else {
+    // El usuario está autenticado, obtén el ID del usuario de la sesión
+    $usuario_id = $_SESSION["usuario_id"];
 
 $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
 $stmt = $conexion->prepare($sql_nombre);
@@ -15,15 +22,6 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
-
-// Verifica si el usuario está autenticado
-if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
-    exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
 
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -58,12 +56,15 @@ require 'filtrarPrestamos.php'; // Asegúrate de que este archivo contiene la fu
 $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'pendiente';
 
 // Obtener las cuotas del día con el filtro aplicado
-$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Chihuahua');
+$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Puebla');
 
 // Obtener conteos de préstamos
-$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
+$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
 
 ?>
+<!DOCTYPE html>
+<html lang="es">
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -84,7 +85,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 <body>
 
     <header>
-    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="botonn">
+    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -190,9 +191,6 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
             <?php endif; ?>
             </div>
 
-
-            <!-- MODALES -->
-
             <!-- Modal de Confirmación de Pago -->
             <div class="modal fade" id="confirmPaymentModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -204,7 +202,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                             </button>
                         </div>
                         <div class="modal-body">
-                            <strong> ¿Está seguro de que desea procesar este pago?</strong><br>
+                            ¿Está seguro de que desea procesar este pago?
                             <div>
                                 <strong>Cliente:</strong> <span id="modalClienteNombre"></span><br>
                                 <strong>Dirección:</strong> <span id="modalClienteDireccion"></span><br>

@@ -13,6 +13,18 @@ if (isset($_SESSION["usuario_id"])) {
 // Incluye la configuración de conexión a la base de datos
 include "../../../../../../controllers/conexion.php";
 
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // Definir variables e inicializar con valores vacíos
 $id_zona = $ciudad = $asentamiento = $fecha = $descripcion = $valor = "";
 $id_zona_err = $ciudad_err = $asentamiento_err = $fecha_err = $descripcion_err = $valor_err = "";
@@ -93,26 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    include("../../../../../../controllers/conexion.php");
-
-$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS moneda, c.ZonaAsignada 
-        FROM clientes c
-        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Chihuahua'
-        ORDER BY c.ID DESC";
-
-$usuario_id = $_SESSION["usuario_id"];
-
-$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-
     // Cerrar la conexión
     $conexion->close();
 }
@@ -141,11 +133,10 @@ $stmt->close();
         <div class="nombre-usuario">
             <?php
         if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span>Supervisor<span>";
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
         }
         ?>
         </div>
-
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -164,76 +155,76 @@ $stmt->close();
                 </div>
             </a>
 
-        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/registrar.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a> 
-
+            </a>
+ 
         </div>
 
     </div>
@@ -260,7 +251,7 @@ $stmt->close();
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Estado</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                $sql_zonas = "SELECT * FROM zonas WHERE nombre = 'Chihuahua'";
+                $sql_zonas = "SELECT * FROM zonas WHERE nombre = 'Puebla'";
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {
@@ -279,7 +270,7 @@ $stmt->close();
                 <select id="ciudad" name="ciudad" class="zona" required>
                     <option value="">Seleccionar Municipio</option>
                     <?php
-    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 6";
+    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 20";
     $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
     while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
         echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';

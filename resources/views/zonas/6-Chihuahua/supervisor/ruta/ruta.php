@@ -8,9 +8,8 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../../../index.php");
     exit();
-}
 
-include "../../../../../../controllers/conexion.php";
+}include "../../../../../../controllers/conexion.php";
 
 $usuario_id = $_SESSION["usuario_id"];
 
@@ -24,7 +23,6 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
- 
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +37,12 @@ $stmt->close();
     </script>
     <title>Lista de Pagos Pendientes para Hoy</title>
     <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
+    <style>
+    /* Agrega estilos específicos si es necesario */
+    #lista-pagos tbody tr {
+        cursor: move;
+    }
+    </style>
 </head>
 
 <body>
@@ -47,27 +51,15 @@ $stmt->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
 
-         <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
-
-         <div class="nombre-usuario">
+        <div class="nombre-usuario">
             <?php
         if (isset($_SESSION["nombre_usuario"])) {
             echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
         }
         ?>
         </div>
-
-
-
-
-
-        <style>
-        /* Agrega estilos específicos si es necesario */
-        #lista-pagos tbody tr {
-            cursor: move;
-        }
-        </style>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -79,57 +71,77 @@ $stmt->close();
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
+            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
-            </a> 
+            </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -149,17 +161,17 @@ $stmt->close();
         </div><br>
 
         <table id="lista-pagos">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Fecha de Pago</th>
-                <th>Enrutar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Fecha de Pago</th>
+                    <th>Enrutar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
             include "../../../../../../controllers/conexion.php";
 
             $fecha_actual = date("Y-m-d");
@@ -168,7 +180,7 @@ $stmt->close();
                     FROM fechas_pago 
                     INNER JOIN prestamos ON fechas_pago.IDPrestamo = prestamos.ID 
                     INNER JOIN clientes ON prestamos.IDCliente = clientes.ID 
-                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 6";
+                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Puebla'";
 
             $stmt = $conexion->prepare($sql);
             $stmt->bind_param("s", $fecha_actual);
@@ -192,8 +204,8 @@ $stmt->close();
             $stmt->close();
             $conexion->close();
             ?>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
     </main>
 

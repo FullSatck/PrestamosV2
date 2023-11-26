@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 // Verifica si el usuario está autenticado
 if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
@@ -10,7 +11,9 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
-include "../../../../../../controllers/conexion.php";
+
+// Incluye el archivo de conexión
+include("../../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
@@ -24,7 +27,13 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
+
+
+
+// Cierra la conexión a la base de datos
+mysqli_close($conexion);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,13 +47,12 @@ $stmt->close();
     </script>
     <title>Lista de Pagos Pendientes para Hoy</title>
     <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
-    
     <style>
-        /* Agrega estilos específicos si es necesario */
-        #lista-pagos tbody tr {
-            cursor: move;
-        }
-        </style>
+    /* Agrega estilos específicos si es necesario */
+    #lista-pagos tbody tr {
+        cursor: move;
+    }
+    </style>
 </head>
 
 <body>
@@ -53,6 +61,7 @@ $stmt->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        
         <div class="nombre-usuario">
             <?php
         if (isset($_SESSION["nombre_usuario"])) {
@@ -71,7 +80,7 @@ $stmt->close();
 
         <div class="options__menu">
 
-        <a href="/controllers/cerrar_sesion.php">
+            <a href="/controllers/cerrar_sesion.php">
                 <div class="option">
                     <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
                     <h4>Cerrar Sesion</h4>
@@ -86,56 +95,56 @@ $stmt->close();
             </a>
 
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -144,9 +153,10 @@ $stmt->close();
         </div>
     </div>
 
+    <script src="/public/assets/js/MenuLate.js"></script>
 
     <main>
-        <h2>Pagos para Hoy en Chihuahua</h2>
+        <h2>Orden de pagos</h2>
 
         <!-- <button onclick="guardarCambios()">Guardar Cambios</button> -->
 
@@ -155,18 +165,18 @@ $stmt->close();
         </div><br>
 
         <div class="table-scroll-container">
-        <table id="lista-pagos">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Fecha de Pago</th>
-                <th>Enrutar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
+            <table id="lista-pagos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Fecha de Pago</th>
+                        <th>Enrutar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
             include "../../../../../../controllers/conexion.php";
 
             $fecha_actual = date("Y-m-d");
@@ -175,7 +185,7 @@ $stmt->close();
                     FROM fechas_pago 
                     INNER JOIN prestamos ON fechas_pago.IDPrestamo = prestamos.ID 
                     INNER JOIN clientes ON prestamos.IDCliente = clientes.ID 
-                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Chihuahua'";
+                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Puebla'";
 
             $stmt = $conexion->prepare($sql);
             $stmt->bind_param("s", $fecha_actual);
@@ -199,10 +209,9 @@ $stmt->close();
             $stmt->close();
             $conexion->close();
             ?>
-        </tbody>
-    </table>
-    </div>
-
+                </tbody>
+            </table>
+        </div>
 
     </main>
 
@@ -241,6 +250,8 @@ $stmt->close();
         $('#aviso-guardado').fadeIn().delay(3000).fadeOut(); // Mostrar por 2 segundos y luego ocultar
     }
     </script>
+
+
 </body>
 
 </html>

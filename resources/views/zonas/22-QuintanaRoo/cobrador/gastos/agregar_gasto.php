@@ -10,13 +10,24 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
-
 // Incluye la configuración de conexión a la base de datos
 include "../../../../../../controllers/conexion.php";
 
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // Definir variables e inicializar con valores vacíos
-$id_zona = $fecha = $descripcion = $valor = "";
-$id_zona_err = $fecha_err = $descripcion_err = $valor_err = "";
+$id_zona = $ciudad = $asentamiento = $fecha = $descripcion = $valor = "";
+$id_zona_err = $ciudad_err = $asentamiento_err = $fecha_err = $descripcion_err = $valor_err = "";
 
 // Procesar datos del formulario cuando se envía el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -27,12 +38,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_zona = trim($_POST["id_zona"]);
     }
 
+    // Validar la ciudad
+    if (empty(trim($_POST["ciudad"]))) {
+        $ciudad_err = "Por favor, seleccione una ciudad.";
+    } else {
+        $ciudad = trim($_POST["ciudad"]);
+    }
+
+    // Validar el asentamiento
+    if (empty(trim($_POST["asentamiento"]))) {
+        $asentamiento_err = "Por favor, ingrese un asentamiento.";
+    } else {
+        $asentamiento = trim($_POST["asentamiento"]);
+    }
+
     // Validar la fecha
     $input_fecha = trim($_POST["fecha"]);
     if (empty($input_fecha)) {
         $fecha_err = "Por favor, ingrese la fecha.";
     } else {
-        // Convertir la fecha al formato 'YYYY-MM-DD'
         $fecha = date('Y-m-d', strtotime($input_fecha));
     }
 
@@ -51,17 +75,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Verificar si no hay errores de validación antes de insertar en la base de datos
-    if (empty($id_zona_err) && empty($descripcion_err) && empty($valor_err)) {
+    if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && empty($fecha_err) && empty($descripcion_err) && empty($valor_err)) {
         // Preparar la declaración de inserción
-        $sql = "INSERT INTO Gastos (IDZona, Fecha, Descripcion, Valor) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO gastos (idZona, ciudad, asentamiento, fecha, descripcion, valor) VALUES (?, ?, ?, ?, ?, ?)";
 
         if ($stmt = $conexion->prepare($sql)) {
             // Vincular las variables a la declaración preparada como parámetros
-            $stmt->bind_param("sssd", $param_id_zona, $param_fecha, $param_descripcion, $param_valor);
+            $stmt->bind_param("issssd", $param_id_zona, $param_ciudad, $param_asentamiento, $param_fecha, $param_descripcion, $param_valor);
 
             // Establecer los parámetros
             $param_id_zona = $id_zona;
-            $param_fecha = $fecha; // Fecha formateada correctamente
+            $param_ciudad = $ciudad;
+            $param_asentamiento = $asentamiento;
+            $param_fecha = $fecha;
             $param_descripcion = $descripcion;
             $param_valor = $valor;
 
@@ -84,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
- 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -103,6 +129,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -114,76 +148,90 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="options__menu">
 
-        <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php">
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/usuarios/registrar.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/gastos/gastos.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
- 
+
 
 
         </div>
@@ -205,13 +253,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+
             <div class="form-group">
-                <label for="id_zona">Zona:</label>
+                <label for="id_zona">Estado:</label>
                 <select name="id_zona" id="id_zona" class="zona">
-                    <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
+                    <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Estado</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                $sql_zonas = "SELECT * FROM Zonas WHERE Nombre = 'Baja california'";
+                $sql_zonas = "SELECT * FROM zonas WHERE nombre = 'Puebla'";
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {
@@ -224,26 +273,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
                 <span class="help-block"><?php echo $id_zona_err; ?></span>
             </div>
+
+            <div class="input-container">
+                <label for="ciudad">Municipio:</label>
+                <select id="ciudad" name="ciudad" class="zona" required>
+                    <option value="">Seleccionar Municipio</option>
+                    <?php
+    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 20";
+    $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
+    while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
+        echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
+    }
+    ?>
+                </select>
+
+            </div>
+
+            <div class="input-container">
+                <label for="asentamiento">Colonia:</label>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
+                    required>
+            </div>
+
             <div class="form-group">
                 <label for="fecha">Fecha:</label>
                 <input type="date" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
                 <span class="help-block"><?php echo $fecha_err; ?></span>
             </div>
+
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
                 <input type="text" name="descripcion" id="descripcion" class="form-control"
                     value="<?php echo $descripcion; ?>">
                 <span class="help-block"><?php echo $descripcion_err; ?></span>
             </div>
+
             <div class="form-group">
                 <label for="valor">Valor:</label>
                 <input type="number" name="valor" id="valor" class="form-control" value="<?php echo $valor; ?>">
                 <span class="help-block"><?php echo $valor_err; ?></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Agregar Gasto">
                 <a href="gastos.php" class="btn btn-secondary">Cancelar</a>
             </div>
+
         </form>
     </main>
 

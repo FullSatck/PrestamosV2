@@ -10,6 +10,20 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
@@ -18,7 +32,7 @@ if (isset($_SESSION["usuario_id"])) {
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -33,10 +47,13 @@ if (isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -48,64 +65,78 @@ if (isset($_SESSION["usuario_id"])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/inicio/inicio.php" class="selected">
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-        
-            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/lista_clientes.php">
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/2-baja_california/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-            
+
 
 
         </div>
@@ -121,7 +152,7 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/cob/validar_clientes/validar_clientes2.php" method="POST"
+        <form action="/controllers/cob/validar_clientes/validar_clientes20.php" method="POST"
             enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
@@ -154,11 +185,6 @@ if (isset($_SESSION["usuario_id"])) {
             </div>
 
             <div class="input-container">
-                <label for="referencias">Referencias Personales:</label>
-                <textarea id="referencias" name="referencias" rows="4"></textarea>
-            </div>
-
-            <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
                 <select id="moneda" name="moneda">
                     <?php
@@ -177,13 +203,30 @@ if (isset($_SESSION["usuario_id"])) {
             </div>
 
             <div class="input-container">
-                <label for="zona">Zona:</label>
+                <label for="zona">Estado:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM Zonas WHERE Nombre = 'Baja California'";
+                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Puebla'";
+                $resultZonas = mysqli_query($conexion, $consultaZonas);
+                // Genera las opciones del menú desplegable para Zona
+                while ($row = mysqli_fetch_assoc($resultZonas)) {
+                    echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
+                }
+                ?>
+                </select>
+            </div>
+
+            <div class="input-container">
+                <label for="ciudad">Municipio:</label>
+                <select id="ciudad" name="ciudad" required>
+                    <?php
+                // Incluye el archivo de conexión a la base de datos
+                include("../../../../../../controllers/conexion.php");
+                // Consulta SQL para obtener las zonas
+                $consultaZonas = "SELECT * FROM ciudades WHERE iDZona = 20";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
@@ -192,6 +235,34 @@ if (isset($_SESSION["usuario_id"])) {
                 ?>
                 </select>
             </div>
+
+            <div class="input-container">
+                <label for="asentamiento">Colonia:</label>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
+                    required>
+            </div>
+
+            <div class="input-container">
+                <label for="cartera_id">Cartera:</label>
+                <select id="cartera_id" name="cartera_id" required>
+                    <option value="">Escoge cartera</option>
+                    <?php
+        // Incluye el archivo de conexión a la base de datos
+        include("../../../../../../controllers/conexion.php");
+        
+        // Consulta SQL para obtener las carteras
+        $consultaCarteras = "SELECT id, nombre FROM carteras";
+        $resultCarteras = mysqli_query($conexion, $consultaCarteras);
+        
+        // Genera las opciones del menú desplegable para las carteras
+        while ($row = mysqli_fetch_assoc($resultCarteras)) {
+            echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
+        }
+        ?>
+                </select>
+            </div>
+
+
 
             <div class="input-container">
                 <label for="imagen">Imagen del Cliente:</label>

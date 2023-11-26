@@ -1,50 +1,32 @@
 <?php
+
+
 session_start();
 
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../../../controllers/conexion.php'; 
-
 // Verifica si el usuario está autenticado
-if (!isset($_SESSION["usuario_id"])) {
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'supervisor') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
 }
 
 
 // Incluir el archivo de conexión a la base de datos
 include("../../../../../../controllers/conexion.php");
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
 // Verificar si se ha proporcionado el clienteId en la URL
 if (isset($_GET['clienteId'])) {
@@ -59,20 +41,27 @@ if (isset($_GET['clienteId'])) {
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/assets/css/curdFaturas.css"> 
+    <link rel="stylesheet" href="/public/assets/css/curdFaturas.css">
     <title>Historial de Pagos</title>
 </head>
- 
+
 <body id="body">
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
-        </div> 
+        </div>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -84,64 +73,70 @@ if (isset($_GET['clienteId'])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/inicio/inicio.php">
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-          
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/lista_clientes.php" class="selected">
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/1-aguascalientes/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a> 
-
+            </a>
 
 
         </div>
@@ -182,10 +177,10 @@ if (isset($_GET['clienteId'])) {
     </main>
 
     <script>
-        // Agregar un evento clic al botón
-        document.getElementById("volverAtras").addEventListener("click", function() {
-            window.history.back();
-        });
+    // Agregar un evento clic al botón
+    document.getElementById("volverAtras").addEventListener("click", function() {
+        window.history.back();
+    });
     </script>
 
     <script>
@@ -210,7 +205,7 @@ if (isset($_GET['clienteId'])) {
         });
     });
     </script>
-   <script src="/public/assets/js/MenuLate.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 <?php

@@ -9,20 +9,26 @@ if (isset($_SESSION["usuario_id"])) {
     header("Location: ../../../../../../index.php");
     exit();
 }
-
-
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
-?>
-
-<?php
 // Incluir el archivo de conexión a la base de datos
 include("../../../../../../controllers/conexion.php");
 
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // Consulta SQL para obtener todos los clientes con el nombre de la moneda
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
-        FROM Clientes c
-        LEFT JOIN Monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Campeche'";
+        FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
+        WHERE c.ZonaAsignada = 'Puebla'";
 
 $resultado = $conexion->query($sql);
 ?>
@@ -31,7 +37,7 @@ $resultado = $conexion->query($sql);
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
@@ -45,10 +51,13 @@ $resultado = $conexion->query($sql);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -60,65 +69,79 @@ $resultado = $conexion->query($sql);
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/4-Campeche/cobrador/inicio/inicio.php" class="selected">
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-          
 
-            <a href="/resources/views/zonas/4-Campeche/cobrador/clientes/lista_clientes.php">
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/4-Campeche/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/4-Campeche/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/4-Campeche/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/4-Campeche/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/4-Campeche/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/4-Campeche/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
 
-             
+
 
 
 
@@ -135,42 +158,43 @@ $resultado = $conexion->query($sql);
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
+        <div class="table-scroll-container">
 
-        <?php if ($resultado->num_rows > 0) { ?>
-            
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Domicilio</th>
-                <th>Teléfono</th>
-                <th>Referencias Personales</th>
-                <th>Moneda Preferida</th>
-                <th>Zona Asignada</th>
-                <th>Acciones</th>
-                <th>Pagos</th>
-            </tr>
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-            <tr>
-                <td><?= "REC 100" .$fila["ID"] ?></td>
-                <td><?= $fila["Nombre"] ?></td>
-                <td><?= $fila["Apellido"] ?></td>
-                <td><?= $fila["Domicilio"] ?></td>
-                <td><?= $fila["Telefono"] ?></td>
-                <td><?= $fila["ReferenciasPersonales"] ?></td>
-                <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
-                <td><?= $fila["ZonaAsignada"] ?></td>
-                <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                <td><a
-                        href="/resources/views/zonas/4-Campeche/cobrador/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                </td>
-            </tr>
+            <?php if ($resultado->num_rows > 0) { ?>
+
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Domicilio</th>
+                    <th>Teléfono</th>
+                    <th>Moneda Preferida</th>
+                    <th>Zona Asignada</th>
+                    <th>Acciones</th>
+                    <th>Pagos</th>
+                </tr>
+                <?php while ($fila = $resultado->fetch_assoc()) { ?>
+                <tr>
+                    <td><?= "REC 100" .$fila["ID"] ?></td>
+                    <td><?= $fila["Nombre"] ?></td>
+                    <td><?= $fila["Apellido"] ?></td>
+                    <td><?= $fila["Domicilio"] ?></td>
+                    <td><?= $fila["Telefono"] ?></td>
+                    <td><?= $fila["Moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
+                    <td><?= $fila["ZonaAsignada"] ?></td>
+                    <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
+                    <td><a
+                            href="/resources/views/zonas/20-Puebla/cobrador/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                    </td>
+                </tr>
+                <?php } ?>
+            </table>
+            <?php } else { ?>
+            <p>No se encontraron clientes en la base de datos.</p>
             <?php } ?>
-        </table>
-        <?php } else { ?>
-        <p>No se encontraron clientes en la base de datos.</p>
-        <?php } ?>
+        </div>
     </main>
 
     <script>
@@ -196,7 +220,10 @@ $resultado = $conexion->query($sql);
     });
     </script>
 
-   <script src="/public/assets/js/MenuLate.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

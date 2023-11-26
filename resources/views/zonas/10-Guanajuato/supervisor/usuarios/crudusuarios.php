@@ -11,6 +11,19 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
 // Verificar si se ha pasado un mensaje en la URL
 $mensaje = "";
@@ -27,7 +40,7 @@ if (isset($_GET['mensaje'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Usuarios</title>
 
-    <link rel="stylesheet" href="/public/assets/css-Super/lista_usuarios.css">
+    <link rel="stylesheet" href="/public/assets/css/lista_usuarios.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
@@ -36,6 +49,14 @@ if (isset($_GET['mensaje'])) {
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
         </div>
     </header>
 
@@ -48,83 +69,82 @@ if (isset($_GET['mensaje'])) {
 
         <div class="options__menu">
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/inicio/inicio.php">
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/usuarios/crudusuarios.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/crudusuarios.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/usuarios/registrar.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/abonos/abonos.php">
+            <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/10-Guanajuato/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
 
 
         </div>
@@ -140,51 +160,51 @@ if (isset($_GET['mensaje'])) {
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Zona</th>
-                <th>Rol</th>
-            </tr>
-            <?php
-    // Ajustamos la consulta SQL para incluir los nombres de la zona y el rol
-    $sql = $conexion->query("SELECT u.ID, u.Nombre, u.Apellido, u.Email, z.Nombre AS NombreZona, r.Nombre AS NombreRol 
-                             FROM usuarios u
-                             LEFT JOIN zonas z ON u.Zona = z.ID
-                             LEFT JOIN roles r ON u.RolID = r.ID
-                             WHERE u.RolID = 3 AND u.Zona = 1
-                             ORDER BY u.ID DESC");
+        <div class="table-scroll-container">
+            <table class="table-container">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Zona</th>
+                    <th>Rol</th>
+                </tr>
+                <?php
+                 // Ajustamos la consulta SQL para incluir los nombres de la zona y el rol
+                 $sql = $conexion->query("SELECT u.ID, u.Nombre, u.Apellido, u.Email, z.Nombre AS NombreZona, r.Nombre AS NombreRol 
+                                          FROM usuarios u
+                                          LEFT JOIN zonas z ON u.Zona = z.ID
+                                          LEFT JOIN roles r ON u.RolID = r.ID
+                                          WHERE u.RolID = 3 AND u.Zona = 20
+                                          ORDER BY u.ID DESC");
 
-    // Verificar si la consulta se realizó con éxito
-    if ($sql === false) {
-        die("Error en la consulta SQL: " . $conexion->error);
-    }
+                 // Verificar si la consulta se realizó con éxito
+                 if ($sql === false) {
+                     die("Error en la consulta SQL: " . $conexion->error);
+                 }
 
-    // Verificar si la consulta devolvió resultados
-    if ($sql->num_rows > 0) {
-        $rowCount = 0; // Contador de filas
-        while ($datos = $sql->fetch_object()) { 
-            $rowCount++; // Incrementar el contador de filas
-            ?>
-            <tr class="row<?= $rowCount ?>">
-                <td><?= "REC 100" . $datos->ID ?></td>
-                <td><?= $datos->Nombre ?></td>
-                <td><?= $datos->Apellido ?></td>
-                <td><?= $datos->Email ?></td>
-                <td><?= $datos->NombreZona // Cambiado para mostrar el nombre de la zona ?></td>
-                <td><?= $datos->NombreRol // Cambiado para mostrar el nombre del rol ?></td>
-            </tr>
-            <?php } 
-    } else {
-        echo "No se encontraron resultados.";
-    }
-    ?>
-        </table>
-
-
+                 // Verificar si la consulta devolvió resultados
+                 if ($sql->num_rows > 0) {
+                     $rowCount = 0; // Contador de filas
+                     while ($datos = $sql->fetch_object()) { 
+                         $rowCount++; // Incrementar el contador de filas
+                         ?>
+                <tr class="row<?= $rowCount ?>">
+                    <td><?= "REC 100" . $datos->ID ?></td>
+                    <td><?= $datos->Nombre ?></td>
+                    <td><?= $datos->Apellido ?></td>
+                    <td><?= $datos->Email ?></td>
+                    <td><?= $datos->NombreZona // Cambiado para mostrar el nombre de la zona ?></td>
+                    <td><?= $datos->NombreRol // Cambiado para mostrar el nombre del rol ?></td>
+                </tr>
+                <?php } 
+                 } else {
+                     echo "No se encontraron resultados.";
+                 }
+                 ?>
+            </table>
+        </div>
     </main>
 
     <script>

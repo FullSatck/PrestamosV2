@@ -10,6 +10,7 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+
 include "../../../../../../controllers/conexion.php";
 
 $usuario_id = $_SESSION["usuario_id"];
@@ -33,7 +34,6 @@ if (isset($_GET['mensaje'])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,13 +47,13 @@ if (isset($_GET['mensaje'])) {
     <link rel="stylesheet" href="/public/assets/css/abonos.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
-
 <body id="body">
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        
         <div class="nombre-usuario">
             <?php
         if (isset($_SESSION["nombre_usuario"])) {
@@ -61,7 +61,6 @@ if (isset($_GET['mensaje'])) {
         }
         ?>
         </div>
-
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -73,77 +72,77 @@ if (isset($_GET['mensaje'])) {
 
         <div class="options__menu">
 
-            <a href="/controllers/cerrar_sesion.php">
+        <a href="/controllers/cerrar_sesion.php">
                 <div class="option">
                     <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
                     <h4>Cerrar Sesion</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
+           
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-file-invoice-dollar" title=""></i>
                     <h4>Registrar Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutar</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
-
+ 
 
 
 
@@ -156,7 +155,7 @@ if (isset($_GET['mensaje'])) {
         <div class="container">
             <h1 class="mt-5">Formulario de Pago de Préstamos</h1>
 
-
+          
 
             <!-- Información del cliente -->
             <div id="cliente-info" class="mt-4">
@@ -298,7 +297,7 @@ if (isset($_GET['mensaje'])) {
                         <!-- Agregar un botón para compartir la factura por WhatsApp -->
 
                         <button type="button" class="btn btn-primary" id="compartirPorWhatsAppButton">
-                            Compartir por WhatsApp
+                            Compartir por WhatsApp 
                         </button>
 
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
