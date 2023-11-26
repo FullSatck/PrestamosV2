@@ -9,7 +9,7 @@ if (isset($_SESSION["usuario_id"])) {
     header("Location: ../../../../index.php");
     exit();
 }
- 
+
 // Incluir el archivo de conexión a la base de datos
 require_once("conexion.php");
 
@@ -105,6 +105,18 @@ $stmt->close();
                     $sumaPagos += $pago["MontoPagado"];
                 }
 
+                // Calcular la fecha límite para el pago
+                $fechaLimite = calcularFechasPagoConPlazo($fecha, 20);
+
+                // Verificar si se ha superado la fecha límite y el pago no se ha realizado
+                $hoy = new DateTime();
+                if ($estadoPago == "No Pagado" && $hoy > $fechaLimite) {
+                    // Actualiza el estado del cliente en la base de datos a "Vencido"
+                    $stmt = $conexion->prepare("UPDATE clientes SET Estado = 'Vencido' WHERE ID = ?");
+                    $stmt->bind_param("i", $usuario_id); // Asegúrate de tener el ID del cliente
+                    $stmt->execute();
+                }
+
                 echo "<tr><td>$frecuencia</td><td>$fechaFormato</td><td>$cuota</td><td>$frecuenciaPago</td><td>$estadoPago</td></tr>";
                 $numeroFecha++;
             }
@@ -145,6 +157,19 @@ $stmt->close();
         }
 
         return $fechasPago;
+    }
+
+    // Función para calcular la fecha límite de pago excluyendo domingos
+    function calcularFechasPagoConPlazo($fechaInicio, $plazo) {
+        $fechaLimite = clone $fechaInicio;
+        $diasHabiles = 0;
+        while ($diasHabiles < $plazo) {
+            $fechaLimite->modify("+1 day");
+            if ($fechaLimite->format("l") != "Sunday") {
+                $diasHabiles++;
+            }
+        }
+        return $fechaLimite;
     }
 
     // Función para obtener la descripción de la frecuencia
