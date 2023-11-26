@@ -10,19 +10,16 @@ if (!isset($_SESSION["usuario_id"])) {
 include("../../../../controllers/conexion.php");
 
 // Consulta SQL para obtener los datos
-$sql = "SELECT ID, IDUsuario, Monto, Monto_Neto FROM saldo_admin";
+$sql = "SELECT * FROM saldo_admin";
 $result = $conexion->query($sql);
 
 if ($result->num_rows > 0) {
-    // Recorrer los resultados
     while($row = $result->fetch_assoc()) {
-        // Asignar los valores a las variables
         $monto = $row["Monto"];
-        $monto_neto = $row["Monto_Neto"];
+        $monto_neto = $row["Monto_Neto"]; // Este será el valor actualizado
     }
-} else {
-    echo "0 resultados";
 }
+
 
  
 ?>
@@ -41,215 +38,110 @@ if ($result->num_rows > 0) {
 </head>
 
 <body id="body">
-    
-
-
-
-<div class="menu__side" id="menu_side">
-
-<div class="name__page">
-    <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-    <h4>Recaudo</h4>
-</div>
-
-<div class="options__menu">
-
-    <a href="/resources/views/admin/inicio/inicio.php">
-        <div class="option">
-            <i class="fa-solid fa-landmark" title="Inicio"></i>
-            <h4>Inicio</h4>
-        </div>
-    </a>
-
-    <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-        <div class="option">
-            <i class="fa-solid fa-sack-dollar" title=""></i>
-            <h4>Saldo Incial</h4>
-        </div>
-    </a>
-
-    <a href="/resources/views/admin/usuarios/crudusuarios.php">
-        <div class="option">
-            <i class="fa-solid fa-users" title=""></i>
-            <h4>Usuarios</h4>
-        </div>
-    </a>
-
-    <a href="/resources/views/admin/usuarios/registrar.php">
-        <div class="option">
-            <i class="fa-solid fa-user-plus" title=""></i>
-            <h4>Registrar Usuario</h4>
-        </div>
-    </a>
-
-    <a href="/resources/views/admin/clientes/lista_clientes.php">
-        <div class="option">
-            <i class="fa-solid fa-people-group" title=""></i>
-            <h4>Clientes</h4>
-        </div>
-    </a>
-
-    <a href="/resources/views/admin/clientes/agregar_clientes.php">
-        <div class="option">
-            <i class="fa-solid fa-user-tag" title=""></i>
-            <h4>Registrar Clientes</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/creditos/crudPrestamos.php">
-        <div class="option">
-            <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-            <h4>Prestamos</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/creditos/prestamos.php">
-        <div class="option">
-            <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-            <h4>Registrar Prestamos</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/cobros/cobros.php">
-        <div class="option">
-            <i class="fa-solid fa-arrow-right-to-city" title=""></i>
-            <h4>Zonas de cobro</h4>
-        </div>
-    </a>
-
-    <a href="/resources/views/admin/gastos/gastos.php">
-        <div class="option">
-            <i class="fa-solid fa-sack-xmark" title=""></i>
-            <h4>Gastos</h4>
-        </div>
-    </a>
-
-    <a href="/resources/views/admin/ruta/lista_super.php">
-        <div class="option">
-            <i class="fa-solid fa-map" title=""></i>
-            <h4>Ruta</h4>
-        </div>
-    </a>
-
-    <a href="/resources/views/admin/abonos/abonos.php">
-        <div class="option">
-            <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-            <h4>Abonos</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/retiros/retiros.php" class="selected">
-        <div class="option">
-            <i class="fa-solid fa-scale-balanced" title=""></i>
-            <h4>Retiros</h4>
-        </div>
-    </a>
-</div>
-</div> 
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/resources/views/admin/retiros/agregar_retiros.php" class="botonn">
-            <i class="fa-solid fa-plus-minus"></i>
-            <span class="spann">Agregar Retiro</span>
-        </a>
     </header>
-    
-<div class="menu__side" id="menu_side">
 
-<div class="name__page">
-    <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-    <h4>Recaudo</h4>
-</div>
+    <div class="menu__side" id="menu_side">
 
-<div class="options__menu">
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+            <h4>Recaudo</h4>
+        </div>
 
-    <a href="/resources/views/admin/inicio/inicio.php">
-        <div class="option">
-            <i class="fa-solid fa-landmark" title="Inicio"></i>
-            <h4>Inicio</h4>
-        </div>
-    </a>
+        <div class="options__menu">
 
-    <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-        <div class="option">
-            <i class="fa-solid fa-sack-dollar" title=""></i>
-            <h4>Saldo Incial</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/inicio/inicio.php">
+                <div class="option">
+                    <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <h4>Inicio</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/usuarios/crudusuarios.php">
-        <div class="option">
-            <i class="fa-solid fa-users" title=""></i>
-            <h4>Usuarios</h4>
-        </div>
-    </a>
+            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-dollar" title=""></i>
+                    <h4>Saldo Incial</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/usuarios/registrar.php">
-        <div class="option">
-            <i class="fa-solid fa-user-plus" title=""></i>
-            <h4>Registrar Usuario</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/clientes/lista_clientes.php">
-        <div class="option">
-            <i class="fa-solid fa-people-group" title=""></i>
-            <h4>Clientes</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/clientes/agregar_clientes.php">
-        <div class="option">
-            <i class="fa-solid fa-user-tag" title=""></i>
-            <h4>Registrar Clientes</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/creditos/crudPrestamos.php">
-        <div class="option">
-            <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-            <h4>Prestamos</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/creditos/prestamos.php">
-        <div class="option">
-            <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-            <h4>Registrar Prestamos</h4>
-        </div>
-    </a>
-    <a href="/resources/views/admin/cobros/cobros.php">
-        <div class="option">
-            <i class="fa-solid fa-arrow-right-to-city" title=""></i>
-            <h4>Zonas de cobro</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/clientes/lista_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-people-group" title=""></i>
+                    <h4>Clientes</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/gastos/gastos.php">
-        <div class="option">
-            <i class="fa-solid fa-sack-xmark" title=""></i>
-            <h4>Gastos</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-tag" title=""></i>
+                    <h4>Registrar Clientes</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                    <h4>Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                    <h4>Registrar Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/cobros/cobros.php">
+                <div class="option">
+                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
+                    <h4>Zonas de cobro</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/ruta/lista_super.php">
-        <div class="option">
-            <i class="fa-solid fa-map" title=""></i>
-            <h4>Ruta</h4>
-        </div>
-    </a>
+            <a href="/resources/views/admin/gastos/gastos.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <h4>Gastos</h4>
+                </div>
+            </a>
 
-    <a href="/resources/views/admin/abonos/abonos.php">
-        <div class="option">
-            <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-            <h4>Abonos</h4>
+            <a href="/resources/views/admin/ruta/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/abonos/abonos.php">
+                <div class="option">
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <h4>Abonos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/retiros/retiros.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Retiros</h4>
+                </div>
+            </a>
         </div>
-    </a>
-    <a href="/resources/views/admin/retiros/retiros.php" class="selected">
-        <div class="option">
-            <i class="fa-solid fa-scale-balanced" title=""></i>
-            <h4>Retiros</h4>
-        </div>
-    </a>
-</div>
-</div> 
+    </div>
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
     <main>
@@ -273,6 +165,7 @@ $result = $conexion->query($sql);
 
 if ($result->num_rows > 0) {
     // Iniciar la tabla HTML con estilos
+    echo "<div class='table-scroll-container'>";
     echo "<div class='table-container'>";
     echo "<table class='styled-table'>";
     echo "<thead>";
@@ -281,19 +174,21 @@ if ($result->num_rows > 0) {
     echo "<tbody>";
 
     // Recorrer los resultados y mostrar cada fila en la tabla
-    while($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . htmlspecialchars($row["ID"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["IDUsuario"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["Fecha"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["Monto"]) . "</td>";
-        $descripcion = !is_null($row['descripcion']) ? htmlspecialchars($row['descripcion']) : '';
-        echo "</tr>";
-    }
-
+while($row = $result->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td>" . htmlspecialchars($row["ID"]) . "</td>";
+    echo "<td>" . htmlspecialchars($row["IDUsuario"]) . "</td>";
+    echo "<td>" . htmlspecialchars($row["Fecha"]) . "</td>";
+    echo "<td>" . htmlspecialchars($row["Monto"]) . "</td>";
+    // Imprimir la descripción
+    $descripcion = !is_null($row['descripcion']) ? htmlspecialchars($row['descripcion']) : 'Sin descripción';
+    echo "<td>" . $descripcion . "</td>"; // Asegúrate de imprimir la variable aquí
+    echo "</tr>";
+}
     // Finalizar la tabla
     echo "</tbody>";
     echo "</table>";
+    echo "</div>";
     echo "</div>";
 } else {
     echo "<p>No se encontraron resultados.</p>";
@@ -309,38 +204,3 @@ $conexion->close();
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -199,6 +199,18 @@ a.selected{
     display: block; /* Asegura que la imagen se muestre como un bloque */
     margin: 0 auto; /* Centra la imagen horizontalmente en su contenedor */
 }
+
+/* Estilos para la tabla */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
+}
+ 
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
+
 h1 { 
     text-align: center;
     margin: 20px 0;
@@ -206,30 +218,52 @@ h1 {
     color: var(--color-fondo-texto);
 } 
 
-.container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/* Estilos para la tabla de saldos */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    max-width: 100%;
 }
 
-table th, table td {
-    padding: 10px; 
+th, td {
+    padding: 10px; /* Reducción del relleno para pantallas más pequeñas */
     text-align: left;
+    border-bottom: 1px solid #ccc;
 }
 
-table th {
-    background-color: var(--color-fondo-tabla);
-    color: var(--color-fondo-texto);
-    font-family: Arial, Helvetica, sans-serif;
+th {
+    background-color: #747474;
+    color: #ffffff;
+    font-weight: bold;
 }
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #dcdcdc;
+}
+
+/* Estilos para los enlaces en la última columna */
+td a {
+    background: #adadad;
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.3s ease;
+    padding: 7px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+}
+
+td a:hover {
+    background: #707070;
+    color: #000000;
+} 
+
 
 /* Estilos para el encabezado de los cuadros de saldo */
 .saldo-box {
