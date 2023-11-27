@@ -23,15 +23,15 @@ function obtenerCuotas($conexion, $filtro)
         case 'pagado':
             $sql .= " AND (p.Estado = '' OR EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?))";
             break;
+
         case 'pendiente':
-            case 'pendiente':
-                $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) AND p.mas_tarde = 0";
-                break;
-            
+            $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) AND p.mas_tarde = 0";
+            break;
+
 
 
         case 'nopagado':
-            $sql .= " AND p.Pospuesto = 1  " ;
+            $sql .= " AND p.Pospuesto = 1  ";
 
             break;
         case 'mas-tarde':

@@ -2,13 +2,12 @@
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once  '../../../../../../../controllers/conexion.php';
-
+require_once '../../../../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+    header("Location: ../../../../../index.php");
     exit();
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
@@ -98,7 +97,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
     </header>
 
 
-
+ 
 
     <main>
 
@@ -111,6 +110,9 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
         <div class="grafico-contenedor" style="width: 400px; height: 400px;">
             <canvas id="miGrafico"></canvas>
         </div>
+        
+       
+        
 
 
         <form action="prestamos_del_dia.php" method="get">
@@ -124,6 +126,10 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 
             </select>
             <input type="submit" value="Filtrar">
+            
+              <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+            
+            
         </form>
 
         <?php if (count($cuotasHoy) > 0) : ?>
@@ -131,15 +137,10 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                 <table>
                     <thead>
                         <tr>
-                            <th>ID Préstamo</th>
+                            <th>PréstamoID</th>
                             <th>Nombre Cliente</th>
-                            <th>Domicilio</th>
-                            <th>Teléfono</th>
-                            <th>Monto Cuota</th>
-                            <th>Fecha Inicio</th>
                             <th>Frecuencia Pago</th>
                             <th>Perfil</th>
-                           
                             <th>Pagar</th>
                             <th>No pago</th>
                             <th>Pagar cantida</th>
@@ -152,10 +153,10 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                             <tr>
                                 <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
-                                <td><?php echo htmlspecialchars($cuota['DireccionCliente']); ?></td>
-                                <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
-                                <td><?php echo htmlspecialchars($cuota['MontoCuota']); ?></td>
-                                <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
+                               
+                               
+                              
+                               
                                 <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
                                 <td>
                                     <a href="../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
@@ -182,7 +183,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                                 <td>
                                     <?php if ($filtro != 'pagado') : ?>
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#customPaymentModal" data-cliente-telefono="<?php echo htmlspecialchars($cuota['TelefonoCliente']); ?>" onclick="abrirModalPago(<?php echo $cuota['ID']; ?>,<?php echo $cuota['MontoCuota']; ?>,'<?php echo htmlspecialchars($cuota['NombreCliente']); ?>','<?php echo htmlspecialchars($cuota['DireccionCliente']); ?>','<?php echo htmlspecialchars($cuota['TelefonoCliente']); ?>','<?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?>',<?php echo $cuota['MontoAPagar']; ?>)">
-                                            Pagar Cantidad
+                                            Cantidad
                                         </button>
 
 
@@ -191,7 +192,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                                 <td>
                                     <?php if ($filtro != 'pagado') : ?>
                                         <button type="button" class="btn btn-secondary btn-mas-tarde" data-prestamoid="<?php echo $cuota['ID']; ?>">
-                                            Pasar Más Tarde
+                                            Más Tarde
                                         </button>
                                     <?php endif; ?>
                                 </td>
@@ -322,6 +323,13 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                                     <input type="number" class="form-control" id="customAmount" name="customAmount" required>
                                 </div>
                             </form>
+                              <form id="">
+                                <div class="form-group">
+                                    <label for="customAmount">Campo extra..:</label>
+                                    <input type="number" class="form-control" id="customAmount" name="customAmount" required>
+                                </div>
+                            </form>
+                            
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
