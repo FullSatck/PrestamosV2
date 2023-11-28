@@ -56,10 +56,10 @@ require 'filtrarPrestamos.php'; // Asegúrate de que este archivo contiene la fu
 $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'pendiente';
 
 // Obtener las cuotas del día con el filtro aplicado
-$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Chihuahua');
+$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Puebla');
 
 // Obtener conteos de préstamos
-$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
+$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Puebla');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -82,7 +82,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 <body>
 
     <header>
-    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>

@@ -1,8 +1,7 @@
 <?php
 require '../../../../../../../controllers/conexion.php';
 
-function obtenerCuotas($conexion, $filtro, $zona)
-{
+function obtenerCuotas($conexion, $filtro, $zona) {
     $fechaHoy = date('Y-m-d');
     $cuotas = array();
 
@@ -68,8 +67,7 @@ function obtenerCuotas($conexion, $filtro, $zona)
     return $cuotas;
 }
 
-function esDiaDePago($fechaInicio, $frecuenciaPago, $fechaHoy)
-{
+function esDiaDePago($fechaInicio, $frecuenciaPago, $fechaHoy) {
     $fechaInicio = new DateTime($fechaInicio);
     $fechaHoy = new DateTime($fechaHoy);
 
@@ -89,15 +87,14 @@ function esDiaDePago($fechaInicio, $frecuenciaPago, $fechaHoy)
     }
 }
 
-function contarPrestamosPorEstado($conexion, $zona)
-{
+function contarPrestamosPorEstado($conexion, $zona) {
     $conteos = ['pendiente' => 0, 'pagado' => 0, 'nopagado' => 0, 'mas-tarde' => 0];
     $fechaHoy = date('Y-m-d');
 
     // Contar préstamos pendientes
     $sqlPendiente = "SELECT COUNT(*) AS conteo FROM prestamos p
-                 WHERE p.FechaInicio <= ? AND p.Zona = ? AND p.Estado = 'pendiente' AND p.Pospuesto = 0 
-                 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) AND p.mas_tarde = 0";
+                     WHERE p.FechaInicio <= ? AND p.Zona = ? AND p.Estado = 'pendiente' AND p.Pospuesto = 0 
+                     AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
     $stmt = $conexion->prepare($sqlPendiente);
     $stmt->bind_param("sss", $fechaHoy, $zona, $fechaHoy);
     $stmt->execute();
@@ -142,3 +139,4 @@ function contarPrestamosPorEstado($conexion, $zona)
     $stmt->close();
     return $conteos;
 }
+?>
