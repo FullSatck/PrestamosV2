@@ -127,14 +127,19 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             </select>
             <input type="submit" value="Filtrar">
 
-            <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
-
+          
+          
 
         </form>
+        <div class="header-actions">
+        <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+            <input type="text" id="searchBar" placeholder="Buscar...">
+        </div>
+
 
         <?php if (count($cuotasHoy) > 0) : ?>
             <div class="table-scroll-container">
-                <table>
+                <table id="myTable">
                     <thead>
                         <tr>
                             <th>PréstamoID</th>
@@ -358,12 +363,6 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
     </main>
 
     <script src="/public/assets/js/presDia.js"></script>
@@ -418,8 +417,6 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                 }
             }
         });
-
-       
     </script>
 </body>
 
