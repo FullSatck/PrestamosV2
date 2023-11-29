@@ -127,14 +127,18 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             </select>
             <input type="submit" value="Filtrar">
 
-          
-          
+
+            <input type="text" name="busqueda" placeholder="Buscar...">
+            <input type="submit" value="Buscar">
+            <div class="header-actions">
+                <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+            </div>
 
         </form>
-        <div class="header-actions">
-        <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
-            <input type="text" id="searchBar" placeholder="Buscar...">
-        </div>
+
+     
+
+
 
 
         <?php if (count($cuotasHoy) > 0) : ?>
@@ -144,7 +148,6 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                         <tr>
                             <th>PréstamoID</th>
                             <th>Nombre Cliente</th>
-                            <th>Frecuencia Pago</th>
                             <th>Perfil</th>
                             <th>Pagar</th>
                             <th>No pago</th>
@@ -158,11 +161,6 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                             <tr>
                                 <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
-
-
-
-
-                                <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
                                 <td>
                                     <a href="../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
@@ -417,6 +415,20 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                 }
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        var campoBusqueda = document.querySelector('input[name="busqueda"]');
+
+        campoBusqueda.addEventListener('input', function() {
+            var textoBusqueda = this.value.toLowerCase();
+            var filas = document.querySelectorAll('#myTable tbody tr');
+
+            filas.forEach(function(fila) {
+                var coincide = fila.textContent.toLowerCase().includes(textoBusqueda);
+                fila.style.display = coincide ? '' : 'none';
+            });
+        });
+    });
     </script>
 </body>
 
