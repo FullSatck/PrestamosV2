@@ -18,7 +18,7 @@ main{
     padding: 20px;
 }
 
-header{
+header{ 
     width: 100%;
     height: 80px;
     background: #f5f5f5;
@@ -43,6 +43,25 @@ header{
     cursor: pointer;
     position: absolute;
 }
+
+/* Estilos para el nombre de usuario y rol */
+.nombre-usuario {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    color: blue;
+    max-width: 200px;
+    word-wrap: break-word;
+  }
+  
+  .nombre-usuario span {
+    color: grey;
+  }
 
 .menu__side{
     width: 80px;
@@ -149,6 +168,15 @@ a.selected{
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal en pantallas pequeñas */
+}
+ 
+.table-scroll-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px;
+}
 
 .cuadros-container {
   display: flex;
@@ -203,11 +231,14 @@ a.selected{
 
 /* ESTILOS PARA EL CONTENIDOD DE LA PAGINA */
 
+.header2{
+     background-color: #f4f4f4;
+     color: #000000;
+     padding: 15px; /* Reducción del relleno para pantallas más pequeñas */
+}
 
-h1 {
-    background-color: #f4f4f4;
-    color: #000000;
-    padding: 15px; /* Reducción del relleno para pantallas más pequeñas */
+h4{
+    color: gray;
 }
 
 /* Estilos para el mensaje */
@@ -307,7 +338,7 @@ td a {
     border-radius: 8px;
     display: inline-block;
     text-align: center;
-}
+} 
 
 td a:hover {
     background: #707070;

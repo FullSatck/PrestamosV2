@@ -1,31 +1,27 @@
 <?php
 require '../../../../../../controllers/conexion.php';
 
-function obtenerCuotas($conexion, $filtro) {
+function obtenerCuotas($conexion, $filtro, $zona) {
     $fechaHoy = date('Y-m-d');
     $cuotas = array();
 
     // Consulta SQL base
-// Consulta SQL base
-$sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
-c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
-(SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
-(SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
-   FROM prestamos p
-     INNER JOIN clientes c ON p.IDCliente = c.ID
-       WHERE p.FechaInicio <= ? AND p.Zona = 'Chihuahua'"; // Aquí se añade la condición para la zona
-
-// El resto del código permanece igual
-
+    $sql = "SELECT p.ID, p.IDCliente, p.MontoCuota, p.FechaInicio, p.FrecuenciaPago, p.Pospuesto,
+    c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS TelefonoCliente,
+    c.IdentificacionCURP, p.MontoCuota AS MontoAPagar,
+    (SELECT COUNT(*) FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) as PagadoHoy,
+    (SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
+    FROM prestamos p
+    INNER JOIN clientes c ON p.IDCliente = c.ID
+           WHERE p.FechaInicio <= ? AND p.Zona = ?";
 
     // Modificar la consulta según el filtro
     switch ($filtro) {
         case 'pagado':
-            // Añadir condición para 'pagado'
-            $sql .= " AND EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+            $sql .= " AND (p.Estado = '' OR EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?))";
             break;
         case 'pendiente':
-            $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0";
+            $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
             break;
         case 'nopagado':
             $sql .= " AND p.Pospuesto = 1";
@@ -40,10 +36,10 @@ c.Nombre AS NombreCliente, c.Domicilio AS DireccionCliente, c.Telefono AS Telefo
     }
 
     // Ajustar el bind_param según el filtro
-    if ($filtro == 'pagado') {
-        $stmt->bind_param("sss", $fechaHoy, $fechaHoy, $fechaHoy); // Tres parámetros para 'pagado'
+    if ($filtro == 'pagado' || $filtro == 'pendiente') {
+        $stmt->bind_param("ssss", $fechaHoy, $fechaHoy, $zona, $fechaHoy); // Cuatro parámetros para 'pagado' y 'pendiente'
     } else {
-        $stmt->bind_param("ss", $fechaHoy, $fechaHoy); // Dos parámetros para 'pendiente' y 'nopagado'
+        $stmt->bind_param("sss", $fechaHoy, $fechaHoy, $zona); // Tres parámetros para 'nopagado'
     }
 
     // Ejecutar la consulta
@@ -89,5 +85,47 @@ function esDiaDePago($fechaInicio, $frecuenciaPago, $fechaHoy) {
         default:
             return false;
     }
+}
+
+function contarPrestamosPorEstado($conexion, $zona) {
+    $conteos = ['pendiente' => 0, 'pagado' => 0, 'nopagado' => 0];
+    $fechaHoy = date('Y-m-d');
+
+    // Contar préstamos pendientes
+    $sqlPendiente = "SELECT COUNT(*) AS conteo FROM prestamos p
+                     WHERE p.FechaInicio <= ? AND p.Zona = ? AND p.Estado = 'pendiente' AND p.Pospuesto = 0 
+                     AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+    $stmt = $conexion->prepare($sqlPendiente);
+    $stmt->bind_param("sss", $fechaHoy, $zona, $fechaHoy);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $conteos['pendiente'] = $fila['conteo'];
+    }
+
+    // Contar préstamos pagados
+    $sqlPagado = "SELECT COUNT(*) AS conteo FROM prestamos p
+                  WHERE p.Zona = ? AND EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+    $stmt = $conexion->prepare($sqlPagado);
+    $stmt->bind_param("ss", $zona, $fechaHoy);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $conteos['pagado'] = $fila['conteo'];
+    }
+
+    // Contar préstamos no pagados
+    $sqlNoPagado = "SELECT COUNT(*) AS conteo FROM prestamos p
+                    WHERE p.Zona = ? AND p.Pospuesto = 1";
+    $stmt = $conexion->prepare($sqlNoPagado);
+    $stmt->bind_param("s", $zona);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $conteos['nopagado'] = $fila['conteo'];
+    }
+
+    $stmt->close();
+    return $conteos;
 }
 ?>

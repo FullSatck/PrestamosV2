@@ -15,75 +15,17 @@ if (isset($_SESSION["usuario_id"])) {
 // Incluye el archivo de conexión
 include("../../../../../../controllers/conexion.php");
 
-// COBROS 
-try {
-    // Consulta SQL para obtener la suma de MontoAPagar
-    $sqlCobros = "SELECT SUM(MontoAPagar) AS TotalMonto FROM prestamos";
+$usuario_id = $_SESSION["usuario_id"];
 
-    // Realizar la consulta
-    $resultCobros = mysqli_query($conexion, $sqlCobros);
-
-    if ($resultCobros) {
-        $rowCobros = mysqli_fetch_assoc($resultCobros);
-
-        // Obtener el total de cobros
-        $totalMonto = $rowCobros['TotalMonto'];
-
-        // Cierra la consulta de cobros
-        mysqli_free_result($resultCobros);
-    } else {
-        echo "Error en la consulta de cobros: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (cobros): " . $e->getMessage();
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
-
-// INGRESOS
-try {
-    // Consulta SQL para obtener la suma de MontoPagado
-    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos";
-
-    // Realizar la consulta
-    $resultIngresos = mysqli_query($conexion, $sqlIngresos);
-
-    if ($resultIngresos) {
-        $rowIngresos = mysqli_fetch_assoc($resultIngresos);
-
-        // Obtener el total de ingresos
-        $totalIngresos = $rowIngresos['TotalIngresos'];
-
-        // Cierra la consulta de ingresos
-        mysqli_free_result($resultIngresos);
-    } else {
-        echo "Error en la consulta de ingresos: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
-}
-
-
-// COMISIONES
-try {
-    // Consulta SQL para obtener la suma de Comision
-    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos WHERE Zona = 'Chihuahua'";
-
-    // Realizar la consulta
-    $resultComisiones = mysqli_query($conexion, $sqlComisiones);
-
-    if ($resultComisiones) {
-        $rowComisiones = mysqli_fetch_assoc($resultComisiones);
-
-        // Obtener el total de comisiones
-        $totalComisiones = $rowComisiones['TotalComisiones'];
-
-        // Cierra la consulta de comisiones
-        mysqli_free_result($resultComisiones);
-    } else {
-        echo "Error en la consulta de comisiones: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (comisiones): " . $e->getMessage();
-}
+$stmt->close();
 
 
 
@@ -111,10 +53,13 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -126,6 +71,13 @@ mysqli_close($conexion);
 
         <div class="options__menu">
 
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
@@ -133,7 +85,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-         
+
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
                 <div class="option">
@@ -170,10 +122,17 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -182,7 +141,7 @@ mysqli_close($conexion);
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a> 
+            </a>
 
 
 
@@ -191,11 +150,12 @@ mysqli_close($conexion);
     </div>
 
     <main>
-        <h1>Inicio cobrador de Baja California</h1>
+        <h1>Inicio cobrador de Puebla</h1>
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
+                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cobro_inicio.php"
+                        class="titulo">Prestamos</a><br>
                     <p>Mantenimiento
                     </p>
                 </div>
@@ -203,7 +163,7 @@ mysqli_close($conexion);
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
                     <p>Version beta</p>
                 </div>
             </div>

@@ -16,6 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $curp = mysqli_real_escape_string($conexion, $_POST['curp']);
     $ciudad = mysqli_real_escape_string($conexion, $_POST['ciudad']);
     $asentamiento = mysqli_real_escape_string($conexion, $_POST['asentamiento']);
+    $cartera_id = mysqli_real_escape_string($conexion, $_POST['cartera_id']);
+
     // Aquí puedes agregar la lógica para manejar la imagen del cliente
 
     // Validar si el ID de la zona existe en la base de datos
@@ -30,14 +32,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombreZona = $rowZona['Nombre'];
 
     // Crear la consulta SQL para insertar los datos
-    $sql = "INSERT INTO clientes (Nombre, Apellido, Domicilio, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada, IdentificacionCURP, ciudad, asentamiento) VALUES ('$nombre', '$apellido', '$domicilio', '$telefono', '$historial', '$referencias', '$moneda', '$nombreZona', '$curp', '$ciudad', '$asentamiento')";
+    $sql = "INSERT INTO clientes (Nombre, Apellido, Domicilio, Telefono, HistorialCrediticio, ReferenciasPersonales, MonedaPreferida, ZonaAsignada, IdentificacionCURP, ciudad, asentamiento, cartera_id) VALUES ('$nombre', '$apellido', '$domicilio', '$telefono', '$historial', '$referencias', '$moneda', '$nombreZona', '$curp', '$ciudad', '$asentamiento', '$cartera_id')";
 
-    // Ejecutar la consulta
+    // Ejecutar la consulta 
     if (mysqli_query($conexion, $sql)) {
-        header('Location: ../../../resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php?mensaje=Cliente guardado exitosamente');
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conexion);
-    }
+        $ultimo_id_cliente = mysqli_insert_id($conexion);
+        header('Location: ../../../resources/views/zonas/20-Puebla/cobrador/creditos/prestamos.php?cliente_id=' . $ultimo_id_cliente);
+        exit();
+        } else {
+               echo "Error al registrar el cliente: " . mysqli_error($conexion);
+          }
 
     // Cerrar la conexión
     mysqli_close($conexion);

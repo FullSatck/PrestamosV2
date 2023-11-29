@@ -44,6 +44,25 @@ header{
     position: absolute;
 }
 
+/* Estilos para el nombre de usuario y rol */
+.nombre-usuario {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    color: blue;
+    max-width: 200px;
+    word-wrap: break-word;
+  }
+  
+  .nombre-usuario span {
+    color: grey;
+  }
+
 .menu__side{
     width: 80px;
     height: 100%;
@@ -224,22 +243,26 @@ h1 {
     font-weight: bold;
 }
 
-.form-container select,
-.form-container input[type="text"],
-.form-container input[type="number"] {
+/* Estilos comunes para inputs y selects */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select {
     width: 100%;
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-.form-container select {
+/* Ajustes adicionales para select */
+.form-group select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     background: transparent url('arrow.png') no-repeat scroll right center;
 }
+
 
 .result-container {
     margin-top: 20px;

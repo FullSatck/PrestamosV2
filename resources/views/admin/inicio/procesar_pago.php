@@ -62,6 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             }
             $stmtActualizarPrestamo->execute();
             $stmtActualizarPrestamo->close();
+            
+            // Actualizar el campo 'mas_tarde' en la tabla 'prestamos'
+            $sqlActualizarMasTarde = "UPDATE prestamos SET mas_tarde = 0 WHERE ID = ?";
+            $stmtActualizarMasTarde = $conexion->prepare($sqlActualizarMasTarde);
+            $stmtActualizarMasTarde->bind_param("i", $prestamoId);
+            $stmtActualizarMasTarde->execute();
+            $stmtActualizarMasTarde->close();
 
             // Actualizar el estado de 'Pospuesto' si el préstamo estaba pospuesto
             if ($esPospuesto) {
@@ -72,12 +79,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
                 $stmtActualizarPospuesto->close();
             }
 
+
             // Confirmar la transacción
             $conexion->commit();
             echo json_encode([
-                "success" => true, 
-                "message" => "Pago procesado correctamente.", 
-                "clienteNombre" => $clienteNombre, 
+                "success" => true,
+                "message" => "Pago procesado correctamente.",
+                "clienteNombre" => $clienteNombre,
                 "clienteTelefono" => $clienteTelefono,
                 "montoPagado" => $montoPagado
             ]);
@@ -93,4 +101,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 }
 
 $conexion->close();
-?>

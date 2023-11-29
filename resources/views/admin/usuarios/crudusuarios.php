@@ -12,6 +12,16 @@ if (!isset($_SESSION["usuario_id"])) {
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
     $usuario_id = $_SESSION["usuario_id"];
+
+    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
     
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -69,6 +79,14 @@ if ($usuariosSQL === false) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -79,6 +97,13 @@ if ($usuariosSQL === false) {
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
@@ -186,56 +211,56 @@ if ($usuariosSQL === false) {
             <button><a href="usuariosDesactivados.php" class="btn btn-primary">Desactivados</a></button>
         </div>
         <div class="table-scroll-container">
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Zona</th>
-                <th>Rol</th>
-                <th>Estado</th>
-                <th></th>
-                <th>Modificar</th>
-                <th>Des/Act</th>
-            </tr>
-            <?php
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Zona</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th></th>
+                    <th>Modificar</th>
+                    <th>Des/Act</th>
+                </tr>
+                <?php
             if ($usuariosSQL->num_rows > 0) {
                 while ($datos = $usuariosSQL->fetch_object()) {
                     ?>
-            <tr>
-                <td><?= "REC 100" . $datos->ID ?></td>
-                <td><?= $datos->Nombre ?></td>
-                <td><?= $datos->Apellido ?></td>
-                <td><?= $datos->Email ?></td>
-                <td><?= $datos->Zona ?></td>
-                <td><?= $datos->RolID ?></td>
-                <td><?= $datos->Estado ?></td>
+                <tr>
+                    <td><?= "REC 100" . $datos->ID ?></td>
+                    <td><?= $datos->Nombre ?></td>
+                    <td><?= $datos->Apellido ?></td>
+                    <td><?= $datos->Email ?></td>
+                    <td><?= $datos->Zona ?></td>
+                    <td><?= $datos->RolID ?></td>
+                    <td><?= $datos->Estado ?></td>
 
-                <td>
+                    <td>
 
-                <td>
-                    <a href="modificarUser.php?id=<?= $datos->ID ?>">
-                        <i class="fas fa-pencil-alt"></i> Modificar
-                    </a>
+                    <td>
+                        <a href="modificarUser.php?id=<?= $datos->ID ?>">
+                            <i class="fas fa-pencil-alt"></i> Modificar
+                        </a>
 
-                </td>
-                <td>
-                   <!-- Enlace para cambiar el estado -->
-                   <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>&vista=activos">
-                        <i class="fas <?= $datos->Estado == 'activo' ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
-                        <?= $datos->Estado == 'activo' ? 'Desactivar' : 'Activar' ?>
-                    </a>
-                <td>
+                    </td>
+                    <td>
+                        <!-- Enlace para cambiar el estado -->
+                        <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>&vista=activos">
+                            <i class="fas <?= $datos->Estado == 'activo' ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
+                            <?= $datos->Estado == 'activo' ? 'Desactivar' : 'Activar' ?>
+                        </a>
+                    <td>
 
-            </tr>
-            <?php
+                </tr>
+                <?php
                 }
             } else {
                 echo "No se encontraron resultados.";
             }
             ?>
-        </table>
+            </table>
         </div>
     </main>
 

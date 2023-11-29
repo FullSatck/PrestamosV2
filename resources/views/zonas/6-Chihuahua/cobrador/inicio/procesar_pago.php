@@ -71,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
                 $stmtActualizarPospuesto->execute();
                 $stmtActualizarPospuesto->close();
             }
+            
 
             // Confirmar la transacción
             $conexion->commit();

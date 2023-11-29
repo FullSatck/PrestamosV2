@@ -8,6 +8,18 @@ if (!isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+$_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
 
 ?>
@@ -26,9 +38,17 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
 
 <body id="body">
 
-    <header>
+<header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
         </div>
     </header>
 
@@ -40,6 +60,13 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">

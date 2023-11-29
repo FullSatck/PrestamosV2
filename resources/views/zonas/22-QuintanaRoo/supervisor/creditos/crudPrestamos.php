@@ -10,6 +10,19 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
@@ -39,9 +52,24 @@ if (isset($_SESSION["usuario_id"])) {
     <div class="name__page">
         <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
         <h4>Recaudo</h4>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
+        </div>
     </div>
 
     <div class="options__menu">
+
+    <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
         <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php">
             <div class="option">
@@ -83,13 +111,6 @@ if (isset($_SESSION["usuario_id"])) {
                 <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                 <h4>Prestamos</h4>
             </div>
-        </a>
-
-        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/creditos/prestamos.php">
-            <div class="option">
-                <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                <h4>Registrar Prestamos</h4>
-            </div>
         </a> 
 
         <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/gastos/gastos.php">
@@ -111,17 +132,7 @@ if (isset($_SESSION["usuario_id"])) {
                 <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                 <h4>Abonos</h4>
             </div>
-        </a>
-
-        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/retiros/retiros.php">
-            <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
-                <h4>Retiros</h4>
-            </div>
-        </a>
-
-
-
+        </a> 
     </div>
 
 </div>
@@ -165,7 +176,7 @@ if (isset($_SESSION["usuario_id"])) {
                                 <tbody>
                                     <?php
                             include("../../../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Aguascalientes'");
+                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Quintana Roo'");
                             while ($datos = $sql->fetch_object()) { ?>
                                     <tr>
                                         <td><?= $datos->ID ?></td>

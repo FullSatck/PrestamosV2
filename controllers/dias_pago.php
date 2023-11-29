@@ -10,6 +10,24 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+// Incluir el archivo de conexión a la base de datos
+require_once("conexion.php");
+
+$usuario_id = $_SESSION["usuario_id"];
+
+// Asumiendo que la tabla de roles se llama 'roles' y tiene las columnas 'id' y 'nombre_rol'
+$sql_nombre = "SELECT usuarios.nombre, roles.nombre FROM usuarios INNER JOIN roles ON usuarios.rolID = roles.id WHERE usuarios.id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+    $_SESSION["nombre"] = $fila["nombre"]; // Guarda el nombre del rol en la sesión
+}
+$stmt->close();
+
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
@@ -32,11 +50,17 @@ if (isset($_SESSION["usuario_id"])) {
 
             <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
 
+            <div class="nombre-usuario">
+                <?php
+    if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
+        echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
+    }
+    ?>
+            </div>
+
         </header>
         <main>
             <?php
-    // Incluir el archivo de conexión a la base de datos
-    require_once("conexion.php");
 
     // Obtener el ID del préstamo desde el parámetro GET
     if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -81,6 +105,18 @@ if (isset($_SESSION["usuario_id"])) {
                     $sumaPagos += $pago["MontoPagado"];
                 }
 
+                // Calcular la fecha límite para el pago
+                $fechaLimite = calcularFechasPagoConPlazo($fecha, 20);
+
+                // Verificar si se ha superado la fecha límite y el pago no se ha realizado
+                $hoy = new DateTime();
+                if ($estadoPago == "No Pagado" && $hoy > $fechaLimite) {
+                    // Actualiza el estado del cliente en la base de datos a "Vencido"
+                    $stmt = $conexion->prepare("UPDATE clientes SET Estado = 'Vencido' WHERE ID = ?");
+                    $stmt->bind_param("i", $usuario_id); // Asegúrate de tener el ID del cliente
+                    $stmt->execute();
+                }
+
                 echo "<tr><td>$frecuencia</td><td>$fechaFormato</td><td>$cuota</td><td>$frecuenciaPago</td><td>$estadoPago</td></tr>";
                 $numeroFecha++;
             }
@@ -121,6 +157,19 @@ if (isset($_SESSION["usuario_id"])) {
         }
 
         return $fechasPago;
+    }
+
+    // Función para calcular la fecha límite de pago excluyendo domingos
+    function calcularFechasPagoConPlazo($fechaInicio, $plazo) {
+        $fechaLimite = clone $fechaInicio;
+        $diasHabiles = 0;
+        while ($diasHabiles < $plazo) {
+            $fechaLimite->modify("+1 day");
+            if ($fechaLimite->format("l") != "Sunday") {
+                $diasHabiles++;
+            }
+        }
+        return $fechaLimite;
     }
 
     // Función para obtener la descripción de la frecuencia

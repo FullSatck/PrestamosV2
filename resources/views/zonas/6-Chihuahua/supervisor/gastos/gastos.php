@@ -10,10 +10,24 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,6 +50,14 @@ if (isset($_SESSION["usuario_id"])) {
             <i class="fa-solid fa-plus-minus"></i>
             <span class="spann">Agregar Gasto</span>
         </a>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -46,6 +68,13 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
         <div class="options__menu">
+
+        <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
         <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php">
                 <div class="option">
@@ -87,14 +116,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a> 
+            </a>  
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php" class="selected">
                 <div class="option">
@@ -115,17 +137,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
+            </a> 
         </div>
 
     </div>
@@ -135,52 +147,58 @@ if (isset($_SESSION["usuario_id"])) {
 
     <main>
         <h1>Lista de Gastos</h1>
-        <?php
-// Incluye la configuración de conexión a la base de datos
-include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
+        <div class="table-scroll-container">
+            <?php
+        // Incluye la configuración de conexión a la base de datos
+        include "../../../../../../controllers/conexion.php"; // Asegúrate de que la ruta sea correcta
 
-// Realiza la consulta para obtener los gastos con el nombre de la zona
-$sql = "SELECT G.ID, Z.Nombre AS NombreZona, G.Fecha, G.Descripcion, G.Valor 
-        FROM Gastos G
-        INNER JOIN Zonas Z ON G.IDZona = Z.ID
-        WHERE IDZona = 6
-        ORDER BY G.ID DESC";
-$resultado = $conexion->query($sql);
+        // Realiza la consulta para obtener los gastos con el nombre de la zona
+        $sql = "SELECT g.ID, z.Nombre AS nombreZona, g.Ciudad, g.Asentamiento, g.Fecha, g.Descripcion, g.Valor
+                FROM gastos g
+                INNER JOIN zonas z ON g.IDZona = z.ID
+                WHERE g.IDZona = 6
+                ORDER BY g.ID DESC";
+        $resultado = $conexion->query($sql);
 
-// Crear una tabla HTML para mostrar las columnas de las filas
-echo '<table>';
-echo '<tr>';
-echo '<th>ID</th>';
-echo '<th>Zona</th>';
-echo '<th>Fecha</th>';
-echo '<th>Descripción</th>';
-echo '<th>Valor</th>';
-echo '</tr>';
-
-// Verifica si hay gastos en la base de datos
-if ($resultado->num_rows > 0) {
-    // Si hay gastos, itera a través de los resultados y muestra cada gasto
-    while ($fila = $resultado->fetch_assoc()) {
+        // Crear una tabla HTML para mostrar las columnas de las filas
+        echo '<table>';
         echo '<tr>';
-        echo '<td>' . $fila['ID'] . '</td>';
-        echo '<td>' . $fila['NombreZona'] . '</td>';
-        echo '<td>' . $fila['Fecha'] . '</td>';
-        echo '<td>' . $fila['Descripcion'] . '</td>'; 
-        echo "<td>" . number_format($fila['Valor'], 0, '.', '.') . "</td>"; // Formatear el monto
+        echo '<th>ID</th>';
+        echo '<th>Estado</th>';
+        echo '<th>Municipio</th>';
+        echo '<th>Colonia</th>';
+        echo '<th>Fecha</th>';
+        echo '<th>Descripción</th>';
+        echo '<th>Valor</th>';
         echo '</tr>';
-    }
-} else {
-    // Si no hay gastos, muestra una fila con celdas vacías
-    echo '<tr>';
-    echo '<td colspan="5">No se encontraron gastos en la base de datos.</td>';
-    echo '</tr>';
-}
 
-echo '</table>';
+        // Verifica si hay gastos en la base de datos
+        if ($resultado->num_rows > 0) {
+            // Si hay gastos, itera a través de los resultados y muestra cada gasto
+            while ($fila = $resultado->fetch_assoc()) {
+                echo '<tr>';
+                echo '<td>' . $fila['ID'] . '</td>';
+                echo '<td>' . $fila['nombreZona'] . '</td>';
+                echo '<td>' . $fila['Ciudad'] . '</td>'; // Asegúrate de que 'Ciudad' corresponda al nombre de la columna
+                echo '<td>' . $fila['Asentamiento'] . '</td>'; // Asegúrate de que 'Asentamiento' corresponda al nombre de la columna
+                echo '<td>' . $fila['Fecha'] . '</td>';
+                echo '<td>' . $fila['Descripcion'] . '</td>'; 
+                echo "<td>" . number_format($fila['Valor'], 0, '.', '.') . "</td>"; // Formatear el monto
+                echo '</tr>';
+            }
+        } else {
+            // Si no hay gastos, muestra una fila con celdas vacías
+            echo '<tr>';
+            echo '<td colspan="7">No se encontraron gastos en la base de datos.</td>';
+            echo '</tr>';
+        }
 
-// Cierra la conexión a la base de datos
-$conexion->close();
-?>
+        echo '</table>';
+
+        // Cierra la conexión a la base de datos
+        $conexion->close();
+        ?>
+        </div>
     </main>
 
 

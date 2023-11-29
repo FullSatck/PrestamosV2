@@ -12,6 +12,16 @@ if (!isset($_SESSION["usuario_id"])) {
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
     $usuario_id = $_SESSION["usuario_id"];
+
+    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
     
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -63,6 +73,9 @@ $resultado = $conexion->query($sql);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
     <title>Lista Clientes</title>
 
     <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
@@ -71,9 +84,17 @@ $resultado = $conexion->query($sql);
 
 <body id="body">
 
-    <header>
+<header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
         </div>
     </header>
 
@@ -85,6 +106,13 @@ $resultado = $conexion->query($sql);
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
@@ -201,8 +229,7 @@ $resultado = $conexion->query($sql);
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Domicilio</th>
-                    <th>Teléfono</th>
-                    <th>Referencias Personales</th>
+                    <th>Teléfono</th> 
                     <th>Moneda Preferida</th>
                     <th>Zona Asignada</th>
                     <th>Estado</th>
@@ -216,8 +243,7 @@ $resultado = $conexion->query($sql);
                     <td><?= $fila["Nombre"] ?></td>
                     <td><?= $fila["Apellido"] ?></td>
                     <td><?= $fila["Domicilio"] ?></td>
-                    <td><?= $fila["Telefono"] ?></td>
-                    <td><?= $fila["ReferenciasPersonales"] ?></td>
+                    <td><?= $fila["Telefono"] ?></td> 
                     <td><?= $fila["Moneda"] ?></td>
                     <td><?= $fila["ZonaAsignada"] ?></td>
                     <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td>
@@ -239,6 +265,8 @@ $resultado = $conexion->query($sql);
             <?php } ?>
             </div>
     </main>
+    <script src="/public/assets/js/MenuLate.js"></script>
+
     
 
     <script>
@@ -263,11 +291,7 @@ $resultado = $conexion->query($sql);
         });
     });
     </script>
-    <script src="/public/assets/js/MenuLate.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
-
+   
 </body>
 
 </html>

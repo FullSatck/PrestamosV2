@@ -10,6 +10,19 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
@@ -33,6 +46,13 @@ if (isset($_SESSION["usuario_id"])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -43,6 +63,13 @@ if (isset($_SESSION["usuario_id"])) {
         </div>
 
         <div class="options__menu">
+
+        <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php">
                 <div class="option">
@@ -84,14 +111,7 @@ if (isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a> 
+            </a>  
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -158,13 +178,8 @@ if (isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="historial">Historial Crediticio:</label>
                 <textarea id="historial" name="historial" rows="4"></textarea>
-            </div>
-
-            <div class="input-container">
-                <label for="referencias">Referencias Personales:</label>
-                <textarea id="referencias" name="referencias" rows="4"></textarea>
-            </div>
-
+            </div> 
+            
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
                 <select id="moneda" name="moneda">
@@ -184,24 +199,24 @@ if (isset($_SESSION["usuario_id"])) {
             </div>
 
             <div class="input-container">
-                <label for="zona">Zona:</label>
+                <label for="zona">Estado:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM Zonas WHERE Nombre = 'Puebla'";
+                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Puebla'";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
                 }
                 ?>
                 </select>
-            </div>
+            </div> 
 
             <div class="input-container">
-                <label for="ciudad">Ciudad:</label>
+                <label for="ciudad">Municipio:</label>
                 <select id="ciudad" name="ciudad" required>
                     <?php
                 // Incluye el archivo de conexión a la base de datos
@@ -213,13 +228,14 @@ if (isset($_SESSION["usuario_id"])) {
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
                     echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                 }
-                ?> 
+                ?>
                 </select>
             </div>
 
             <div class="input-container">
-                <label for="asentamiento">Asentamiento:</label>
-                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento" required>
+                <label for="asentamiento">Colonia:</label>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
+                    required>
             </div>
 
             <div class="input-container">

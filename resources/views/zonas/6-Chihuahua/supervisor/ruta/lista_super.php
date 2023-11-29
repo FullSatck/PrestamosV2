@@ -8,7 +8,20 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../../../index.php");
     exit();
+
+}include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
+$stmt->close();
 
 
 // Verificar si se ha pasado un mensaje en la URL
@@ -27,7 +40,7 @@ if (isset($_GET['mensaje'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
-    <title>Abonos</title>
+    <title>Cobradores</title>
 </head>
 
 <body id="body">
@@ -35,6 +48,13 @@ if (isset($_GET['mensaje'])) {
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
         </div>
     </header>
 
@@ -46,6 +66,13 @@ if (isset($_GET['mensaje'])) {
         </div>
 
         <div class="options__menu">
+
+        <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php">
                 <div class="option">
@@ -87,14 +114,7 @@ if (isset($_GET['mensaje'])) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -116,16 +136,7 @@ if (isset($_GET['mensaje'])) {
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
+ 
         </div>
 
     </div>
@@ -140,21 +151,20 @@ if (isset($_GET['mensaje'])) {
         <div class="container-fluid">
 
             <!-- Resto del código de la tabla -->
-            <table class="table">
+            <div class="table-scroll-container"></div>
+            <table class="table-container">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Zona</th>
-                        <th scope="col">Rol</th>
+                        <th scope="col">Apellido</th> 
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                 include("../../../../../../controllers/conexion.php");
-                $sql = $conexion->prepare("SELECT Usuarios.ID, Usuarios.Nombre, Usuarios.Apellido, Usuarios.Email, Zonas.Nombre AS Zona, Roles.Nombre AS Rol FROM Usuarios JOIN Zonas ON Usuarios.Zona = Zonas.ID JOIN Roles ON Usuarios.RolID = Roles.ID WHERE Roles.ID = 2 AND Zonas.ID = 6"); // Filtra por el ID del rol de supervisor (2)
+                $sql = $conexion->prepare("SELECT usuarios.ID, usuarios.Nombre, usuarios.Apellido, usuarios.Email, zonas.Nombre AS zona, roles.Nombre AS rol FROM usuarios JOIN zonas ON usuarios.Zona = zonas.ID JOIN roles ON usuarios.RolID = roles.ID WHERE roles.ID = 3 AND zonas.ID = 6"); // Filtra por el ID del rol de supervisor (2)
                 
                 // Verificar si la preparación de la consulta fue exitosa
                 if ($sql === false) {
@@ -174,19 +184,16 @@ if (isset($_GET['mensaje'])) {
                     <tr class="row<?= $rowCount ?>">
                         <td><?= "REC 100" .$datos->ID ?></td>
                         <td><?= $datos->Nombre ?></td>
-                        <td><?= $datos->Apellido ?></td>
-                        <td><?= $datos->Zona ?></td>
-                        <td><?= $datos->Rol ?></td>
+                        <td><?= $datos->Apellido ?></td> 
                         <td>
-                            <!-- Botón para ver los cobradores de la zona -->
-                            <a href="ver_prestamos.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ver
-                                Prestamos</a>
-                            <a href="ruta.php?zona=<?= urlencode($datos->Zona) ?>" class="btn btn-primary">Ruta</a>
+                            <!-- Botón para ver los cobradores de la zona --> 
+                            <a href="ruta.php" class="btn btn-primary">Enrutada</a>
                         </td>
                     </tr>
                     <?php } ?>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <!-- Paginación -->

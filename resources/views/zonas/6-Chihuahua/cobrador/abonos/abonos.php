@@ -11,6 +11,20 @@ if (isset($_SESSION["usuario_id"])) {
 }
 
 
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // Verificar si se ha pasado un mensaje en la URL
 $mensaje = "";
 if (isset($_GET['mensaje'])) {
@@ -39,10 +53,14 @@ if (isset($_GET['mensaje'])) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+        
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -53,6 +71,13 @@ if (isset($_GET['mensaje'])) {
         </div>
 
         <div class="options__menu">
+
+        <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="selected">
                 <div class="option">
@@ -81,14 +106,7 @@ if (isset($_GET['mensaje'])) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
                 <div class="option">
@@ -97,10 +115,17 @@ if (isset($_GET['mensaje'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 

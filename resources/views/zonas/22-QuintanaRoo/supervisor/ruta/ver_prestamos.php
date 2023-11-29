@@ -6,9 +6,23 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 }
+
+include "../../../../../../controllers/conexion.php";
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
 
 // Obtener el nombre de la zona desde la URL
@@ -22,11 +36,8 @@ if (isset($_GET['mensaje'])) {
     $mensaje = $_GET['mensaje'];
 }
 
-// Conectar a la base de datos
-include("../../../../controllers/conexion.php");
-
 // Consulta SQL para obtener los préstamos de la zona especificada con el nombre del cliente
-$sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID WHERE P.Zona = ?");
+$sql = $conexion->prepare("SELECT p.ID, c.Nombre AS nombreCliente, p.Zona, p.Monto FROM prestamos p INNER JOIN clientes c ON p.IDCliente = c.ID WHERE p.Zona = ?");
 $sql->bind_param("s", $nombreZona);
 $sql->execute();
 
@@ -42,17 +53,27 @@ if ($sql === false) {
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <title>Listado de Préstamos</title>
 </head>
 
-<body id="body"> 
+<body id="body">
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
         </div>
     </header>
 
@@ -65,12 +86,19 @@ if ($sql === false) {
 
         <div class="options__menu">
 
+        <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
@@ -105,13 +133,6 @@ if ($sql === false) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
             </a> 
 
             <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/gastos/gastos.php">
@@ -124,7 +145,7 @@ if ($sql === false) {
             <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/ruta/lista_super.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 
@@ -134,15 +155,6 @@ if ($sql === false) {
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
 
         </div>
 
@@ -158,7 +170,8 @@ if ($sql === false) {
             <div class="row">
 
                 <div class="col-md-9">
-                    <table class="table">
+                    <div class="table-scroll-container">
+                    <table class="table-container">
                         <thead>
                             <tr>
                                 <th scope="col">ID del Préstamo</th>
@@ -176,7 +189,7 @@ if ($sql === false) {
                         ?>
                             <tr class="row<?= $rowCount ?>">
                                 <td><?= "Prestamo " . $datos['ID'] ?></td>
-                                <td><?= $datos['NombreCliente'] ?></td>
+                                <td><?= $datos['nombreCliente'] ?></td>
                                 <td><?= $datos['Zona'] ?></td>
                                 <td><?= $datos['Monto'] ?></td>
                             </tr>
@@ -187,6 +200,7 @@ if ($sql === false) {
                     ?>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

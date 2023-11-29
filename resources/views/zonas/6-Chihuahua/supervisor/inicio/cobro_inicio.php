@@ -13,8 +13,20 @@ if (isset($_SESSION["usuario_id"])) {
 // Conectar a la base de datos
 include("../../../../../../controllers/conexion.php");
 
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // Consulta SQL para obtener los préstamos de la zona especificada con el nombre del cliente
-$sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID ORDER BY ID DESC WHERE Zona = 'Chihuahua'");
+$sql = $conexion->prepare("SELECT P.ID, C.Nombre AS NombreCliente, P.Zona, P.Monto FROM prestamos P INNER JOIN clientes C ON P.IDCliente = C.ID ORDER BY ID DESC WHERE Zona = 'Aguascalientes'");
 $sql->execute();
 
 // Verificar si la consulta se realizó con éxito
@@ -40,6 +52,14 @@ if ($sql === false) {
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -50,6 +70,13 @@ if ($sql === false) {
         </div>
 
         <div class="options__menu">
+
+        <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php" class="selected">
                 <div class="option">
@@ -91,13 +118,6 @@ if ($sql === false) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
             </a> 
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
@@ -120,16 +140,7 @@ if ($sql === false) {
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
+ 
         </div>
 
     </div>

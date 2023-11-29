@@ -1,53 +1,33 @@
 <?php
 session_start();
 
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
-
 // Verifica si el usuario está autenticado
-if (!isset($_SESSION["usuario_id"])) {
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
+} else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'admin') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
 }
 
 // Incluye la configuración de conexión a la base de datos
 include "../../../../controllers/conexion.php";
 
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // Definir variables e inicializar con valores vacíos
-$id_zona = $fecha = $descripcion = $valor = "";
-$id_zona_err = $fecha_err = $descripcion_err = $valor_err = "";
+$id_zona = $ciudad = $asentamiento = $fecha = $descripcion = $valor = "";
+$id_zona_err = $ciudad_err = $asentamiento_err = $fecha_err = $descripcion_err = $valor_err = "";
 
 // Procesar datos del formulario cuando se envía el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -58,12 +38,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_zona = trim($_POST["id_zona"]);
     }
 
+    // Validar la ciudad
+    if (empty(trim($_POST["ciudad"]))) {
+        $ciudad_err = "Por favor, seleccione una ciudad.";
+    } else {
+        $ciudad = trim($_POST["ciudad"]);
+    }
+
+    // Validar el asentamiento
+    if (empty(trim($_POST["asentamiento"]))) {
+        $asentamiento_err = "Por favor, ingrese un asentamiento.";
+    } else {
+        $asentamiento = trim($_POST["asentamiento"]);
+    }
+
     // Validar la fecha
     $input_fecha = trim($_POST["fecha"]);
     if (empty($input_fecha)) {
         $fecha_err = "Por favor, ingrese la fecha.";
     } else {
-        // Convertir la fecha al formato 'YYYY-MM-DD'
         $fecha = date('Y-m-d', strtotime($input_fecha));
     }
 
@@ -82,17 +75,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Verificar si no hay errores de validación antes de insertar en la base de datos
-    if (empty($id_zona_err) && empty($descripcion_err) && empty($valor_err)) {
+    if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && empty($fecha_err) && empty($descripcion_err) && empty($valor_err)) {
         // Preparar la declaración de inserción
-        $sql = "INSERT INTO Gastos (IDZona, Fecha, Descripcion, Valor) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO gastos (idZona, ciudad, asentamiento, fecha, descripcion, valor) VALUES (?, ?, ?, ?, ?, ?)";
 
         if ($stmt = $conexion->prepare($sql)) {
             // Vincular las variables a la declaración preparada como parámetros
-            $stmt->bind_param("sssd", $param_id_zona, $param_fecha, $param_descripcion, $param_valor);
+            $stmt->bind_param("issssd", $param_id_zona, $param_ciudad, $param_asentamiento, $param_fecha, $param_descripcion, $param_valor);
 
             // Establecer los parámetros
             $param_id_zona = $id_zona;
-            $param_fecha = $fecha; // Fecha formateada correctamente
+            $param_ciudad = $ciudad;
+            $param_asentamiento = $asentamiento;
+            $param_fecha = $fecha;
             $param_descripcion = $descripcion;
             $param_valor = $valor;
 
@@ -115,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -124,120 +119,131 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/agregar_gasto.css">
-    <title>Agregar Gasto</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <title>Lista de Gastos</title>
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
-    <div class="menu">
-        <ion-icon name="menu-outline"></ion-icon>
-        <ion-icon name="close-circle-outline"></ion-icon>
-    </div>
-    <div class="barra-lateral">
-        <div>
-            <div class="nombre-pagina">
-                <ion-icon id="cloud" name="wallet-outline"></ion-icon>
-                <span>Recaudo</span>
-            </div>
-            <button class="boton" id="volverAtras">
-                <ion-icon name="arrow-undo-outline"></ion-icon>
-                <span>&nbsp;Volver</span>
-            </button>
+<body id="body">
+
+<header>
+        <div class="icon__menu">
+            <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <nav class="navegacion">
-            <ul>
-                <li>
-                    <a href="/resources/views/admin/admin_saldo/saldo_admin.php">
-                        <ion-icon name="push-outline"></ion-icon>
-                        <span>Saldo Inicial</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/inicio/inicio.php">
-                        <ion-icon name="home-outline"></ion-icon>
-                        <span>Inicio</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/usuarios/crudusuarios.php">
-                        <ion-icon name="people-outline"></ion-icon>
-                        <span>Usuarios</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/usuarios/registrar.php">
-                        <ion-icon name="person-add-outline"></ion-icon>
-                        <span>Registrar Usuario</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/clientes/lista_clientes.php">
-                        <ion-icon name="people-circle-outline"></ion-icon>
-                        <span>Clientes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/clientes/agregar_clientes.php">
-                        <ion-icon name="person-circle-outline"></ion-icon>
-                        <span>Registrar Clientes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/creditos/crudPrestamos.php">
-                        <ion-icon name="list-outline"></ion-icon>
-                        <span>Prestamos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/creditos/prestamos.php">
-                        <ion-icon name="cloud-upload-outline"></ion-icon>
-                        <span>Registrar Prestamos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/cobros/cobros.php">
-                        <ion-icon name="planet-outline"></ion-icon>
-                        <span>Zonas de cobro</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/gastos/gastos.php" class="hola">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <span>Gastos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/abonos/lista_super.php">
-                        <ion-icon name="map-outline"></ion-icon>
-                        <span>Ruta</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/abonos/abonos.php">
-                        <ion-icon name="cloud-download-outline"></ion-icon>
-                        <span>Abonos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/resources/views/admin/retiros/retiros.php">
-                        <ion-icon name="cloud-done-outline"></ion-icon>
-                        <span>Retiros</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
 
-        <div>
-            <div class="linea"></div>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
+        </div>
+    </header>
 
-            <div class="modo-oscuro">
-                <div class="info">
-                    <ion-icon name="arrow-back-outline"></ion-icon>
-                    <a href="/controllers/cerrar_sesion.php"><span>Cerrar Sesion</span></a>
+    <div class="menu__side" id="menu_side">
+
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+            <h4>Recaudo</h4>
+        </div>
+
+        <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
                 </div>
-            </div>
+            </a>
+
+        <a href="/resources/views/admin/inicio/inicio.php">
+                <div class="option">
+                    <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <h4>Inicio</h4>
+                </div>
+            </a>
+
+            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-dollar" title=""></i>
+                    <h4>Saldo Incial</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/clientes/lista_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-people-group" title=""></i>
+                    <h4>Clientes</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-tag" title=""></i>
+                    <h4>Registrar Clientes</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                    <h4>Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                    <h4>Registrar Prestamos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/cobros/cobros.php">
+                <div class="option">
+                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
+                    <h4>Zonas de cobro</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/gastos/gastos.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <h4>Gastos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/ruta/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/abonos/abonos.php">
+                <div class="option">
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <h4>Abonos</h4>
+                </div>
+            </a>
+            <a href="/resources/views/admin/retiros/retiros.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Retiros</h4>
+                </div>
+            </a>
+ 
+
+
         </div>
 
     </div>
@@ -245,8 +251,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <main>
-        <h1>Agregar Gasto</h1>
+    <main class="main2">
+        <h1 class="h11">Agregar Gasto</h1>
 
         <div id="mensaje">
             <?php
@@ -257,13 +263,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+
             <div class="form-group">
-                <label for="id_zona">Zona:</label>
+                <label for="id_zona">Estado:</label>
                 <select name="id_zona" id="id_zona" class="zona">
-                    <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Zona</option>
+                    <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Estado</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                $sql_zonas = "SELECT * FROM Zonas";
+                $sql_zonas = "SELECT * FROM zonas";
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {
@@ -276,47 +283,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
                 <span class="help-block"><?php echo $id_zona_err; ?></span>
             </div>
+
+            <div class="input-container">
+                <label for="ciudad">Municipio:</label><br>
+                <select id="ciudad" name="ciudad" class="zona" required>
+                    <option value="">Seleccionar Municipio</option>
+                    <?php
+                    $consultaCiudades = "SELECT Nombre FROM ciudades";
+                    $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
+                    while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
+                        echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
+                    }
+                    ?>
+                </select>
+
+            </div>
+
+            <div class="input-container">
+                <label for="asentamiento">Colonia:</label><br>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
+                    required>
+            </div>
+
             <div class="form-group">
                 <label for="fecha">Fecha:</label>
-                <input type="text" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
+                <input type="date" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
                 <span class="help-block"><?php echo $fecha_err; ?></span>
             </div>
+
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
                 <input type="text" name="descripcion" id="descripcion" class="form-control"
                     value="<?php echo $descripcion; ?>">
                 <span class="help-block"><?php echo $descripcion_err; ?></span>
             </div>
+
             <div class="form-group">
                 <label for="valor">Valor:</label>
                 <input type="number" name="valor" id="valor" class="form-control" value="<?php echo $valor; ?>">
                 <span class="help-block"><?php echo $valor_err; ?></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Agregar Gasto">
                 <a href="gastos.php" class="btn btn-secondary">Cancelar</a>
             </div>
+
         </form>
     </main>
 
-    <script>
-    // Agregar un evento clic al botón
-    document.getElementById("volverAtras").addEventListener("click", function() {
-        window.history.back();
-    });
-    </script>
-
-    <script>
-    $(function() {
-        $("#fecha").datepicker({
-            dateFormat: "dd/mm/yy", // Formato de fecha deseado
-            showButtonPanel: true, // Muestra botones de "Hoy" y "Limpiar"
-        });
-    });
-    </script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="/menu/main.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
 </body>
 

@@ -1,125 +1,64 @@
 <?php
 session_start();
- 
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'admin') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
 }
 
-// Incluye el archivo de conexión
-include("../../../../controllers/conexion.php");
+// Incluye la configuración de conexión a la base de datos
+require_once '../../../../controllers/conexion.php'; 
 
-// COBROS
-try {
-    // Consulta SQL para obtener la suma de MontoAPagar
-    $sqlCobros = "SELECT SUM(MontoAPagar) AS TotalMonto FROM prestamos";
+// El usuario está autenticado, obtén el ID del usuario de la sesión
+$usuario_id = $_SESSION["usuario_id"];
 
-    // Realizar la consulta
-    $resultCobros = mysqli_query($conexion, $sqlCobros);
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
-    if ($resultCobros) {
-        $rowCobros = mysqli_fetch_assoc($resultCobros);
+// Preparar la consulta para obtener el rol del usuario
+$stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+$stmt->bind_param("i", $usuario_id);
 
-        // Obtener el total de cobros
-        $totalMonto = $rowCobros['TotalMonto'];
+// Ejecutar la consulta
+$stmt->execute();
+$resultado = $stmt->get_result();
+$fila = $resultado->fetch_assoc();
 
-        // Cierra la consulta de cobros
-        mysqli_free_result($resultCobros);
+$stmt->close();
+
+// Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
+if (!$fila || $fila['Nombre'] !== 'admin') {
+    header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+    exit();
+}
+
+
+// Función para obtener la suma de una columna de una tabla
+function obtenerSuma($conexion, $tabla, $columna) {
+    $sql = "SELECT SUM($columna) AS Total FROM $tabla";
+    $resultado = mysqli_query($conexion, $sql);
+    if ($resultado) {
+        $fila = mysqli_fetch_assoc($resultado);
+        mysqli_free_result($resultado);
+        return $fila['Total'] ?? 0; // Devuelve 0 si es null
     } else {
-        echo "Error en la consulta de cobros: " . mysqli_error($conexion);
+        echo "Error en la consulta: " . mysqli_error($conexion);
+        return 0;
     }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (cobros): " . $e->getMessage();
 }
 
-// INGRESOS
-try {
-    // Consulta SQL para obtener la suma de MontoPagado
-    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos";
-
-    // Realizar la consulta
-    $resultIngresos = mysqli_query($conexion, $sqlIngresos);
-
-    if ($resultIngresos) {
-        $rowIngresos = mysqli_fetch_assoc($resultIngresos);
-
-        // Obtener el total de ingresos
-        $totalIngresos = $rowIngresos['TotalIngresos'];
-
-        // Cierra la consulta de ingresos
-        mysqli_free_result($resultIngresos);
-    } else {
-        echo "Error en la consulta de ingresos: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
-}
-
-
-// COMISIONES
-try {
-    // Consulta SQL para obtener la suma de Comision
-    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos";
-
-    // Realizar la consulta
-    $resultComisiones = mysqli_query($conexion, $sqlComisiones);
-
-    if ($resultComisiones) {
-        $rowComisiones = mysqli_fetch_assoc($resultComisiones);
-
-        // Obtener el total de comisiones
-        $totalComisiones = $rowComisiones['TotalComisiones'];
-
-        // Cierra la consulta de comisiones
-        mysqli_free_result($resultComisiones);
-    } else {
-        echo "Error en la consulta de comisiones: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (comisiones): " . $e->getMessage();
-}
-
-
-
-
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
+// Obtener los totales
+$totalMonto = obtenerSuma($conexion, "prestamos", "MontoAPagar");
+$totalIngresos = obtenerSuma($conexion, "historial_pagos", "MontoPagado");
+$totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
 ?>
 
 <!DOCTYPE html>
@@ -134,9 +73,6 @@ mysqli_close($conexion);
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 
-
-
-
 </head>
 
 <body id="body">
@@ -145,10 +81,14 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -158,7 +98,16 @@ mysqli_close($conexion);
             <h4>Recaudo</h4>
         </div>
 
+
+
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/inicio/inicio.php" class="selected">
                 <div class="option">
@@ -240,19 +189,21 @@ mysqli_close($conexion);
                     <h4>Abonos</h4>
                 </div>
             </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
-       
+
         </div>
     </div>
 
     <main>
         <h1>Inicio Administrador</h1>
         <div class="cuadros-container">
+
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
@@ -260,24 +211,15 @@ mysqli_close($conexion);
                     </p>
                 </div>
             </div>
+
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?></p>
+                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
+                    </p>
                 </div>
             </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
-                    <p>Version beta</p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="#" class="titulo">Contabilidad </a>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
+
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
@@ -285,10 +227,32 @@ mysqli_close($conexion);
                     </p>
                 </div>
             </div>
-        
+
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <p>Version beta</p>
+                </div>
+            </div>
+
+
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="#.php" class="titulo">Contabilidad </a>
+                    <p>Mantenimiento</p>
+                </div>
+            </div>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
+                   
+                </div>
+            </div>
+
+
 
         </div>
-         
+
 
         </div>
         </div>

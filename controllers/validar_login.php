@@ -8,7 +8,38 @@ include("conexion.php");
 $email = mysqli_real_escape_string($conexion, $_POST["email"]);
 $contrasena = mysqli_real_escape_string($conexion, $_POST["contrasena"]);
 
-// Realiza la consulta a la base de datos
+// Verificar el estado del sistema antes de permitir el login
+$sqlEstado = "SELECT Estado FROM sistema_estado ORDER BY ID DESC LIMIT 1";
+$resultadoEstado = $conexion->query($sqlEstado);
+
+if ($resultadoEstado === false) {
+    $_SESSION['error_message'] = "No se pudo obtener el estado del sistema.";
+    header("Location: /index.php");
+    exit();
+}
+
+$filaEstado = $resultadoEstado->fetch_assoc();
+
+// Realiza la consulta a la base de datos para verificar si el usuario es administrador
+$queryAdmin = "SELECT RolID FROM usuarios WHERE Email = ? AND Password = ?";
+$stmtAdmin = $conexion->prepare($queryAdmin);
+$stmtAdmin->bind_param("ss", $email, $contrasena);
+$stmtAdmin->execute();
+$resultAdmin = $stmtAdmin->get_result();
+
+if ($rowAdmin = $resultAdmin->fetch_assoc()) {
+    if ($filaEstado['Estado'] == 'inactivo' && $rowAdmin["RolID"] != 1) {
+        $_SESSION['error_message'] = "El sistema está actualmente deshabilitado. Por favor, inténtalo más tarde.";
+        header("Location: /index.php");
+        exit();
+    }
+} else {
+    $_SESSION['error_message'] = "Credenciales incorrectas o usuario inactivo.";
+    header("Location: /index.php");
+    exit();
+}
+
+// Realiza la consulta a la base de datos para el login
 $query = "SELECT * FROM usuarios WHERE Email = ? AND Password = ? AND estado = 'activo'";
 $stmt = $conexion->prepare($query);
 $stmt->bind_param("ss", $email, $contrasena);
@@ -22,12 +53,11 @@ if ($row = $result->fetch_assoc()) {
     $_SESSION["nombre"] = $row["Nombre"];
     $_SESSION["rol"] = $row["RolID"];
     $_SESSION['user_zone'] = $row['Zona'];
-
     // Redirige a la página correspondiente según el rol y la zona del usuario
     if ($_SESSION["rol"] == 1) { // admin
         header("Location: /resources/views/admin/inicio/inicio.php");
 
-    // SUPERVISOR 
+        // SUPERVISOR 
     } else if ($_SESSION["rol"] == 2) { // supervisor
         $user_zone = $_SESSION['user_zone'];
 
@@ -107,7 +137,25 @@ if ($row = $result->fetch_assoc()) {
             case "25":
                 header("Location: /resources/views/zonas/25-Sonora/supervisor/inicio/inicio.php");
                 break;
-            // Agrega casos para otros números de zona aquí
+            case "26":
+                header("Location: /resources/views/zonas/26-Tabasco/supervisor/inicio/inicio.php");
+                break;
+            case "27":
+                header("Location: /resources/views/zonas/27-Tamaulipas/supervisor/inicio/inicio.php");
+                break;
+            case "28":
+                header("Location: /resources/views/zonas/28-Tlaxcala/supervisor/inicio/inicio.php");
+                break;
+            case "29":
+                header("Location: /resources/views/zonas/29-Veracruz/supervisor/inicio/inicio.php");
+                break;
+            case "30":
+                header("Location: /resources/views/zonas/30-Yucatan/supervisor/inicio/inicio.php");
+                break;
+            case "31":
+                header("Location: /resources/views/zonas/31-Zacatecas/supervisor/inicio/inicio.php");
+                break;    
+                // Agrega casos para otros números de zona aquí
             default:
                 // El usuario es un supervisor de otra zona, agrega el redireccionamiento apropiado aquí
                 header("Location: /supervisor_default_dashboard.php");
@@ -115,7 +163,7 @@ if ($row = $result->fetch_assoc()) {
         }
     }
     // COBRADOR 
-    else if ($_SESSION["rol"] == 3) { 
+    else if ($_SESSION["rol"] == 3) {
         $user_zone = $_SESSION['user_zone'];
 
         switch ($user_zone) {
@@ -194,6 +242,24 @@ if ($row = $result->fetch_assoc()) {
             case "25":
                 header("Location: /resources/views/zonas/25-Sonora/cobrador/inicio/inicio.php");
                 break;
+            case "26":
+                header("Location: /resources/views/zonas/26-Tabasco/cobrador/inicio/inicio.php");
+                break;
+            case "27":
+                header("Location: /resources/views/zonas/27-Tamaulipas/cobrador/inicio/inicio.php");
+                break;
+            case "28":
+                header("Location: /resources/views/zonas/28-Tlaxcala/cobrador/inicio/inicio.php");
+                break;
+            case "29":
+                header("Location: /resources/views/zonas/29-Veracruz/cobrador/inicio/inicio.php");
+                 break;
+            case "30":
+                header("Location: /resources/views/zonas/30-Yucatan/cobrador/inicio/inicio.php");
+                break;
+            case "31":
+                header("Location: /resources/views/zonas/31-Zacatecas/cobrador/inicio/inicio.php");
+                break;
             // Agrega casos para otros números de zona aquí
             default:
                 // El usuario es un cobrador de otra zona, agrega el redireccionamiento apropiado aquí
@@ -215,4 +281,3 @@ if ($row = $result->fetch_assoc()) {
 // Cierra la declaración y la conexión a la base de datos
 $stmt->close();
 $conexion->close();
-?>

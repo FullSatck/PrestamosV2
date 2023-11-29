@@ -15,6 +15,18 @@ if (isset($_SESSION["usuario_id"])) {
 // Incluye el archivo de conexión
 include("../../../../../../controllers/conexion.php");
 
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
 // COBROS 
 try {
     // Consulta SQL para obtener la suma de MontoAPagar
@@ -65,7 +77,7 @@ try {
 // COMISIONES
 try {
     // Consulta SQL para obtener la suma de Comision
-    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos WHERE Zona = 'Chihuahua'";
+    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos WHERE Zona = 'Puebla'";
 
     // Realizar la consulta
     $resultComisiones = mysqli_query($conexion, $sqlComisiones);
@@ -111,10 +123,13 @@ mysqli_close($conexion);
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/controllers/cerrar_sesion.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Cerrar Sesion</span>
-        </a>
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -125,6 +140,13 @@ mysqli_close($conexion);
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php" class="selected">
                 <div class="option">
@@ -166,14 +188,7 @@ mysqli_close($conexion);
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -195,15 +210,6 @@ mysqli_close($conexion);
                     <h4>Abonos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
 
         </div>
 
