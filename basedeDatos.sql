@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 11-11-2023 a las 00:08:34
+-- Tiempo de generación: 23-11-2023 a las 04:30:57
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.3.0
 
@@ -24,6 +24,18 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `carteras`
+--
+
+CREATE TABLE `carteras` (
+  `id` int NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zona` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `ciudades`
 --
 
@@ -38,14 +50,7 @@ CREATE TABLE `ciudades` (
 -- Volcado de datos para la tabla `ciudades`
 --
 
-INSERT INTO `ciudades` (`ID`, `Nombre`, `IDZona`, `codigoPostal`) VALUES
-(1, 'Aguascalientes', 1, '20000-20099'),
 
-(166, 'Guadalupe', 31, '98100-98199'),
-(167, 'Fresnillo', 31, '99000-99099'),
-(168, 'Jerez', 31, '98200-98299');
-
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `clientes`
@@ -63,17 +68,11 @@ CREATE TABLE `clientes` (
   `ZonaAsignada` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `IdentificacionCURP` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ImagenCliente` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Estado` tinyint(1) DEFAULT '1'
+  `Estado` tinyint(1) DEFAULT '1',
+  `ciudad` int DEFAULT NULL,
+  `asentamiento` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cartera_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `clientes`
---
-
-INSERT INTO `clientes` (`ID`, `Nombre`, `Apellido`, `Domicilio`, `Telefono`, `HistorialCrediticio`, `ReferenciasPersonales`, `MonedaPreferida`, `ZonaAsignada`, `IdentificacionCURP`, `ImagenCliente`, `Estado`) VALUES
-(1, 'Samuel', 'Duarte', 'Calle 21 e #64 -2', '573202563632', '', '', 1, 'Baja California', '6516516513513', '../public/assets/img/imgclient/imgclientimgenPerfil.jpg', 1),
-(2, 'Juan Carlos', 'Bohorquez', 'Calle 21 e #64 -2', '573043402801', '', '', 1, 'Baja California Sur', '464165164165', '../public/assets/img/imgclient/imgclientimgenPerfil.jpg', 1),
-(3, 'Stiven', 'Delgado', 'Calle 21 e #64 -2', '573024167252', '', '', 1, 'Aguascalientes', '1043649271', '../public/assets/img/imgclient/imgclientimgenPerfil.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -118,21 +117,6 @@ CREATE TABLE `fechas_pago` (
   `Zona` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `fechas_pago`
---
-
-INSERT INTO `fechas_pago` (`ID`, `IDPrestamo`, `FechaPago`, `EstadoPago`, `Zona`) VALUES
-(1, 1, '2023-11-10', NULL, 'Baja California Sur'),
-(2, 2, '2023-11-10', NULL, 'Baja California'),
-(3, 3, '2023-11-10', NULL, 'Aguascalientes'),
-(4, 4, '2023-11-10', NULL, 'Baja California'),
-(5, 4, '2023-11-11', NULL, 'Baja California'),
-(6, 5, '2023-11-10', NULL, 'Baja California Sur'),
-(7, 5, '2023-11-11', NULL, 'Baja California Sur'),
-(8, 6, '2023-11-10', NULL, 'Aguascalientes'),
-(9, 6, '2023-11-11', NULL, 'Aguascalientes');
-
 -- --------------------------------------------------------
 
 --
@@ -141,10 +125,13 @@ INSERT INTO `fechas_pago` (`ID`, `IDPrestamo`, `FechaPago`, `EstadoPago`, `Zona`
 
 CREATE TABLE `gastos` (
   `ID` int NOT NULL,
+  `IDUsuario` int DEFAULT NULL,
   `IDZona` int DEFAULT NULL,
+  `Ciudad` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Asentamiento` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `Fecha` date DEFAULT NULL,
   `Descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Valor` decimal(10,2) DEFAULT NULL
+  `Valor` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -160,16 +147,6 @@ CREATE TABLE `historial_pagos` (
   `MontoPagado` decimal(10,2) DEFAULT NULL,
   `IDPrestamo` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `historial_pagos`
---
-
-INSERT INTO `historial_pagos` (`ID`, `IDCliente`, `FechaPago`, `MontoPagado`, `IDPrestamo`) VALUES
-(1, 3, '2023-11-10', 11000.00, 3),
-(2, 2, '2023-11-10', 12000.00, 1),
-(3, 1, '2023-11-10', 12000.00, 2),
-(4, 1, '2023-11-10', 600.00, 4);
 
 -- --------------------------------------------------------
 
@@ -218,18 +195,6 @@ CREATE TABLE `prestamos` (
   `EstadoP` tinyint(1) DEFAULT '1',
   `Pospuesto` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `prestamos`
---
-
-INSERT INTO `prestamos` (`ID`, `IDCliente`, `Monto`, `TasaInteres`, `Plazo`, `MonedaID`, `FechaInicio`, `FechaVencimiento`, `Estado`, `CobradorAsignado`, `Zona`, `MontoAPagar`, `FrecuenciaPago`, `MontoCuota`, `Cuota`, `Comision`, `EstadoP`, `Pospuesto`) VALUES
-(1, 2, 10000.00, 20.00, 1, 1, '2023-11-10', '2023-11-11', 'pagado', NULL, 'Baja California Sur', 0.00, 'diario', 12000.00, 12000.00, 1200.00, 0, 0),
-(2, 1, 10000.00, 20.00, 1, 1, '2023-11-10', '2023-11-11', 'pagado', NULL, 'Baja California', 0.00, 'diario', 12000.00, 12000.00, 1200.00, 0, 0),
-(3, 3, 10000.00, 10.00, 1, 1, '2023-11-10', '2023-11-11', 'pagado', NULL, 'Aguascalientes', 0.00, 'diario', 11000.00, 11000.00, 1100.00, 0, 0),
-(4, 1, 1000.00, 20.00, 2, 1, '2023-11-10', '2023-11-12', 'pendiente', NULL, 'Baja California', 600.00, 'diario', 600.00, 600.00, 120.00, 1, 1),
-(5, 2, 1000.00, 20.00, 2, 1, '2023-11-10', '2023-11-12', 'pendiente', NULL, 'Baja California Sur', 1200.00, 'diario', 600.00, 600.00, 120.00, 1, 0),
-(6, 3, 1000.00, 20.00, 2, 1, '2023-11-10', '2023-11-12', 'pendiente', NULL, 'Aguascalientes', 1200.00, 'diario', 600.00, 600.00, 120.00, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -300,7 +265,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`ID`, `Nombre`, `Apellido`, `Email`, `Password`, `Zona`, `RolID`, `Estado`) VALUES
-(1, 'Stiven', 'Delgado', 'admin@admin.com', '0123', '2', 1, 'activo');
+(1, 'Stiven', 'Delgado', 'admin@admin.com', '0123', '2', 1, 'activo'),
+(6, 'supervisor', 'super', 'supervisor@super.com', '0123', '20', 2, 'activo'),
+(7, 'cobrador', 'cob', 'cobrador@cob.com', '0123', '20', 3, 'activo'),
+(8, 'supervisor', 'super', 'supervisor2@super.com', '0123', '6', 2, 'activo'),
+(9, 'cobrador', 'cob', 'cobrador2@cob.com', '0123', '6', 3, 'activo');
 
 -- --------------------------------------------------------
 
@@ -370,6 +339,12 @@ CREATE TABLE `zona_cobrador` (
 --
 
 --
+-- Indices de la tabla `carteras`
+--
+ALTER TABLE `carteras`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
@@ -382,7 +357,9 @@ ALTER TABLE `ciudades`
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `MonedaPreferida` (`MonedaPreferida`),
-  ADD KEY `ZonaAsignada` (`ZonaAsignada`);
+  ADD KEY `ZonaAsignada` (`ZonaAsignada`),
+  ADD KEY `ciudad` (`ciudad`),
+  ADD KEY `fk_cliente_cartera` (`cartera_id`);
 
 --
 -- Indices de la tabla `configuracion_sistema`
@@ -482,16 +459,22 @@ ALTER TABLE `zona_cobrador`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `carteras`
+--
+ALTER TABLE `carteras`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracion_sistema`
@@ -509,7 +492,7 @@ ALTER TABLE `facturas`
 -- AUTO_INCREMENT de la tabla `fechas_pago`
 --
 ALTER TABLE `fechas_pago`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `gastos`
@@ -521,7 +504,7 @@ ALTER TABLE `gastos`
 -- AUTO_INCREMENT de la tabla `historial_pagos`
 --
 ALTER TABLE `historial_pagos`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `monedas`
@@ -533,7 +516,7 @@ ALTER TABLE `monedas`
 -- AUTO_INCREMENT de la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `retiros`
@@ -557,7 +540,7 @@ ALTER TABLE `saldo_admin`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `zonas`
@@ -585,7 +568,9 @@ ALTER TABLE `ciudades`
 -- Filtros para la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD CONSTRAINT `clientes_ibfk_2` FOREIGN KEY (`ZonaAsignada`) REFERENCES `zonas` (`Nombre`);
+  ADD CONSTRAINT `clientes_ibfk_2` FOREIGN KEY (`ZonaAsignada`) REFERENCES `zonas` (`Nombre`),
+  ADD CONSTRAINT `clientes_ibfk_3` FOREIGN KEY (`ciudad`) REFERENCES `ciudades` (`ID`),
+  ADD CONSTRAINT `fk_cliente_cartera` FOREIGN KEY (`cartera_id`) REFERENCES `carteras` (`id`);
 
 --
 -- Filtros para la tabla `configuracion_sistema`

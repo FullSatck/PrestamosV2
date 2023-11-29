@@ -64,7 +64,7 @@
         // Función para ocultar el mensaje de error después de 5 segundos (5000 milisegundos)
         setTimeout(function () {
             errorMessage.style.display = 'none';
-        }, 2000); // Cambia 5000 a la cantidad de milisegundos que desees para ajustar el tiempo de visualización
+        }, 6000); // Cambia 5000 a la cantidad de milisegundos que desees para ajustar el tiempo de visualización
     </script>
 </body>
 
