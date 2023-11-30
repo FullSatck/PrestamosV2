@@ -59,8 +59,7 @@ $stmt_prestamo->close();
     </header>
     <main>
         <?php if ($info_prestamo): ?>
-        <div class='table-scroll-container' id='profile-loans'>
-            <h1>Registro de Pagos</h1>
+            <h1>Registro</h1>
             <div class='info-cliente'>
                 <h2>Información del Préstamo</h2>
                 <p><strong>Cliente:</strong> <?= htmlspecialchars($info_prestamo['Nombre']); ?></p>
@@ -68,6 +67,7 @@ $stmt_prestamo->close();
                 <p><strong>Cuota Diaria:</strong> <?= htmlspecialchars($info_prestamo['Cuota']); ?></p>
                 <p><strong>Total del Préstamo:</strong> <?= htmlspecialchars(number_format($total_prestamo, 2)); ?></p>
             </div>
+            <div class='table-scroll-container' id='profile-loans'>
             <table>
                 <tr>
                     <th>Fecha</th>

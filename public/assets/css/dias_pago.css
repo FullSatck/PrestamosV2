@@ -107,6 +107,7 @@ table th {
 h1 { 
     color: #000000; 
     margin: 0;
+    padding-top: 50px;
 }
 
 h2 {
