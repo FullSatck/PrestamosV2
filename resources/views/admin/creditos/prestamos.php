@@ -26,10 +26,20 @@ if (!isset($_SESSION["usuario_id"])) {
     // ID DEL CLIENTE
     if (isset($_GET['cliente_id'])) {
         $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
-        $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+        $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id";
     } else {
-        $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1";
+        $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1";
     }
+
+    // Si tienes un cliente_id, obtén su zona asignada
+$zona_cliente = "";
+if (isset($cliente_id)) {
+    $query_zona_cliente = "SELECT ZonaAsignada FROM clientes WHERE ID = $cliente_id";
+    $result_zona_cliente = $conexion->query($query_zona_cliente);
+    if ($row = $result_zona_cliente->fetch_assoc()) {
+        $zona_cliente = $row['ZonaAsignada'];
+    }
+}
 
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -151,7 +161,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -207,9 +217,9 @@ include("../../../../controllers/conexion.php");
 // ID DEL CLIENTE
 if (isset($_GET['cliente_id'])) {
     $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
-    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+    $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id";
 } else {
-    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
+    $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
 }
 
 // Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
@@ -265,10 +275,11 @@ $result_zonas = $conexion->query($query_zonas);
             <label for="zona">Zona:</label>
             <select name="zona" required>
                 <?php
-        while ($row = $result_zonas->fetch_assoc()) {
-            echo "<option value='" . $row['Nombre'] . "'>" . $row['Nombre'] . "</option>";
-        }
-        ?>
+    while ($row = $result_zonas->fetch_assoc()) {
+        $selected = ($row['Nombre'] == $zona_cliente) ? "selected" : "";
+        echo "<option value='" . $row['Nombre'] . "' $selected>" . $row['Nombre'] . "</option>";
+    }
+    ?>
             </select><br>
 
             <label for="aplicar_comision">Aplicar Comisión:</label>
