@@ -212,7 +212,7 @@ $resultado = $conexion->query($sql);
         </div>
 
         <?php if ($resultado->num_rows > 0) { ?>
-        <div class="table-scroll-container">
+        <div class="table-scroll-container"> 
             <table>
                 <tr>
                     <th>ID</th>
