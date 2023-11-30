@@ -38,7 +38,7 @@ $stmt_prestamo->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/dias_pago.css">
+    <link rel="stylesheet" href="/public/assets/css/cartulina.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <title>Registro de Pagos</title>
 </head>
