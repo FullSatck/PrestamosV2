@@ -12,6 +12,16 @@ if (!isset($_SESSION["usuario_id"])) {
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
     $usuario_id = $_SESSION["usuario_id"];
+
+    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
     
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -56,22 +66,38 @@ if (!isset($_SESSION["usuario_id"])) {
     <link rel="stylesheet" href="/public/assets/css/saldo_admin.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
+
 <body id="body">
 
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
+
+        <div class="nombre-usuario">
+            <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
+        </div>
     </header>
 
     <div class="menu__side" id="menu_side">
 
-    <div class="name__page">
-        <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
             <h4>Recaudo</h4>
         </div>
 
         <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
@@ -149,13 +175,13 @@ if (!isset($_SESSION["usuario_id"])) {
 
             <a href="/resources/views/admin/abonos/abonos.php">
                 <div class="option">
-                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
@@ -215,7 +241,7 @@ if (!isset($_SESSION["usuario_id"])) {
                 <button type="submit" name="guardar_saldo">Guardar</button>
             </form>
         </div>
-       
+
     </main>
 
 
