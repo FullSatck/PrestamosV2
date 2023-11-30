@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
     $conexion->begin_transaction();
 
     try {
-        // Consulta SQL para obtener el monto de la cuota del préstamo y el ID del cliente
+        // Consulta SQL para obtener el monto de la cuota del préstamo
         $sqlCuota = "SELECT MontoCuota, IDCliente FROM prestamos WHERE ID = ? AND Estado = 'pendiente'";
         $stmtCuota = $conexion->prepare($sqlCuota);
         $stmtCuota->bind_param("i", $prestamoId);
@@ -24,13 +24,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
         if ($filaCuota = $resultadoCuota->fetch_assoc()) {
             $clienteId = $filaCuota['IDCliente'];
 
-            // Consulta SQL para obtener detalles del cliente
+            // Obtener el nombre y el número de teléfono del cliente
             $sqlCliente = "SELECT Nombre, Telefono FROM clientes WHERE ID = ?";
             $stmtCliente = $conexion->prepare($sqlCliente);
             $stmtCliente->bind_param("i", $clienteId);
             $stmtCliente->execute();
             $resultadoCliente = $stmtCliente->get_result();
-            $cliente = $resultadoCliente->fetch_assoc();
+            $filaCliente = $resultadoCliente->fetch_assoc();
+            $clienteNombre = $filaCliente['Nombre'];
+            $clienteTelefono = $filaCliente['Telefono'];
             $stmtCliente->close();
 
             // Consulta SQL para registrar el pago en la tabla 'historial_pagos'
@@ -41,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $stmtPago->close();
 
             // Consulta SQL para actualizar el monto pendiente en la tabla 'prestamos'
-            $sqlActualizarMonto = "UPDATE prestamos SET MontoAPagar = MontoAPagar - ? WHERE ID = ? AND Estado = 'pendiente'";
+            $sqlActualizarMonto = "UPDATE prestamos SET MontoAPagar = MontoAPagar - ? WHERE ID = ?";
             $stmtActualizar = $conexion->prepare($sqlActualizarMonto);
             $stmtActualizar->bind_param("di", $montoPagado, $prestamoId);
             $stmtActualizar->execute();
@@ -66,13 +68,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
                 }
             }
 
-            // Si todo fue bien, confirmar la transacción
+            // Si todo fue bien, confirmar la transacción y enviar respuesta
             $conexion->commit();
             echo json_encode([
                 "success" => true, 
-                "message" => "Pago procesado correctamente.",
-                "clienteNombre" => $cliente['Nombre'],
-                "clienteTelefono" => $cliente['Telefono']
+                "message" => "Pago procesado correctamente.", 
+                "clienteNombre" => $clienteNombre, 
+                "clienteTelefono" => $clienteTelefono,
+                "montoPagado" => $montoPagado
             ]);
         } else {
             // Si no se encuentra el préstamo o ya está pagado
