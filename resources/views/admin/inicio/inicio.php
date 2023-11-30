@@ -232,7 +232,7 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="#.php" class="titulo">Contabilidad </a>
+                    <a href="/resources/views/admin/contabilidad/contabilidad.php" class="titulo">Contabilidad </a>
                     <p>Mantenimiento</p>
                 </div>
             </div>
