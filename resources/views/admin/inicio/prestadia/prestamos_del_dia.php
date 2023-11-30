@@ -128,15 +128,16 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
             <input type="submit" value="Filtrar">
 
 
-            <input type="text" name="busqueda" placeholder="Buscar...">
-            <input type="submit" value="Buscar">
             <div class="header-actions">
-                <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+                
+            <input type="text" name="busqueda" placeholder="Buscar...">
+            
+                <a   href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
             </div>
 
         </form>
 
-     
+
 
 
 
@@ -417,18 +418,18 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-        var campoBusqueda = document.querySelector('input[name="busqueda"]');
+            var campoBusqueda = document.querySelector('input[name="busqueda"]');
 
-        campoBusqueda.addEventListener('input', function() {
-            var textoBusqueda = this.value.toLowerCase();
-            var filas = document.querySelectorAll('#myTable tbody tr');
+            campoBusqueda.addEventListener('input', function() {
+                var textoBusqueda = this.value.toLowerCase();
+                var filas = document.querySelectorAll('#myTable tbody tr');
 
-            filas.forEach(function(fila) {
-                var coincide = fila.textContent.toLowerCase().includes(textoBusqueda);
-                fila.style.display = coincide ? '' : 'none';
+                filas.forEach(function(fila) {
+                    var coincide = fila.textContent.toLowerCase().includes(textoBusqueda);
+                    fila.style.display = coincide ? '' : 'none';
+                });
             });
         });
-    });
     </script>
 </body>
 
