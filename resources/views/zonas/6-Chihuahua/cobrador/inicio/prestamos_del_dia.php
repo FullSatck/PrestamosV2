@@ -59,7 +59,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prestamos del día</title>
+    <title>Prestamos del dia </title>
     <link rel="stylesheet" href="/public/assets/css/prestaDia.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -72,22 +72,29 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 <body>
 
     <header>
-        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="botonn">
+    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
     </header>
 
+
     <main>
+
+
         <h1>Cuotas del Día</h1>
 
         <!-- Canvas para el gráfico -->
+
+        <!-- Contenedor para el gráfico con un estilo personalizado -->
         <div class="grafico-contenedor" style="width: 400px; height: 400px;">
             <canvas id="miGrafico"></canvas>
         </div>
 
+
         <form action="prestamos_del_dia.php" method="get">
             <select name="filtro">
+                <!-- <option value="todos" <?php echo $filtro == 'todos' ? 'selected' : ''; ?>>Todos</option> -->
                 <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
                 <option value="pendiente" <?php echo $filtro == 'pendiente' ? 'selected' : ''; ?>>Pendientes</option>
                 <option value="nopagado" <?php echo $filtro == 'nopagado' ? 'selected' : ''; ?>>No Pagados</option>
@@ -101,6 +108,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                     <thead>
                         <tr>
                             <th>ID Préstamo</th>
+
                             <th>Nombre Cliente</th>
                             <th>Domicilio</th>
                             <th>Teléfono</th>
@@ -110,7 +118,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                             <th>Perfil</th>
                             <th>Pagar</th>
                             <th>Mas Tarde</th>
-                            <th>Pagar cantidad</th>
+                            <th>Pagar cantida</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,32 +132,39 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                                 <td><?php echo htmlspecialchars($cuota['FechaInicio']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['FrecuenciaPago']); ?></td>
                                 <td>
-                                    <a href="../../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                    <a href="../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal" onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPaymentModal" onclick="setPrestamoId(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>, '<?php echo htmlspecialchars($cuota['NombreCliente']); ?>', '<?php echo htmlspecialchars($cuota['DireccionCliente']); ?>', '<?php echo htmlspecialchars($cuota['TelefonoCliente']); ?>', '<?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?>', '<?php echo htmlspecialchars($cuota['MontoAPagar']); ?>')">
                                         Pagar
                                     </button>
+
                                 <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if ($filtro != 'pagado' && !$cuota['Pospuesto']) : ?>
-                                        <button type="button" class="btn btn-warning" onclick="posponerPago(<?php echo $cuota['ID']; ?>)">
-                                            Más Tarde
+                                        <button type="button" class="btn btn-warning" onclick="abrirModalPosponerPago(<?php echo $cuota['ID']; ?>, '<?php echo $cuota['NombreCliente']; ?>', '<?php echo $cuota['DireccionCliente']; ?>', '<?php echo $cuota['TelefonoCliente']; ?>', '<?php echo $cuota['IdentificacionCURP']; ?>', <?php echo $cuota['MontoAPagar']; ?>)">
+                                            Mas Tarde
                                         </button>
+
+
+
                                     <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if ($filtro != 'pagado') : ?>
-                                        <button type="button" class="btn btn-success" onclick="abrirModalPago(<?php echo $cuota['ID']; ?>, <?php echo $cuota['MontoCuota']; ?>)">
-                                            Pagar Cantidad 
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#customPaymentModal" data-cliente-telefono="<?php echo htmlspecialchars($cuota['TelefonoCliente']); ?>" onclick="abrirModalPago(<?php echo $cuota['ID']; ?>,<?php echo $cuota['MontoCuota']; ?>,'<?php echo htmlspecialchars($cuota['NombreCliente']); ?>','<?php echo htmlspecialchars($cuota['DireccionCliente']); ?>','<?php echo htmlspecialchars($cuota['TelefonoCliente']); ?>','<?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?>',<?php echo $cuota['MontoAPagar']; ?>)">
+                                            Pagar Cantidad
                                         </button>
+
+
                                     <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
+
                 </table>
             <?php else : ?>
                 <p>No hay cuotas pendientes para hoy.</p>
@@ -168,6 +183,13 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                         </div>
                         <div class="modal-body">
                             ¿Está seguro de que desea procesar este pago?
+                            <div>
+                                <strong>Cliente:</strong> <span id="modalClienteNombre"></span><br>
+                                <strong>Dirección:</strong> <span id="modalClienteDireccion"></span><br>
+                                <strong>Teléfono:</strong> <span id="modalClienteTelefono"></span><br>
+                                <strong>CURP:</strong> <span id="modalClienteCURP"></span><br>
+                                <strong>Monto a Pagar:</strong> <span id="modalMontoAPagar"></span>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -178,7 +200,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
             </div>
 
             <!-- Modal de WhatsApp -->
-            <div class="modal fade" id="whatsappModal" tabindex="-1" role="dialog" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+            <div class="modal fade" id="whatsappModal" tabindex="-1" role="dialog" aria-labelledby="whatsappModalLabel" aria-hidden="true" data-backdrop="static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -208,14 +230,29 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        <!-- Modal de Pago Pospuesto -->
+
+                        <!-- ... -->
                         <div class="modal-body">
-                            El pago ha sido pospuesto exitosamente. El préstamo ha sido movido a No Pagados.
+                            <strong> ¿Está seguro de que desea posponer el pago de este préstamo?</strong>
+                            <strong>Cliente:</strong> <span id="postponeModalClienteNombre"></span><br>
+                            <strong>Dirección:</strong> <span id="postponeModalClienteDireccion"></span><br>
+                            <strong>Teléfono:</strong> <span id="postponeModalClienteTelefono"></span><br>
+                            <strong>CURP:</strong> <span id="postponeModalClienteCURP"></span><br>
+                            <strong>Monto a Pagar:</strong> <span id="postponeModalMontoAPagar"></span>
+
+
                         </div>
+
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-warning" id="confirmPostponePaymentButton">Posponer Pago</button>
                         </div>
+
                     </div>
                 </div>
+            </div>
             </div>
             <!-- Modal para ingresar la cantidad personalizada -->
             <div class="modal fade" id="customPaymentModal" tabindex="-1" role="dialog" aria-labelledby="customPaymentModalLabel" aria-hidden="true">
@@ -228,6 +265,13 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                             </button>
                         </div>
                         <div class="modal-body">
+                            <div>
+                                <strong>Cliente:</strong> <span id="customModalClienteNombre"></span><br>
+                                <strong>Dirección:</strong> <span id="customModalClienteDireccion"></span><br>
+                                <strong>Teléfono:</strong> <span id="customModalClienteTelefono"></span><br>
+                                <strong>CURP:</strong> <span id="customModalClienteCURP"></span><br>
+                                <strong>Monto a Pagar:</strong> <span id="customModalMontoAPagar"></span><br>
+                            </div><br>
                             <form id="customPaymentForm">
                                 <div class="form-group">
                                     <label for="customAmount">Ingrese la cantidad:</label>
@@ -243,17 +287,21 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                 </div>
             </div>
 
+
+
+
+
     </main>
     <script>
-          var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
+        var conteosPrestamos = <?php echo json_encode($conteosPrestamos); ?>;
         console.log(conteosPrestamos); // Para depuración
 
-        var ctx = document.getElementById('miGrafico').getContext('2d');
         var maxPendiente = parseInt(conteosPrestamos.pendiente, 10);
         var maxPagado = parseInt(conteosPrestamos.pagado, 10);
         var maxNoPagado = parseInt(conteosPrestamos.nopagado, 10);
         var maxValor = Math.max(maxPendiente, maxPagado, maxNoPagado);
 
+        var ctx = document.getElementById('miGrafico').getContext('2d');
         var miGrafico = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -291,22 +339,44 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
             }
         });
 
+        // Manejador para el botón de confirmar pago
+        $('#confirmPaymentButton').click(function() {
+            procesarPago(globalPrestamoId, globalMontoCuota);
+        });
 
-    // <!-- Script para manejar la lógica del modal y el pago -->
-  
+        // Manejador para el botón de posponer pago
+        $('#confirmPostponePaymentButton').click(function() {
+            posponerPago(globalPrestamoId);
+        });
+
+        // Evento al cerrar el modal de WhatsApp
+        $('#whatsappModal').on('hidden.bs.modal', function() {
+            location.reload(); // Recargar la página
+        });
+
+        // Evento al cerrar el modal de Pago Pospuesto
+        $('#postponePaymentModal').on('hidden.bs.modal', function() {
+            location.reload(); // Recargar la página
+        });
+
+        // Evento al cerrar el modal de Pago Personalizado
+        $('#customPaymentModal').on('hidden.bs.modal', function() {
+            e.stopPropagation(); // Evita la propagación del evento para que no se cierre automáticamente
+        });
+
         var globalPrestamoId = 0;
         var globalMontoCuota = 0;
 
-        function setPrestamoId(prestamoId, montoCuota) {
+        function setPrestamoId(prestamoId, montoCuota, nombreCliente, direccionCliente, telefonoCliente, identificacionCURP, montoAPagar) {
             globalPrestamoId = prestamoId;
             globalMontoCuota = montoCuota;
+            // Actualizar el contenido del modal con los detalles del cliente
+            $('#modalClienteNombre').text(nombreCliente);
+            $('#modalClienteDireccion').text(direccionCliente);
+            $('#modalClienteTelefono').text(telefonoCliente);
+            $('#modalClienteCURP').text(identificacionCURP);
+            $('#modalMontoAPagar').text(montoAPagar);
         }
-
-        $(document).ready(function() {
-            $('#confirmPaymentButton').click(function() {
-                procesarPago(globalPrestamoId, globalMontoCuota);
-            });
-        });
 
         function procesarPago(prestamoId, montoCuota) {
             $.ajax({
@@ -343,9 +413,25 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
             });
         }
 
+        function abrirModalPosponerPago(prestamoId, nombreCliente, direccionCliente, telefonoCliente, identificacionCURP, montoAPagar) {
+
+            globalPrestamoId = prestamoId;
+
+            // Establecer los datos del cliente en el modal de Posponer Pago
+            $('#postponeModalClienteNombre').text(nombreCliente);
+            $('#postponeModalClienteDireccion').text(direccionCliente);
+            $('#postponeModalClienteTelefono').text(telefonoCliente);
+            $('#postponeModalClienteCURP').text(identificacionCURP);
+            $('#postponeModalMontoAPagar').text(montoAPagar);
+
+            // Mostrar el modal de Posponer Pago
+            $('#postponePaymentModal').modal('show');
+        }
+
+
         function posponerPago(prestamoId) {
             $.ajax({
-                url: 'posponer_pago.php', // Asegúrate de que esta URL es correcta
+                url: 'posponer_pago.php', // Verifica que esta URL sea correcta
                 type: 'POST',
                 data: {
                     prestamoId: prestamoId
@@ -353,9 +439,9 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        // Mostrar el modal de pago pospuesto
-                        $('#postponePaymentModal').modal('show');
-                        actualizarTablaPrestamos(); // Actualizar la tabla
+                        // Código para manejar una respuesta exitosa
+                        $('#postponePaymentModal').modal('hide');
+                        // Otras actualizaciones de la interfaz de usuario
                     } else {
                         alert(response.message);
                     }
@@ -366,22 +452,27 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                 }
             });
         }
-        $(document).ready(function() {
-            // Evento al cerrar el modal de WhatsApp
-            $('#whatsappModal').on('hidden.bs.modal', function() {
-                location.reload(); // Recargar la página
-            });
-
-            // Evento al cerrar el modal de Pago Pospuesto
-            $('#postponePaymentModal').on('hidden.bs.modal', function() {
-                location.reload(); // Recargar la página
-            });
-        });
 
         // Función para abrir el modal de pago personalizado
-        function abrirModalPago(prestamoId, montoCuota) {
+        function abrirModalPago(prestamoId, montoCuota, nombreCliente, direccionCliente, telefonoCliente, identificacionCURP, montoAPagar) {
             globalPrestamoId = prestamoId;
             globalMontoCuota = montoCuota;
+
+            // Establecer los datos del cliente en el modal de Pagar Cantidad
+            $('#customModalClienteNombre').text(nombreCliente);
+            $('#customModalClienteDireccion').text(direccionCliente);
+            $('#customModalClienteTelefono').text(telefonoCliente);
+            $('#customModalClienteCURP').text(identificacionCURP);
+            $('#customModalMontoAPagar').text(montoAPagar);
+
+            // Configurar el botón de WhatsApp para abrir el modal de WhatsApp con el número correcto
+            $('#sendWhatsappButton').off('click').on('click', function() {
+                var telefonoCliente = $('#customPaymentModal').data('cliente-telefono');
+                var mensajeWhatsapp = 'Hola, hemos recibido tu pago de ' + montoAPagar + '.';
+                window.open('https://wa.me/' + telefonoCliente + '?text=' + encodeURIComponent(mensajeWhatsapp));
+            });
+
+            // Mostrar el modal de Pagar Cantidad
             $('#customPaymentModal').modal('show');
         }
 
@@ -402,4 +493,3 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 </body>
 
 </html>
- 
