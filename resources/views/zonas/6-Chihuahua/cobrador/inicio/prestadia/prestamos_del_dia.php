@@ -82,7 +82,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 <body>
 
     <header>
-        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -132,7 +132,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                 
             <input type="text" name="busqueda" placeholder="Buscar...">
             
-                <a   href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+                <a   href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
             </div>
 
         </form>
