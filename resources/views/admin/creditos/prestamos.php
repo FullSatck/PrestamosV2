@@ -32,14 +32,15 @@ if (!isset($_SESSION["usuario_id"])) {
     }
 
     // Si tienes un cliente_id, obtén su zona asignada
-$zona_cliente = "";
-if (isset($cliente_id)) {
-    $query_zona_cliente = "SELECT ZonaAsignada FROM clientes WHERE ID = $cliente_id";
-    $result_zona_cliente = $conexion->query($query_zona_cliente);
-    if ($row = $result_zona_cliente->fetch_assoc()) {
-        $zona_cliente = $row['ZonaAsignada'];
+    $zona_cliente = "";
+    if (isset($cliente_id)) {
+        $query_zona_cliente = "SELECT ZonaAsignada FROM clientes WHERE ID = $cliente_id";
+        $result_zona_cliente = $conexion->query($query_zona_cliente);
+        if ($row = $result_zona_cliente->fetch_assoc()) {
+            $zona_cliente = $row['ZonaAsignada'];
+        }
     }
-}
+    
 
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -275,12 +276,12 @@ $result_zonas = $conexion->query($query_zonas);
             <label for="zona">Zona:</label>
             <select name="zona" required>
                 <?php
-    while ($row = $result_zonas->fetch_assoc()) {
-        $selected = ($row['Nombre'] == $zona_cliente) ? "selected" : "";
-        echo "<option value='" . $row['Nombre'] . "' $selected>" . $row['Nombre'] . "</option>";
+    if ($zona_cliente) {
+        echo "<option value='" . $zona_cliente . "'>" . $zona_cliente . "</option>";
     }
     ?>
             </select><br>
+
 
             <label for="aplicar_comision">Aplicar Comisión:</label>
             <select name="aplicar_comision" id="aplicar_comision" onchange="toggleComision()">
