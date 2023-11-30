@@ -11,7 +11,7 @@ if (!isset($_SESSION["usuario_id"])) {
 // Incluir el archivo de conexión a la base de datos
 require_once("conexion.php");
 
-// Obtén el ID del cliente o del préstamo de la URL
+// Obtén el ID del cliente o del préstamo de la URL   
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Inicializa las variables para evitar errores si la consulta no devuelve resultados
@@ -46,16 +46,15 @@ $stmt_prestamo->close();
 <body id="body">
     <header>
         <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+
         <div class="nombre-usuario">
-            <?php
-            if (isset($_SESSION["nombre_usuario"])) {
-                echo htmlspecialchars($_SESSION["nombre_usuario"]);
-                if (isset($_SESSION["nombre_rol"])) {
-                    echo "<br><span>" . htmlspecialchars($_SESSION["nombre_rol"]) . "</span>";
-                }
-            }
-            ?>
-        </div>
+                <?php
+    if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
+        echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
+    }
+    ?>
+            </div>
+
     </header>
     <main>
         <?php if ($info_prestamo): ?>

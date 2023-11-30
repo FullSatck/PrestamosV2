@@ -156,12 +156,6 @@ $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
                     <h4>Prestamos</h4>
                 </div>
             </a>
-            <a href="/resources/views/admin/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
