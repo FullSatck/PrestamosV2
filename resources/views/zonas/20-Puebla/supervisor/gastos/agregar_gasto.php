@@ -10,13 +10,12 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
-
 // Incluye la configuración de conexión a la base de datos
 include "../../../../../../controllers/conexion.php";
 
 // Definir variables e inicializar con valores vacíos
-$id_zona = $fecha = $descripcion = $valor = "";
-$id_zona_err = $fecha_err = $descripcion_err = $valor_err = "";
+$id_zona = $ciudad = $asentamiento = $fecha = $descripcion = $valor = "";
+$id_zona_err = $ciudad_err = $asentamiento_err = $fecha_err = $descripcion_err = $valor_err = "";
 
 // Procesar datos del formulario cuando se envía el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -27,12 +26,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_zona = trim($_POST["id_zona"]);
     }
 
+    // Validar la ciudad
+    if (empty(trim($_POST["ciudad"]))) {
+        $ciudad_err = "Por favor, seleccione una ciudad.";
+    } else {
+        $ciudad = trim($_POST["ciudad"]);
+    }
+
+    // Validar el asentamiento
+    if (empty(trim($_POST["asentamiento"]))) {
+        $asentamiento_err = "Por favor, ingrese un asentamiento.";
+    } else {
+        $asentamiento = trim($_POST["asentamiento"]);
+    }
+
     // Validar la fecha
     $input_fecha = trim($_POST["fecha"]);
     if (empty($input_fecha)) {
         $fecha_err = "Por favor, ingrese la fecha.";
     } else {
-        // Convertir la fecha al formato 'YYYY-MM-DD'
         $fecha = date('Y-m-d', strtotime($input_fecha));
     }
 
@@ -51,17 +63,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Verificar si no hay errores de validación antes de insertar en la base de datos
-    if (empty($id_zona_err) && empty($descripcion_err) && empty($valor_err)) {
+    if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && empty($fecha_err) && empty($descripcion_err) && empty($valor_err)) {
         // Preparar la declaración de inserción
-        $sql = "INSERT INTO gastos (iDZona, fecha, descripcion, valor) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO gastos (idZona, ciudad, asentamiento, fecha, descripcion, valor) VALUES (?, ?, ?, ?, ?, ?)";
 
         if ($stmt = $conexion->prepare($sql)) {
             // Vincular las variables a la declaración preparada como parámetros
-            $stmt->bind_param("sssd", $param_id_zona, $param_fecha, $param_descripcion, $param_valor);
+            $stmt->bind_param("issssd", $param_id_zona, $param_ciudad, $param_asentamiento, $param_fecha, $param_descripcion, $param_valor);
 
             // Establecer los parámetros
             $param_id_zona = $id_zona;
-            $param_fecha = $fecha; // Fecha formateada correctamente
+            $param_ciudad = $ciudad;
+            $param_asentamiento = $asentamiento;
+            $param_fecha = $fecha;
             $param_descripcion = $descripcion;
             $param_valor = $valor;
 
@@ -199,10 +213,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_GET['mensaje'])) {
                 echo htmlspecialchars($_GET['mensaje']);
             }
-            ?>
+            ?>z
         </div>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+
             <div class="form-group">
                 <label for="id_zona">Estado:</label>
                 <select name="id_zona" id="id_zona" class="zona">
@@ -222,26 +237,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
                 <span class="help-block"><?php echo $id_zona_err; ?></span>
             </div>
+
+            <div class="input-container">
+                <label for="ciudad">Municipio:</label>
+                <select id="ciudad" name="ciudad" class="zona" required>
+                    <option value="">Seleccionar Municipio</option>
+                    <?php
+    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 20";
+    $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
+    while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
+        echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
+    }
+    ?>
+                </select>
+
+            </div>
+
+            <div class="input-container">
+                <label for="asentamiento">Colonia:</label>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
+                    required>
+            </div>
+
             <div class="form-group">
                 <label for="fecha">Fecha:</label>
                 <input type="date" name="fecha" id="fecha" class="form-control" value="<?php echo $fecha; ?>">
                 <span class="help-block"><?php echo $fecha_err; ?></span>
             </div>
+
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
                 <input type="text" name="descripcion" id="descripcion" class="form-control"
                     value="<?php echo $descripcion; ?>">
                 <span class="help-block"><?php echo $descripcion_err; ?></span>
             </div>
+
             <div class="form-group">
                 <label for="valor">Valor:</label>
                 <input type="number" name="valor" id="valor" class="form-control" value="<?php echo $valor; ?>">
                 <span class="help-block"><?php echo $valor_err; ?></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Agregar Gasto">
                 <a href="gastos.php" class="btn btn-secondary">Cancelar</a>
             </div>
+
         </form>
     </main>
 
