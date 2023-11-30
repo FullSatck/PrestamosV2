@@ -14,6 +14,39 @@ body {
 
 main {
     padding: 20px;
+    position: relative;
+    background-image: url('/controllers/logoplata.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Contenedor adicional para la imagen de fondo */
+.logo-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Coloca el contenedor detrás del contenido de main */
+}
+
+.logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Ajustar la opacidad solo al contenido de main */
+main::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo transparente */
+    z-index: -1;
 }
 
 header {
@@ -40,63 +73,10 @@ header {
     color: blue;
     max-width: 200px;
     word-wrap: break-word;
-  }
-  
-  .nombre-usuario span {
+}
+
+.nombre-usuario span {
     color: grey;
-  }
-
-.back-link {
-    display: inline-block;
-    padding: 10px 15px;
-    margin: 10px 0;
-    background-color: #747474;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-}
-
-.back-link:hover {
-    background-color: #585858;
-}
-
-.back-link:active {
-    background-color: rgb(17, 0, 255);
-}
-
-/* Préstamos del cliente */
-#profile-loans {
-    margin: 20px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#profile-loans h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-/* Tabla de préstamos */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table th, table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #818080;
-}
-
-table th {
-    background-color: #969595;
-    color: #333;
-    font-size: 18px;
 }
 
 .table-scroll-container {
@@ -104,101 +84,59 @@ table th {
     margin-top: 20px;
 }
 
-h1 { 
-    color: #000000; 
-    margin: 0;
+h1 {
     padding-top: 50px;
+    padding-bottom: 20px;
 }
 
-h2 {
-    color: #000000;
-    margin-top: 20px;
+.info-cliente {
+    display: flex;
+    justify-content: space-between;
 }
 
-/* Tabla de fechas de pago */
+.columna {
+    flex: 1;
+    padding: 0 10px;
+}
+
+/* Hacer la tabla transparente */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo transparente */
 }
 
-table,
-th,
-td {
-    border: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-    color: #ec2424;
-    font-weight: bold;
+th, td {
+    padding: 10px;
     text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#tabla-prestamos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabla-prestamos th, #tabla-prestamos td {
     padding: 10px;
+    text-align: left;
 }
 
-td {
-    padding: 8px;
+#tabla-prestamos th {
+    background-color: pink; /* Color rosa claro */
 }
 
-tr:nth-child(odd) {
-    background-color: #f9f9f9;
+.color-claro {
+    background-color: rgb(245, 220, 224); /* Color rosa más claro para filas pares */
 }
 
-tr:hover {
-    background-color: #e0e0e0;
+.color-oscuro {
+    background-color: rgb(240, 215, 219); /* Color rosa más oscuro para filas impares */
 }
 
-/* Estilos para los párrafos de información */
-.p {
-    color: rgb(128, 128, 128);
-    text-align: center;
-    margin: 10px 0;
-    /* Añadido espacio vertical entre párrafos */
-}
-
-.pp {
-    color: #000000;
-    background-color: rgb(158, 156, 156);
-    padding: 10px;
-}
-
-/* Estilos para los enlaces en la última columna */
-td a {
-    background: #adadad;
-    text-decoration: none;
-    color: #000000;
-    transition: color 0.3s ease;
-    padding: 7px;
-    border-radius: 8px;
-    display: inline-block;
-    text-align: center;
-}
-
-td a:hover {
-    background: #707070;
-    color: #000000;
-}
-
-@media screen and (max-width: 600px) {
-    .cuadros-container {
-        flex-direction: column;
-    }
-
-    .cuadro {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .body_move {
-        margin-left: 0px;
-    }
-
-    .menu__side_move {
-        width: 80px;
-        left: -80px;
-    }
-
-    .manage-loans a {
-        padding: 15px 30px; /* Aumentar el tamaño de los botones */
+@media only screen and (max-width: 600px) {
+    table {
+        font-size: 12px;
     }
 }

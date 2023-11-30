@@ -48,48 +48,60 @@ $stmt_prestamo->close();
         <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
 
         <div class="nombre-usuario">
-                <?php
+            <?php
     if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
         echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
     }
     ?>
-            </div>
+        </div>
 
     </header>
     <main>
         <?php if ($info_prestamo): ?>
-            <h1>Registro</h1>
-            <div class='info-cliente'>
-                <h2>Información del Préstamo</h2>
+        <h1>Registro</h1>
+        <div class="info-cliente">
+
+            <div class="columna">
                 <p><strong>Cliente:</strong> <?= htmlspecialchars($info_prestamo['Nombre']); ?></p>
                 <p><strong>Teléfono:</strong> <?= htmlspecialchars($info_prestamo['Telefono']); ?></p>
+            </div>
+            <div class="columna">
                 <p><strong>Cuota Diaria:</strong> <?= htmlspecialchars($info_prestamo['Cuota']); ?></p>
                 <p><strong>Total del Préstamo:</strong> <?= htmlspecialchars(number_format($total_prestamo, 2)); ?></p>
             </div>
-            <div class='table-scroll-container' id='profile-loans'>
-            <table>
+        </div>
+
+        <div class='table-scroll-container' id='profile-loans'>
+
+            <table id="tabla-prestamos">
                 <tr>
                     <th>Fecha</th>
                     <th>Abono</th>
                     <th>Resta</th>
                 </tr>
                 <?php
-                $sql = "SELECT fecha, monto_pagado, (monto - monto_pagado) AS resta FROM facturas WHERE cliente_id = ?";
-                $stmt = $conexion->prepare($sql);
-                $stmt->bind_param("i", $id); // Cambiado de $usuario_id a $id
-                $stmt->execute();
-                $resultado = $stmt->get_result();
+    $sql = "SELECT fecha, monto_pagado, (monto - monto_pagado) AS resta FROM facturas WHERE cliente_id = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("i", $id); // Cambiado de $usuario_id a $id
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-                while ($fila = $resultado->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
-                    echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
-                    echo "<td>" . htmlspecialchars($fila['resta']) . "</td>";
-                    echo "</tr>";
-                }
-                $stmt->close();
-                ?>
+    $fila_counter = 0;
+    while ($fila = $resultado->fetch_assoc()) {
+        $fila_counter++;
+        $color_clase = ($fila_counter % 2 == 0) ? 'color-claro' : 'color-oscuro';
+
+        echo "<tr class='$color_clase'>";
+        echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+        echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+        echo "<td>" . htmlspecialchars($fila['resta']) . "</td>";
+        echo "</tr>";
+    }
+    $stmt->close();
+    ?>
             </table>
+
+
         </div>
         <?php else: ?>
         <p>No se encontró información de préstamos para este usuario.</p>
