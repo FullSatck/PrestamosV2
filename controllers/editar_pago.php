@@ -37,39 +37,40 @@ $factura = $resultado->fetch_assoc();
 // Cerrar la consulta
 $stmt->close();
 
-// Si se envió el formulario para actualizar la factura
+// Si se envió el formulario para actualizar la factura 
+
+// ...
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $monto = $_POST['monto'];
     $fecha = $_POST['fecha'];
     $monto_pagado = $_POST['monto_pagado'];
-    $monto_deuda = $_POST['monto_deuda'];
+    $nuevo_monto_deuda = $monto - $monto_pagado;
 
     // Consulta para actualizar la factura
     $sql_update = "UPDATE facturas SET monto = ?, fecha = ?, monto_pagado = ?, monto_deuda = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
-    $stmt_update->bind_param("isiii", $monto, $fecha, $monto_pagado, $monto_deuda, $id_factura);
+    $stmt_update->bind_param("isiii", $monto, $fecha, $monto_pagado, $nuevo_monto_deuda, $id_factura);
     $stmt_update->execute();
     $stmt_update->close();
 
-    // Actualizar el monto_deuda en la tabla facturas
-    $sql_update_deuda = "UPDATE facturas SET monto_deuda = (monto - monto_pagado) WHERE id = ?";
-    $stmt_update_deuda = $conexion->prepare($sql_update_deuda);
-    $stmt_update_deuda->bind_param("i", $id_factura);
-    $stmt_update_deuda->execute();
-    $stmt_update_deuda->close();
-
     // Actualizar MontoAPagar en la tabla prestamos
-$id_cliente = $factura['cliente_id'];
-$sql_update_prestamos = "UPDATE prestamos SET MontoAPagar = ? WHERE IDCliente = ?";
-$stmt_update_prestamos = $conexion->prepare($sql_update_prestamos);
-$stmt_update_prestamos->bind_param("di", $factura['monto_deuda'], $id_cliente);
-$stmt_update_prestamos->execute();
-$stmt_update_prestamos->close();
+    $sql_update_prestamos = "UPDATE prestamos SET MontoAPagar = ? WHERE IDCliente = ?";
+    $stmt_update_prestamos = $conexion->prepare($sql_update_prestamos);
+    $stmt_update_prestamos->bind_param("di", $nuevo_monto_deuda, $factura['cliente_id']);
+    $stmt_update_prestamos->execute();
+    $stmt_update_prestamos->close();
 
     // Redireccionar después de la actualización
     header("Location: cartulina.php?id=" . $factura['cliente_id']);
     exit();
 }
+
+// ...
+
+
+// ...
+
 ?>
 
 <!DOCTYPE html>
