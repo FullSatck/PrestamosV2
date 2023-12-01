@@ -52,8 +52,11 @@ function procesarPago(prestamoId, montoCuota) {
                 // Mostrar modal de WhatsApp
                 $('#whatsappModal').modal('show');
                 // Agregar los detalles del cliente al modal
-                $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ', Monto Pagado: ' +
-                    response.montoPagado);
+                $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ',\n Monto Pagado: ' +
+                    response.montoPagado + '\nDetalles adicionales:\n' +
+                    'CURP: ' + response.clienteCURP + '\n' +
+                    'Domicilio: ' + response.clienteDireccion + '\n' +
+                    'Monto pendiente: ' + response.montoPendiente);
 
                 
                 // Crear mensaje de WhatsApp con más detalles del cliente
