@@ -110,12 +110,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Editar Retiro</title>
-    <!-- Agrega tus estilos y scripts -->
+     <link rel="stylesheet" href="/public/assets/css/editar_retiro.css">
 </head>
 
 <body>
     <header>
-        <!-- Agrega tu encabezado -->
+        
     </header>
 
     <main>
