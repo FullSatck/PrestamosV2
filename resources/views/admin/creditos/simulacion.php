@@ -262,12 +262,26 @@ $result_zonas = $conexion->query($query_zonas);
             <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d'); ?>" readonly><br>
 
             <label for="zona">Zona:</label>
-            <select name="zona" required>
-                <?php
-    if ($zona_cliente) {
-        echo "<option value='" . $zona_cliente . "'>" . $zona_cliente . "</option>";
+<select name="zona" required>
+    <?php
+    // Consulta para obtener las zonas desde la base de datos
+    $query_zonas = "SELECT Nombre FROM zonas";
+    $result_zonas = $conexion->query($query_zonas);
+
+    // Verificar si hay resultados
+    if ($result_zonas->num_rows > 0) {
+        // Iterar sobre los resultados y construir las opciones del menú desplegable
+        while ($row_zona = $result_zonas->fetch_assoc()) {
+            $nombre_zona = $row_zona['Nombre'];
+            echo "<option value='" . $nombre_zona . "'>" . $nombre_zona . "</option>";
+        }
+    } else {
+        // En caso de no haber zonas en la base de datos
+        echo "<option value=''>No hay zonas disponibles</option>";
     }
     ?>
+</select><br>
+
             </select><br>
 
 
