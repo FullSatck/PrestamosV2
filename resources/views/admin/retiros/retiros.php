@@ -197,7 +197,7 @@ if ($result->num_rows > 0) {
     echo "<div class='table-container'>";
     echo "<table class='styled-table'>";
     echo "<thead>";
-    echo "<tr><th>ID</th><th>ID Usuario</th><th>Fecha</th><th>Monto</th><th>Descripción</th></tr>";
+    echo "<tr><th>ID</th><th>ID Usuario</th><th>Fecha</th><th>Monto</th><th>Descripción</th><th>Editar</th></tr>";
     echo "</thead>";
     echo "<tbody>";
 
@@ -211,6 +211,8 @@ while($row = $result->fetch_assoc()) {
     // Imprimir la descripción
     $descripcion = !is_null($row['descripcion']) ? htmlspecialchars($row['descripcion']) : 'Sin descripción';
     echo "<td>" . $descripcion . "</td>"; // Asegúrate de imprimir la variable aquí
+    // Agregar un enlace o botón para editar
+    echo "<td><a href='editar_retiros.php?id=" . $row["ID"] . "'>Editar</a></td>"; // Reemplaza 'editar_retiro.php' con tu archivo de edición y asegúrate de pasar el ID del retiro
     echo "</tr>";
 }
     // Finalizar la tabla

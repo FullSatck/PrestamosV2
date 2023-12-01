@@ -83,9 +83,32 @@ $stmt->close();
 
             // Mostrar las fechas de pago en una tabla 
             echo "<div class='table-scroll-container' id='profile-loans'>";
-            echo "<h1>Fechas de Pago</h1>"; 
+
+            if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+                $idPrestamo = $_GET['id'];
+            
+                // Consulta SQL para obtener los detalles del préstamo con el ID dado
+                $sql = "SELECT clientes.nombre AS nombre_cliente, FechaInicio, FrecuenciaPago, Plazo, Cuota, MontoAPagar FROM prestamos INNER JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.ID = $idPrestamo";
+                $result = $conexion->query($sql);
+            
+                if ($result->num_rows === 1) {
+                    $row = $result->fetch_assoc();
+                    $nombreCliente = $row["nombre_cliente"]; // Guarda el nombre del cliente
+            
+                    // Mostrar el nombre del cliente debajo del título
+                    echo "<h1>Fechas de Pago</h1>";
+                    echo "<p class='nombre-cliente'>Cliente: $nombreCliente</p>";
+            
+                    // Resto del código...
+                } else {
+                    echo "ID de préstamo no válido.";
+                }
+            } else {
+                echo "ID de préstamo no proporcionado.";
+            }
+
             echo "<table>";
-            echo "<tr><th>Frecuencia</th><th>Fecha</th><th>Cuota</th><th>Frecuencia de Pago</th><th>Pagado</th></tr>";
+            echo "<tr><th>Frecuencia</th><th>Fecha</th><th>Cuota</th><th>Pagado</th></tr>";
             $numeroFecha = 1;
             $sumaPagos = 0;
             foreach ($fechasPago as $fecha) {
@@ -117,7 +140,7 @@ $stmt->close();
                     $stmt->execute();
                 }
 
-                echo "<tr><td>$frecuencia</td><td>$fechaFormato</td><td>$cuota</td><td>$frecuenciaPago</td><td>$estadoPago</td></tr>";
+                echo "<tr><td>$frecuencia</td><td>$fechaFormato</td><td>$cuota</td><td>$estadoPago</td></tr>";
                 $numeroFecha++;
             }
             echo "</table>";
