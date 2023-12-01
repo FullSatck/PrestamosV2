@@ -42,6 +42,15 @@ header {
 .nombre-usuario span {
   color: grey;
 }
+.btn-mas-tarde{
+  background-color: #5cb85c;
+
+}
+
+.boton-morado {
+  background-color: rgb(123, 123, 192, 4); /* Color morado */
+  /* Otros estilos */
+}
 
 header a {
   padding: 10px 15px;
