@@ -18,6 +18,7 @@ main {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    background-color: rgb(250, 228, 235);
 }
 
 /* Contenedor adicional para la imagen de fondo */
