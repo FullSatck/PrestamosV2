@@ -152,7 +152,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                             <td><?= $fila_prestamo["FechaInicio"] ?></td>
                             <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
                             <td><?= $fila_prestamo["Estado"] ?></td>
-                            <td><a href="dias_pago.php?id=<?= $fila_prestamo["ID"]; ?>">Pagos</a></td>
+                            <td><a href="cartulina.php?id=<?= $fila_prestamo["ID"]; ?>">Pagos</a></td>
                         </tr>
                         <?php endwhile; ?>
                     </tbody>
