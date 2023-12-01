@@ -129,10 +129,10 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
 
 
             <div class="header-actions">
-                
-            <input type="text" name="busqueda" placeholder="Buscar...">
-            
-                <a   href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+
+                <input type="text" name="busqueda" placeholder="Buscar...">
+
+                <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
             </div>
 
         </form>
@@ -149,6 +149,8 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                         <tr>
                             <th>PréstamoID</th>
                             <th>Nombre Cliente</th>
+                            <th>CURP</th>
+                            <th>Telefono</th>
                             <th>Perfil</th>
                             <th>Pagar</th>
                             <th>No pago</th>
@@ -162,6 +164,8 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                             <tr>
                                 <td><?php echo htmlspecialchars($cuota['ID']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['NombreCliente']); ?></td>
+                                <td><?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?></td>
+                                <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
                                 <td>
                                     <a href="../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
@@ -195,11 +199,12 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion);
                                 </td>
                                 <td>
                                     <?php if ($filtro != 'pagado') : ?>
-                                        <button type="button" class="btn btn-secondary btn-mas-tarde" data-prestamoid="<?php echo $cuota['ID']; ?>">
+                                        <button type="button" class="btn btn-secondary btn-mas-tarde boton-morado" data-prestamoid="<?php echo $cuota['ID']; ?>">
                                             Más Tarde
                                         </button>
                                     <?php endif; ?>
                                 </td>
+
 
                             </tr>
                         <?php endforeach; ?>
