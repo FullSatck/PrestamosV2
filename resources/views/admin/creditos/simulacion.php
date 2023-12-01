@@ -183,7 +183,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <h4>Ruta</h4>
                 </div>
             </a>
- 
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -226,14 +226,8 @@ $result_monedas = $conexion->query($query_monedas);
 $result_zonas = $conexion->query($query_zonas);
 ?>
 
-            <label for="id_cliente">Cliente:</label>
-            <select name="id_cliente" required>
-                <?php
-    while ($row = $result_clientes->fetch_assoc()) {
-        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
-    }
-    ?>
-            </select><br>
+<label for="id_cliente">Cliente:</label>
+<input type="text" name="nombre_cliente" id="nombre_cliente" required placeholder="Nombre del Cliente"><br>
 
 
             <label for="monto">Monto:</label>
