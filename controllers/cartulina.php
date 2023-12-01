@@ -49,7 +49,7 @@ $stmt_prestamo->close();
 
 <body id="body">
     <header>
-        <a href="/controllers/perfil_cliente.php" class="back-link">Volver</a>
+    <a href="perfil_cliente.php?id=<?= $id_cliente ?>" class="back-link">Volver Atrás</a>
 
         <div class="nombre-usuario">
             <?php
