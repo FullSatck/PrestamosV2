@@ -37,7 +37,6 @@ function setPrestamoId(prestamoId, montoCuota, nombreCliente, direccionCliente, 
     $('#modalMontoAPagar').text(montoAPagar);
     $('#modalMontoCuota').text(montoCuota);
 }
-
 function procesarPago(prestamoId, montoCuota) {
     $.ajax({
         url: 'procesar_pago.php',
@@ -55,10 +54,18 @@ function procesarPago(prestamoId, montoCuota) {
                 // Agregar los detalles del cliente al modal
                 $('#clienteDetalles').text('Nombre: ' + response.clienteNombre + ', Monto Pagado: ' +
                     response.montoPagado);
+
+                
+                // Crear mensaje de WhatsApp con más detalles del cliente
+                var mensajeWhatsapp = 'Hola ' + response.clienteNombre +
+                    ', hemos recibido tu pago de ' + response.montoPagado + '.\n' +
+                    'Detalles adicionales:\n' +
+                    'CURP: ' + response.clienteCURP + '\n' +
+                    'Domicilio: ' + response.clienteDireccion + '\n' +
+                    'Monto pendiente: ' + response.montoPendiente;
+
                 // Preparar el botón de WhatsApp
                 $('#sendWhatsappButton').off('click').on('click', function() {
-                    var mensajeWhatsapp = 'Hola ' + response.clienteNombre +
-                        ', hemos recibido tu pago de ' + response.montoPagado + '.';
                     window.open('https://wa.me/' + response.clienteTelefono + '?text=' +
                         encodeURIComponent(mensajeWhatsapp));
                 });
@@ -72,6 +79,7 @@ function procesarPago(prestamoId, montoCuota) {
         }
     });
 }
+
 
 function abrirModalPosponerPago(prestamoId, montoCuota, nombreCliente, direccionCliente, telefonoCliente, identificacionCURP, montoAPagar) {
 
