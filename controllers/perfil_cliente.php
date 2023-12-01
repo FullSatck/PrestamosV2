@@ -135,10 +135,8 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <thead>
                         <tr>
                             <th>ID del Préstamo</th>
-                            <th>Monto</th>
-                            <th>Tasa de Interés</th>
-                            <th>Plazo</th>
-                            <th>Frecuencia de Pago</th> <!-- Agregar Frecuencia de Pago -->
+                            <th>Deuda</th> 
+                            <th>Plazo</th> 
                             <th>Fecha de Inicio</th>
                             <th>Fecha de Vencimiento</th>
                             <th>Estado</th>
@@ -149,10 +147,8 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                         <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
                         <tr>
                             <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
-                            <td><?= $fila_prestamo["Monto"] ?></td>
-                            <td><?= $fila_prestamo["TasaInteres"] ?></td>
-                            <td><?= $fila_prestamo["Plazo"] ?></td>
-                            <td><?= $fila_prestamo["FrecuenciaPago"] ?></td> <!-- Mostrar Frecuencia de Pago -->
+                            <td><?= $fila_prestamo["MontoAPagar"] ?></td> 
+                            <td><?= $fila_prestamo["Plazo"] ?></td> 
                             <td><?= $fila_prestamo["FechaInicio"] ?></td>
                             <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
                             <td><?= $fila_prestamo["Estado"] ?></td>

@@ -69,7 +69,7 @@ $stmt->close();
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
@@ -150,7 +150,7 @@ $stmt->close();
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -218,6 +218,7 @@ $stmt->close();
         echo '<th>Fecha</th>';
         echo '<th>Descripción</th>';
         echo '<th>Valor</th>';
+        echo '<th>Editar</th>';
         echo '</tr>';
 
         // Verifica si hay gastos en la base de datos
@@ -232,6 +233,8 @@ $stmt->close();
                 echo '<td>' . $fila['Fecha'] . '</td>';
                 echo '<td>' . $fila['Descripcion'] . '</td>'; 
                 echo "<td>" . number_format($fila['Valor'], 0, '.', '.') . "</td>"; // Formatear el monto
+                // Agrega la columna "Editar" con un enlace a editar_gasto.php, pasando el ID del gasto a editar
+                echo '<td><a href="editar_gasto.php?id=' . $fila['ID'] . '">Editar</a></td>';
                 echo '</tr>';
             }
         } else {

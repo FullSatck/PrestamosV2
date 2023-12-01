@@ -110,6 +110,15 @@ h1 {
     padding-top: 50px;
 }
 
+/* Estilos para el nombre del cliente */
+.nombre-cliente {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 20px;
+    color: #333; /* Cambia el color según tu preferencia */
+}
+
+
 h2 {
     color: #000000;
     margin-top: 20px;

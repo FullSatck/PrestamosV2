@@ -255,7 +255,7 @@ h1 {
 
 .a {
     display: inline-block;
-    background-color: #007bff;
+    background-color: #5e5f5f;
     color: #fff;
     text-decoration: none;
     padding: 10px 20px;
@@ -264,10 +264,7 @@ h1 {
     margin-bottom: 20px;
     transition: background-color 0.3s ease;
 }
-
-a:hover {
-    background-color: #0056b3;
-}
+ 
 
 /* Estilos para la tabla de gastos */
 table {
@@ -302,15 +299,13 @@ tbody tr:hover {
 
 /* Estilos para los enlaces en la última columna de la tabla de gastos */
 td a {
-    background: #70aee9;
+    background: #727272;
     text-decoration: none;
     color: #000;
     transition: color 0.3s ease;
     padding: 7px;
     border-radius: 8px;
 }
-
-  
 
 /* Estilos responsive */
 @media screen and (max-width: 600px) {
