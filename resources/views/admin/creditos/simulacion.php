@@ -183,7 +183,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <h4>Ruta</h4>
                 </div>
             </a>
- 
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -226,14 +226,8 @@ $result_monedas = $conexion->query($query_monedas);
 $result_zonas = $conexion->query($query_zonas);
 ?>
 
-            <label for="id_cliente">Cliente:</label>
-            <select name="id_cliente" required>
-                <?php
-    while ($row = $result_clientes->fetch_assoc()) {
-        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
-    }
-    ?>
-            </select><br>
+<label for="id_cliente">Cliente:</label>
+<input type="text" name="nombre_cliente" id="nombre_cliente" required placeholder="Nombre del Cliente"><br>
 
 
             <label for="monto">Monto:</label>
@@ -268,12 +262,26 @@ $result_zonas = $conexion->query($query_zonas);
             <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d'); ?>" readonly><br>
 
             <label for="zona">Zona:</label>
-            <select name="zona" required>
-                <?php
-    if ($zona_cliente) {
-        echo "<option value='" . $zona_cliente . "'>" . $zona_cliente . "</option>";
+<select name="zona" required>
+    <?php
+    // Consulta para obtener las zonas desde la base de datos
+    $query_zonas = "SELECT Nombre FROM zonas";
+    $result_zonas = $conexion->query($query_zonas);
+
+    // Verificar si hay resultados
+    if ($result_zonas->num_rows > 0) {
+        // Iterar sobre los resultados y construir las opciones del menú desplegable
+        while ($row_zona = $result_zonas->fetch_assoc()) {
+            $nombre_zona = $row_zona['Nombre'];
+            echo "<option value='" . $nombre_zona . "'>" . $nombre_zona . "</option>";
+        }
+    } else {
+        // En caso de no haber zonas en la base de datos
+        echo "<option value=''>No hay zonas disponibles</option>";
     }
     ?>
+</select><br>
+
             </select><br>
 
 
