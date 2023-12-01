@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $esPospuesto = $filaPrestamo['Pospuesto'];
 
             // Obtener el nombre y el número de teléfono del cliente
-            $sqlCliente = "SELECT Nombre, Telefono FROM clientes WHERE ID = ?";
+            $sqlCliente = "SELECT Nombre, Telefono, IdentificacionCURP, Domicilio FROM clientes WHERE ID = ?";
             $stmtCliente = $conexion->prepare($sqlCliente);
             $stmtCliente->bind_param("i", $clienteId);
             $stmtCliente->execute();
@@ -36,6 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $filaCliente = $resultadoCliente->fetch_assoc();
             $clienteNombre = $filaCliente['Nombre'];
             $clienteTelefono = $filaCliente['Telefono'];
+            $clienteCURP = $filaCliente['IdentificacionCURP'];
+            $clienteDireccion = $filaCliente['Domicilio'];
             $stmtCliente->close();
 
             // Registrar el pago en la tabla 'historial_pagos'
@@ -47,6 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
 
             // Descontar el monto pagado del total a pagar
             $montoRestante = $montoTotalAPagar - $montoPagado;
+
+            // Insertar los detalles del pago en la tabla 'facturas'
+            $sqlInsertarFactura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, CURDATE(), ?, ?)";
+            $stmtFactura = $conexion->prepare($sqlInsertarFactura);
+            $montoDeuda = $montoRestante > 0 ? $montoRestante : 0; // Si el monto restante es negativo, se establece a 0
+            $stmtFactura->bind_param("iddi", $clienteId, $montoTotalAPagar, $montoPagado, $montoDeuda);
+            $stmtFactura->execute();
+            $stmtFactura->close();
 
             // Preparar la consulta para actualizar el monto total a pagar y, si es necesario, el estado del préstamo
             if ($montoRestante <= 0) {
@@ -62,6 +72,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             }
             $stmtActualizarPrestamo->execute();
             $stmtActualizarPrestamo->close();
+            
+            // Actualizar el campo 'mas_tarde' en la tabla 'prestamos'
+            $sqlActualizarMasTarde = "UPDATE prestamos SET mas_tarde = 0 WHERE ID = ?";
+            $stmtActualizarMasTarde = $conexion->prepare($sqlActualizarMasTarde);
+            $stmtActualizarMasTarde->bind_param("i", $prestamoId);
+            $stmtActualizarMasTarde->execute();
+            $stmtActualizarMasTarde->close();
 
             // Actualizar el estado de 'Pospuesto' si el préstamo estaba pospuesto
             if ($esPospuesto) {
@@ -71,16 +88,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
                 $stmtActualizarPospuesto->execute();
                 $stmtActualizarPospuesto->close();
             }
-            
 
             // Confirmar la transacción
             $conexion->commit();
             echo json_encode([
-                "success" => true, 
-                "message" => "Pago procesado correctamente.", 
-                "clienteNombre" => $clienteNombre, 
+                "success" => true,
+                "message" => "Pago procesado correctamente.",
+                "clienteNombre" => $clienteNombre,
                 "clienteTelefono" => $clienteTelefono,
-                "montoPagado" => $montoPagado
+                "clienteCURP" => $clienteCURP,
+                "clienteDireccion" => $clienteDireccion,
+                "montoPagado" => $montoPagado,
+                "montoPendiente" => $montoRestante
             ]);
         } else {
             throw new Exception("No se encontró el préstamo o ya está pagado.");
