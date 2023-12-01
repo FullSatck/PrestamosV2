@@ -11,35 +11,38 @@ if (!isset($_SESSION["usuario_id"])) {
 // Incluir el archivo de conexión a la base de datos
 require_once("conexion.php");
 
-// Obtén el ID del cliente o del préstamo de la URL   
-$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+// Obtén el ID del cliente de la URL
+$id_cliente = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Inicializa las variables para evitar errores si la consulta no devuelve resultados
 $info_prestamo = null;
 $total_prestamo = 0;
 
-// Consulta para obtener información del préstamo basado en el ID obtenido de la URL
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Cuota, c.Nombre, c.Telefono FROM prestamos p INNER JOIN clientes c ON p.IDCliente = c.ID WHERE p.ID = ?";
+// Consulta para obtener información del préstamo basado en el ID del cliente obtenido de la URL
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Cuota, c.Nombre, c.Telefono 
+                 FROM prestamos p 
+                 INNER JOIN clientes c ON p.IDCliente = c.ID 
+                 WHERE p.IDCliente = ?";
 $stmt_prestamo = $conexion->prepare($sql_prestamo);
-$stmt_prestamo->bind_param("i", $id);
+$stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
 $resultado_prestamo = $stmt_prestamo->get_result();
 
 if ($resultado_prestamo->num_rows > 0) {
     $info_prestamo = $resultado_prestamo->fetch_assoc();
     $total_prestamo = $info_prestamo['Monto'] + ($info_prestamo['Monto'] * $info_prestamo['TasaInteres'] / 100);
+} else {
+    echo "No se encontró información del préstamo";
 }
 $stmt_prestamo->close();
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/cartulina.css">
+    <link rel="stylesheet" href="/public/assets/css/cartulina.css"> <!-- Reemplaza .css con el nombre correcto del archivo CSS -->
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <title>Registro de Pagos</title>
 </head>
@@ -56,7 +59,6 @@ $stmt_prestamo->close();
             ?>
         </div>
     </header>
-
     <main>
         <?php if ($info_prestamo): ?>
             <h1>Registro</h1>
@@ -72,38 +74,35 @@ $stmt_prestamo->close();
             </div>
 
             <div class='table-scroll-container' id='profile-loans'>
-                <table id="tabla-prestamos">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Abono</th>
-                        <th>Resta</th>
-                    </tr>
-                    <?php
-                    $sql = "SELECT fecha, monto_pagado, (monto - monto_pagado) AS resta FROM facturas WHERE cliente_id = ?";
-                    $stmt = $conexion->prepare($sql);
-                    $stmt->bind_param("i", $id);
-                    $stmt->execute();
-                    $resultado = $stmt->get_result();
+                <?php
+               $sql = "SELECT fecha, monto_pagado, (monto - monto_pagado) AS resta FROM facturas WHERE cliente_id = ?";
+               $stmt = $conexion->prepare($sql);
+               $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
+               $stmt->execute();
+               $resultado = $stmt->get_result();
+                
+                // var_dump($resultado); // Esta línea muestra la información, elimínala para evitar la salida en la página
 
-                    $fila_counter = 0;
-                    if ($resultado->num_rows > 0) {
-                        while ($fila = $resultado->fetch_assoc()) {
-                            $fila_counter++;
-                            $color_clase = ($fila_counter % 2 == 0) ? 'color-claro' : 'color-oscuro';
-
-                            echo "<tr class='$color_clase'>";
-                            echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
-                            echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
-                            echo "<td>" . htmlspecialchars($fila['resta']) . "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='3'>No se encontraron pagos para este cliente.</td></tr>";
+                $fila_counter = 0;
+                if ($resultado->num_rows > 0) {
+                    echo "<table id='tabla-prestamos'>";
+                    echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
+                    while ($fila = $resultado->fetch_assoc()) {
+                        $fila_counter++;
+                        $color_clase = ($fila_counter % 2 == 0) ? 'color-claro' : 'color-oscuro';
+                        echo "<tr class='$color_clase'>";
+                        echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                        echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+                        echo "<td>" . htmlspecialchars($fila['resta']) . "</td>";
+                        echo "</tr>";
                     }
-
-                    $stmt->close();
-                    ?>
-                </table>
+                    echo "</table>";
+                } else {
+                    echo "<p>No se encontraron pagos para este cliente.</p>";
+                }
+                
+                $stmt->close();
+                ?>
             </div>
         <?php else: ?>
             <p>No se encontró información de préstamos para este usuario.</p>
