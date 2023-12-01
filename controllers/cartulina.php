@@ -75,18 +75,17 @@ $stmt_prestamo->close();
 
             <div class='table-scroll-container' id='profile-loans'>
                 <?php
-               $sql = "SELECT fecha, monto_pagado, (monto - monto_pagado) AS resta FROM facturas WHERE cliente_id = ?";
+               $sql = "SELECT id, fecha, monto_pagado, (monto - monto_pagado) AS resta FROM facturas WHERE cliente_id = ?";
                $stmt = $conexion->prepare($sql);
                $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
                $stmt->execute();
                $resultado = $stmt->get_result();
                 
-                // var_dump($resultado); // Esta línea muestra la información, elimínala para evitar la salida en la página
-
                 $fila_counter = 0;
-                if ($resultado->num_rows > 0) {
+                $num_rows = $resultado->num_rows;
+                if ($num_rows > 0) {
                     echo "<table id='tabla-prestamos'>";
-                    echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
+                    echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
                     while ($fila = $resultado->fetch_assoc()) {
                         $fila_counter++;
                         $color_clase = ($fila_counter % 2 == 0) ? 'color-claro' : 'color-oscuro';
@@ -94,6 +93,12 @@ $stmt_prestamo->close();
                         echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
                         echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
                         echo "<td>" . htmlspecialchars($fila['resta']) . "</td>";
+                        // Mostrar "Editar" solo en la última fila
+                        if ($fila_counter === $num_rows) {
+                            echo "<td><a href='editar_pago.php?id=" . $fila['id'] . "'>Editar</a></td>";
+                        } else {
+                            echo "<td></td>";
+                        }
                         echo "</tr>";
                     }
                     echo "</table>";
