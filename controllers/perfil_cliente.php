@@ -67,6 +67,46 @@ if ($resultado->num_rows === 1) {
     exit();
 }
 
+// Asumiendo que los valores de rol y zona se obtienen desde la sesión
+if (isset($_SESSION['rol'], $_SESSION['zona'])) {
+    $usuario_rol = $_SESSION['rol'];
+    $usuario_zona = $_SESSION['zona'];
+
+    // Define una variable para la ruta de regreso
+    $ruta_volver = ""; 
+
+    if ($usuario_rol === 1) {
+        // Ruta para el rol 1 (Administrador)
+        $ruta_volver = "../resources/views/admin/inicio/inicio.php";
+    } elseif ($usuario_rol === 2 && $usuario_zona === 6) {
+        // Ruta para el rol 2 (Supervisor) con Zona 2
+        $ruta_volver = "../resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
+    } elseif ($usuario_rol === 3 && $usuario_zona === 2) {
+        // Ruta para el rol 3 (Cobrador) con Zona 2
+        $ruta_volver = "../resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
+    } elseif ($usuario_rol === 2 && $usuario_zona === 20) {
+        // Ruta para el rol 2 (Supervisor) con Zona 2
+        $ruta_volver = "../resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
+    } elseif ($usuario_rol === 3 && $usuario_zona === 20) {
+        // Ruta para el rol 3 (Cobrador) con Zona 2
+        $ruta_volver = "../resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
+    } elseif ($usuario_rol === 2 && $usuario_zona === 22) {
+        // Ruta para el rol 2 (Supervisor) con Zona 2
+        $ruta_volver = "../resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
+    } elseif ($usuario_rol === 3 && $usuario_zona === 22) {
+        // Ruta para el rol 3 (Cobrador) con Zona 2
+        $ruta_volver = "../resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
+    } else {
+        // Si no coincide con ninguna condición, redirige a una página predeterminada o maneja la situación como desees
+        $ruta_volver = "../index.php";
+    }
+} else {
+    // Manejo de la situación si el rol o la zona del usuario no están definidos en la sesión
+    // Aquí podrías redirigirlo a una página de error o a otra acción dependiendo de tu lógica
+    $ruta_volver = "ruta_error.php";
+}
+
+
 // Consulta SQL para obtener los préstamos del cliente
 $sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
 $resultado_prestamos = $conexion->query($sql_prestamos);
@@ -92,7 +132,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
 
         <header>
 
-            <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+        <a href="<?= $ruta_volver ?>" class="back-link">Volver Atrás</a>
 
             <div class="nombre-usuario">
                 <?php
