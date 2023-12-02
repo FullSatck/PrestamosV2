@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Bogota');
+
 // Incluir el autoload de Composer si estás usando PhpSpreadsheet a través de Composer
 require '../../../../vendor/autoload.php';
 
