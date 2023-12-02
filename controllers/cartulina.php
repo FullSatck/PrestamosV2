@@ -49,7 +49,7 @@ $stmt_prestamo->close();
 
 <body id="body">
     <header>
-        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+    <a href="perfil_cliente.php?id=<?= $id_cliente ?>" class="back-link">Volver Atrás</a>
 
         <div class="nombre-usuario">
             <?php
