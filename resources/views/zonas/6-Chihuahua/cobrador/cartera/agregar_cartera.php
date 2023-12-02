@@ -1,7 +1,6 @@
 <?php
-// Archivo: agregar_cartera.php
-
 session_start();
+date_default_timezone_set('America/Bogota');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
      // Incluye la configuración de conexión a la base de datos

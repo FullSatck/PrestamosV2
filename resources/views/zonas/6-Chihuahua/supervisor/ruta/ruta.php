@@ -22,7 +22,7 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
-
+date_default_timezone_set('America/Bogota');
 ?>
 
 <!DOCTYPE html>

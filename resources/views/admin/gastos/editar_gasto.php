@@ -1,5 +1,7 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
+
 
 // Verifica la autenticación del usuario
 if (!isset($_SESSION["usuario_id"])) {

@@ -60,6 +60,7 @@ $usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE estado = 'inactivo
 if ($usuariosSQL === false) {
     die("Error en la consulta SQL: " . $conexion->error);
 }
+date_default_timezone_set('America/Bogota');
 ?>
 
 

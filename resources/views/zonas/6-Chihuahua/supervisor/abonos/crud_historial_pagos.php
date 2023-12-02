@@ -2,7 +2,7 @@
 
 
 session_start();
-
+date_default_timezone_set('America/Bogota');
 // Verifica si el usuario está autenticado
 if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página

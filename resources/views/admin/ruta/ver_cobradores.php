@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+date_default_timezone_set('America/Bogota');
 // Validacion de rol para ingresar a la pagina 
 require_once '../../../../controllers/conexion.php'; 
 
@@ -77,6 +77,7 @@ if (isset($_GET['zona'])) {
     // Si no se proporciona un nombre de zona válido, establecer $supervisoresEnZona en falso
     $supervisoresEnZona = false;
 }
+
 ?>
 
 <!DOCTYPE html>

@@ -35,6 +35,7 @@ if ($resultado_prestamo->num_rows > 0) {
     echo "No se encontró información del préstamo";
 }
 $stmt_prestamo->close();
+date_default_timezone_set('America/Bogota');
 ?>
 <!DOCTYPE html>
 <html lang="en">

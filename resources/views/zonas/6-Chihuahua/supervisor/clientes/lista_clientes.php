@@ -34,6 +34,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
 
 
 $resultado = $conexion->query($sql);
+date_default_timezone_set('America/Bogota');
 ?>
 
 <!DOCTYPE html>

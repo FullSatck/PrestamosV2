@@ -77,6 +77,7 @@ $sql->execute();
 if ($sql === false) {
     die("Error en la consulta SQL: " . $conexion->error);
 }
+date_default_timezone_set('America/Bogota');
  
 ?>
 

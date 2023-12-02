@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
 // Incluye tu archivo de conexión a la base de datos
 include("../../../../../../controllers/conexion.php");
 

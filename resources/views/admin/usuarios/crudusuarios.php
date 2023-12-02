@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 // Validacion de rol para ingresar a la pagina 
 require_once '../../../../controllers/conexion.php'; 
 
@@ -58,6 +59,7 @@ $usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE estado = 'activo'"
 if ($usuariosSQL === false) {
     die("Error en la consulta SQL: " . $conexion->error);
 }
+date_default_timezone_set('America/Bogota');
 ?>
 
 

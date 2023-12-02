@@ -1,5 +1,7 @@
 <?php
 require_once '../../../../controllers/conexion.php';
+date_default_timezone_set('America/Bogota');
+
 
 // Verifica si se ha enviado el IDZona
 if (isset($_POST['IDZona'])) {

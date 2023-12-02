@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Bogota');
+
 // Incluye el archivo de conexión a la base de datos
 include '../../../../controllers/conexion.php'; // Asegúrate de que 'conexion.php' sea el archivo que contiene la conexión a la base de datos
 
