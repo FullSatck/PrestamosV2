@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 require_once  '../../../../../../../controllers/conexion.php';
 
 header('Content-Type: application/json');

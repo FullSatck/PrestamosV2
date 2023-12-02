@@ -1,5 +1,7 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
+
 include("../../../../controllers/conexion.php");
 
 // Verifica si el usuario está autenticado

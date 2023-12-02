@@ -102,6 +102,7 @@ if (isset($_GET['id'])) {
     header("location: crudusuarios.php?mensaje=ID de usuario no proporcionado");
     exit();
 }
+date_default_timezone_set('America/Bogota');
 ?>
 <!DOCTYPE html>
 <html lang="en">

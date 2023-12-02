@@ -219,7 +219,7 @@ date_default_timezone_set('America/Bogota');
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Abonos </a>
                     <p>Version beta v2</p>
                 </div>
             </div>

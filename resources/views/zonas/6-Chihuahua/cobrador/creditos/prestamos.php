@@ -31,6 +31,7 @@ if (isset($_GET['cliente_id'])) {
 } else {
     $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1";
 }
+date_default_timezone_set('America/Bogota');
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>

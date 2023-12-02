@@ -1,6 +1,4 @@
 <?php
-
-
 session_start();
 
 // Verifica si el usuario está autenticado
@@ -35,6 +33,7 @@ if (isset($_GET['clienteId'])) {
     // Consulta SQL para obtener las facturas de un cliente específico
     $sql = "SELECT * FROM facturas WHERE cliente_id = $clienteId";
     $resultado = $conexion->query($sql);  
+    date_default_timezone_set('America/Bogota');
 ?>
 
 <!DOCTYPE html>

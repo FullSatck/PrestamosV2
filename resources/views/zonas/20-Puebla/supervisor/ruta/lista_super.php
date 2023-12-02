@@ -29,6 +29,7 @@ $mensaje = "";
 if (isset($_GET['mensaje'])) {
     $mensaje = $_GET['mensaje'];
 }
+date_default_timezone_set('America/Bogota');
 ?>
 
 <!DOCTYPE html>

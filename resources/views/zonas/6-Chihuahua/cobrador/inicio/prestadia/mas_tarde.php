@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
 require_once  '../../../../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado y tiene permisos

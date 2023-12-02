@@ -1,7 +1,7 @@
 <?php
+session_start();
 date_default_timezone_set('America/Bogota');
 
-session_start();
 
 // Validacion de rol para ingresar a la pagina 
 require_once '../../../../controllers/conexion.php'; 

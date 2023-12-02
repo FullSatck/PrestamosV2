@@ -110,6 +110,7 @@ if (isset($_SESSION['rol'], $_SESSION['zona'])) {
 // Consulta SQL para obtener los préstamos del cliente
 $sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
 $resultado_prestamos = $conexion->query($sql_prestamos);
+date_default_timezone_set('America/Bogota');
 ?>
 
 

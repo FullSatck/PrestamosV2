@@ -31,6 +31,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
         WHERE c.ZonaAsignada = 'Chihuahua'";
 
 $resultado = $conexion->query($sql);
+date_default_timezone_set('America/Bogota');
 ?>
 
 <!DOCTYPE html>

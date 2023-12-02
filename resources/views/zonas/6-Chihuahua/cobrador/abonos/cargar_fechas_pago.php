@@ -27,6 +27,7 @@ if (isset($_GET['zona'])) {
     // Maneja el caso donde no se proporcionó una zona válida
     echo "Zona no especificada.";
 }
+date_default_timezone_set('America/Bogota');
 ?>
 
 <!DOCTYPE html>

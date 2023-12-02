@@ -1,3 +1,10 @@
+<?php
+date_default_timezone_set('America/Bogota');
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,6 +21,7 @@
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
+       
 
         <div class="nombre-usuario">
             <?php

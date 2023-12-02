@@ -1,5 +1,7 @@
 <?php
-require('../../../../../../public/assets/fpdf/fpdf.php'); // Asegúrate de que el archivo FPDF se encuentre en la ubicación correcta
+require('../../../../../../public/assets/fpdf/fpdf.php'); 
+date_default_timezone_set('America/Bogota');
+// Asegúrate de que el archivo FPDF se encuentre en la ubicación correcta
 
 // Asegúrate de que el archivo FPDF se encuentre en la ubicación correcta
 

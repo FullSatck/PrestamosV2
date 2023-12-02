@@ -68,6 +68,8 @@ if (!isset($_SESSION["usuario_id"])) {
         exit();
     }
 }
+date_default_timezone_set('America/Bogota');
+
 ?>
 
 

@@ -27,6 +27,7 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre"] = $fila["nombre"]; // Guarda el nombre del rol en la sesión
 }
 $stmt->close();
+date_default_timezone_set('America/Bogota');
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>

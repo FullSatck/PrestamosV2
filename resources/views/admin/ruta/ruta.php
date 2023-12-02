@@ -87,6 +87,7 @@ $stmt->close();
       $stmt->close();
   }
   $conexion->close();
+  date_default_timezone_set('America/Bogota');
 ?>
 
 <!DOCTYPE html>

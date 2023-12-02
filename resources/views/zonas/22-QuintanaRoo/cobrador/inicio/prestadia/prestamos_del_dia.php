@@ -60,6 +60,7 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro, 'QuintanaRoo');
 
 // Obtener conteos de préstamos
 $conteosPrestamos = contarPrestamosPorEstado($conexion, 'QuintanaRoo');
+date_default_timezone_set('America/Bogota');
 ?>
 <!DOCTYPE html>
 <html lang="es">

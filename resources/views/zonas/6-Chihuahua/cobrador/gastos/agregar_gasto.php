@@ -108,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Cerrar la conexión
     $conexion->close();
 }
+date_default_timezone_set('America/Bogota');
 ?>
 
 

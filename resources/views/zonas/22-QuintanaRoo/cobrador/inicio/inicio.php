@@ -32,6 +32,7 @@ $stmt->close();
 
 // Cierra la conexión a la base de datos
 mysqli_close($conexion);
+date_default_timezone_set('America/Bogota');
 ?>
 
 
