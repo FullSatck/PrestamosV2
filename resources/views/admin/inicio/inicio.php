@@ -59,6 +59,8 @@ function obtenerSuma($conexion, $tabla, $columna) {
 $totalMonto = obtenerSuma($conexion, "prestamos", "MontoAPagar");
 $totalIngresos = obtenerSuma($conexion, "historial_pagos", "MontoPagado");
 $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
+date_default_timezone_set('America/Bogota');
+
 ?>
 
 <!DOCTYPE html>

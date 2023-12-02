@@ -60,6 +60,8 @@ $cuotasHoy = obtenerCuotas($conexion, $filtro);
 
 // Obtener conteos de préstamos
 $conteosPrestamos = contarPrestamosPorEstado($conexion);
+date_default_timezone_set('America/Bogota');
+
 ?>
 <!DOCTYPE html>
 <html lang="es">

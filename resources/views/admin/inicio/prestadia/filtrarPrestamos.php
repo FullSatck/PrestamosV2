@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Bogota');
+
 require '../../../../../controllers/conexion.php';
 
 function obtenerCuotas($conexion, $filtro)
