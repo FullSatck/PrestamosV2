@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 // Conexión al servidor con usuario, contraseña y base de datos
 $servidor = "localhost";
 $usuario = "root";

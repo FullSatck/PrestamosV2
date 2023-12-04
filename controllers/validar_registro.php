@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 // Incluye el archivo de conexión a la base de datos
 include("conexion.php");
 

@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 session_start();
 
 // Validación de rol para ingresar a la página
@@ -68,7 +69,7 @@ if (!isset($_SESSION["usuario_id"])) {
         exit();
     }
 }
-date_default_timezone_set('America/Bogota');
+
 
 ?>
 

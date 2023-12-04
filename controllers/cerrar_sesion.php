@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 session_start();
 
 // Destruir todas las variables de sesión

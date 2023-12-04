@@ -1,6 +1,7 @@
 <?php
-require_once '../../../../controllers/conexion.php';
 date_default_timezone_set('America/Bogota');
+require_once '../../../../controllers/conexion.php';
+
 
 
 // Verifica si se ha enviado el IDZona

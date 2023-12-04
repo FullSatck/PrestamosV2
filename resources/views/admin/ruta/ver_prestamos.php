@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
@@ -77,7 +78,7 @@ $sql->execute();
 if ($sql === false) {
     die("Error en la consulta SQL: " . $conexion->error);
 }
-date_default_timezone_set('America/Bogota');
+
  
 ?>
 
