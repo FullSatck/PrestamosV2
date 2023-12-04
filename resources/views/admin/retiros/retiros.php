@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 session_start();
 
 // Verifica si el usuario está autenticado
@@ -31,7 +32,7 @@ if ($result->num_rows > 0) {
         $monto_neto = $row["Monto_Neto"]; // Este será el valor actualizado
     }
 }
-date_default_timezone_set('America/Bogota');
+
 
 
  

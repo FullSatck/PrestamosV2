@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 require_once("conexion.php"); // Incluye el archivo de conexión
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

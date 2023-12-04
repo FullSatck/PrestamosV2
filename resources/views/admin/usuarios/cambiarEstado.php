@@ -1,6 +1,7 @@
 <?php
-session_start();
 date_default_timezone_set('America/Bogota');
+session_start();
+
 include("../../../../controllers/conexion.php");
 
 if (!isset($_SESSION["usuario_id"])) {

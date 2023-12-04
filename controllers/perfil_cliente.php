@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 session_start();
 
 // Verifica si el usuario está autenticado
@@ -108,7 +109,7 @@ if ($_SESSION["rol"] == 1) {
 // Consulta SQL para obtener los préstamos del cliente
 $sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
 $resultado_prestamos = $conexion->query($sql_prestamos);
-date_default_timezone_set('America/Bogota');
+
 ?>
 
 

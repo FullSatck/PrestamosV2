@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Bogota');
 session_start();
 
 // Verifica la autenticación del usuario
@@ -101,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conexion->close();
 }
-date_default_timezone_set('America/Bogota');
+
 
 ?>
 
