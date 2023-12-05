@@ -139,22 +139,91 @@ h1 {
     color: #333;
 }
 
-/* Tabla de préstamos */
+h1 {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.info-cliente {
+    display: flex;
+    justify-content: space-between;
+}
+
+.columna {
+    flex: 1;
+    padding: 0 10px;
+}
+
+/* Estilos para el formulario y el menú desplegable */
+form {
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+  }
+  
+  select {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 300px;
+  }
+  
+  input[type="submit"] {
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+
+
+/* Hacer la tabla transparente */
 table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo transparente */
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#tabla-prestamos {
     width: 100%;
     border-collapse: collapse;
 }
 
-table th, table td {
-    padding: 12px;
+#tabla-prestamos th, #tabla-prestamos td {
+    padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #818080;
 }
 
-table th {
-    background-color: #969595;
-    color: #333;
-    font-size: 18px;
+#tabla-prestamos th {
+    background-color: pink; /* Color rosa claro */
+}
+
+.color-claro {
+    background-color: rgb(245, 220, 224); /* Color rosa más claro para filas pares */
+}
+
+.color-oscuro {
+    background-color: rgb(240, 215, 219); /* Color rosa más oscuro para filas impares */
+}
+
+@media only screen and (max-width: 600px) {
+    table {
+        font-size: 12px;
+    }
 }
 
 /* Enlace para gestionar préstamos */

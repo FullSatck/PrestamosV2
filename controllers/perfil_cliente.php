@@ -74,7 +74,7 @@ $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
 if ($_SESSION["rol"] == 1) {
-    $ruta_volver = "/resources/views/admin/inicio/inicio.php";
+    $ruta_volver = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
 } elseif ($_SESSION["rol"] == 2) {
     // Ruta para el rol 2 (supervisor) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
@@ -90,11 +90,11 @@ if ($_SESSION["rol"] == 1) {
 } elseif ($_SESSION["rol"] == 3) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
+        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";
@@ -105,10 +105,41 @@ if ($_SESSION["rol"] == 1) {
 }
 
 
+// Variables para prevenir errores
+$info_prestamo = [
+    'Nombre' => '',
+    'Telefono' => '',
+    'Cuota' => '',
+];
 
-// Consulta SQL para obtener los préstamos del cliente
-$sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
-$resultado_prestamos = $conexion->query($sql_prestamos);
+$total_prestamo = 0.00;
+
+// Consulta SQL para obtener la información del préstamo
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, c.Nombre, c.Telefono 
+                 FROM prestamos p 
+                 INNER JOIN clientes c ON p.IDCliente = c.ID 
+                 WHERE p.IDCliente = ?";
+$stmt_prestamo = $conexion->prepare($sql_prestamo);
+$stmt_prestamo->bind_param("i", $id_cliente);
+$stmt_prestamo->execute();
+$resultado_prestamo = $stmt_prestamo->get_result();
+
+if ($resultado_prestamo->num_rows > 0) {
+    $info_prestamo = $resultado_prestamo->fetch_assoc();
+    $total_prestamo = $info_prestamo['Monto'] + ($info_prestamo['Monto'] * $info_prestamo['TasaInteres'] / 100);
+} else {
+    // Manejar el caso donde no se encuentra información del préstamo
+    // Puedes asignar valores predeterminados o mostrar un mensaje de error
+    // Aquí se asignan valores vacíos o predeterminados para evitar los errores de acceso a índices inexistentes
+    $info_prestamo = [
+        'Plazo' => 'No encontrado',
+        'Telefono' => 'No encontrado',
+        'Cuota' => 'No encontrado',
+    ];
+    $total_prestamo = 0.00;
+}
+$stmt_prestamo->close();
+ 
 
 ?>
 
@@ -124,29 +155,56 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <!-- Asegúrate de incluir tu hoja de estilos CSS -->
     <title>Perfil del Cliente</title>
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
 
     <body id="body">
-
         <header>
-
-        <a href="<?= $ruta_volver ?>" class="back-link">Ir al Inicio</a>
-
+            <a href="<?= $ruta_volver ?>" class="back-link">Salir</a>
             <div class="nombre-usuario">
                 <?php
-    if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
-        echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
-    }
-    ?>
+                if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
+                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
+                }
+                ?>
             </div>
-
-
-
         </header>
-
-        <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
         <main>
             <div class="profile-container">
@@ -168,38 +226,188 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                 </div>
             </div>
 
+            <!-- BUSCADOR DE CLIENTES -->
+            <?php
+            // Incluir el archivo de conexión a la base de datos
+            include("conexion.php");
+
+            // Consulta para obtener la lista de clientes
+            $query = "SELECT id, Nombre, Apellido FROM clientes";
+            $result = mysqli_query($conexion, $query);
+
+            if (!$result) {
+                die("Error en la consulta: " . mysqli_error($conexion));
+            }
+
+            // Iniciar el menú desplegable
+            echo "<h2>Lista de Clientes:</h2>";
+            echo "<form action='procesar_cliente.php' method='post'>"; // Reemplaza 'procesar_cliente.php' por tu archivo de procesamiento real
+            echo "<select name='cliente'>";
+
+            // Agregar opciones al menú desplegable
+            while ($row = mysqli_fetch_assoc($result)) {
+                $id = $row['id'];
+                $nombre = $row['Nombre'];
+                $apellido = $row['Apellido'];
+                echo "<option value='$id'>$nombre $apellido</option>";
+            }
+
+            echo "</select>";
+            echo "<input type='submit' value='Seleccionar'>";
+            echo "</form>";
+
+            mysqli_free_result($result); 
+            ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- BOTON DE PAGAR -->
+
+            <!-- El botón para abrir el modal -->
+    <button id="openModal">Abrir Modal</button>
+
+<!-- El modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <?php
+        // Contenido generado por PHP
+        $mensaje = "¡Hola desde PHP!";
+        echo "<h2>$mensaje</h2>";
+        ?>
+        <!-- Campo para ingresar una cantidad -->
+        <h2>Ingrese una Cantidad</h2>
+        <input type="number" id="cantidadInput">
+        <button id="confirmBtn">Confirmar</button>
+    </div>
+</div>
+
+<script>
+// JavaScript para controlar el modal
+var modalBtn = document.getElementById("openModal");
+var modal = document.getElementById("myModal");
+var closeBtn = document.getElementsByClassName("close")[0];
+
+// Función para abrir el modal
+modalBtn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Función para cerrar el modal
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Función para cerrar el modal si se hace clic fuera de él
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="info-cliente">
+                <div class="columna">
+                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
+                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
+                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
+                </div>
+                <div class="columna">
+                    <p><strong>Cuota:</strong> <?= htmlspecialchars($info_prestamo['Cuota']); ?></p>
+                    <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo, 2)); ?>
+                    <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
+                    </p>
+                </div>
+            </div>
+
             <!-- Agregar una sección para mostrar los préstamos del cliente -->
             <div class="profile-loans">
-                <h2>Préstamos del Cliente</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID del Préstamo</th>
-                            <th>Deuda</th> 
-                            <th>Plazo</th> 
-                            <th>Fecha de Inicio</th>
-                            <th>Fecha de Vencimiento</th>
-                            <th>Estado</th>
-                            <th>Pagos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
-                        <tr>
-                            <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
-                            <td><?= $fila_prestamo["MontoAPagar"] ?></td> 
-                            <td><?= $fila_prestamo["Plazo"] ?></td> 
-                            <td><?= $fila_prestamo["FechaInicio"] ?></td>
-                            <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
-                            <td><?= $fila_prestamo["Estado"] ?></td>
-                            <td><a href="cartulina.php?id=<?= $id_cliente ?>">Pagos</a></td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+                <?php
+
+               $sql = "SELECT id, fecha, monto_pagado, (monto - monto_pagado) AS resta FROM facturas WHERE cliente_id = ?";
+               $stmt = $conexion->prepare($sql);
+               $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
+               $stmt->execute();
+               $resultado = $stmt->get_result();
+                
+                $fila_counter = 0;
+                $num_rows = $resultado->num_rows;
+                if ($num_rows > 0) {
+                    echo "<table id='tabla-prestamos'>";
+                    echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+                    while ($fila = $resultado->fetch_assoc()) {
+                        $fila_counter++;
+                        $color_clase = ($fila_counter % 2 == 0) ? 'color-claro' : 'color-oscuro';
+                        echo "<tr class='$color_clase'>";
+                        echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                        echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+                        echo "<td>" . htmlspecialchars($fila['resta']) . "</td>";
+                        // Mostrar "Editar" solo en la última fila
+                        if ($fila_counter === $num_rows) {
+                            echo "<td><a href='editar_pago.php?id=" . $fila['id'] . "'>Editar</a></td>";
+                        } else {
+                            echo "<td></td>";
+                        }
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No se encontraron pagos para este cliente.</p>";
+                }
+                
+                $stmt->close();
+                ?>
             </div>
         </main>
 
+        
         <script>
         // Agregar un evento clic al botón
         document.getElementById("volverAtras").addEventListener("click", function() {

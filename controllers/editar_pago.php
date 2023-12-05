@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt_update_prestamos->close();
 
     // Redireccionar después de la actualización
-    header("Location: cartulina.php?id=" . $factura['cliente_id']);
+    header("Location: perfil_cliente.php?id=" . $factura['cliente_id']);
     exit();
 }
 
