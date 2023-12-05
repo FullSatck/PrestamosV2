@@ -194,7 +194,7 @@ $stmt->close();
     include("../../../../controllers/conexion.php");
 
     // Query SQL para obtener todas las zonas
-    $sql = "SELECT * FROM zonas";
+    $sql = "SELECT * FROM zonas WHERE Nombre IN ('Chihuahua', 'Puebla', 'Quintana Roo')";
     $result = mysqli_query($conexion, $sql);
 
     // Muestra los datos en una tabla
