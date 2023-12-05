@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('America/Bogota');
+
 session_start();
 
 // Verifica si el usuario está autenticado
@@ -60,7 +60,8 @@ function obtenerSuma($conexion, $tabla, $columna) {
 $totalMonto = obtenerSuma($conexion, "prestamos", "MontoAPagar");
 $totalIngresos = obtenerSuma($conexion, "historial_pagos", "MontoPagado");
 $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
-date_default_timezone_set('America/Bogota');
+
+echo date_default_timezone_get();
 
 ?>
 
