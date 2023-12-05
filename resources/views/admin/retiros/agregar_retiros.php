@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Incial</h4>
+                    <h4>Saldo inicial</h4>
                 </div>
             </a>
 
