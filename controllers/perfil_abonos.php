@@ -7,14 +7,14 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../index.php");
     exit();
 }
 
 // Verificar si se ha pasado un ID válido como parámetro GET
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     // Redirigir a una página de error o a la lista de clientes
-    header("location: dias_pagos.php");
+    header("location: ../index.php");
     exit();
 }
  
@@ -151,7 +151,7 @@ $stmt_prestamo->close();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/perfil_cliente.css">
+    <link rel="stylesheet" href="/public/assets/css/perfil_abonos.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <!-- Asegúrate de incluir tu hoja de estilos CSS -->
     <title>Perfil del Cliente</title>
@@ -206,46 +206,118 @@ $stmt_prestamo->close();
 
         <main>
 
-            <!-- CARTULINA -->
 
-            <!-- Agregar una sección para mostrar los préstamos del cliente -->
-            <div class="profile-loans">
-                <?php
 
-               $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
-               $stmt = $conexion->prepare($sql);
-               $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
-               $stmt->execute();
-               $resultado = $stmt->get_result();
-                
-                $fila_counter = 0;
-                $num_rows = $resultado->num_rows;
-                if ($num_rows > 0) {
-                    echo "<table id='tabla-prestamos'>";
-                    echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
-                    while ($fila = $resultado->fetch_assoc()) {
-                        $fila_counter++;
-                        $color_clase = ($fila_counter % 2 == 0) ? 'color-claro' : 'color-oscuro';
-                        echo "<tr class='$color_clase'>";
-                        echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
-                        echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
-                        echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
-                        // Mostrar "Editar" solo en la última fila
-                        if ($fila_counter === $num_rows) {
-                            echo "<td><a href='editar_pago.php?id=" . $fila['id'] . "'>Editar</a></td>";
-                        } else {
-                            echo "<td></td>";
-                        }
-                        echo "</tr>";
-                    }
-                    echo "</table>";
-                } else {
-                    echo "<p>No se encontraron pagos para este cliente.</p>";
-                }
-                
-                $stmt->close();
-                ?>
-            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="profile-loans">
+    <?php
+ 
+    include("conexion.php");
+
+    if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
+        // Si se solicita mostrar todas las filas
+        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $num_rows = $resultado->num_rows;
+        if ($num_rows > 0) {
+            echo "<table id='tabla-prestamos'>";
+            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+                echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
+                echo "<td><a href='editar_pago.php?id=" . $fila['id'] . "'>Editar</a></td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+            echo "<p><a href='?show_all=false'>Ver menos</a></p>"; // Enlace para mostrar menos
+        } else {
+            echo "<p>No se encontraron pagos para este cliente.</p>";
+        }
+
+        $stmt->close();
+    } else {
+        // Mostrar solo la última fila inicialmente
+        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $num_rows = $resultado->num_rows;
+        if ($num_rows > 0) {
+            echo "<table id='tabla-prestamos'>";
+            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+            $last_row = null; // Variable para almacenar la última fila
+            while ($fila = $resultado->fetch_assoc()) {
+                $last_row = $fila; // Actualizar la última fila en cada iteración
+            }
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+            echo "</tr>";
+            echo "</table>";
+
+            // Agregar un enlace para mostrar todas las filas
+            echo "<p><a href='?show_all=true'>Ver más</a></p>";
+        } else {
+            echo "<p>No se encontraron pagos para este cliente.</p>";
+        }
+
+        $stmt->close();
+    }
+    ?>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Manejador de evento clic en el enlace "Mostrar todas las filas" o "Ver menos"
+    document.querySelector('.profile-loans a').addEventListener('click', function(event) {
+        event.preventDefault();
+        var showAll = <?php echo isset($_GET['show_all']) && $_GET['show_all'] === 'true' ? 'false' : 'true'; ?>;
+        var showAllUrl = '?show_all=' + showAll;
+
+        // Hacer la petición AJAX para obtener todas las filas y mostrarlas
+        fetch(showAllUrl)
+            .then(response => response.text())
+            .then(data => {
+                // Actualizar el contenido de la tabla con todas o una fila
+                document.querySelector('.profile-loans').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
             <?php
             // Consulta SQL para obtener los detalles del cliente con el nombre de la moneda
 $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
@@ -275,7 +347,7 @@ if ($resultado->num_rows === 1) {
 }
 ?>
 
-            <div class="profile-container"> 
+            <div class="profile-container">
                 <div class="profile-details">
                     <!-- Mostrar los datos del cliente -->
                     <h1><strong><?= $fila["Nombre"] ?></strong></h1>
