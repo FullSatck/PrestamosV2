@@ -7,14 +7,14 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../index.php");
     exit();
 }
 
 // Verificar si se ha pasado un ID válido como parámetro GET
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     // Redirigir a una página de error o a la lista de clientes
-    header("location: dias_pagos.php");
+    header("location: ../index.php");
     exit();
 }
  
@@ -222,6 +222,9 @@ $stmt_prestamo->close();
 
         <div class="profile-loans">
     <?php
+ 
+    include("conexion.php");
+
     if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
         // Si se solicita mostrar todas las filas
         $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
