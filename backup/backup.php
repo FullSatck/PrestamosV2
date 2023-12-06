@@ -1,35 +1,34 @@
 <?php
 // Configuración de la base de datos
-$host = 'localhost';
-$usuario = 'root';
-$contrasena = '';
-$nombre_bd = 'prestamos';
+$servername = "localhost"; // Nombre del servidor
+$username = "root"; // Nombre de usuario de la base de datos
+$password = ""; // Contraseña del usuario de la base de datos
+$dbname = "prestamos"; // Nombre de la base de datos
 
 // Conexión a la base de datos
-$conexion = new mysqli($host, $usuario, $contrasena, $nombre_bd);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexión
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
 }
 
 // Nombre del archivo de respaldo
-$fecha = date("Y-m-d-H-i-s");
-$nombre_backup = 'backup_' . $nombre_bd . '_' . $fecha . '.sql';
+$backup_file = 'backup-' . date("Y-m-d-H-i-s") . '.sql';
 
-// Comando para respaldar la base de datos
-$comando = "mysqldump -u{$usuario} -p{$contrasena} {$nombre_bd} > {$nombre_backup}";
+// Comando SQL para respaldar la base de datos
+$command = "mysqldump --opt -h {$servername} -u {$username} -p{$password} {$dbname} > {$backup_file}";
 
-// Ejecutar el comando para crear la copia de seguridad
-exec($comando);
+// Ejecutar el comando para crear el respaldo
+system($command, $output);
 
-// Verificar si se creó la copia de seguridad
-if (file_exists($nombre_backup)) {
-    echo "Copia de seguridad creada correctamente como: {$nombre_backup}";
+// Verificar si el respaldo se creó exitosamente
+if ($output === 0) {
+    echo "Copia de seguridad creada correctamente en el archivo: " . $backup_file;
 } else {
     echo "Error al crear la copia de seguridad.";
 }
 
 // Cerrar la conexión a la base de datos
-$conexion->close();
+$conn->close();
 ?>
