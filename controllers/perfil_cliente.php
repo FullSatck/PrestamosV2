@@ -155,40 +155,38 @@ $stmt_prestamo->close();
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <!-- Asegúrate de incluir tu hoja de estilos CSS -->
     <title>Perfil del Cliente</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
-        /* Estilos para el modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
+    .contenedor {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-        }
+    .formulario {
+        width: 70%;
+        /* Ancho ajustable */
+        max-width: 400px;
+        /* Ancho máximo */
+        text-align: center;
+    }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    input[type="text"] {
+        width: calc(33.33% - 10px);
+        /* Un tercio del ancho con un pequeño margen entre ellos */
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        display: inline-block;
+        /* Mostrar en línea para colocar horizontalmente */
+        box-sizing: border-box;
+        /* Incluir el padding y border en el ancho total */
+        vertical-align: top;
+    }
     </style>
 </head>
 
@@ -240,7 +238,7 @@ $stmt_prestamo->close();
             }
 
             // Iniciar el menú desplegable
-            echo "<h2>Lista de Clientes:</h2>";
+            echo "<h2>Clientes:</h2>";
             echo "<form action='procesar_cliente.php' method='post'>"; // Reemplaza 'procesar_cliente.php' por tu archivo de procesamiento real
             echo "<select name='cliente'>";
 
@@ -259,119 +257,150 @@ $stmt_prestamo->close();
             mysqli_free_result($result); 
             ?>
 
+            <!-- BUSCADOR DE PRESTAMOS -->
 
+            <?php
+// Incluir el archivo de conexión a la base de datos
+include("conexion.php");
 
+// Verificar si se proporcionó el ID del cliente en la variable PHP $id_cliente
+if (isset($id_cliente)) {
+    // Consulta para obtener la lista de préstamos asociados al cliente
+    $query = "SELECT id, MontoAPagar FROM prestamos WHERE IDCliente = $id_cliente";
+    $result = mysqli_query($conexion, $query);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!-- BOTON DE PAGAR -->
-
-            <!-- El botón para abrir el modal -->
-    <button id="openModal">Abrir Modal</button>
-
-<!-- El modal -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <?php
-        // Contenido generado por PHP
-        $mensaje = "¡Hola desde PHP!";
-        echo "<h2>$mensaje</h2>";
-        ?>
-        <!-- Campo para ingresar una cantidad -->
-        <h2>Ingrese una Cantidad</h2>
-        <input type="number" id="cantidadInput">
-        <button id="confirmBtn">Confirmar</button>
-    </div>
-</div>
-
-<script>
-// JavaScript para controlar el modal
-var modalBtn = document.getElementById("openModal");
-var modal = document.getElementById("myModal");
-var closeBtn = document.getElementsByClassName("close")[0];
-
-// Función para abrir el modal
-modalBtn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// Función para cerrar el modal
-closeBtn.onclick = function() {
-    modal.style.display = "none";
-}
-
-// Función para cerrar el modal si se hace clic fuera de él
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    if (!$result) {
+        die("Error en la consulta de préstamos: " . mysqli_error($conexion));
     }
+
+    // Crear un formulario con un menú desplegable de préstamos del cliente
+    echo "<h2>Prestamo:</h2>";
+    echo "<form action='prestamos_cartulina.php' method='get'>"; // Reemplaza 'tuarchivo.php' por tu nombre de archivo PHP
+    echo "<select name='id_prestamo'>";
+    while ($row = mysqli_fetch_assoc($result)) {
+        $id_prestamo = $row['id'];
+        $montoAPagar = number_format($row['MontoAPagar']); // Formatear MontoAPagar
+        echo "<option value='$id_prestamo'>ID: $id_prestamo - Valor: $montoAPagar</option>";
+    }
+    echo "</select>";
+    // echo "<input type='submit' value='Seleccionar'>";
+    echo "</form>";
+
+    mysqli_free_result($result);
+} else {
+    echo "No se proporcionó el ID del cliente.";
 }
-</script>
+?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            <!-- CARULINA -->
             <div class="info-cliente">
                 <div class="columna">
                     <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
-                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
-                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
+                    <p><strong>Cuota:</strong> <?= htmlspecialchars(number_format($info_prestamo['Cuota'])); ?></p>
+                    <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo)); ?>
                 </div>
                 <div class="columna">
-                    <p><strong>Cuota:</strong> <?= htmlspecialchars($info_prestamo['Cuota']); ?></p>
-                    <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo, 2)); ?>
+                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
+                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
                     <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
                     </p>
                 </div>
             </div>
 
+
+            <!-- BOTONES DE PAGO -->
+
+            <?php
+// Obtener el MontoAPagar de la tabla de préstamos
+$sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ?";
+$stmt_monto_pagar = $conexion->prepare($sql_monto_pagar);
+$stmt_monto_pagar->bind_param("i", $id_cliente);
+$stmt_monto_pagar->execute();
+$stmt_monto_pagar->bind_result($montoAPagar);
+
+// Verificar si se encontró el MontoAPagar
+if ($stmt_monto_pagar->fetch()) {
+    // Si se encontró, asigna el valor a la variable $montoAPagar
+    $montoAPagar = $montoAPagar; // Ajustar el formato según sea necesario
+} else {
+    // Si no se encontró, asigna un valor predeterminado o muestra un mensaje de error
+    $montoAPagar = 'No encontrado';
+}
+
+$stmt_monto_pagar->close();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtener los valores ingresados
+    $cuota_ingresada = $_POST['cuota'];
+    $monto_deuda = $montoAPagar - $cuota_ingresada; // Calcular el monto de deuda
+
+    // Actualizar MontoAPagar en la tabla "prestamos"
+    $sql_update_prestamo = "UPDATE prestamos SET MontoAPagar = ? WHERE IDCliente = ?";
+    $stmt_update_prestamo = $conexion->prepare($sql_update_prestamo);
+    $stmt_update_prestamo->bind_param("di", $monto_deuda, $id_cliente);
+    $stmt_update_prestamo->execute();
+
+    // Insertar datos en la tabla "facturas"
+    $fecha_actual = date('Y-m-d');
+    $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
+    $stmt_insert_factura = $conexion->prepare($sql_insert_factura);
+    $stmt_insert_factura->bind_param("idsss", $id_cliente, $total_prestamo, $fecha_actual, $cuota_ingresada, $monto_deuda);
+    $stmt_insert_factura->execute();
+
+    // Verificar si la inserción fue exitosa
+    if ($stmt_insert_factura && $stmt_update_prestamo) {
+        // Inserción y actualización exitosas
+        // Realizar alguna acción o redireccionar a una página de éxito
+        header("Location: perfil_cliente.php?id=$id_cliente");
+        exit();
+    } else {
+        // Alguna inserción o actualización fallida
+        // Manejar el error apropiadamente
+        echo "Error al realizar el pago.";
+    }
+
+    $stmt_insert_factura->close();
+    $stmt_update_prestamo->close();
+}
+
+?>
+
+<!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+
+<script>
+window.onload = function() {
+    var campoResta = document.getElementById('campo2');
+    campoResta.addEventListener('input', function() {
+        var cuota = <?= $info_prestamo['Cuota']; ?>;
+        var montoAPagar = <?= $montoAPagar; ?>;
+        var valorResta = parseFloat(campoResta.value.replace(',', '.')); // Manejar decimales
+        var resultadoResta = montoAPagar - valorResta;
+
+        if (resultadoResta === cuota) {
+            campoResta.style.backgroundColor = 'green';
+        } else {
+            campoResta.style.backgroundColor = 'red';
+        }
+    });
+};
+</script>
+
+<form method="post">
+    <input type="text" id="cuota" name="cuota" placeholder="Cuota">
+    <input type="text" id="campo2" name="campo2" placeholder="Resta">
+    <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
+    <input type="submit" value="Pagar">
+</form>
+
+
+
+            <!-- CARTULINA -->
+
             <!-- Agregar una sección para mostrar los préstamos del cliente -->
             <div class="profile-loans">
                 <?php
 
-               $sql = "SELECT id, fecha, monto_pagado, (monto - monto_pagado) AS resta FROM facturas WHERE cliente_id = ?";
+               $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
                $stmt = $conexion->prepare($sql);
                $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
                $stmt->execute();
@@ -388,7 +417,7 @@ window.onclick = function(event) {
                         echo "<tr class='$color_clase'>";
                         echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
                         echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
-                        echo "<td>" . htmlspecialchars($fila['resta']) . "</td>";
+                        echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
                         // Mostrar "Editar" solo en la última fila
                         if ($fila_counter === $num_rows) {
                             echo "<td><a href='editar_pago.php?id=" . $fila['id'] . "'>Editar</a></td>";
@@ -407,7 +436,7 @@ window.onclick = function(event) {
             </div>
         </main>
 
-        
+
         <script>
         // Agregar un evento clic al botón
         document.getElementById("volverAtras").addEventListener("click", function() {
