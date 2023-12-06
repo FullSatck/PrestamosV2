@@ -311,7 +311,7 @@ $result_zonas = $conexion->query($query_zonas);
         comisionContainer.style.display = (aplicarComision === 'si') ? 'block' : 'none';
     }
     </script>
-    <script src="/menu/main.js"></script>
+    
     <script>
     function calcularMontoPagar() {
         // Obtener los valores ingresados por el usuario
