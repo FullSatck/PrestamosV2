@@ -225,7 +225,7 @@ if ($resultado->num_rows === 1) {
                 <div class="columna">
                     <p><strong>Estado: </strong><?= $fila["ZonaAsignada"] ?> </p>
                     <p><strong>Municipio: </strong><?= $fila["CiudadNombre"] ?> </p>
-                    <p><strong>Cononia: </strong><?= $fila["asentamiento"] ?> </p>
+                    <p><strong>Colonia: </strong><?= $fila["asentamiento"] ?> </p>
                     <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
                     <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
                     <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
