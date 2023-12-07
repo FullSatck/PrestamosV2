@@ -169,7 +169,7 @@ date_default_timezone_set('America/Bogota');
                                 <td><?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
                                 <td>
-                                    <a href="../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                    <a href="../../../../../controllers/perfil_abonos.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
                                 </td>
 
