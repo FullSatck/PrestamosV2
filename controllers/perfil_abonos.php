@@ -160,7 +160,7 @@ $stmt_prestamo->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
-    
+
     </style>
 </head>
 
@@ -180,9 +180,9 @@ $stmt_prestamo->close();
 
         <main>
 
-        <!-- PERFIL DE CLIENTE -->
-        
-        <?php
+            <!-- PERFIL DE CLIENTE -->
+
+            <?php
             // Consulta SQL para obtener los detalles del cliente con el nombre de la moneda
 $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
         FROM clientes c
@@ -210,33 +210,23 @@ if ($resultado->num_rows === 1) {
     exit();
 }
 ?>
+            <!-- CARTULINAAAAAAAAA -->
 
-            <div class="profile-container">
-                <div class="profile-details">
-                    <!-- Mostrar los datos del cliente -->
-                    <h1><strong><?= $fila["Nombre"] ?></strong></h1>
-                    <p>Apellido: <strong><?= $fila["Apellido"] ?></strong></p>
-                    <p>Curp: <strong><?= $fila["IdentificacionCURP"] ?></strong></p>
-                    <p>Domicilio: <strong><?= $fila["Domicilio"] ?></strong></p>
-                    <p>Teléfono: <strong><?= $fila["Telefono"] ?></strong> </p>
-                    <p>Moneda Preferida: <strong><?= $fila["MonedaNombre"] ?></strong></p> <!-- Nombre de la moneda -->
-                    <p>Estado: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
-                    <p>Municipio: <strong><?= $fila["CiudadNombre"] ?></strong></p>
-                    <p>Cononia: <strong><?= $fila["asentamiento"] ?></strong></p>
-                </div>
-            </div>
-
-
-      <!-- CARTULINAAAAAAAAA -->
-
-       <!-- CARULINA -->
-       <div class="info-cliente">
+            <div class="info-cliente">
                 <div class="columna">
-                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
+                    <p><strong>Nombre: </strong><?= $fila["Nombre"] ?></p>
+                    <p><strong>Apellido: </strong><?= $fila["Apellido"] ?> </p>
+                    <p><strong>Curp: </strong><?= $fila["IdentificacionCURP"] ?> </p>
+                    <p><strong>Domicilio: </strong><?= $fila["Domicilio"] ?> </p>
+                    <p><strong>Teléfono: </strong><?= $fila["Telefono"] ?> </p>
                     <p><strong>Cuota:</strong> <?= htmlspecialchars(number_format($info_prestamo['Cuota'])); ?></p>
                     <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo)); ?>
                 </div>
                 <div class="columna">
+                    <p><strong>Estado: </strong><?= $fila["ZonaAsignada"] ?> </p>
+                    <p><strong>Municipio: </strong><?= $fila["CiudadNombre"] ?> </p>
+                    <p><strong>Cononia: </strong><?= $fila["asentamiento"] ?> </p>
+                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
                     <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
                     <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
                     <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
@@ -245,7 +235,7 @@ if ($resultado->num_rows === 1) {
             </div>
 
             <div class="profile-loans">
-    <?php
+                <?php
     include("conexion.php");
 
     if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
@@ -320,21 +310,18 @@ if ($resultado->num_rows === 1) {
         $stmt->close();
     }
     ?>
-</div>
+            </div>
 
-<script>
-    function showMore() {
-        window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
-    }
+            <script>
+            function showMore() {
+                window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
+            }
 
-    function showLess() {
-        window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
-    }
-</script>
+            function showLess() {
+                window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
+            }
+            </script>
 
-
-
-             
 
             <!-- BUSCADOR DE CLIENTES -->
             <?php
@@ -403,6 +390,23 @@ if (isset($id_cliente)) {
     echo "No se proporcionó el ID del cliente.";
 }
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <!-- BOTONES DE PAGO -->
 
             <?php
@@ -442,12 +446,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt_insert_factura->bind_param("idsss", $id_cliente, $total_prestamo, $fecha_actual, $cuota_ingresada, $monto_deuda);
     $stmt_insert_factura->execute();
 
+    function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
+        $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
+        $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
+        $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
+        $stmt_siguiente_cliente->execute();
+        $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
+        $stmt_siguiente_cliente->fetch();
+        $stmt_siguiente_cliente->close();
+
+        return $siguiente_cliente_id;
+    }
+
+    // Obtener el siguiente ID de cliente (cambia esta lógica según la manera en que tengas los clientes ordenados)
+    $siguiente_cliente_id = obtenerSiguienteClienteId($conexion, $id_cliente);
+
+    // Definir $es_ultimo_cliente fuera del bloque condicional POST
+    $es_ultimo_cliente = false;
+
     // Verificar si la inserción fue exitosa
     if ($stmt_insert_factura && $stmt_update_prestamo) {
         // Inserción y actualización exitosas
-        // Realizar alguna acción o redireccionar a una página de éxito
-        header("Location: perfil_cliente.php?id=$id_cliente");
-        exit();
+
+        // Verificar si es el último cliente
+        $es_ultimo_cliente = ($siguiente_cliente_id === null);
+
+        // Mostrar mensaje si es el último cliente
+        if ($es_ultimo_cliente) {
+            echo '<p>Este es el último cliente.</p>';
+        }
+
+        if ($siguiente_cliente_id !== null) {
+            // Redirigir al perfil del siguiente cliente si hay más clientes
+            header("Location: perfil_abonos.php?id=$siguiente_cliente_id");
+            exit();
+        } else {
+            // Mostrar el modal ya que no hay más clientes
+            echo '<script>
+                    window.onload = function() {
+                        alert("No hay más clientes");
+                    };
+                  </script>';
+        }
     } else {
         // Alguna inserción o actualización fallida
         // Manejar el error apropiadamente
@@ -457,42 +497,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt_insert_factura->close();
     $stmt_update_prestamo->close();
 }
-
 ?>
 
-            <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+<!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+<script>
+window.onload = function() {
+    var campoResta = document.getElementById('campo2');
+    campoResta.addEventListener('input', function() {
+        var cuota = <?= $info_prestamo['Cuota']; ?>;
+        var montoAPagar = <?= $montoAPagar; ?>;
+        var valorResta = parseFloat(campoResta.value.replace(',', '.')); // Manejar decimales
+        var resultadoResta = montoAPagar - valorResta;
 
-            <script>
-            window.onload = function() {
-                var campoResta = document.getElementById('campo2');
-                campoResta.addEventListener('input', function() {
-                    var cuota = <?= $info_prestamo['Cuota']; ?>;
-                    var montoAPagar = <?= $montoAPagar; ?>;
-                    var valorResta = parseFloat(campoResta.value.replace(',', '.')); // Manejar decimales
-                    var resultadoResta = montoAPagar - valorResta;
+        if (resultadoResta === cuota) {
+            campoResta.style.backgroundColor = 'green';
+        } else {
+            campoResta.style.backgroundColor = 'red';
+        }
+    });
+};
+</script>
 
-                    if (resultadoResta === cuota) {
-                        campoResta.style.backgroundColor = 'green';
-                    } else {
-                        campoResta.style.backgroundColor = 'red';
-                    }
-                });
-            };
-            </script>
+<form method="post" class="pagos">
+    <input type="text" id="cuota" name="cuota" placeholder="Cuota">
+    <input type="text" id="campo2" name="campo2" placeholder="Resta">
+    <input type="text" id="variable" placeholder="Deuda"
+        value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
+     
+    <input type="submit" value="Pagar">
+</form>
 
-            <form method="post" class="pagos">
-                <input type="text" id="cuota" name="cuota" placeholder="Cuota">
-                <input type="text" id="campo2" name="campo2" placeholder="Resta">
-                <input type="text" id="variable" placeholder="Deuda"
-                    value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
-                <input type="submit" value="Pagar">
-            </form>
+
+
+
 
         </main>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>
+      
     </body>
 
 </html>
