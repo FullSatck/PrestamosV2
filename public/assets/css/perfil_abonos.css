@@ -76,7 +76,7 @@ h1 {
     justify-content: center;
     align-items: flex-start; /* Alinea los elementos al inicio */
     margin: 20px;
-    background-color: #fff;
+    background-color: #faefef;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -108,7 +108,7 @@ h1 {
 .profile-loans {
     margin: 20px;
     padding: 20px;
-    background-color: #fff;
+    background-color: #faf1f1;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -132,6 +132,11 @@ h1 {
 .columna {
     flex: 1;
     padding: 0 10px;
+    border-bottom: 0 0 40px 0;
+}
+
+.pagos{
+    border: 30px;
 }
 
 /* Estilos para el formulario y el menú desplegable */
@@ -153,15 +158,43 @@ form {
     font-size: 16px;
     border-radius: 5px;
     border: none;
-    background-color: #007bff;
-    color: #fff;
+    background-color: rgb(243, 183, 245);
+    color: #000000;
     cursor: pointer;
   }
   
   input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: rgb(241, 173, 243);
   }
   
+  .contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.formulario {
+    width: 70%;
+    /* Ancho ajustable */
+    max-width: 400px;
+    /* Ancho máximo */
+    text-align: center;
+}
+
+input[type="text"] {
+    width: calc(33.33% - 10px);
+    /* Un tercio del ancho con un pequeño margen entre ellos */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    /* Mostrar en línea para colocar horizontalmente */
+    box-sizing: border-box;
+    /* Incluir el padding y border en el ancho total */
+    vertical-align: top;
+}
 
 
 /* Hacer la tabla transparente */
@@ -199,6 +232,23 @@ th, td {
 .color-oscuro {
     background-color: rgb(240, 215, 219); /* Color rosa más oscuro para filas impares */
 }
+
+/* Estilos para los botones */
+button {
+    padding: 8px 16px;
+    margin: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #747474;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #585858;
+  }
+  
 
 @media only screen and (max-width: 600px) {
     table {
