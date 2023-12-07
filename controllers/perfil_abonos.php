@@ -10,14 +10,15 @@ if (isset($_SESSION["usuario_id"])) {
     header("Location: ../index.php");
     exit();
 }
-
+ 
 // Verificar si se ha pasado un ID válido como parámetro GET
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    // Redirigir a una página de error o a la lista de clientes
-    header("location: ../index.php");
+if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
+    // Redirigir a una página de error o a una página predeterminada
+    header("location: ../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
     exit();
 }
- 
+
+
 // Incluir el archivo de conexión a la base de datos
 include("conexion.php");
 
@@ -159,34 +160,7 @@ $stmt_prestamo->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
-    .contenedor {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
-    .formulario {
-        width: 70%;
-        /* Ancho ajustable */
-        max-width: 400px;
-        /* Ancho máximo */
-        text-align: center;
-    }
-
-    input[type="text"] {
-        width: calc(33.33% - 10px);
-        /* Un tercio del ancho con un pequeño margen entre ellos */
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        display: inline-block;
-        /* Mostrar en línea para colocar horizontalmente */
-        box-sizing: border-box;
-        /* Incluir el padding y border en el ancho total */
-        vertical-align: top;
-    }
+    
     </style>
 </head>
 
@@ -207,29 +181,16 @@ $stmt_prestamo->close();
         <main>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+      <!-- CARTULINAAAAAAAAA -->
         <div class="profile-loans">
     <?php
- 
     include("conexion.php");
 
     if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
         // Si se solicita mostrar todas las filas
         $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
         $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
+        $stmt->bind_param("i", $id_cliente);
         $stmt->execute();
         $resultado = $stmt->get_result();
 
@@ -246,7 +207,7 @@ $stmt_prestamo->close();
                 echo "</tr>";
             }
             echo "</table>";
-            echo "<p><a href='?show_all=false'>Ver menos</a></p>"; // Enlace para mostrar menos
+            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
         } else {
             echo "<p>No se encontraron pagos para este cliente.</p>";
         }
@@ -256,7 +217,7 @@ $stmt_prestamo->close();
         // Mostrar solo la última fila inicialmente
         $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
         $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
+        $stmt->bind_param("i", $id_cliente);
         $stmt->execute();
         $resultado = $stmt->get_result();
 
@@ -264,9 +225,9 @@ $stmt_prestamo->close();
         if ($num_rows > 0) {
             echo "<table id='tabla-prestamos'>";
             echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
-            $last_row = null; // Variable para almacenar la última fila
+            $last_row = null;
             while ($fila = $resultado->fetch_assoc()) {
-                $last_row = $fila; // Actualizar la última fila en cada iteración
+                $last_row = $fila;
             }
             echo "<tr>";
             echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
@@ -276,8 +237,7 @@ $stmt_prestamo->close();
             echo "</tr>";
             echo "</table>";
 
-            // Agregar un enlace para mostrar todas las filas
-            echo "<p><a href='?show_all=true'>Ver más</a></p>";
+            echo "<button onclick='showMore()'>Ver más</button>";
         } else {
             echo "<p>No se encontraron pagos para este cliente.</p>";
         }
@@ -288,35 +248,14 @@ $stmt_prestamo->close();
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Manejador de evento clic en el enlace "Mostrar todas las filas" o "Ver menos"
-    document.querySelector('.profile-loans a').addEventListener('click', function(event) {
-        event.preventDefault();
-        var showAll = <?php echo isset($_GET['show_all']) && $_GET['show_all'] === 'true' ? 'false' : 'true'; ?>;
-        var showAllUrl = '?show_all=' + showAll;
+    function showMore() {
+        window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
+    }
 
-        // Hacer la petición AJAX para obtener todas las filas y mostrarlas
-        fetch(showAllUrl)
-            .then(response => response.text())
-            .then(data => {
-                // Actualizar el contenido de la tabla con todas o una fila
-                document.querySelector('.profile-loans').innerHTML = data;
-            })
-            .catch(error => console.error('Error:', error));
-    });
-});
+    function showLess() {
+        window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
+    }
 </script>
-
-
-
-
-
-
-
-
-
-
-
 
             <?php
             // Consulta SQL para obtener los detalles del cliente con el nombre de la moneda
@@ -523,7 +462,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             };
             </script>
 
-            <form method="post">
+            <form method="post" class="pagos">
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota">
                 <input type="text" id="campo2" name="campo2" placeholder="Resta">
                 <input type="text" id="variable" placeholder="Deuda"
@@ -533,23 +472,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </main>
 
-
-        <script>
-        // Agregar un evento clic al botón
-        document.getElementById("volverAtras").addEventListener("click", function() {
-            window.history.back();
-        });
-        </script>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const profileImage = document.querySelector('.profile-image img');
-
-            // Agrega un controlador de eventos para hacer clic en la imagen
-            profileImage.addEventListener('click', function() {
-                profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
-            });
-        });
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>
