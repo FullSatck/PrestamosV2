@@ -180,84 +180,9 @@ $stmt_prestamo->close();
 
         <main>
 
-
-      <!-- CARTULINAAAAAAAAA -->
-        <div class="profile-loans">
-    <?php
-    include("conexion.php");
-
-    if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
-        // Si se solicita mostrar todas las filas
-        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("i", $id_cliente);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-
-        $num_rows = $resultado->num_rows;
-        if ($num_rows > 0) {
-            echo "<table id='tabla-prestamos'>";
-            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
-                echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
-                echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
-                echo "<td><a href='editar_pago.php?id=" . $fila['id'] . "'>Editar</a></td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
-        } else {
-            echo "<p>No se encontraron pagos para este cliente.</p>";
-        }
-
-        $stmt->close();
-    } else {
-        // Mostrar solo la última fila inicialmente
-        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("i", $id_cliente);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-
-        $num_rows = $resultado->num_rows;
-        if ($num_rows > 0) {
-            echo "<table id='tabla-prestamos'>";
-            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
-            $last_row = null;
-            while ($fila = $resultado->fetch_assoc()) {
-                $last_row = $fila;
-            }
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
-            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
-            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
-            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
-            echo "</tr>";
-            echo "</table>";
-
-            echo "<button onclick='showMore()'>Ver más</button>";
-        } else {
-            echo "<p>No se encontraron pagos para este cliente.</p>";
-        }
-
-        $stmt->close();
-    }
-    ?>
-</div>
-
-<script>
-    function showMore() {
-        window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
-    }
-
-    function showLess() {
-        window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
-    }
-</script>
-
-            <?php
+        <!-- PERFIL DE CLIENTE -->
+        
+        <?php
             // Consulta SQL para obtener los detalles del cliente con el nombre de la moneda
 $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
         FROM clientes c
@@ -300,6 +225,116 @@ if ($resultado->num_rows === 1) {
                     <p>Cononia: <strong><?= $fila["asentamiento"] ?></strong></p>
                 </div>
             </div>
+
+
+      <!-- CARTULINAAAAAAAAA -->
+
+       <!-- CARULINA -->
+       <div class="info-cliente">
+                <div class="columna">
+                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
+                    <p><strong>Cuota:</strong> <?= htmlspecialchars(number_format($info_prestamo['Cuota'])); ?></p>
+                    <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo)); ?>
+                </div>
+                <div class="columna">
+                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
+                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
+                    <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-loans">
+    <?php
+    include("conexion.php");
+
+    if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
+        // Si se solicita mostrar todas las filas
+        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $id_cliente);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $num_rows = $resultado->num_rows;
+        if ($num_rows > 0) {
+            echo "<table id='tabla-prestamos'>";
+            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+            $last_row = null;
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+                echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
+                $last_row = $fila; // Actualizar la última fila en cada iteración
+                echo "</tr>";
+            }
+
+            // Mostrar el enlace de "Editar" solo para la última fila
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+            echo "</tr>";
+
+            echo "</table>";
+            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
+        } else {
+            echo "<p>No se encontraron pagos para este cliente.</p>";
+        }
+
+        $stmt->close();
+    } else {
+        // Mostrar solo la última fila inicialmente
+        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $id_cliente);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $num_rows = $resultado->num_rows;
+        if ($num_rows > 0) {
+            echo "<table id='tabla-prestamos'>";
+            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+            $last_row = null;
+            while ($fila = $resultado->fetch_assoc()) {
+                $last_row = $fila; // Actualizar la última fila en cada iteración
+            }
+
+            // Mostrar solo la última fila
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+            echo "</tr>";
+
+            echo "</table>";
+
+            echo "<button onclick='showMore()'>Ver más</button>";
+        } else {
+            echo "<p>No se encontraron pagos para este cliente.</p>";
+        }
+
+        $stmt->close();
+    }
+    ?>
+</div>
+
+<script>
+    function showMore() {
+        window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
+    }
+
+    function showLess() {
+        window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
+    }
+</script>
+
+
+
+             
 
             <!-- BUSCADOR DE CLIENTES -->
             <?php
@@ -368,23 +403,6 @@ if (isset($id_cliente)) {
     echo "No se proporcionó el ID del cliente.";
 }
 ?>
-
-            <!-- CARULINA -->
-            <div class="info-cliente">
-                <div class="columna">
-                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
-                    <p><strong>Cuota:</strong> <?= htmlspecialchars(number_format($info_prestamo['Cuota'])); ?></p>
-                    <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo)); ?>
-                </div>
-                <div class="columna">
-                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
-                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
-                    <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
-                    </p>
-                </div>
-            </div>
-
-
             <!-- BOTONES DE PAGO -->
 
             <?php
