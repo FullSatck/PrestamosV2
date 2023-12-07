@@ -75,34 +75,27 @@ $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
 if ($_SESSION["rol"] == 1) {
-    $ruta_volver = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
-} elseif ($_SESSION["rol"] == 2) {
-    // Ruta para el rol 2 (supervisor) en base a la zona
-    if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
-    } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
-    } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
-    } else {
-        // Si no coincide con ninguna zona válida para supervisor, redirigir a un dashboard predeterminado
-        $ruta_volver = "/default_dashboard.php";
-    }
+    $ruta_volver = "/resources/views/admin/inicio/inicio.php";
+    $ruta_filtro = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
 } elseif ($_SESSION["rol"] == 3) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } elseif ($_SESSION['user_zone'] === '22') {
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
         $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
-        $ruta_volver = "/default_dashboard.php";
+        $ruta_volver = "index.php";
+        $ruta_filtro = "index.php";
     }
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
-    $ruta_volver = "/default_dashboard.php";
+    $ruta_filtro = "/default_dashboard.php";
 }
 
 
@@ -168,7 +161,11 @@ $stmt_prestamo->close();
 
     <body id="body">
         <header>
+
             <a href="<?= $ruta_volver ?>" class="back-link">Salir</a>
+
+            <a href="<?= $ruta_filtro ?>" class="back-link">Filtros</a>
+
             <div class="nombre-usuario">
                 <?php
                 if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
