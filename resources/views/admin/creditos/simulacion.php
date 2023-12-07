@@ -85,58 +85,6 @@ if (!isset($_SESSION["usuario_id"])) {
 
     <link rel="stylesheet" href="/public/assets/css/prestamo.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-    <style>
-    /* Estilos generales del modal */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 999;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Fondo semitransparente */
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        border-radius: 5px;
-        max-width: 400px;
-        text-align: center;
-        position: relative;
-    }
-
-    .close {
-        position: absolute;
-        top: 5px;
-        right: 10px;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    .close:hover {
-        color: red;
-    }
-
-    /* Estilos para botón dentro del modal */
-    .modal-content button {
-        padding: 8px 15px;
-        margin-top: 15px;
-        border: none;
-        background-color: #4CAF50;
-        color: white;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-
-    .modal-content button:hover {
-        background-color: #45a049;
-    }
-    </style>
 </head>
 
 <body id="body">
@@ -181,7 +129,7 @@ if (!isset($_SESSION["usuario_id"])) {
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo inicial</h4>
+                    <h4>Saldo Inicial</h4>
                 </div>
             </a>
 
@@ -257,19 +205,9 @@ if (!isset($_SESSION["usuario_id"])) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-
-        <div id="miModal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span id="btnCerrarModal" class="close">&times;</span>
-                <p>Simulación terminada</p>
-                <button id="btnPrestamo">Prestamo</button>
-                <button id="btnCancelar">Cancelar</button>
-            </div>
-        </div>
-
         <h1>Solicitud de Préstamo</h1><br><br>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
-        <form action="/controllers/procesar_prestamo_simulador.php" method="POST" class="form-container">
+        <form action="/controllers/procesar_prestamo.php" method="POST" class="form-container">
             <?php
 // Incluir el archivo de conexión a la base de datos
 include("../../../../controllers/conexion.php");
@@ -291,8 +229,8 @@ $result_monedas = $conexion->query($query_monedas);
 $result_zonas = $conexion->query($query_zonas);
 ?>
 
-            <label for="id_cliente">Cliente:</label>
-            <input type="text" name="nombre_cliente" id="nombre_cliente" required placeholder="Nombre del Cliente"><br>
+<label for="id_cliente">Cliente:</label>
+<input type="text" name="nombre_cliente" id="nombre_cliente" required placeholder="Nombre del Cliente"><br>
 
 
             <label for="monto">Monto:</label>
@@ -327,8 +265,8 @@ $result_zonas = $conexion->query($query_zonas);
             <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d'); ?>" readonly><br>
 
             <label for="zona">Zona:</label>
-            <select name="zona" required>
-                <?php
+<select name="zona" required>
+    <?php
     // Consulta para obtener las zonas desde la base de datos
     $query_zonas = "SELECT Nombre FROM zonas";
     $result_zonas = $conexion->query($query_zonas);
@@ -345,7 +283,7 @@ $result_zonas = $conexion->query($query_zonas);
         echo "<option value=''>No hay zonas disponibles</option>";
     }
     ?>
-            </select><br>
+</select><br>
 
             </select><br>
 
@@ -421,57 +359,6 @@ $result_zonas = $conexion->query($query_zonas);
                 return 'día(s)';
         }
     }
-    </script>
-
-    <script>
-    // Función para mostrar el modal
-    function mostrarModal() {
-        const modal = document.getElementById("miModal");
-        modal.style.display = "block";
-
-        const btnCerrar = document.getElementById("btnCerrarModal");
-        const btnOtroProceso = document.getElementById("btnOtroProceso");
-
-        btnCerrar.onclick = function() {
-            modal.style.display = "none";
-        } 
-
-        btnPrestamo.onclick = function() {
-            // Redirigir a realizar_prestamo.php
-            window.location.href = "../clientes/agregar_clientes.php";
-        }
-
-        btnCancelar.onclick = function() {
-            // Redirigir a inicio
-            window.location.href = "../inicio/inicio.php";
-        }
-    }
-
-    // Función para enviar el formulario y mostrar el modal
-    function procesarFormulario(event) {
-        event.preventDefault(); // Evitar el envío del formulario por defecto
-
-        // Obtener los datos del formulario
-        const formData = new FormData(document.querySelector('.form-container'));
-
-        // Realizar una petición AJAX al archivo procesar_prestamo_simulador.php
-        fetch('/controllers/procesar_prestamo_simulador.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                // Aquí puedes verificar la respuesta si lo necesitas
-                // Luego mostrar el modal
-                mostrarModal();
-            })
-            .catch(error => {
-                // Manejar errores si es necesario
-                console.error('Error:', error);
-            });
-    }
-
-    // Agregar un listener al formulario para llamar a la función procesarFormulario
-    document.querySelector('.form-container').addEventListener('submit', procesarFormulario);
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
 

@@ -74,7 +74,7 @@ $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
 if ($_SESSION["rol"] == 1) {
-    $ruta_volver = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
+    $ruta_volver = "/resources/views/admin/inicio/inicio.php";
 } elseif ($_SESSION["rol"] == 2) {
     // Ruta para el rol 2 (supervisor) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
@@ -90,11 +90,11 @@ if ($_SESSION["rol"] == 1) {
 } elseif ($_SESSION["rol"] == 3) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
     } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
     } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";
@@ -105,41 +105,10 @@ if ($_SESSION["rol"] == 1) {
 }
 
 
-// Variables para prevenir errores
-$info_prestamo = [
-    'Nombre' => '',
-    'Telefono' => '',
-    'Cuota' => '',
-];
 
-$total_prestamo = 0.00;
-
-// Consulta SQL para obtener la información del préstamo
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, c.Nombre, c.Telefono 
-                 FROM prestamos p 
-                 INNER JOIN clientes c ON p.IDCliente = c.ID 
-                 WHERE p.IDCliente = ?";
-$stmt_prestamo = $conexion->prepare($sql_prestamo);
-$stmt_prestamo->bind_param("i", $id_cliente);
-$stmt_prestamo->execute();
-$resultado_prestamo = $stmt_prestamo->get_result();
-
-if ($resultado_prestamo->num_rows > 0) {
-    $info_prestamo = $resultado_prestamo->fetch_assoc();
-    $total_prestamo = $info_prestamo['Monto'] + ($info_prestamo['Monto'] * $info_prestamo['TasaInteres'] / 100);
-} else {
-    // Manejar el caso donde no se encuentra información del préstamo
-    // Puedes asignar valores predeterminados o mostrar un mensaje de error
-    // Aquí se asignan valores vacíos o predeterminados para evitar los errores de acceso a índices inexistentes
-    $info_prestamo = [
-        'Plazo' => 'No encontrado',
-        'Telefono' => 'No encontrado',
-        'Cuota' => 'No encontrado',
-    ];
-    $total_prestamo = 0.00;
-}
-$stmt_prestamo->close();
- 
+// Consulta SQL para obtener los préstamos del cliente
+$sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
+$resultado_prestamos = $conexion->query($sql_prestamos);
 
 ?>
 
@@ -155,6 +124,8 @@ $stmt_prestamo->close();
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <!-- Asegúrate de incluir tu hoja de estilos CSS -->
     <title>Perfil del Cliente</title>
+<<<<<<< HEAD
+=======
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -188,21 +159,30 @@ $stmt_prestamo->close();
         vertical-align: top;
     }
     </style>
+>>>>>>> 924e8125e7a41c2f63ee2024602c0fa9a0ae91de
 </head>
 
 <body>
 
     <body id="body">
+
         <header>
-            <a href="<?= $ruta_volver ?>" class="back-link">Salir</a>
+
+        <a href="<?= $ruta_volver ?>" class="back-link">Ir al Inicio</a>
+
             <div class="nombre-usuario">
                 <?php
-                if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
-                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
-                }
-                ?>
+    if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
+        echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
+    }
+    ?>
             </div>
+
+
+
         </header>
+
+        <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
         <main>
             <div class="profile-container">
@@ -224,6 +204,40 @@ $stmt_prestamo->close();
                 </div>
             </div>
 
+<<<<<<< HEAD
+            <!-- Agregar una sección para mostrar los préstamos del cliente -->
+            <div class="profile-loans">
+                <h2>Préstamos del Cliente</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID del Préstamo</th>
+                            <th>Deuda</th> 
+                            <th>Plazo</th> 
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha de Vencimiento</th>
+                            <th>Estado</th>
+                            <th>Pagos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
+                        <tr>
+                            <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
+                            <td><?= $fila_prestamo["MontoAPagar"] ?></td> 
+                            <td><?= $fila_prestamo["Plazo"] ?></td> 
+                            <td><?= $fila_prestamo["FechaInicio"] ?></td>
+                            <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
+                            <td><?= $fila_prestamo["Estado"] ?></td>
+                            <td><a href="cartulina.php?id=<?= $id_cliente ?>">Pagos</a></td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+=======
             <!-- BUSCADOR DE CLIENTES -->
             <?php
             // Incluir el archivo de conexión a la base de datos
@@ -437,6 +451,7 @@ window.onload = function() {
         </main>
 
 
+>>>>>>> 924e8125e7a41c2f63ee2024602c0fa9a0ae91de
         <script>
         // Agregar un evento clic al botón
         document.getElementById("volverAtras").addEventListener("click", function() {

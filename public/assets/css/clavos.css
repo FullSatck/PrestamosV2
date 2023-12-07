@@ -1,0 +1,23 @@
+/* clavos.css */
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #090808;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #0a0909;
+}
