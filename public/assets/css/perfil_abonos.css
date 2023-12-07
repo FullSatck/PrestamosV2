@@ -67,36 +67,34 @@ header{
 
 /* Encabezado */
 h1 {
-    text-align: center;
-    margin: 20px 0;
+    text-align: center; 
     color: #333;
 }
 
 /* Contenedor del perfil */
 .profile-container {
     display: flex;
+    border: 10px;
     justify-content: center;
     align-items: flex-start; /* Alinea los elementos al inicio */
     margin: 20px;
-    background-color: #faefef;
+    background-color: rgb(250, 228, 235); 
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Detalles del perfil */
-.profile-details {
-    padding: 20px;
+.profile-details { 
     text-align: left; 
     flex: 2;
     margin: 10px; 
-    background-color: rgb(250, 228, 235);; 
+    background-color: rgb(250, 228, 235); 
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-details h1 {
     font-size: 28px;
-    margin-bottom: 10px;
     color: #000000;
 }
 
@@ -109,8 +107,8 @@ h1 {
 /* Préstamos del cliente */
 .profile-loans {
     margin: 20px;
-    padding: 20px;
-    background-color: #faf1f1;
+    padding: 20px; 
+    background-color: #f5d6d6
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -121,10 +119,6 @@ h1 {
     color: #333;
 }
 
-h1 {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
 
 .info-cliente {
     display: flex;
