@@ -7,17 +7,18 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
-    exit();
-}
-
-// Verificar si se ha pasado un ID válido como parámetro GET
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    // Redirigir a una página de error o a la lista de clientes
-    header("location: dias_pagos.php");
+    header("Location: ../index.php");
     exit();
 }
  
+// Verificar si se ha pasado un ID válido como parámetro GET
+if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
+    // Redirigir a una página de error o a una página predeterminada
+    header("location: ../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    exit();
+}
+
+
 // Incluir el archivo de conexión a la base de datos
 include("conexion.php");
 
@@ -74,7 +75,7 @@ $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
 if ($_SESSION["rol"] == 1) {
-    $ruta_volver = "/resources/views/admin/inicio/inicio.php";
+    $ruta_volver = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
 } elseif ($_SESSION["rol"] == 2) {
     // Ruta para el rol 2 (supervisor) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
@@ -90,11 +91,11 @@ if ($_SESSION["rol"] == 1) {
 } elseif ($_SESSION["rol"] == 3) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
+        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";
@@ -105,10 +106,41 @@ if ($_SESSION["rol"] == 1) {
 }
 
 
+// Variables para prevenir errores
+$info_prestamo = [
+    'Nombre' => '',
+    'Telefono' => '',
+    'Cuota' => '',
+];
 
-// Consulta SQL para obtener los préstamos del cliente
-$sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
-$resultado_prestamos = $conexion->query($sql_prestamos);
+$total_prestamo = 0.00;
+
+// Consulta SQL para obtener la información del préstamo
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, c.Nombre, c.Telefono 
+                 FROM prestamos p 
+                 INNER JOIN clientes c ON p.IDCliente = c.ID 
+                 WHERE p.IDCliente = ?";
+$stmt_prestamo = $conexion->prepare($sql_prestamo);
+$stmt_prestamo->bind_param("i", $id_cliente);
+$stmt_prestamo->execute();
+$resultado_prestamo = $stmt_prestamo->get_result();
+
+if ($resultado_prestamo->num_rows > 0) {
+    $info_prestamo = $resultado_prestamo->fetch_assoc();
+    $total_prestamo = $info_prestamo['Monto'] + ($info_prestamo['Monto'] * $info_prestamo['TasaInteres'] / 100);
+} else {
+    // Manejar el caso donde no se encuentra información del préstamo
+    // Puedes asignar valores predeterminados o mostrar un mensaje de error
+    // Aquí se asignan valores vacíos o predeterminados para evitar los errores de acceso a índices inexistentes
+    $info_prestamo = [
+        'Plazo' => 'No encontrado',
+        'Telefono' => 'No encontrado',
+        'Cuota' => 'No encontrado',
+    ];
+    $total_prestamo = 0.00;
+}
+$stmt_prestamo->close();
+ 
 
 ?>
 
@@ -120,76 +152,66 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/assets/css/perfil_cliente.css">
+    <link rel="stylesheet" href="/public/assets/css/perfil_abonos.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <!-- Asegúrate de incluir tu hoja de estilos CSS -->
     <title>Perfil del Cliente</title>
-<<<<<<< HEAD
-=======
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
-    .contenedor {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
-    .formulario {
-        width: 70%;
-        /* Ancho ajustable */
-        max-width: 400px;
-        /* Ancho máximo */
-        text-align: center;
-    }
-
-    input[type="text"] {
-        width: calc(33.33% - 10px);
-        /* Un tercio del ancho con un pequeño margen entre ellos */
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        display: inline-block;
-        /* Mostrar en línea para colocar horizontalmente */
-        box-sizing: border-box;
-        /* Incluir el padding y border en el ancho total */
-        vertical-align: top;
-    }
+    
     </style>
->>>>>>> 924e8125e7a41c2f63ee2024602c0fa9a0ae91de
 </head>
 
 <body>
 
     <body id="body">
-
         <header>
-
-        <a href="<?= $ruta_volver ?>" class="back-link">Ir al Inicio</a>
-
+            <a href="<?= $ruta_volver ?>" class="back-link">Salir</a>
             <div class="nombre-usuario">
                 <?php
-    if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
-        echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
-    }
-    ?>
+                if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
+                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
+                }
+                ?>
             </div>
-
-
-
         </header>
 
-        <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
         <main>
+
+        <!-- PERFIL DE CLIENTE -->
+        
+        <?php
+            // Consulta SQL para obtener los detalles del cliente con el nombre de la moneda
+$sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
+        FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
+        LEFT JOIN ciudades ciu ON c.id = ciu.ID
+        WHERE c.ID = $id_cliente";
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows === 1) {
+    // Mostrar los detalles del cliente aquí
+    $fila = $resultado->fetch_assoc();
+    
+    // Obtener la ruta de la imagen del cliente desde la base de datos
+    $imagen_cliente = $fila["ImagenCliente"];
+    
+    // Si no hay imagen cargada, usar una imagen de reemplazo
+    if (empty($imagen_cliente)) {
+        $imagen_cliente = "../public/assets/img/perfil.png"; // Reemplaza con tu imagen por defecto
+    }
+} else {
+    // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
+    header("location: ../resources/views/admin/clientes/lista_clientes.php");
+    exit();
+}
+?>
+
             <div class="profile-container">
-                <div class="profile-image"><br><br><br>
-                    <!-- Mostrar la foto del cliente -->
-                    <img src="<?= $imagen_cliente ?>" alt="Foto del Cliente">
-                </div>
                 <div class="profile-details">
                     <!-- Mostrar los datos del cliente -->
                     <h1><strong><?= $fila["Nombre"] ?></strong></h1>
@@ -204,40 +226,116 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                 </div>
             </div>
 
-<<<<<<< HEAD
-            <!-- Agregar una sección para mostrar los préstamos del cliente -->
-            <div class="profile-loans">
-                <h2>Préstamos del Cliente</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID del Préstamo</th>
-                            <th>Deuda</th> 
-                            <th>Plazo</th> 
-                            <th>Fecha de Inicio</th>
-                            <th>Fecha de Vencimiento</th>
-                            <th>Estado</th>
-                            <th>Pagos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
-                        <tr>
-                            <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
-                            <td><?= $fila_prestamo["MontoAPagar"] ?></td> 
-                            <td><?= $fila_prestamo["Plazo"] ?></td> 
-                            <td><?= $fila_prestamo["FechaInicio"] ?></td>
-                            <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
-                            <td><?= $fila_prestamo["Estado"] ?></td>
-                            <td><a href="cartulina.php?id=<?= $id_cliente ?>">Pagos</a></td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            </div>
-        </main>
 
-=======
+      <!-- CARTULINAAAAAAAAA -->
+
+       <!-- CARULINA -->
+       <div class="info-cliente">
+                <div class="columna">
+                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
+                    <p><strong>Cuota:</strong> <?= htmlspecialchars(number_format($info_prestamo['Cuota'])); ?></p>
+                    <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo)); ?>
+                </div>
+                <div class="columna">
+                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
+                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
+                    <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-loans">
+    <?php
+    include("conexion.php");
+
+    if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
+        // Si se solicita mostrar todas las filas
+        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $id_cliente);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $num_rows = $resultado->num_rows;
+        if ($num_rows > 0) {
+            echo "<table id='tabla-prestamos'>";
+            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+            $last_row = null;
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+                echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
+                $last_row = $fila; // Actualizar la última fila en cada iteración
+                echo "</tr>";
+            }
+
+            // Mostrar el enlace de "Editar" solo para la última fila
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+            echo "</tr>";
+
+            echo "</table>";
+            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
+        } else {
+            echo "<p>No se encontraron pagos para este cliente.</p>";
+        }
+
+        $stmt->close();
+    } else {
+        // Mostrar solo la última fila inicialmente
+        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $id_cliente);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $num_rows = $resultado->num_rows;
+        if ($num_rows > 0) {
+            echo "<table id='tabla-prestamos'>";
+            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+            $last_row = null;
+            while ($fila = $resultado->fetch_assoc()) {
+                $last_row = $fila; // Actualizar la última fila en cada iteración
+            }
+
+            // Mostrar solo la última fila
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+            echo "</tr>";
+
+            echo "</table>";
+
+            echo "<button onclick='showMore()'>Ver más</button>";
+        } else {
+            echo "<p>No se encontraron pagos para este cliente.</p>";
+        }
+
+        $stmt->close();
+    }
+    ?>
+</div>
+
+<script>
+    function showMore() {
+        window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
+    }
+
+    function showLess() {
+        window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
+    }
+</script>
+
+
+
+             
+
             <!-- BUSCADOR DE CLIENTES -->
             <?php
             // Incluir el archivo de conexión a la base de datos
@@ -305,23 +403,6 @@ if (isset($id_cliente)) {
     echo "No se proporcionó el ID del cliente.";
 }
 ?>
-
-            <!-- CARULINA -->
-            <div class="info-cliente">
-                <div class="columna">
-                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
-                    <p><strong>Cuota:</strong> <?= htmlspecialchars(number_format($info_prestamo['Cuota'])); ?></p>
-                    <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo)); ?>
-                </div>
-                <div class="columna">
-                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
-                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
-                    <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
-                    </p>
-                </div>
-            </div>
-
-
             <!-- BOTONES DE PAGO -->
 
             <?php
@@ -379,95 +460,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-<!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+            <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
 
-<script>
-window.onload = function() {
-    var campoResta = document.getElementById('campo2');
-    campoResta.addEventListener('input', function() {
-        var cuota = <?= $info_prestamo['Cuota']; ?>;
-        var montoAPagar = <?= $montoAPagar; ?>;
-        var valorResta = parseFloat(campoResta.value.replace(',', '.')); // Manejar decimales
-        var resultadoResta = montoAPagar - valorResta;
+            <script>
+            window.onload = function() {
+                var campoResta = document.getElementById('campo2');
+                campoResta.addEventListener('input', function() {
+                    var cuota = <?= $info_prestamo['Cuota']; ?>;
+                    var montoAPagar = <?= $montoAPagar; ?>;
+                    var valorResta = parseFloat(campoResta.value.replace(',', '.')); // Manejar decimales
+                    var resultadoResta = montoAPagar - valorResta;
 
-        if (resultadoResta === cuota) {
-            campoResta.style.backgroundColor = 'green';
-        } else {
-            campoResta.style.backgroundColor = 'red';
-        }
-    });
-};
-</script>
-
-<form method="post">
-    <input type="text" id="cuota" name="cuota" placeholder="Cuota">
-    <input type="text" id="campo2" name="campo2" placeholder="Resta">
-    <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
-    <input type="submit" value="Pagar">
-</form>
-
-
-
-            <!-- CARTULINA -->
-
-            <!-- Agregar una sección para mostrar los préstamos del cliente -->
-            <div class="profile-loans">
-                <?php
-
-               $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
-               $stmt = $conexion->prepare($sql);
-               $stmt->bind_param("i", $id_cliente); // Usar $id_cliente en lugar de $id
-               $stmt->execute();
-               $resultado = $stmt->get_result();
-                
-                $fila_counter = 0;
-                $num_rows = $resultado->num_rows;
-                if ($num_rows > 0) {
-                    echo "<table id='tabla-prestamos'>";
-                    echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
-                    while ($fila = $resultado->fetch_assoc()) {
-                        $fila_counter++;
-                        $color_clase = ($fila_counter % 2 == 0) ? 'color-claro' : 'color-oscuro';
-                        echo "<tr class='$color_clase'>";
-                        echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
-                        echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
-                        echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
-                        // Mostrar "Editar" solo en la última fila
-                        if ($fila_counter === $num_rows) {
-                            echo "<td><a href='editar_pago.php?id=" . $fila['id'] . "'>Editar</a></td>";
-                        } else {
-                            echo "<td></td>";
-                        }
-                        echo "</tr>";
+                    if (resultadoResta === cuota) {
+                        campoResta.style.backgroundColor = 'green';
+                    } else {
+                        campoResta.style.backgroundColor = 'red';
                     }
-                    echo "</table>";
-                } else {
-                    echo "<p>No se encontraron pagos para este cliente.</p>";
-                }
-                
-                $stmt->close();
-                ?>
-            </div>
+                });
+            };
+            </script>
+
+            <form method="post" class="pagos">
+                <input type="text" id="cuota" name="cuota" placeholder="Cuota">
+                <input type="text" id="campo2" name="campo2" placeholder="Resta">
+                <input type="text" id="variable" placeholder="Deuda"
+                    value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
+                <input type="submit" value="Pagar">
+            </form>
+
         </main>
 
-
->>>>>>> 924e8125e7a41c2f63ee2024602c0fa9a0ae91de
-        <script>
-        // Agregar un evento clic al botón
-        document.getElementById("volverAtras").addEventListener("click", function() {
-            window.history.back();
-        });
-        </script>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const profileImage = document.querySelector('.profile-image img');
-
-            // Agrega un controlador de eventos para hacer clic en la imagen
-            profileImage.addEventListener('click', function() {
-                profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
-            });
-        });
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>

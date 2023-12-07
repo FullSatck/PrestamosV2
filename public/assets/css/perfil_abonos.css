@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body{
+    padding: 20px;
+    padding-top: 85px;
+    background-color: rgb(250, 226, 229);
+}
+ 
+header{
+    width: 100%;
+    height: 80px;
+    background:  rgb(250, 226, 229);
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 200;
+}
+
+/* Estilos para el nombre de usuario y rol */
+.nombre-usuario {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    color: blue;
+    max-width: 200px;
+    word-wrap: break-word;
+  }
+  
+  .nombre-usuario span {
+    color: grey;
+  }
+
+.back-link {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px 0;
+    background-color: #747474;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.back-link:hover {
+    background-color: #585858;
+}
+
+.back-link:active {
+    background-color: rgb(17, 0, 255);
+}
+
+
+/* Encabezado */
+h1 {
+    text-align: center; 
+    color: #333;
+}
+
+/* Contenedor del perfil */
+.profile-container {
+    display: flex;
+    border: 10px;
+    justify-content: center;
+    align-items: flex-start; /* Alinea los elementos al inicio */
+    margin: 20px;
+    background-color: rgb(250, 228, 235); 
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Detalles del perfil */
+.profile-details { 
+    text-align: left; 
+    flex: 2;
+    margin: 10px; 
+    background-color: rgb(250, 228, 235); 
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details h1 {
+    font-size: 28px;
+    color: #000000;
+}
+
+.profile-details p {
+    margin-bottom: 10px;
+    color: #050505;
+    font-size: 16px;
+}
+
+/* Préstamos del cliente */
+.profile-loans {
+    margin: 20px;
+    padding: 20px; 
+    background-color: #f5d6d6
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-loans h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+
+.info-cliente {
+    display: flex;
+    justify-content: space-between; 
+    border-top: 100px;
+}
+
+.columna {
+    flex: 1;
+    padding: 0 10px; 
+}
+
+.pagos{
+    border: 30px;
+}
+
+/* Estilos para el formulario y el menú desplegable */
+form {
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+  }
+  
+  select {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 300px;
+  }
+  
+  input[type="submit"] {
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(243, 183, 245);
+    color: #000000;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: rgb(241, 173, 243);
+  }
+  
+  .contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.formulario {
+    width: 70%;
+    /* Ancho ajustable */
+    max-width: 400px;
+    /* Ancho máximo */
+    text-align: center;
+}
+
+input[type="text"] {
+    width: calc(33.33% - 10px);
+    /* Un tercio del ancho con un pequeño margen entre ellos */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    /* Mostrar en línea para colocar horizontalmente */
+    box-sizing: border-box;
+    /* Incluir el padding y border en el ancho total */
+    vertical-align: top;
+}
+
+
+/* Hacer la tabla transparente */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo transparente */
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    background-color: rgb(248, 231, 234);
+}
+
+#tabla-prestamos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabla-prestamos th, #tabla-prestamos td {
+    padding: 10px;
+    text-align: left;
+}
+
+#tabla-prestamos th {
+    background-color: pink; /* Color rosa claro */
+}
+
+.color-claro {
+    background-color: rgb(245, 220, 224); /* Color rosa más claro para filas pares */
+}
+
+.color-oscuro {
+    background-color: rgb(240, 215, 219); /* Color rosa más oscuro para filas impares */
+}
+
+/* Estilos para los botones */
+button {
+    padding: 8px 16px;
+    margin: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #747474;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #585858;
+  }
+  
+
+@media only screen and (max-width: 600px) {
+    table {
+        font-size: 12px;
+    }
+}
+
+/* Enlace para gestionar préstamos */
+.manage-loans {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.manage-loans a {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+.manage-loans a:hover {
+    background-color: #0056b3;
+}
+
+@media screen and (max-width: 600px) {
+    /* Ajustes para el perfil */
+    .profile-container {
+        flex-direction: column; /* Colocar elementos uno debajo del otro */
+    }
+
+    .profile-image, .profile-details {
+        width: 90%; /* Ajustar el ancho para dispositivos móviles */
+        margin: 10px auto; /* Centrar y agregar margen */
+    }
+
+    .profile-image img {
+        max-height: 150px; /* Ajustar la altura de la imagen */
+    }
+
+    /* Ajustes para las tablas */
+    table {
+        display: block;
+        overflow-x: auto; /* Hacer la tabla desplazable horizontalmente */
+    }
+
+    /* Ajustes para fuentes y botones */
+    body, p, h1, h2, a {
+        font-size: 16px; /* Aumentar el tamaño de la fuente */
+    }
+
+    .manage-loans a {
+        padding: 15px 30px; /* Aumentar el tamaño de los botones */
+    }
+    
+}

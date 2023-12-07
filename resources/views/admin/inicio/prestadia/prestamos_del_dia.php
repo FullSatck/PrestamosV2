@@ -119,9 +119,8 @@ date_default_timezone_set('America/Bogota');
 
         <form action="prestamos_del_dia.php" method="get">
             <select name="filtro">
-
-                <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
                 <option value="pendiente" <?php echo $filtro == 'pendiente' ? 'selected' : ''; ?>>Pendientes</option>
+                <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
                 <option value="nopagado" <?php echo $filtro == 'nopagado' ? 'selected' : ''; ?>>No Pagados</option>
                 <option value="mas-tarde" <?php echo $filtro == 'mas-tarde' ? 'selected' : ''; ?>>Mas Tarde</option>
 
@@ -156,7 +155,7 @@ date_default_timezone_set('America/Bogota');
                             <th>Perfil</th>
                             <th>Pagar</th>
                             <th>No pago</th>
-                            <th>Pagar cantida</th>
+                            <!-- <th>Pagar cantida</th> -->
                             <th>Posponer pago</th>
 
                         </tr>
@@ -169,7 +168,7 @@ date_default_timezone_set('America/Bogota');
                                 <td><?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
                                 <td>
-                                    <a href="../../../../../controllers/perfil_cliente.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                    <a href="../../../../../controllers/perfil_abonos.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
                                 </td>
 
@@ -190,22 +189,22 @@ date_default_timezone_set('America/Bogota');
 
                                     <?php endif; ?>
                                 </td>
-                                <td>
-                                    <?php if ($filtro != 'pagado') : ?>
+                                <!-- <td>
+                                    <!-- <?php if ($filtro != 'pagado') : ?>
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#customPaymentModal" data-cliente-telefono="<?php echo htmlspecialchars($cuota['TelefonoCliente']); ?>" onclick="abrirModalPago(<?php echo $cuota['ID']; ?>,<?php echo $cuota['MontoCuota']; ?>,'<?php echo htmlspecialchars($cuota['NombreCliente']); ?>','<?php echo htmlspecialchars($cuota['DireccionCliente']); ?>','<?php echo htmlspecialchars($cuota['TelefonoCliente']); ?>','<?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?>',<?php echo $cuota['MontoAPagar']; ?>)">
                                             Cantidad
-                                        </button>
+                                        </button> -->
 
 
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if ($filtro != 'pagado') : ?>
-                                        <button type="button" class="btn btn-secondary btn-mas-tarde boton-morado" data-prestamoid="<?php echo $cuota['ID']; ?>">
-                                            Más Tarde
-                                        </button>
-                                    <?php endif; ?>
-                                </td>
+                            <?php endif; ?>
+                            <!-- </td>  -->
+                            <td>
+                                <?php if ($filtro != 'pagado') : ?>
+                                    <button type="button" class="btn btn-secondary btn-mas-tarde boton-morado" data-prestamoid="<?php echo $cuota['ID']; ?>">
+                                        Más Tarde
+                                    </button>
+                                <?php endif; ?>
+                            </td>
 
 
                             </tr>
@@ -335,10 +334,7 @@ date_default_timezone_set('America/Bogota');
                                 </div>
                             </form>
                             <form id="">
-                                <div class="form-group">
-                                    <label for="customAmount">Campo extra..:</label>
-                                    <input type="number" class="form-control" id="customAmount" name="customAmount" required>
-                                </div>
+
                             </form>
 
                         </div>

@@ -16,31 +16,23 @@ function obtenerCuotas($conexion, $filtro)
     (SELECT SUM(MontoPagado) FROM historial_pagos WHERE IDPrestamo = p.ID) as TotalPagado
     FROM prestamos p
     INNER JOIN clientes c ON p.IDCliente = c.ID
-    WHERE p.FechaInicio <= ?";
+    WHERE p.FechaInicio <= ? AND DATE(p.FechaInicio) != ?"; // Excluir préstamos creados hoy
 
     // Modificar la consulta según el filtro
     switch ($filtro) {
-
-
         case 'pagado':
             $sql .= " AND (p.Estado = '' OR EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?))";
             break;
-
         case 'pendiente':
             $sql .= " AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) AND p.mas_tarde = 0";
             break;
-
-
-
         case 'nopagado':
-            $sql .= " AND p.Pospuesto = 1  ";
-
+            $sql .= " AND p.Pospuesto = 1";
             break;
         case 'mas-tarde':
             $sql .= " AND p.mas_tarde = 1"; // Asumiendo que 'mas_tarde' es una columna booleana
             break;
     }
-
 
     // Preparar la consulta SQL
     $stmt = $conexion->prepare($sql);
@@ -49,12 +41,11 @@ function obtenerCuotas($conexion, $filtro)
         return array();
     }
 
-    // Ajustar el bind_param según el filtro
-
+    // Ajustar el bind_param según el filtro y la fecha actual
     if ($filtro == 'pagado' || $filtro == 'pendiente') {
-        $stmt->bind_param("sss", $fechaHoy, $fechaHoy, $fechaHoy); // Tres parámetros para 'pagado' y 'pendiente'
+        $stmt->bind_param("ssss", $fechaHoy, $fechaHoy, $fechaHoy, $fechaHoy); // Cuatro parámetros para 'pagado' y 'pendiente'
     } else {
-        $stmt->bind_param("ss", $fechaHoy, $fechaHoy); // Dos parámetros para 'nopagado'
+        $stmt->bind_param("sss", $fechaHoy, $fechaHoy, $fechaHoy); // Tres parámetros para 'nopagado'
     }
 
     // Ejecutar la consulta
@@ -102,17 +93,19 @@ function esDiaDePago($fechaInicio, $frecuenciaPago, $fechaHoy)
             return false;
     }
 }
+
 function contarPrestamosPorEstado($conexion)
 {
     $conteos = ['pendiente' => 0, 'pagado' => 0, 'nopagado' => 0];
     $fechaHoy = date('Y-m-d');
 
-    // Contar préstamos pendientes
+    // Contar préstamos pendientes excluyendo los préstamos creados hoy
     $sqlPendiente = "SELECT COUNT(*) AS conteo FROM prestamos p 
                      WHERE p.FechaInicio <= ? AND p.Estado = 'pendiente' AND p.Pospuesto = 0 AND p.mas_tarde = 0 
-                     AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?)";
+                     AND NOT EXISTS (SELECT 1 FROM historial_pagos WHERE IDPrestamo = p.ID AND FechaPago = ?) 
+                     AND DATE(p.FechaInicio) != ?";
     $stmt = $conexion->prepare($sqlPendiente);
-    $stmt->bind_param("ss", $fechaHoy, $fechaHoy);
+    $stmt->bind_param("sss", $fechaHoy, $fechaHoy, $fechaHoy);
     $stmt->execute();
     $resultado = $stmt->get_result();
     if ($fila = $resultado->fetch_assoc()) {
@@ -150,7 +143,8 @@ function contarPrestamosPorEstado($conexion)
         $conteos['mas-tarde'] = $fila['conteo'];
     }
 
-
     $stmt->close();
     return $conteos;
 }
+
+// Resto del código de la aplicación...
