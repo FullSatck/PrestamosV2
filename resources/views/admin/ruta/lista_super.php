@@ -117,7 +117,7 @@ if (isset($_GET['mensaje'])) {
                 <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                     <div class="option">
                         <i class="fa-solid fa-sack-dollar" title=""></i>
-                        <h4>Saldo inicial</h4>
+                        <h4>Saldo Inicial</h4>
                     </div>
                 </a>
 

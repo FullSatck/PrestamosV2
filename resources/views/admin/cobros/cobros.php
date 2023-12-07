@@ -110,7 +110,7 @@ $stmt->close();
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo inicial</h4>
+                    <h4>Saldo Inicial</h4>
                 </div>
             </a>
 
@@ -194,7 +194,7 @@ $stmt->close();
     include("../../../../controllers/conexion.php");
 
     // Query SQL para obtener todas las zonas
-    $sql = "SELECT * FROM zonas WHERE Nombre IN ('Chihuahua', 'Puebla', 'Quintana Roo')";
+    $sql = "SELECT * FROM zonas";
     $result = mysqli_query($conexion, $sql);
 
     // Muestra los datos en una tabla

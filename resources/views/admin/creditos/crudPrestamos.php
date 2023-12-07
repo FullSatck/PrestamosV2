@@ -68,34 +68,14 @@ $stmt->close();
 
     <link rel="stylesheet" href="/public/assets/css/crudpresta.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-    <style>
-        /* Estilos para el enlace en el encabezado */
-header .hola2 {
-    color: #fff;
-    background-color: #747474;
-    border-radius: 10px;
-    padding: 10px;
-    text-decoration: none; 
-    font-weight: bold; 
-    font-size: 18px; 
-    margin-left: 20px; 
-}
-
-header .hola2:hover {
-    color: #555; /* Cambia el color del texto al pasar el cursor por encima */
-}
-
-    </style>
 </head>
 
 <body id="body">
 
-    <header>
+<header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-
-        <a class="hola2" href="simulacion.php">Simulacion</a>
 
         <div class="nombre-usuario">
             <?php
@@ -132,7 +112,7 @@ header .hola2:hover {
             <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo inicial</h4>
+                    <h4>Saldo Inicial</h4>
                 </div>
             </a>
 
@@ -168,7 +148,7 @@ header .hola2:hover {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
+            </a> 
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -189,7 +169,7 @@ header .hola2:hover {
                     <h4>Ruta</h4>
                 </div>
             </a>
-
+ 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -226,7 +206,7 @@ if (isset($_GET['mensaje'])) {
                     <div class="search-container">
                         <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
                         <button><a href="prestamosDesactivados.php" class="btn btn-primary">Desactivados</a></button>
-
+                        
                     </div>
 
 
