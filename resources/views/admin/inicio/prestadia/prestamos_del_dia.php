@@ -119,9 +119,8 @@ date_default_timezone_set('America/Bogota');
 
         <form action="prestamos_del_dia.php" method="get">
             <select name="filtro">
-
-                <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
                 <option value="pendiente" <?php echo $filtro == 'pendiente' ? 'selected' : ''; ?>>Pendientes</option>
+                <option value="pagado" <?php echo $filtro == 'pagado' ? 'selected' : ''; ?>>Pagados</option>
                 <option value="nopagado" <?php echo $filtro == 'nopagado' ? 'selected' : ''; ?>>No Pagados</option>
                 <option value="mas-tarde" <?php echo $filtro == 'mas-tarde' ? 'selected' : ''; ?>>Mas Tarde</option>
 
@@ -197,15 +196,15 @@ date_default_timezone_set('America/Bogota');
                                         </button> -->
 
 
-                                    <?php endif; ?>
-                                <!-- </td>  -->
-                                <td>
-                                    <?php if ($filtro != 'pagado') : ?>
-                                        <button type="button" class="btn btn-secondary btn-mas-tarde boton-morado" data-prestamoid="<?php echo $cuota['ID']; ?>">
-                                            Más Tarde
-                                        </button>
-                                    <?php endif; ?>
-                                </td>
+                            <?php endif; ?>
+                            <!-- </td>  -->
+                            <td>
+                                <?php if ($filtro != 'pagado') : ?>
+                                    <button type="button" class="btn btn-secondary btn-mas-tarde boton-morado" data-prestamoid="<?php echo $cuota['ID']; ?>">
+                                        Más Tarde
+                                    </button>
+                                <?php endif; ?>
+                            </td>
 
 
                             </tr>
@@ -335,7 +334,7 @@ date_default_timezone_set('America/Bogota');
                                 </div>
                             </form>
                             <form id="">
-                                
+
                             </form>
 
                         </div>
