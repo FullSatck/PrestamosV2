@@ -37,6 +37,22 @@ if ($result) {
 </head>
 <body>
 
+<header>
+        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
+            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+            <span class="spann">Volver al Inicio</span>
+        </a>
+       
+
+        <div class="nombre-usuario">
+            <?php
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
+        </div>
+    </header>
+
     <div class="container">
         <h2>Clientes Clavos</h2>
 
@@ -62,7 +78,7 @@ if ($result) {
                 $clavosQuery = "SELECT c.ID, c.Nombre, c.EstadoID, p.MontoAPagar, p.MontoCuota, p.FechaVencimiento
                                 FROM clientes c
                                 JOIN prestamos p ON c.ID = p.IDCliente
-                                WHERE c.EstadoID = 2";
+                                WHERE c.EstadoID = 2 AND p.FechaVencimiento <= '$fechaLimite'";
 
                 // Modificar la consulta si se ha enviado una búsqueda
                 if (isset($_GET['buscar'])) {
