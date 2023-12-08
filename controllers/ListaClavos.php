@@ -1,4 +1,6 @@
 <?php
+session_start(); // Iniciar la sesión
+
 date_default_timezone_set('America/Bogota');
 $servidor = "localhost";
 $usuario = "root";
@@ -38,76 +40,69 @@ if ($result) {
 <body>
 
 <header>
-        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-            <span class="spann">Volver al Inicio</span>
-        </a>
-       
+    <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
+        <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+        <span class="spann">Volver al Inicio</span>
+    </a>
 
-        <div class="nombre-usuario">
+   
+</header>
+
+<div class="container">
+    <h2>Clientes Clavos</h2>
+
+    <!-- Agrega el formulario de búsqueda -->
+    <form action="" method="GET">
+        <label for="buscar">Buscar:</label>
+        <input type="text" id="buscar" name="buscar">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Deuda</th>
+                <th>Días sin pagar</th>
+            </tr>
+        </thead>
+        <tbody>
             <?php
-            if (isset($_SESSION["nombre_usuario"])) {
-                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            // Mostrar los resultados en la tabla de clientes clavos
+            $clavosQuery = "SELECT c.ID, c.Nombre, c.EstadoID, p.MontoAPagar, p.MontoCuota, p.FechaVencimiento
+                            FROM clientes c
+                            JOIN prestamos p ON c.ID = p.IDCliente AND c.EstadoID = 2
+                            WHERE p.FechaVencimiento <= '$fechaLimite'";
+
+            // Modificar la consulta si se ha enviado una búsqueda
+            if (isset($_GET['buscar'])) {
+                $busqueda = $_GET['buscar'];
+                $clavosQuery .= " AND (c.ID LIKE '%$busqueda%' OR c.Nombre LIKE '%$busqueda%')";
+            }
+
+            $clavosResult = $conexion->query($clavosQuery);
+
+            if ($clavosResult) {
+                while ($clavoRow = $clavosResult->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $clavoRow['ID'] . "</td>";
+                    echo "<td>" . $clavoRow['Nombre'] . "</td>";
+                    echo "<td>$" . ($clavoRow['MontoAPagar'] ?: $clavoRow['MontoCuota']) . "</td>";
+
+                    // Calcular días sin pagar
+                    $fechaVencimiento = new DateTime($clavoRow['FechaVencimiento']);
+                    $fechaActual = new DateTime();
+                    $diasSinPagar = $fechaActual->diff($fechaVencimiento)->days;
+
+                    echo "<td>Días sin pagar: $diasSinPagar</td>";
+                    echo "</tr>";
+                }
             }
             ?>
-        </div>
-    </header>
-
-    <div class="container">
-        <h2>Clientes Clavos</h2>
-
-        <!-- Agrega el formulario de búsqueda -->
-        <form action="" method="GET">
-            <label for="buscar">Buscar:</label>
-            <input type="text" id="buscar" name="buscar">
-            <button type="submit">Buscar</button>
-        </form>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Deuda</th>
-                    <th>Días sin pagar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Mostrar los resultados en la tabla de clientes clavos
-                $clavosQuery = "SELECT c.ID, c.Nombre, c.EstadoID, p.MontoAPagar, p.MontoCuota, p.FechaVencimiento
-                                FROM clientes c
-                                JOIN prestamos p ON c.ID = p.IDCliente
-                                WHERE c.EstadoID = 2 AND p.FechaVencimiento <= '$fechaLimite'";
-
-                // Modificar la consulta si se ha enviado una búsqueda
-                if (isset($_GET['buscar'])) {
-                    $busqueda = $_GET['buscar'];
-                    $clavosQuery .= " AND (c.ID LIKE '%$busqueda%' OR c.Nombre LIKE '%$busqueda%')";
-                }
-
-                $clavosResult = $conexion->query($clavosQuery);
-
-                if ($clavosResult) {
-                    while ($clavoRow = $clavosResult->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $clavoRow['ID'] . "</td>";
-                        echo "<td>" . $clavoRow['Nombre'] . "</td>";
-                        echo "<td>$" . ($clavoRow['MontoAPagar'] ?: $clavoRow['MontoCuota']) . "</td>";
-
-                        // Calcular días sin pagar
-                        $fechaVencimiento = new DateTime($clavoRow['FechaVencimiento']);
-                        $fechaActual = new DateTime();
-                        $diasSinPagar = $fechaActual->diff($fechaVencimiento)->days;
-
-                        echo "<td>Días sin pagar: $diasSinPagar</td>";
-                        echo "</tr>";
-                    }
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>
