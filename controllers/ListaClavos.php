@@ -13,8 +13,8 @@ if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 
-// Obtener clientes que han pasado 20 días sin pagar
-$diasSinPagar = 20;
+// Obtener clientes que han pasado 19 días sin pagar
+$diasSinPagar = 19;
 $fechaLimite = date('Y-m-d', strtotime("-$diasSinPagar days"));
 $query = "SELECT * FROM prestamos WHERE Estado = 'pendiente' AND FechaVencimiento <= '$fechaLimite'";
 $result = $conexion->query($query);
@@ -45,7 +45,13 @@ if ($result) {
         <span class="spann">Volver al Inicio</span>
     </a>
 
-   
+    <div class="nombre-usuario">
+        <?php
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+        }
+        ?>
+    </div>
 </header>
 
 <div class="container">
@@ -90,7 +96,7 @@ if ($result) {
                     echo "<td>" . $clavoRow['Nombre'] . "</td>";
                     echo "<td>$" . ($clavoRow['MontoAPagar'] ?: $clavoRow['MontoCuota']) . "</td>";
 
-                    // Calcular días sin pagar
+                    // Calcular días sin pagar considerando 19 días
                     $fechaVencimiento = new DateTime($clavoRow['FechaVencimiento']);
                     $fechaActual = new DateTime();
                     $diasSinPagar = $fechaActual->diff($fechaVencimiento)->days;
