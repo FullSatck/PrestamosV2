@@ -323,6 +323,39 @@ $stmt_prestamo->close();
 
             <!-- BUSCADOR DE PRESTAMOS -->
 
+            <?php 
+
+// Verificar si se proporcionó el ID del cliente en la variable PHP $id_cliente
+if (isset($id_cliente)) {
+    // Consulta para obtener la lista de préstamos asociados al cliente
+    $query = "SELECT id, MontoAPagar FROM prestamos WHERE IDCliente = $id_cliente";
+    $result = mysqli_query($conexion, $query);
+
+    if (!$result) {
+        die("Error en la consulta de préstamos: " . mysqli_error($conexion));
+    }
+
+    // Crear un formulario con un menú desplegable de préstamos del cliente
+    echo "<h2>Prestamo:</h2>";
+    echo "<form action='prestamos_cartulina.php' method='get'>"; // Reemplaza 'tuarchivo.php' por tu nombre de archivo PHP
+    echo "<select name='id_prestamo'>";
+    while ($row = mysqli_fetch_assoc($result)) {
+        $id_prestamo = $row['id'];
+        $montoAPagar = number_format($row['MontoAPagar']); // Formatear MontoAPagar
+        echo "<option value='$id_prestamo'>ID: $id_prestamo - Valor: $montoAPagar</option>";
+    }
+    echo "</select>";
+    // echo "<input type='submit' value='Seleccionar'>";
+    echo "</form>";
+
+    mysqli_free_result($result);
+} else {
+    echo "No se proporcionó el ID del cliente.";
+}
+?>
+
+            <!-- BOTONES DE PAGO -->
+
             <?php
 // Obtener el MontoAPagar de la tabla de préstamos
 $sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ?";
@@ -334,80 +367,125 @@ $stmt_monto_pagar->bind_result($montoAPagar);
 // Verificar si se encontró el MontoAPagar
 if ($stmt_monto_pagar->fetch()) {
     // Si se encontró, asigna el valor a la variable $montoAPagar
-    $montoAPagar = floatval($montoAPagar); // Convertir a número
+    $montoAPagar = $montoAPagar; // Ajustar el formato según sea necesario
 } else {
     // Si no se encontró, asigna un valor predeterminado o muestra un mensaje de error
-    $montoAPagar = 0; // Valor predeterminado
+    $montoAPagar = 'No encontrado';
 }
 
 $stmt_monto_pagar->close();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['action']) && ($_POST['action'] === 'Pagar' || $_POST['action'] === 'No pago' || $_POST['action'] === 'Mas tarde')) {
-        // Realizar las operaciones según el botón presionado
-        if ($_POST['action'] === 'No pago') {
-            // Actualizar el campo 'Pospuesto' en la tabla 'prestamos' a 1 para el cliente actual
-            $sql_no_pago = "UPDATE prestamos SET Pospuesto = 1 WHERE IDCliente = ?";
-            $stmt_no_pago = $conexion->prepare($sql_no_pago);
-            $stmt_no_pago->bind_param("i", $id_cliente);
-            $stmt_no_pago->execute();
-            $stmt_no_pago->close();
+    // Obtener los valores ingresados
+    $cuota_ingresada = $_POST['cuota'];
+    $monto_deuda = $montoAPagar - $cuota_ingresada; // Calcular el monto de deuda
 
-            // Agregar aquí cualquier otra lógica relacionada con 'No pago'
-        } elseif ($_POST['action'] === 'Mas tarde') {
-            // Actualizar el campo 'mas_tarde' en la tabla 'prestamos' a 1 para el cliente actual
-            $sql_mas_tarde = "UPDATE prestamos SET mas_tarde = 1 WHERE IDCliente = ?";
-            $stmt_mas_tarde = $conexion->prepare($sql_mas_tarde);
-            $stmt_mas_tarde->bind_param("i", $id_cliente);
-            $stmt_mas_tarde->execute();
-            $stmt_mas_tarde->close();
+    // Actualizar MontoAPagar en la tabla "prestamos"
+    $sql_update_prestamo = "UPDATE prestamos SET MontoAPagar = ? WHERE IDCliente = ?";
+    $stmt_update_prestamo = $conexion->prepare($sql_update_prestamo);
+    $stmt_update_prestamo->bind_param("di", $monto_deuda, $id_cliente);
+    $stmt_update_prestamo->execute();
 
-            // Agregar aquí cualquier otra lógica relacionada con 'Mas tarde'
-        } else {
-            // Obtener los valores ingresados
-            $cuota_ingresada = floatval($_POST['cuota']); // Convertir a número
+    // Insertar datos en la tabla "facturas"
+    $fecha_actual = date('Y-m-d');
+    $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
+    $stmt_insert_factura = $conexion->prepare($sql_insert_factura);
+    $stmt_insert_factura->bind_param("idsss", $id_cliente, $total_prestamo, $fecha_actual, $cuota_ingresada, $monto_deuda);
+    $stmt_insert_factura->execute();
 
-            // Calcular el monto de deuda
-            $monto_deuda = $montoAPagar - $cuota_ingresada; // Calcular el monto de deuda
+    function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
+        $siguiente_cliente_id = 0;
+        $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
+        $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
+        $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
+        $stmt_siguiente_cliente->execute();
+        $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
+        $stmt_siguiente_cliente->fetch();
+        $stmt_siguiente_cliente->close();
 
-            // Actualizar MontoAPagar en la tabla "prestamos"
-            $sql_update_prestamo = "UPDATE prestamos SET MontoAPagar = ? WHERE IDCliente = ?";
-            $stmt_update_prestamo = $conexion->prepare($sql_update_prestamo);
-            $stmt_update_prestamo->bind_param("di", $monto_deuda, $id_cliente);
-            $stmt_update_prestamo->execute();
+        return $siguiente_cliente_id;
+    }
 
-            // Insertar datos en la tabla "facturas"
-            $fecha_actual = date('Y-m-d');
-            $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
-            $stmt_insert_factura = $conexion->prepare($sql_insert_factura);
-            $stmt_insert_factura->bind_param("idsss", $id_cliente, $total_prestamo, $fecha_actual, $cuota_ingresada, $monto_deuda);
-            $stmt_insert_factura->execute();
+    // Obtener el siguiente ID de cliente (cambia esta lógica según la manera en que tengas los clientes ordenados)
+    $siguiente_cliente_id = obtenerSiguienteClienteId($conexion, $id_cliente);
 
-            // Resto del código para redirección o manejo de errores
+    // Definir $es_ultimo_cliente fuera del bloque condicional POST
+    $es_ultimo_cliente = false;
+
+    // Verificar si la inserción fue exitosa
+    if ($stmt_insert_factura && $stmt_update_prestamo) {
+        // Inserción y actualización exitosas
+
+        // Verificar si es el último cliente
+        $es_ultimo_cliente = ($siguiente_cliente_id === null);
+
+        // Mostrar mensaje si es el último cliente
+        if ($es_ultimo_cliente) {
+            echo '<p>Este es el último cliente.</p>';
         }
 
-        // Obtener el siguiente ID de cliente (cambia esta lógica según cómo tengas ordenados los clientes)
-        $siguiente_cliente_id = obtenerSiguienteClienteId($conexion, $id_cliente);
-
-        // Redireccionar al perfil del siguiente cliente si existe
         if ($siguiente_cliente_id !== null) {
+            // Redirigir al perfil del siguiente cliente si hay más clientes
             header("Location: perfil_abonos.php?id=$siguiente_cliente_id");
             exit();
         } else {
-            // Si no hay más clientes, muestra un mensaje
+            // Mostrar el modal ya que no hay más clientes
             echo '<script>
                     window.onload = function() {
                         alert("No hay más clientes");
                     };
                   </script>';
         }
+    } else {
+        // Alguna inserción o actualización fallida
+        // Manejar el error apropiadamente
+        echo "Error al realizar el pago.";
+    }
+
+    $stmt_insert_factura->close();
+    $stmt_update_prestamo->close();
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['action']) && $_POST['action'] === 'No pago') {
+        try {
+            // Consulta para actualizar el campo 'Pospuesto' de 0 a 1
+            $sql = "UPDATE prestamos SET Pospuesto = 1 WHERE Pospuesto = 0";
+            $conn->exec($sql);
+            
+            echo "Acción 'No pago' realizada: campo 'Pospuesto' actualizado a 1";
+        } catch(PDOException $e) {
+            echo "Error al actualizar el campo 'Pospuesto': " . $e->getMessage();
+        }
+    } elseif (isset($_POST['action']) && $_POST['action'] === 'Mas tarde') {
+        try {
+            // Consulta para actualizar el campo 'mas_tarde' de 0 a 1
+            $sql = "UPDATE prestamos SET mas_tarde = 1 WHERE mas_tarde = 0";
+            $conn->exec($sql);
+            
+            echo "Acción 'Más tarde' realizada: campo 'mas_tarde' actualizado a 1";
+        } catch(PDOException $e) {
+            echo "Error al actualizar el campo 'mas_tarde': " . $e->getMessage();
+        }
     }
 }
 ?>
 
+            <form method="post" class="pagos">
+                <input type="text" id="cuota" name="cuota" placeholder="Cuota">
+                <input type="text" id="campo2" name="campo2" placeholder="Resta">
+                <input type="text" id="variable" placeholder="Deuda"
+                    value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
+                <input type="submit" value="Pagar">
 
-            <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
-            <script>
+                <input type="submit" name="action" value="No pago">
+                <input type="submit" name="action" value="Mas tarde">
+
+            </form> 
+
+             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+             <script>
             window.onload = function() {
                 var campoResta = document.getElementById('campo2');
                 campoResta.addEventListener('input', function() {
@@ -425,17 +503,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             };
             </script>
 
-            <form method="post" class="pagos">
-                <input type="text" id="cuota" name="cuota" placeholder="Cuota">
-                <input type="text" id="campo2" name="campo2" placeholder="Resta">
-                <input type="text" id="variable" placeholder="Deuda"
-                    value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
-                <input type="submit" value="Pagar">
-
-                <input type="submit" name="action" value="No pago">
-                <input type="submit" name="action" value="Mas tarde">
-
-            </form> 
         </main>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
