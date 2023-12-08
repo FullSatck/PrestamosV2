@@ -59,3 +59,27 @@ button {
     color: white;
     border: none;
 }
+
+.botonn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid #999; /* Marco gris */
+    text-decoration: none;
+    color: black; /* Color del texto negro por defecto */
+    transition: color 0.3s; /* Transición del color del texto */
+
+}
+
+.botonn:hover {
+    color: blue; /* Color del texto al pasar el cursor sobre el botón */
+}
+
+/* Estilo para el ícono */
+.botonn i {
+    margin-right: 5px; /* Espacio a la derecha del ícono */
+}
+
+/* Estilo para el texto */
+.botonn .spann {
+    font-weight: bold; /* Texto en negrita */
+}
