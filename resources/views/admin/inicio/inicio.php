@@ -259,17 +259,13 @@ date_default_timezone_set('America/Bogota');
                     <p>Version Beta v1</p>
                 </div>
             </div>
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
-
                 </div>
-
-
-
-
-
             </div>
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
