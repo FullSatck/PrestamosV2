@@ -178,7 +178,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -220,8 +220,35 @@ date_default_timezone_set('America/Bogota');
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Abonos </a>
+                    <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros </a>
                     <p>Version beta v2</p>
+                </div>
+            </div>
+
+
+            <!-- TRAER EL PRIMER ID -->
+            <?php
+            // Función para obtener el primer ID disponible en la base de datos
+            function obtenerPrimerID($conexion) {
+                $sql_primer_id = "SELECT ID FROM clientes ORDER BY ID ASC LIMIT 1";
+                $stmt_primer_id = $conexion->prepare($sql_primer_id);
+                $stmt_primer_id->execute();
+                $stmt_primer_id->bind_result($primer_id);
+                $stmt_primer_id->fetch();
+                $stmt_primer_id->close();
+
+                return $primer_id;
+            }
+
+            // Obtener el primer ID de la base de datos
+            $primer_id = obtenerPrimerID($conexion);
+            ?>
+
+
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/controllers/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <p>Version beta</p>
                 </div>
             </div>
 
@@ -232,21 +259,17 @@ date_default_timezone_set('America/Bogota');
                     <p>Version Beta v1</p>
                 </div>
             </div>
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
-                   
                 </div>
+            </div>
 
-               
-
-
-
-        </div>
-        <div class="cuadro cuadro-2">
+            <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
-                   
+
                 </div>
 
             </div>
