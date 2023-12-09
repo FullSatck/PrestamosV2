@@ -65,7 +65,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: ../resources/views/admin/clientes/lista_clientes.php");
+    header("location: /resources/views/admin/inicio/prestadia/prestamos_del_dia.php");
     exit();
 }
 
@@ -77,21 +77,26 @@ $user_role = $_SESSION['rol'];
 if ($_SESSION["rol"] == 1) {
     $ruta_volver = "/resources/views/admin/inicio/inicio.php";
     $ruta_filtro = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
+    $ruta_cliente = "/resources/views/admin/clientes/agregar_clientes.php";
 } elseif ($_SESSION["rol"] == 3) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
         $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
         $ruta_filtro = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php";
     } elseif ($_SESSION['user_zone'] === '20') {
         $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
         $ruta_filtro = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php";
     } elseif ($_SESSION['user_zone'] === '22') {
         $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "index.php";
         $ruta_filtro = "index.php";
+        $ruta_cliente = "index.php";
     }
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
@@ -164,9 +169,11 @@ $stmt_prestamo->close();
         <!-- EMCABEZADO -->
         <header>
 
-            <a href="<?= $ruta_volver ?>" class="back-link">Salir</a>
+            <a href="<?= $ruta_volver ?>" class="back-link1">Inicio</a>
 
-            <a href="<?= $ruta_filtro ?>" class="back-link">Filtros</a>
+            <a href="<?= $ruta_filtro ?>" class="back-link2">Filtros</a>
+
+            <a href="<?= $ruta_cliente ?>" class="back-link3">Registrar Clientes</a>
 
             <div class="nombre-usuario">
                 <?php
@@ -176,7 +183,7 @@ $stmt_prestamo->close();
                 ?>
             </div>
         </header>
- 
+
         <main>
 
             <!-- CARTULINAAAAAAAAA -->
@@ -315,7 +322,7 @@ $stmt_prestamo->close();
             }
 
             echo "</select>";
-            echo "<input type='submit' value='Seleccionar'>";
+            echo "<input type='submit' value='Seleccionar' class='boton4'>";
             echo "</form>";
 
             mysqli_free_result($result); 
@@ -357,6 +364,9 @@ if (isset($id_cliente)) {
             <!-- BOTONES DE PAGO -->
 
             <?php
+// Verificar si se proporcionó el ID del cliente en la variable PHP $id_cliente
+if (isset($id_cliente))
+
 // Obtener el MontoAPagar de la tabla de préstamos
 $sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ?";
 $stmt_monto_pagar = $conexion->prepare($sql_monto_pagar);
@@ -366,19 +376,57 @@ $stmt_monto_pagar->bind_result($montoAPagar);
 
 // Verificar si se encontró el MontoAPagar
 if ($stmt_monto_pagar->fetch()) {
-    // Si se encontró, asigna el valor a la variable $montoAPagar
-    $montoAPagar = $montoAPagar; // Ajustar el formato según sea necesario
+    // Si se encontró, asignar el valor a la variable $montoAPagar
+    // Ajustar el formato según sea necesario
 } else {
-    // Si no se encontró, asigna un valor predeterminado o muestra un mensaje de error
+    // Si no se encontró, asignar un valor predeterminado o mostrar un mensaje de error
     $montoAPagar = 'No encontrado';
 }
 
 $stmt_monto_pagar->close();
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
+    $accion = $_POST['action'];
+
+    if ($accion === 'No pago' || $accion === 'Mas tarde') {
+        $campo_actualizar = ($accion === 'No pago') ? 'Pospuesto' : 'mas_tarde';
+
+        $sql_update = "UPDATE prestamos SET $campo_actualizar = 1 WHERE $campo_actualizar = 0 AND IDCliente = ?";
+        $stmt_update = $conexion->prepare($sql_update);
+        $stmt_update->bind_param("i", $id_cliente);
+
+        if ($stmt_update->execute()) {
+            echo "Acción '$accion' realizada: campo '$campo_actualizar' actualizado a 1";
+        } else {
+            echo "Error al actualizar el campo '$campo_actualizar': " . $stmt_update->error;
+        }
+
+        $stmt_update->close();
+    } elseif ($accion === 'Pagar') {
+        $sql_reset = "UPDATE prestamos SET Pospuesto = 0, mas_tarde = 0 WHERE IDCliente = ?";
+        $stmt_reset = $conexion->prepare($sql_reset);
+        $stmt_reset->bind_param("i", $id_cliente);
+
+        if ($stmt_reset->execute()) {
+            echo "Acción 'Pagar' realizada: campos 'Pospuesto' y 'mas_tarde' actualizados a 0";
+        } else {
+            echo "Error al actualizar los campos 'Pospuesto' y 'mas_tarde': " . $stmt_reset->error;
+        }
+
+        $stmt_reset->close(); 
+    }
+} else {
+    echo "  ";
+}
+ 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los valores ingresados
     $cuota_ingresada = $_POST['cuota'];
-    $monto_deuda = $montoAPagar - $cuota_ingresada; // Calcular el monto de deuda
+    $monto_deuda = (float)$montoAPagar - (float)$cuota_ingresada; // Calcular el monto de deuda
+
+    // Validar el monto ingresado para monto_pagado
+    $monto_pagado = floatval($cuota_ingresada); // Convertir a decimal
 
     // Actualizar MontoAPagar en la tabla "prestamos"
     $sql_update_prestamo = "UPDATE prestamos SET MontoAPagar = ? WHERE IDCliente = ?";
@@ -390,8 +438,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha_actual = date('Y-m-d');
     $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
     $stmt_insert_factura = $conexion->prepare($sql_insert_factura);
-    $stmt_insert_factura->bind_param("idsss", $id_cliente, $total_prestamo, $fecha_actual, $cuota_ingresada, $monto_deuda);
+    $stmt_insert_factura->bind_param("idsss", $id_cliente, $montoAPagar, $fecha_actual, $monto_pagado, $monto_deuda);
     $stmt_insert_factura->execute();
+
+    // Insertar datos en la tabla "facturas"
+$fecha_actual = date('Y-m-d');
+$sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
+$stmt_insert_factura = $conexion->prepare($sql_insert_factura);
+$stmt_insert_factura->bind_param("idsss", $id_cliente, $montoAPagar, $fecha_actual, $monto_pagado, $monto_deuda);
+$stmt_insert_factura->execute();
+
+// Obtener el ID del préstamo del cliente desde la tabla prestamos
+$sql_id_prestamo = "SELECT ID FROM prestamos WHERE IDCliente = ?";
+$stmt_id_prestamo = $conexion->prepare($sql_id_prestamo);
+$stmt_id_prestamo->bind_param("i", $id_cliente);
+$stmt_id_prestamo->execute();
+$stmt_id_prestamo->bind_result($id_prestamo);
+$stmt_id_prestamo->fetch();
+$stmt_id_prestamo->close();
+
+$fecha_pago = date('Y-m-d'); // Fecha actual
+$monto_pagado_historial = $_POST['cuota']; // Obtener el monto pagado del formulario
+
+// Insertar datos en la tabla "historial_pagos"
+
+$sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
+$stmt_insert_historial = $conexion->prepare($sql_insert_historial);
+$stmt_insert_historial->bind_param("ssdi", $id_cliente, $fecha_pago, $monto_pagado_historial, $id_prestamo);
+$stmt_insert_historial->execute();
+
 
     function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
         $siguiente_cliente_id = 0;
@@ -446,46 +521,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt_update_prestamo->close();
 }
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['action']) && $_POST['action'] === 'No pago') {
-        try {
-            // Consulta para actualizar el campo 'Pospuesto' de 0 a 1
-            $sql = "UPDATE prestamos SET Pospuesto = 1 WHERE Pospuesto = 0";
-            $conn->exec($sql);
-            
-            echo "Acción 'No pago' realizada: campo 'Pospuesto' actualizado a 1";
-        } catch(PDOException $e) {
-            echo "Error al actualizar el campo 'Pospuesto': " . $e->getMessage();
-        }
-    } elseif (isset($_POST['action']) && $_POST['action'] === 'Mas tarde') {
-        try {
-            // Consulta para actualizar el campo 'mas_tarde' de 0 a 1
-            $sql = "UPDATE prestamos SET mas_tarde = 1 WHERE mas_tarde = 0";
-            $conn->exec($sql);
-            
-            echo "Acción 'Más tarde' realizada: campo 'mas_tarde' actualizado a 1";
-        } catch(PDOException $e) {
-            echo "Error al actualizar el campo 'mas_tarde': " . $e->getMessage();
-        }
-    }
-}
 ?>
 
+
             <form method="post" class="pagos">
-                <input type="text" id="cuota" name="cuota" placeholder="Cuota">
-                <input type="text" id="campo2" name="campo2" placeholder="Resta">
+                <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
+                <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
                 <input type="text" id="variable" placeholder="Deuda"
                     value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
-                <input type="submit" value="Pagar">
+                <input type="submit" value="Pagar"  class="boton1">
+                <input type="submit" name="action" value="No pago" class="boton2">
+                <input type="submit" name="action" value="Mas tarde" class="boton3">
+            </form>
 
-                <input type="submit" name="action" value="No pago">
-                <input type="submit" name="action" value="Mas tarde">
-
-            </form> 
-
-             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
-             <script>
+            <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+            <script>
             window.onload = function() {
                 var campoResta = document.getElementById('campo2');
                 campoResta.addEventListener('input', function() {

@@ -44,26 +44,57 @@ header{
     color: grey;
   }
 
-.back-link {
+.back-link1 {
     display: inline-block;
     padding: 10px 15px;
-    margin: 10px 0;
-    background-color: #747474;
-    color: white;
+    margin: 10px 5px;
+    border: 1px solid #48c7c7;
+    background-color: #65e0e0;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border-radius: 5px; 
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.back-link1:hover {
+    background-color: #2cc0c0;
+}
+
+.back-link2 {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px 5px;
+    border: 1px solid #c23131;
+    background-color: #db4242;
+    color: rgb(0, 0, 0);
     text-decoration: none;
     border-radius: 5px;
     font-family: Arial, sans-serif;
     font-size: 16px;
 }
 
-.back-link:hover {
-    background-color: #585858;
+.back-link2:hover {
+    background-color: rgb(207, 22, 22);
 }
 
-.back-link:active {
-    background-color: rgb(17, 0, 255);
+.back-link3 {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px 5px;
+    border: 1px solid #2cd12c;
+    background-color: #45d645;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
 }
 
+.back-link3:hover {
+    background-color: #249224;
+}
+ 
 
 /* Encabezado */
 h1 {
@@ -106,7 +137,7 @@ h1 {
 
 /* Préstamos del cliente */
 .profile-loans { 
-    background-color: #f5d6d6
+    background-color: #f5d6d6;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -147,18 +178,60 @@ form {
     width: 300px;
   }
   
-  input[type="submit"] {
+  .boton1 {
     padding: 8px 20px;
     font-size: 16px;
     border-radius: 5px;
-    border: none;
-    background-color: rgb(243, 183, 245);
+    border: 1px solid rgba(54, 162, 235, 1);
+    background-color: rgba(54, 162, 235, 0.6);
     color: #000000;
     cursor: pointer;
   }
   
-  input[type="submit"]:hover {
-    background-color: rgb(241, 173, 243);
+  .boton1:hover {
+    background-color: rgba(30, 114, 170, 0.6);
+  }
+
+  .boton2{
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 206, 86, 1);
+    background-color: rgba(255, 206, 86, 0.6);
+    color: #000000;
+    cursor: pointer;
+  }
+
+  .boton2:hover{
+    background-color: rgba(179, 137, 34, 0.6);
+  }
+
+  .boton3{
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid rgba(123, 123, 192, 4);
+    background-color: rgba(123, 123, 192, 0.6);
+    color: #000000;
+    cursor: pointer;
+  }
+
+  .boton3:hover{
+    background-color: rgba(81, 81, 133, 0.6);
+  }
+
+  .boton4{
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 99, 132, 1);
+    background-color: rgba(255, 99, 132, 0.6);
+    color: #000000;
+    cursor: pointer;
+  }
+
+  .boton4:hover{
+    background-color: rgba(255, 99, 132, 0.6);
   }
   
   .contenedor {
