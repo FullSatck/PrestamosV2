@@ -27,11 +27,6 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
-
-
-
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
 date_default_timezone_set('America/Bogota');
 ?>
 
@@ -108,14 +103,7 @@ date_default_timezone_set('America/Bogota');
                     <h4>Prestamos</h4>
                 </div>
             </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
-
+ 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
@@ -159,6 +147,45 @@ date_default_timezone_set('America/Bogota');
                         class="titulo">Prestamos</a><br>
                     <p>Mantenimiento
                     </p>
+                </div>
+            </div>
+
+            <!-- TRAER EL PRIMER ID -->
+            <?php
+            // Función para obtener el primer ID de préstamo no pagado hoy
+function obtenerPrimerIDNoPagado($conexion) {
+    // Obtener la fecha actual
+    $fecha_actual = date('Y-m-d');
+    $primer_id = 0;
+
+    // Consulta para obtener el primer ID de préstamo no pagado hoy
+    $sql_primer_id = "SELECT p.ID
+                      FROM prestamos p
+                      LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo
+                      WHERE hp.FechaPago <> ? OR hp.FechaPago IS NULL
+                      ORDER BY p.ID ASC
+                      LIMIT 1";
+
+    $stmt_primer_id = $conexion->prepare($sql_primer_id);
+    $stmt_primer_id->bind_param("s", $fecha_actual);
+    $stmt_primer_id->execute();
+    $stmt_primer_id->bind_result($primer_id);
+    $stmt_primer_id->fetch();
+    $stmt_primer_id->close();
+
+    return $primer_id;
+}
+
+// Obtener el primer ID de préstamo no pagado de la base de datos
+$primer_id = obtenerPrimerIDNoPagado($conexion);
+
+            ?>
+
+
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <p>Version beta</p>
                 </div>
             </div>
 

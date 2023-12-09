@@ -36,7 +36,7 @@ if (!isset($_SESSION["usuario_id"])) {
     // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
     if (!$fila) {
         // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
         exit();
     }
 
@@ -46,7 +46,7 @@ if (!isset($_SESSION["usuario_id"])) {
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'cobrador') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
         exit();
     }
 }
@@ -83,7 +83,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 <body>
 
     <header>
-        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -133,7 +133,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 
                 <input type="text" name="busqueda" placeholder="Buscar...">
 
-                <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
             </div>
 
         </form>
