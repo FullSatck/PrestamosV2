@@ -51,7 +51,8 @@ if (!isset($_SESSION["usuario_id"])) {
     }
 }
 
-require 'filtrarPrestamos.php'; // Asegúrate de que este archivo contiene la función obtenerCuotas actualizada
+
+require 'filtrarPrestamos.php';
 
 // Obtener el filtro desde la URL si está presente, de lo contrario, usar 'todos'
 $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'pendiente';
