@@ -199,7 +199,7 @@ include("../../../../../../controllers/conexion.php");
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
                     <p>Version beta</p>
                 </div>
             </div>  
