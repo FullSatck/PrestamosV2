@@ -20,7 +20,7 @@ if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 
 
 // Incluir el archivo de conexión a la base de datos
-include("conexion.php");
+include("../../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
@@ -71,7 +71,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: /resources/views/admin/inicio/prestadia/prestamos_del_dia.php");
+    header("location: /resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php");
     exit();
 }
 

@@ -162,6 +162,45 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </div>
 
+            <?php
+            include("../../../../../../controllers/conexion.php");
+            // Función para obtener el primer ID de préstamo no pagado hoy
+function obtenerPrimerIDNoPagado($conexion) {
+    // Obtener la fecha actual
+    $fecha_actual = date('Y-m-d');
+    $primer_id = 0;
+
+    // Consulta para obtener el primer ID de préstamo no pagado hoy
+    $sql_primer_id = "SELECT p.ID
+                      FROM prestamos p
+                      LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo
+                      WHERE hp.FechaPago <> ? OR hp.FechaPago IS NULL
+                      ORDER BY p.ID ASC
+                      LIMIT 1";
+
+    $stmt_primer_id = $conexion->prepare($sql_primer_id);
+    $stmt_primer_id->bind_param("s", $fecha_actual);
+    $stmt_primer_id->execute();
+    $stmt_primer_id->bind_result($primer_id);
+    $stmt_primer_id->fetch();
+    $stmt_primer_id->close();
+
+    return $primer_id;
+}
+
+// Obtener el primer ID de préstamo no pagado de la base de datos
+$primer_id = obtenerPrimerIDNoPagado($conexion);
+
+            ?>
+
+
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <p>Version beta</p>
+                </div>
+            </div>  
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                       <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>

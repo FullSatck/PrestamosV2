@@ -20,7 +20,7 @@ if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 
 
 // Incluir el archivo de conexión a la base de datos
-include("conexion.php");
+include("../../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
@@ -71,7 +71,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: /resources/views/admin/inicio/prestadia/prestamos_del_dia.php");
+    header("location: /resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php");
     exit();
 }
 
@@ -329,7 +329,8 @@ $resultado = $stmt->get_result();
 
 $query = "SELECT id, Nombre, Apellido 
           FROM clientes 
-          WHERE id NOT IN (SELECT DISTINCT IDCliente FROM historial_pagos WHERE FechaPago = ?)";
+          WHERE id NOT IN (SELECT DISTINCT IDCliente FROM historial_pagos WHERE FechaPago = ?)
+          AND ZonaAsignada = 'Puebla'";
 $stmt = $conexion->prepare($query);
 $stmt->bind_param("s", $fecha_actual);
 $stmt->execute();
@@ -409,7 +410,7 @@ $result = $stmt->get_result();
 if (isset($id_cliente))
 
 // Obtener el MontoAPagar de la tabla de préstamos
-$sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ?";
+$sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ? AND Zona ='Puebla'";
 $stmt_monto_pagar = $conexion->prepare($sql_monto_pagar);
 $stmt_monto_pagar->bind_param("i", $id_cliente);
 $stmt_monto_pagar->execute();
@@ -490,7 +491,7 @@ $stmt_insert_factura->bind_param("idsss", $id_cliente, $montoAPagar, $fecha_actu
 $stmt_insert_factura->execute();
 
 // Obtener el ID del préstamo del cliente desde la tabla prestamos
-$sql_id_prestamo = "SELECT ID FROM prestamos WHERE IDCliente = ?";
+$sql_id_prestamo = "SELECT ID FROM prestamos WHERE IDCliente = ? AND Zona ='Puebla'";
 $stmt_id_prestamo = $conexion->prepare($sql_id_prestamo);
 $stmt_id_prestamo->bind_param("i", $id_cliente);
 $stmt_id_prestamo->execute();
@@ -509,18 +510,19 @@ $stmt_insert_historial->bind_param("ssdi", $id_cliente, $fecha_pago, $monto_paga
 $stmt_insert_historial->execute();
 
 
-    function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
-        $siguiente_cliente_id = 0;
-        $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
-        $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
-        $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
-        $stmt_siguiente_cliente->execute();
-        $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
-        $stmt_siguiente_cliente->fetch();
-        $stmt_siguiente_cliente->close();
+function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
+    $siguiente_cliente_id = 0;
+    $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? AND ZonaAsignada ='Puebla' ORDER BY ID ASC LIMIT 1";
+    $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
+    $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
+    $stmt_siguiente_cliente->execute();
+    $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
+    $stmt_siguiente_cliente->fetch();
+    $stmt_siguiente_cliente->close();
 
-        return $siguiente_cliente_id;
-    }
+    return $siguiente_cliente_id;
+}
+
 
     // Obtener el siguiente ID de cliente (cambia esta lógica según la manera en que tengas los clientes ordenados)
     $siguiente_cliente_id = obtenerSiguienteClienteId($conexion, $id_cliente);
