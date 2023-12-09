@@ -1,6 +1,4 @@
 <?php
-session_start(); // Iniciar la sesión
-
 date_default_timezone_set('America/Bogota');
 $servidor = "localhost";
 $usuario = "root";
@@ -13,18 +11,35 @@ if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 
-// Obtener clientes que han pasado 19 días sin pagar
-$diasSinPagar = 19;
+// Obtener clientes que han pasado 10 días sin pagar una cuota
+$diasSinPagar = 10;
 $fechaLimite = date('Y-m-d', strtotime("-$diasSinPagar days"));
-$query = "SELECT * FROM prestamos WHERE Estado = 'pendiente' AND FechaVencimiento <= '$fechaLimite'";
+$query = "SELECT p.IDCliente, p.ID, p.MontoCuota, MAX(h.FechaPago) AS FechaUltimoPago
+          FROM prestamos p
+          LEFT JOIN historial_pagos h ON p.ID = h.IDPrestamo
+          WHERE p.Estado = 'pendiente' AND p.FechaVencimiento <= '$fechaLimite'
+          GROUP BY p.ID";
 $result = $conexion->query($query);
 
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        // Mover cliente a la tabla de clientes clavos
-        $clienteID = $row['IDCliente'];
-        $updateQuery = "UPDATE clientes SET EstadoID = 2 WHERE ID = $clienteID";
-        $conexion->query($updateQuery);
+        // Calcular la fecha límite para la última cuota
+        $fechaUltimoPago = $row['FechaUltimoPago'] ? strtotime($row['FechaUltimoPago']) : strtotime($row['FechaInicio']);
+        $fechaLimiteCuota = date('Y-m-d', strtotime("+10 days", $fechaUltimoPago));
+
+        // Verificar si ha pasado la fecha límite para la última cuota
+        if ($fechaLimiteCuota <= $fechaLimite) {
+            // Mover cliente a la tabla de clientes clavos
+            $clienteID = $row['IDCliente'];
+            $updateQuery = "UPDATE clientes SET EstadoID = 2 WHERE ID = $clienteID";
+            $conexion->query($updateQuery);
+
+            // Actualizar información en la tabla prestamos
+            $prestamoID = $row['ID'];
+            $cuotasVencidas = $row['FechaUltimoPago'] ? 0 : $row['MontoCuota'];
+            $updatePrestamoQuery = "UPDATE prestamos SET FechaUltimoPago = NOW(), CuotasVencidas = $cuotasVencidas + 1 WHERE ID = $prestamoID";
+            $conexion->query($updatePrestamoQuery);
+        }
     }
 }
 ?>
@@ -78,8 +93,8 @@ if ($result) {
             // Mostrar los resultados en la tabla de clientes clavos
             $clavosQuery = "SELECT c.ID, c.Nombre, c.EstadoID, p.MontoAPagar, p.MontoCuota, p.FechaVencimiento
                             FROM clientes c
-                            JOIN prestamos p ON c.ID = p.IDCliente AND c.EstadoID = 2
-                            WHERE p.FechaVencimiento <= '$fechaLimite'";
+                            JOIN prestamos p ON c.ID = p.IDCliente
+                            WHERE c.EstadoID = 2 AND p.FechaVencimiento <= '$fechaLimite'";
 
             // Modificar la consulta si se ha enviado una búsqueda
             if (isset($_GET['buscar'])) {
@@ -96,7 +111,7 @@ if ($result) {
                     echo "<td>" . $clavoRow['Nombre'] . "</td>";
                     echo "<td>$" . ($clavoRow['MontoAPagar'] ?: $clavoRow['MontoCuota']) . "</td>";
 
-                    // Calcular días sin pagar considerando 19 días
+                    // Calcular días sin pagar
                     $fechaVencimiento = new DateTime($clavoRow['FechaVencimiento']);
                     $fechaActual = new DateTime();
                     $diasSinPagar = $fechaActual->diff($fechaVencimiento)->days;
