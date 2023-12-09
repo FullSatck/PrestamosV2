@@ -42,12 +42,18 @@ $stmt->close();
 // Obtener el ID del cliente desde el parámetro GET
 $id_cliente = $_GET['id'];
 
-// Consulta SQL para obtener los detalles del cliente con el nombre de la moneda
+// Consulta SQL para obtener los detalles del cliente con la moneda y la fecha de hoy en historial_pagos
 $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
         LEFT JOIN ciudades ciu ON c.id = ciu.ID
-        WHERE c.ID = $id_cliente";
+        WHERE c.ID = $id_cliente
+        AND NOT EXISTS (
+            SELECT 1
+            FROM historial_pagos hp
+            WHERE hp.IDCliente = c.ID AND hp.FechaPago = CURDATE()
+        )";
+
 
 
 $resultado = $conexion->query($sql);
@@ -112,12 +118,18 @@ $info_prestamo = [
 ];
 
 $total_prestamo = 0.00;
+$fecha_actual = date('Y-m-d');
 
 // Consulta SQL para obtener la información del préstamo
 $sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, c.Nombre, c.Telefono 
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
-                 WHERE p.IDCliente = ?";
+                 WHERE p.IDCliente = ?
+                 AND NOT EXISTS (
+            SELECT 1
+            FROM historial_pagos hp
+            WHERE hp.IDCliente = c.ID AND hp.FechaPago = CURDATE()
+        )";
 $stmt_prestamo = $conexion->prepare($sql_prestamo);
 $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
@@ -214,11 +226,16 @@ $stmt_prestamo->close();
                 <?php 
                 if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
                     // Si se solicita mostrar todas las filas
-                    $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
-                    $stmt = $conexion->prepare($sql);
-                    $stmt->bind_param("i", $id_cliente);
-                    $stmt->execute();
-                    $resultado = $stmt->get_result();
+                    $fecha_actual = date('Y-m-d');
+
+$sql = "SELECT id, fecha, monto_pagado, monto_deuda 
+        FROM facturas 
+        WHERE cliente_id = ? AND fecha = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("is", $id_cliente, $fecha_actual);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
 
                     $num_rows = $resultado->num_rows;
                     if ($num_rows > 0) {
@@ -251,11 +268,18 @@ $stmt_prestamo->close();
                     $stmt->close();
                 } else {
                     // Mostrar solo la última fila inicialmente
-                    $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
-                    $stmt = $conexion->prepare($sql);
-                    $stmt->bind_param("i", $id_cliente);
-                    $stmt->execute();
-                    $resultado = $stmt->get_result();
+                    $fecha_actual = date('Y-m-d');
+
+$sql = "SELECT id, fecha, monto_pagado, monto_deuda 
+        FROM facturas 
+        WHERE cliente_id = ? 
+        AND fecha = ? 
+        AND id NOT IN (SELECT IDPrestamo FROM historial_pagos WHERE FechaPago = ?)";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("iss", $id_cliente, $fecha_actual, $fecha_actual);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
 
                     $num_rows = $resultado->num_rows;
                     if ($num_rows > 0) {
@@ -301,8 +325,16 @@ $stmt_prestamo->close();
             <?php 
 
             // Consulta para obtener la lista de clientes
-            $query = "SELECT id, Nombre, Apellido FROM clientes";
-            $result = mysqli_query($conexion, $query);
+            $fecha_actual = date('Y-m-d');
+
+$query = "SELECT id, Nombre, Apellido 
+          FROM clientes 
+          WHERE id NOT IN (SELECT DISTINCT IDCliente FROM historial_pagos WHERE FechaPago = ?)";
+$stmt = $conexion->prepare($query);
+$stmt->bind_param("s", $fecha_actual);
+$stmt->execute();
+$result = $stmt->get_result();
+
 
             if (!$result) {
                 die("Error en la consulta: " . mysqli_error($conexion));
@@ -335,8 +367,17 @@ $stmt_prestamo->close();
 // Verificar si se proporcionó el ID del cliente en la variable PHP $id_cliente
 if (isset($id_cliente)) {
     // Consulta para obtener la lista de préstamos asociados al cliente
-    $query = "SELECT id, MontoAPagar FROM prestamos WHERE IDCliente = $id_cliente";
-    $result = mysqli_query($conexion, $query);
+    $fecha_actual = date('Y-m-d');
+
+$query = "SELECT id, MontoAPagar 
+          FROM prestamos 
+          WHERE IDCliente = ? 
+          AND id NOT IN (SELECT DISTINCT IDPrestamo FROM historial_pagos WHERE FechaPago = ?)";
+$stmt = $conexion->prepare($query);
+$stmt->bind_param("is", $id_cliente, $fecha_actual);
+$stmt->execute();
+$result = $stmt->get_result();
+
 
     if (!$result) {
         die("Error en la consulta de préstamos: " . mysqli_error($conexion));
