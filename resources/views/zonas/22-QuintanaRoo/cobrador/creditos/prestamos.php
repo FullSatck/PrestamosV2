@@ -73,7 +73,7 @@ $stmt->close();
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -82,49 +82,49 @@ $stmt->close();
 
 
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Enrutada</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
@@ -147,9 +147,9 @@ $stmt->close();
             include("../../../../../../controllers/conexion.php");
 
             // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Puebla' ORDER BY ID DESC LIMIT 1";
+            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Quintana Roo' ORDER BY ID DESC LIMIT 1";
             $query_monedas = "SELECT iD, nombre, simbolo FROM monedas";
-            $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Puebla'";
+            $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Quintana Roo'";
 
             $result_clientes = $conexion->query($query_clientes);
             $result_monedas = $conexion->query($query_monedas);

@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set('America/Bogota');
 // Incluir el archivo de conexión a la base de datos
-include '../../../../../controllers/conexion.php';
+require_once  '../../../../../../../controllers/conexion.php';
 
 header('Content-Type: application/json');
 
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $esPospuesto = $filaPrestamo['Pospuesto'];
 
             // Obtener el nombre y el número de teléfono del cliente
-            $sqlCliente = "SELECT Nombre, Telefono, IdentificacionCURP, Domicilio FROM clientes WHERE ID = ?";
+            $sqlCliente = "SELECT Nombre, Telefono FROM clientes WHERE ID = ?";
             $stmtCliente = $conexion->prepare($sqlCliente);
             $stmtCliente->bind_param("i", $clienteId);
             $stmtCliente->execute();
@@ -37,8 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $filaCliente = $resultadoCliente->fetch_assoc();
             $clienteNombre = $filaCliente['Nombre'];
             $clienteTelefono = $filaCliente['Telefono'];
-            $clienteCURP = $filaCliente['IdentificacionCURP'];
-            $clienteDireccion = $filaCliente['Domicilio'];
             $stmtCliente->close();
 
             // Registrar el pago en la tabla 'historial_pagos'
@@ -97,10 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
                 "message" => "Pago procesado correctamente.",
                 "clienteNombre" => $clienteNombre,
                 "clienteTelefono" => $clienteTelefono,
-                "clienteCURP" => $clienteCURP,
-                "clienteDireccion" => $clienteDireccion,
-                "montoPagado" => $montoPagado,
-                "montoPendiente" => $montoRestante
+                "montoPagado" => $montoPagado
             ]);
         } else {
             throw new Exception("No se encontró el préstamo o ya está pagado.");

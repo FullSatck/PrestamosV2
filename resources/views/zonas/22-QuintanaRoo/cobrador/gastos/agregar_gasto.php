@@ -155,70 +155,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/usuarios/registrar.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php" class="selected">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Enrutada</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/abonos/abonos.php">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
