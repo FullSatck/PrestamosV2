@@ -372,7 +372,7 @@ $resultado = $stmt->get_result();
     echo "<h2>Clientes:</h2>";
     echo "<form action='procesar_cliente.php' method='post' id='clienteForm'>";
     echo "<input type='hidden' id='selectedClientId' name='cliente' value='" . ($currentIndex !== null ? $clientes[$currentIndex]['id'] : '') . "'>";
-    echo "<button type='submit' name='prev' class='boton4'><</button>";
+    echo "<button type='submit' name='prev' value='<' class='boton4'><</button>";
     echo "<select name='cliente' onchange='selectClient()'>";
 
     // Mostrar opciones de clientes
@@ -385,7 +385,7 @@ $resultado = $stmt->get_result();
     }
 
     echo "</select>"; 
-    echo "<button type='submit' name='next' class='boton4'>></button>";
+    echo "<button type='submit' name='next' value='>' class='boton4'>></button>";
     echo "</form>";
 ?>
 
@@ -396,7 +396,6 @@ $resultado = $stmt->get_result();
         document.getElementById("clienteForm").submit();
     }
 </script>
-
 
 
 
