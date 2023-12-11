@@ -321,44 +321,84 @@ $resultado = $stmt->get_result();
             </script>
 
 
-            <!-- BUSCADOR DE CLIENTES -->
-            <?php 
+<?php
+    // Consulta para obtener la lista de clientes
+    $fecha_actual = date('Y-m-d');
 
-            // Consulta para obtener la lista de clientes
-            $fecha_actual = date('Y-m-d');
+    $query = "SELECT id, Nombre, Apellido 
+              FROM clientes 
+              WHERE id NOT IN (SELECT DISTINCT IDCliente FROM historial_pagos WHERE FechaPago = ?)";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("s", $fecha_actual);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-$query = "SELECT id, Nombre, Apellido 
-          FROM clientes 
-          WHERE id NOT IN (SELECT DISTINCT IDCliente FROM historial_pagos WHERE FechaPago = ?)";
-$stmt = $conexion->prepare($query);
-$stmt->bind_param("s", $fecha_actual);
-$stmt->execute();
-$result = $stmt->get_result();
+    if (!$result) {
+        die("Error en la consulta: " . mysqli_error($conexion));
+    }
 
+    // Obtener todos los clientes y almacenarlos en un array
+    $clientes = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $id = $row['id'];
+        $nombre = $row['Nombre'];
+        $apellido = $row['Apellido'];
+        $clientes[] = ['id' => $id, 'nombre' => $nombre, 'apellido' => $apellido];
+    }
 
-            if (!$result) {
-                die("Error en la consulta: " . mysqli_error($conexion));
+    // Liberar el resultado de la consulta
+    mysqli_free_result($result);
+
+    // Encontrar el índice del cliente actual en la lista
+    $selectedClientId = isset($_POST['cliente']) ? $_POST['cliente'] : null;
+    $currentIndex = null;
+    if ($selectedClientId !== null) {
+        foreach ($clientes as $index => $cliente) {
+            if ($cliente['id'] == $selectedClientId) {
+                $currentIndex = $index;
+                break;
             }
+        }
+    }
 
-            // Iniciar el menú desplegable
-            echo "<h2>Clientes:</h2>";
-            echo "<form action='procesar_cliente.php' method='post'>"; // Reemplaza 'procesar_cliente.php' por tu archivo de procesamiento real
-            echo "<select name='cliente'>";
+    // Manejar la navegación
+    if (isset($_POST['prev'])) {
+        $currentIndex = ($currentIndex === null || $currentIndex === 0) ? count($clientes) - 1 : $currentIndex - 1;
+    } elseif (isset($_POST['next'])) {
+        $currentIndex = ($currentIndex === null || $currentIndex === count($clientes) - 1) ? 0 : $currentIndex + 1;
+    }
 
-            // Agregar opciones al menú desplegable
-            while ($row = mysqli_fetch_assoc($result)) {
-                $id = $row['id'];
-                $nombre = $row['Nombre'];
-                $apellido = $row['Apellido'];
-                echo "<option value='$id'>$nombre $apellido</option>";
-            }
+    // Mostrar el formulario con los botones de navegación y la lista desplegable
+    echo "<h2>Clientes:</h2>";
+    echo "<form action='procesar_cliente.php' method='post' id='clienteForm'>";
+    echo "<input type='hidden' id='selectedClientId' name='cliente' value='" . ($currentIndex !== null ? $clientes[$currentIndex]['id'] : '') . "'>";
+    echo "<button type='submit' name='prev' class='boton4'><</button>";
+    echo "<select name='cliente' onchange='selectClient()'>";
 
-            echo "</select>";
-            echo "<input type='submit' value='Seleccionar' class='boton4'>";
-            echo "</form>";
+    // Mostrar opciones de clientes
+    foreach ($clientes as $index => $cliente) {
+        $id = $cliente['id'];
+        $nombre = $cliente['nombre'];
+        $apellido = $cliente['apellido'];
+        $selected = ($index === $currentIndex) ? 'selected' : '';
+        echo "<option value='$id' $selected>$nombre $apellido</option>";
+    }
 
-            mysqli_free_result($result); 
-            ?>
+    echo "</select>"; 
+    echo "<button type='submit' name='next' class='boton4'>></button>";
+    echo "</form>";
+?>
+
+<script>
+    function selectClient() {
+        var selectedId = document.getElementById("clienteForm").elements["cliente"].value;
+        document.getElementById("selectedClientId").value = selectedId;
+        document.getElementById("clienteForm").submit();
+    }
+</script>
+
+
+
 
             <!-- BUSCADOR DE PRESTAMOS -->
 
