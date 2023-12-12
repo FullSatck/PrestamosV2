@@ -47,12 +47,8 @@ $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
         LEFT JOIN ciudades ciu ON c.id = ciu.ID
-        WHERE c.ID = $id_cliente
-        AND NOT EXISTS (
-            SELECT 1
-            FROM historial_pagos hp
-            WHERE hp.IDCliente = c.ID AND hp.FechaPago = CURDATE()
-        )";
+        WHERE c.ID = $id_cliente";
+       
 
 
 
@@ -125,11 +121,7 @@ $sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.Fecha
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
                  WHERE p.IDCliente = ?
-                 AND NOT EXISTS (
-            SELECT 1
-            FROM historial_pagos hp
-            WHERE hp.IDCliente = c.ID AND hp.FechaPago = CURDATE()
-        )";
+                 ";
 $stmt_prestamo = $conexion->prepare($sql_prestamo);
 $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
