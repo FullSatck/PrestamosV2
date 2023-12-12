@@ -374,7 +374,7 @@ $resultado = $stmt->get_result();
     echo "<input type='hidden' id='selectedClientId' name='cliente' value='" . ($currentIndex !== null ? $clientes[$currentIndex]['id'] : '') . "'>";
     echo "<button type='submit' name='prev' value='<' class='boton4'><</button>";
     echo "<select name='cliente' onchange='selectClient()'>";
-
+    
     // Mostrar opciones de clientes
     foreach ($clientes as $index => $cliente) {
         $id = $cliente['id'];
