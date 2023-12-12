@@ -77,46 +77,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $valor = trim($_POST["valor"]);
     }
 
-   // ...
-if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && empty($fecha_err) && empty($descripcion_err) && empty($valor_err)) {
-    // Preparar la declaración de inserción
-    $sql = "INSERT INTO gastos (IDUsuario, idZona, ciudad, asentamiento, fecha, descripcion, valor) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    // Verificar si no hay errores de validación antes de insertar en la base de datos
+    if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && empty($fecha_err) && empty($descripcion_err) && empty($valor_err)) {
+        // Preparar la declaración de inserción
+        $sql = "INSERT INTO gastos (idZona, ciudad, asentamiento, fecha, descripcion, valor) VALUES (?, ?, ?, ?, ?, ?)";
 
-    if ($stmt = $conexion->prepare($sql)) {
-        // Vincular las variables a la declaración preparada como parámetros
-        $stmt->bind_param("iissssd", $param_id_usuario, $param_id_zona, $param_ciudad, $param_asentamiento, $param_fecha, $param_descripcion, $param_valor);
+        if ($stmt = $conexion->prepare($sql)) {
+            // Vincular las variables a la declaración preparada como parámetros
+            $stmt->bind_param("issssd", $param_id_zona, $param_ciudad, $param_asentamiento, $param_fecha, $param_descripcion, $param_valor);
 
-        // Establecer los parámetros
-        $param_id_usuario = $usuario_id; // Usar el ID del usuario autenticado
-        $param_id_zona = $id_zona;
-        $param_ciudad = $ciudad;
-        $param_asentamiento = $asentamiento;
-        $param_fecha = $fecha;
-        $param_descripcion = $descripcion;
-        $param_valor = $valor;
+            // Establecer los parámetros
+            $param_id_zona = $id_zona;
+            $param_ciudad = $ciudad;
+            $param_asentamiento = $asentamiento;
+            $param_fecha = $fecha;
+            $param_descripcion = $descripcion;
+            $param_valor = $valor;
 
-        // Intentar ejecutar la declaración preparada
-        if ($stmt->execute()) {
-            // Redirigir a la lista de gastos después de agregar uno nuevo
-            header("location: gastos.php");
-            exit();
-        } else {
-            echo "Algo salió mal. Por favor, inténtalo de nuevo más tarde.";
+            // Intentar ejecutar la declaración preparada
+            if ($stmt->execute()) {
+                // Redirigir a la lista de gastos después de agregar uno nuevo
+                header("location: gastos.php");
+                exit();
+            } else {
+                echo "Algo salió mal. Por favor, inténtalo de nuevo más tarde.";
+            }
+
+            // Cerrar la declaración
+            $stmt->close();
         }
-
-        // Cerrar la declaración
-        $stmt->close();
     }
-}
-
-
 
     // Cerrar la conexión
     $conexion->close();
 }
 ?>
 
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -131,17 +128,17 @@ if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && emp
 
 <body id="body">
 
-    <header>
+<header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
         <div class="nombre-usuario">
             <?php
-            if (isset($_SESSION["nombre_usuario"])) {
-                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
-            }
-            ?>
+        if (isset($_SESSION["nombre_usuario"])) {
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
+        }
+        ?>
         </div>
     </header>
 
@@ -161,7 +158,7 @@ if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && emp
                 </div>
             </a>
 
-            <a href="/resources/views/admin/inicio/inicio.php">
+        <a href="/resources/views/admin/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -207,7 +204,7 @@ if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && emp
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
+            </a> 
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -228,14 +225,14 @@ if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && emp
                     <h4>Ruta</h4>
                 </div>
             </a>
-
+ 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
-
+ 
 
 
         </div>
@@ -259,35 +256,44 @@ if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && emp
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 
             <div class="form-group">
-                <label for="id_zona">Departamento:</label>
-                <select name="id_zona" id="id_zona" class="zona" onchange="cargarMunicipios()">
+                <label for="id_zona">Estado:</label>
+                <select name="id_zona" id="id_zona" class="zona">
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Estado</option>
+                    <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                    $sql_zonas = "SELECT * FROM zonas";
-                    $result_zonas = $conexion->query($sql_zonas);
+                $sql_zonas = "SELECT * FROM zonas";
+                $result_zonas = $conexion->query($sql_zonas);
 
-                    if ($result_zonas->num_rows > 0) {
-                        while ($row = $result_zonas->fetch_assoc()) {
-                            $selected = ($id_zona == $row['ID']) ? 'selected' : '';
-                            echo "<option value='" . $row['ID'] . "' $selected>" . $row['Nombre'] . "</option>";
-                        }
+                if ($result_zonas->num_rows > 0) {
+                    while ($row = $result_zonas->fetch_assoc()) {
+                        $selected = ($id_zona == $row['ID']) ? 'selected' : '';
+                        echo "<option value='" . $row['ID'] . "' $selected>" . $row['Nombre'] . "</option>";
                     }
-                    ?>
+                }
+                ?>
                 </select>
                 <span class="help-block"><?php echo $id_zona_err; ?></span>
             </div>
 
-            <!-- Contenedor para mostrar los municipios -->
-           <strong> <label for="ciudad">Municipio:</label><br></strong>
-            <select id="ciudad" name="ciudad" class="zona" required>
-                
-            </select>
+            <div class="input-container">
+                <label for="ciudad">Municipio:</label><br>
+                <select id="ciudad" name="ciudad" class="zona" required>
+                    <option value="">Seleccionar Municipio</option>
+                    <?php
+                    $consultaCiudades = "SELECT Nombre FROM ciudades";
+                    $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
+                    while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
+                        echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
+                    }
+                    ?>
+                </select>
 
-
+            </div>
 
             <div class="input-container">
-                <label for="asentamiento">Barrio:</label><br>
-                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el Barrio" required>
+                <label for="asentamiento">Colonia:</label><br>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
+                    required>
             </div>
 
             <div class="form-group">
@@ -298,7 +304,8 @@ if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && emp
 
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <input type="text" name="descripcion" id="descripcion" class="form-control" value="<?php echo $descripcion; ?>">
+                <input type="text" name="descripcion" id="descripcion" class="form-control"
+                    value="<?php echo $descripcion; ?>">
                 <span class="help-block"><?php echo $descripcion_err; ?></span>
             </div>
 
@@ -317,19 +324,6 @@ if (empty($id_zona_err) && empty($ciudad_err) && empty($asentamiento_err) && emp
     </main>
 
     <script src="/public/assets/js/MenuLate.js"></script>
-    <script>
-        function cargarMunicipios() {
-            var idZona = document.getElementById("id_zona").value;
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("ciudad").innerHTML = this.responseText;
-                }
-            };
-            xhttp.open("GET", "obtener_municipios.php?id_zona=" + idZona, true);
-            xhttp.send();
-        }
-    </script>
 
 </body>
 
