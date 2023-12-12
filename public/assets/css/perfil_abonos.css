@@ -48,8 +48,8 @@ header{
     display: inline-block;
     padding: 10px 15px;
     margin: 10px 5px;
-    border: 1px solid #48c7c7;
-    background-color: #65e0e0;
+    border: 1px solid #74d8d8;
+    background-color: #a9f0f0;
     color: rgb(0, 0, 0);
     text-decoration: none;
     border-radius: 5px; 
@@ -65,8 +65,8 @@ header{
     display: inline-block;
     padding: 10px 15px;
     margin: 10px 5px;
-    border: 1px solid #c23131;
-    background-color: #db4242;
+    border: 1px solid #a05a5a;
+    background-color: #ec7f7f;
     color: rgb(0, 0, 0);
     text-decoration: none;
     border-radius: 5px;
@@ -75,15 +75,15 @@ header{
 }
 
 .back-link2:hover {
-    background-color: rgb(207, 22, 22);
+    background-color: rgb(160, 91, 91);
 }
 
 .back-link3 {
     display: inline-block;
     padding: 10px 15px;
     margin: 10px 5px;
-    border: 1px solid #2cd12c;
-    background-color: #45d645;
+    border: 1px solid #73e773;
+    background-color: #a3e4a3;
     color: rgb(0, 0, 0);
     text-decoration: none;
     border-radius: 5px;
@@ -92,7 +92,7 @@ header{
 }
 
 .back-link3:hover {
-    background-color: #249224;
+    background-color: #93cc93;
 }
  
 
