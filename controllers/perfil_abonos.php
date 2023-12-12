@@ -222,7 +222,8 @@ $stmt_prestamo->close();
 
 $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
         FROM facturas 
-        WHERE cliente_id = ? AND fecha = ?";
+        WHERE cliente_id = ? AND fecha = ?
+        AND monto_pagado != 0";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("is", $id_cliente, $fecha_actual);
 $stmt->execute();
@@ -313,125 +314,79 @@ $resultado = $stmt->get_result();
             </script>
 
 
-<?php
-    // Consulta para obtener la lista de clientes
-    $fecha_actual = date('Y-m-d');
+            <?php
+// Consulta para obtener la lista de clientes
+$query = "SELECT id, Nombre, Apellido FROM clientes";
+$result = $conexion->query($query);
 
-    $query = "SELECT id, Nombre, Apellido 
-              FROM clientes 
-              WHERE id NOT IN (SELECT DISTINCT IDCliente FROM historial_pagos WHERE FechaPago = ?)";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("s", $fecha_actual);
-    $stmt->execute();
-    $result = $stmt->get_result();
+$antes = $id_cliente - 1;
+$siguiente = $id_cliente + 1;
 
-    if (!$result) {
-        die("Error en la consulta: " . mysqli_error($conexion));
-    }
+if (!$result) {
+    die("Error en la consulta: " . mysqli_error($conexion));
+}
 
-    // Obtener todos los clientes y almacenarlos en un array
-    $clientes = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $id = $row['id'];
-        $nombre = $row['Nombre'];
-        $apellido = $row['Apellido'];
-        $clientes[] = ['id' => $id, 'nombre' => $nombre, 'apellido' => $apellido];
-    }
+// Obtener todos los clientes y almacenarlos en un array
+$clientes = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $id = $row['id'];
+    $nombre = $row['Nombre'];
+    $apellido = $row['Apellido'];
+    $clientes[] = ['id' => $id, 'nombre' => $nombre, 'apellido' => $apellido];
+}
 
-    // Liberar el resultado de la consulta
-    mysqli_free_result($result);
+// Liberar el resultado de la consulta
+mysqli_free_result($result);
 
-    // Encontrar el índice del cliente actual en la lista
-    $selectedClientId = isset($_POST['cliente']) ? $_POST['cliente'] : null;
-    $currentIndex = null;
-    if ($selectedClientId !== null) {
-        foreach ($clientes as $index => $cliente) {
-            if ($cliente['id'] == $selectedClientId) {
-                $currentIndex = $index;
-                break;
-            }
+// Encontrar el índice del cliente actual en la lista
+$selectedClientId = isset($_POST['cliente']) ? $_POST['cliente'] : null;
+$currentIndex = null;
+if ($selectedClientId !== null) {
+    foreach ($clientes as $index => $cliente) {
+        if ($cliente['id'] == $selectedClientId) {
+            $currentIndex = $index;
+            break;
         }
     }
-
-    // Manejar la navegación
-    if (isset($_POST['prev'])) {
-        $currentIndex = ($currentIndex === null || $currentIndex === 0) ? count($clientes) - 1 : $currentIndex - 1;
-    } elseif (isset($_POST['next'])) {
-        $currentIndex = ($currentIndex === null || $currentIndex === count($clientes) - 1) ? 0 : $currentIndex + 1;
-    }
-
-    // Mostrar el formulario con los botones de navegación y la lista desplegable
-    echo "<h2>Clientes:</h2>";
-    echo "<form action='procesar_cliente.php' method='post' id='clienteForm'>";
-    echo "<input type='hidden' id='selectedClientId' name='cliente' value='" . ($currentIndex !== null ? $clientes[$currentIndex]['id'] : '') . "'>";
-    echo "<button type='submit' name='prev' value='<' class='boton4'><</button>";
-    echo "<select name='cliente' onchange='selectClient()'>";
-    
-    // Mostrar opciones de clientes
-    foreach ($clientes as $index => $cliente) {
-        $id = $cliente['id'];
-        $nombre = $cliente['nombre'];
-        $apellido = $cliente['apellido'];
-        $selected = ($index === $currentIndex) ? 'selected' : '';
-        echo "<option value='$id' $selected>$nombre $apellido</option>";
-    }
-
-    echo "</select>"; 
-    echo "<button type='submit' name='next' value='>' class='boton4'>></button>";
-    echo "</form>";
-?>
-
-<script>
-    function selectClient() {
-        var selectedId = document.getElementById("clienteForm").elements["cliente"].value;
-        document.getElementById("selectedClientId").value = selectedId;
-        document.getElementById("clienteForm").submit();
-    }
-</script>
-
-
-
-            <!-- BUSCADOR DE PRESTAMOS -->
-
-            <?php 
-
-// Verificar si se proporcionó el ID del cliente en la variable PHP $id_cliente
-if (isset($id_cliente)) {
-    // Consulta para obtener la lista de préstamos asociados al cliente
-    $fecha_actual = date('Y-m-d');
-
-$query = "SELECT id, MontoAPagar 
-          FROM prestamos 
-          WHERE IDCliente = ? 
-          AND id NOT IN (SELECT DISTINCT IDPrestamo FROM historial_pagos WHERE FechaPago = ?)";
-$stmt = $conexion->prepare($query);
-$stmt->bind_param("is", $id_cliente, $fecha_actual);
-$stmt->execute();
-$result = $stmt->get_result();
-
-
-    if (!$result) {
-        die("Error en la consulta de préstamos: " . mysqli_error($conexion));
-    }
-
-    // Crear un formulario con un menú desplegable de préstamos del cliente
-    echo "<h2>Prestamo:</h2>";
-    echo "<form action='prestamos_cartulina.php' method='get'>"; // Reemplaza 'tuarchivo.php' por tu nombre de archivo PHP
-    echo "<select name='id_prestamo'>";
-    while ($row = mysqli_fetch_assoc($result)) {
-        $id_prestamo = $row['id'];
-        $montoAPagar = number_format($row['MontoAPagar']); // Formatear MontoAPagar
-        echo "<option value='$id_prestamo'>ID: $id_prestamo - Valor: $montoAPagar</option>";
-    }
-    echo "</select>";
-    // echo "<input type='submit' value='Seleccionar'>";
-    echo "</form>";
-
-    mysqli_free_result($result);
-} else {
-    echo "No se proporcionó el ID del cliente.";
 }
+
+// Manejar la navegación
+if (isset($_POST['prev'])) {
+    $currentIndex = ($currentIndex === null || $currentIndex === 0) ? count($clientes) - 1 : $currentIndex - 1;
+} elseif (isset($_POST['next'])) {
+    $currentIndex = ($currentIndex === null || $currentIndex === count($clientes) - 1) ? 0 : $currentIndex + 1;
+}
+
+// Mostrar el formulario con los botones de navegación y la lista desplegable
+echo "<h2>Clientes:</h2>";
+echo "<form action='procesar_cliente.php' method='post' id='clienteForm'>";
+echo "<input type='hidden' id='selectedClientId' name='cliente' value='" . ($currentIndex !== null ? $clientes[$currentIndex]['id'] : '') . "'>";
+echo "<a href='perfil_abonos.php?id=$antes' class='boton4'><</a>";
+echo "<select name='cliente' onchange='selectClient()'>";
+echo "<option>Selecionar Cliente</option>";
+    
+// Mostrar opciones de clientes
+foreach ($clientes as $index => $cliente) {
+    $id = $cliente['id'];
+    $nombre = $cliente['nombre'];
+    $apellido = $cliente['apellido'];
+    $selected = ($index === $currentIndex) ? 'selected' : '';
+    echo "<option value='$id' $selected>$nombre $apellido</option>";
+}
+
+echo "</select>"; 
+echo "<a href='perfil_abonos.php?id=$siguiente' class='boton4'>></a>";
+echo "</form>";
 ?>
+
+
+            <script>
+            function selectClient() {
+                var selectedId = document.getElementById("clienteForm").elements["cliente"].value;
+                document.getElementById("selectedClientId").value = selectedId;
+                document.getElementById("clienteForm").submit();
+            }
+            </script>
 
             <!-- BOTONES DE PAGO -->
 
@@ -457,24 +412,12 @@ if ($stmt_monto_pagar->fetch()) {
 
 $stmt_monto_pagar->close();
 
+// PAGO
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     $accion = $_POST['action'];
 
-    if ($accion === 'No pago' || $accion === 'Mas tarde') {
-        $campo_actualizar = ($accion === 'No pago') ? 'Pospuesto' : 'mas_tarde';
-
-        $sql_update = "UPDATE prestamos SET $campo_actualizar = 1 WHERE $campo_actualizar = 0 AND IDCliente = ?";
-        $stmt_update = $conexion->prepare($sql_update);
-        $stmt_update->bind_param("i", $id_cliente);
-
-        if ($stmt_update->execute()) {
-            echo "Acción '$accion' realizada: campo '$campo_actualizar' actualizado a 1";
-        } else {
-            echo "Error al actualizar el campo '$campo_actualizar': " . $stmt_update->error;
-        }
-
-        $stmt_update->close();
-    } elseif ($accion === 'Pagar') {
+    if ($accion === 'Pagar') {
         $sql_reset = "UPDATE prestamos SET Pospuesto = 0, mas_tarde = 0 WHERE IDCliente = ?";
         $stmt_reset = $conexion->prepare($sql_reset);
         $stmt_reset->bind_param("i", $id_cliente);
@@ -490,7 +433,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 } else {
     echo "  ";
 }
- 
+
+// NO PAGO Y MAS TARDE
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
+    $accion = $_POST['action'];
+
+    if ($accion === 'No pago' || $accion === 'Mas tarde') {
+        $campo_actualizar = ($accion === 'No pago') ? 'Pospuesto' : 'mas_tarde';
+    
+        $sql_update = "UPDATE prestamos SET $campo_actualizar = 1 WHERE $campo_actualizar = 0 AND IDCliente = ?";
+        $stmt_update = $conexion->prepare($sql_update);
+        $stmt_update->bind_param("i", $id_cliente);
+    
+        if ($stmt_update->execute()) {
+            echo "Acción '$accion' realizada: campo '$campo_actualizar' actualizado a 1";
+        } else {
+            echo "Error al actualizar el campo '$campo_actualizar': " . $stmt_update->error;
+        }
+    
+        $stmt_update->close();
+    } 
+} else {
+    echo "  ";
+} 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los valores ingresados
@@ -511,14 +477,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
     $stmt_insert_factura = $conexion->prepare($sql_insert_factura);
     $stmt_insert_factura->bind_param("idsss", $id_cliente, $montoAPagar, $fecha_actual, $monto_pagado, $monto_deuda);
-    $stmt_insert_factura->execute();
-
-    // Insertar datos en la tabla "facturas"
-$fecha_actual = date('Y-m-d');
-$sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
-$stmt_insert_factura = $conexion->prepare($sql_insert_factura);
-$stmt_insert_factura->bind_param("idsss", $id_cliente, $montoAPagar, $fecha_actual, $monto_pagado, $monto_deuda);
-$stmt_insert_factura->execute();
+    $stmt_insert_factura->execute(); 
 
 // Obtener el ID del préstamo del cliente desde la tabla prestamos
 $sql_id_prestamo = "SELECT ID FROM prestamos WHERE IDCliente = ?";
@@ -533,11 +492,26 @@ $fecha_pago = date('Y-m-d'); // Fecha actual
 $monto_pagado_historial = $_POST['cuota']; // Obtener el monto pagado del formulario
 
 // Insertar datos en la tabla "historial_pagos"
+if ($_POST['action'] === 'Pagar') {
+            // Solo si la acción es 'Pagar', se realiza la inserción en las tablas 'facturas' y 'historial_pagos'
+            $stmt_update_prestamo->execute();
 
-$sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
-$stmt_insert_historial = $conexion->prepare($sql_insert_historial);
-$stmt_insert_historial->bind_param("ssdi", $id_cliente, $fecha_pago, $monto_pagado_historial, $id_prestamo);
-$stmt_insert_historial->execute();
+            // Insertar datos en la tabla "facturas" solo si es acción 'Pagar'
+            $fecha_actual = date('Y-m-d');
+            $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
+            $stmt_insert_factura = $conexion->prepare($sql_insert_factura);
+            $stmt_insert_factura->bind_param("idsss", $id_cliente, $montoAPagar, $fecha_actual, $monto_pagado, $monto_deuda);
+            $stmt_insert_factura->execute();
+
+            // Insertar datos en la tabla "historial_pagos" solo si es acción 'Pagar'
+            $fecha_pago = date('Y-m-d'); // Fecha actual
+            $monto_pagado_historial = $_POST['cuota']; // Obtener el monto pagado del formulario
+
+            $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
+            $stmt_insert_historial = $conexion->prepare($sql_insert_historial);
+            $stmt_insert_historial->bind_param("ssdi", $id_cliente, $fecha_pago, $monto_pagado_historial, $id_prestamo);
+            $stmt_insert_historial->execute();
+        }
 
 
     function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
@@ -595,16 +569,22 @@ $stmt_insert_historial->execute();
 
 ?>
 
-
+            <!-- Formulario de Pago -->
             <form method="post" class="pagos">
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
                 <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
                 <input type="text" id="variable" placeholder="Deuda"
-                    value="<?= htmlspecialchars($montoAPagar-$info_prestamo['Cuota']); ?>" readonly>
-                <input type="submit" value="Pagar"  class="boton1">
+                    value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
+                <input type="submit" name="action" value="Pagar" class="boton1">
+            </form>
+
+            <!-- Formulario de No Pago y Mas Tarde -->
+            <form method="post" action="">
                 <input type="submit" name="action" value="No pago" class="boton2">
                 <input type="submit" name="action" value="Mas tarde" class="boton3">
             </form>
+
+
 
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
             <script>
