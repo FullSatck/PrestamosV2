@@ -1,19 +1,24 @@
 <?php
+// Configuración de la zona horaria
 date_default_timezone_set('America/Bogota');
+
+// Configuración de la base de datos
 $servidor = "localhost";
 $usuario = "root";
 $contrasena = "";
 $dbnombre = "prestamos";
 
+// Creación de la conexión a la base de datos
 $conexion = new mysqli($servidor, $usuario, $contrasena, $dbnombre);
 
+// Verificación de la conexión
 if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 
-// Obtener clientes que han pasado 10 días sin pagar una cuota
-$diasSinPagar = 10;
-$fechaLimite = date('Y-m-d', strtotime("-$diasSinPagar days"));
+// Obtener clientes que han pasado ciertos días hábiles sin pagar una cuota
+$diasHabilesSinPagar = 10;
+$fechaLimite = date('Y-m-d', strtotime("-$diasHabilesSinPagar weekdays"));
 $query = "SELECT p.IDCliente, p.ID, p.MontoCuota, MAX(h.FechaPago) AS FechaUltimoPago
           FROM prestamos p
           LEFT JOIN historial_pagos h ON p.ID = h.IDPrestamo
@@ -25,9 +30,9 @@ if ($result) {
     while ($row = $result->fetch_assoc()) {
         // Calcular la fecha límite para la última cuota
         $fechaUltimoPago = $row['FechaUltimoPago'] ? strtotime($row['FechaUltimoPago']) : strtotime($row['FechaInicio']);
-        $fechaLimiteCuota = date('Y-m-d', strtotime("+10 days", $fechaUltimoPago));
+        $fechaLimiteCuota = date('Y-m-d', strtotime("+10 weekdays", $fechaUltimoPago));
 
-        // Verificar si ha pasado la fecha límite para la última cuota
+        // Verificar si ha pasado el plazo establecido desde la fecha de vencimiento
         if ($fechaLimiteCuota <= $fechaLimite) {
             // Mover cliente a la tabla de clientes clavos
             $clienteID = $row['IDCliente'];
