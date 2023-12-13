@@ -53,17 +53,15 @@ if ($conexion->query($sql) === TRUE) {
         $conexion->query($sql_fecha_pago);
     }
 
-    // Redirigir al usuario a crudprestamo.php con un mensaje de éxito
-    header('Location: ../resources/views/admin/creditos/crudPrestamos.php?mensaje=Solicitud de préstamo realizada con éxito');
+    // Redirigir al usuario al perfil_abonos con el primer ID de préstamo
+    $primer_id = obtenerPrimerID($conexion);
+    header("Location: /controllers/perfil_abonos.php?id=$primer_id");
     exit;
 } else {
     // Redirigir al usuario a crudprestamo.php con un mensaje de error
     header('Location: ../resources/views/admin/creditos/crudPrestamos.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
     exit;
 }
-
-// Cerrar la conexión a la base de datos
-$conexion->close();
 
 // Función para calcular la fecha de vencimiento en función del plazo y la frecuencia de pago
 function calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago) {
@@ -116,5 +114,21 @@ function calcularFechasPago($fecha_inicio, $frecuencia_pago, $plazo, $id_prestam
     }
 
     return $fechasPago;
+}
+
+// Función para obtener el primer ID de préstamo de la base de datos
+function obtenerPrimerID($conexion) {
+    $primer_id = 0;
+
+    // Consulta para obtener el primer ID de préstamo
+    $sql_primer_id = "SELECT ID FROM prestamos ORDER BY ID ASC LIMIT 1";
+
+    $stmt_primer_id = $conexion->prepare($sql_primer_id);
+    $stmt_primer_id->execute();
+    $stmt_primer_id->bind_result($primer_id);
+    $stmt_primer_id->fetch();
+    $stmt_primer_id->close();
+
+    return $primer_id;
 }
 ?>
