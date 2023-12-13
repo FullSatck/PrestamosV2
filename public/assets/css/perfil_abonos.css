@@ -80,7 +80,7 @@ header{
 
 .back-link3 {
     display: inline-block;
-    padding: 10px 15px;
+    padding: 10px 11px;
     margin: 10px 5px;
     border: 1px solid #73e773;
     background-color: #a3e4a3;
@@ -316,63 +316,83 @@ button {
   button:hover {
     background-color: #585858;
   }
-  
 
-@media only screen and (max-width: 600px) {
-    table {
-        font-size: 12px;
-    }
+  /* Estilos para el botón de editar */
+.edit-button {
+    margin-top: 20px; /* Espacio superior */
+    text-align: right; /* Alineación del contenido a la derecha */
 }
 
-/* Enlace para gestionar préstamos */
-.manage-loans {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.manage-loans a {
+.edit-button a {
     display: inline-block;
-    padding: 12px 24px;
-    background-color: #007bff;
+    padding: 8px 12px;
+    background-color: #af6fcc;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
-    font-size: 18px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-.manage-loans a:hover {
-    background-color: #0056b3;
+.edit-button a:hover {
+    background-color: #9729b9;
 }
 
-@media screen and (max-width: 600px) {
-    /* Ajustes para el perfil */
-    .profile-container {
-        flex-direction: column; /* Colocar elementos uno debajo del otro */
+  
+/* Media Queries */
+@media only screen and (max-width: 600px) {
+    /* Estilos para dispositivos móviles */
+
+    body {
+        padding-top: 65px;
     }
 
-    .profile-image, .profile-details {
-        width: 90%; /* Ajustar el ancho para dispositivos móviles */
-        margin: 10px auto; /* Centrar y agregar margen */
+    header {
+        height: 65px;
+    }
+
+    .nombre-usuario {
+        top: 5px;
+        right: 5px;
+        max-width: 150px;
+    }
+
+    .back-link {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .profile-container,
+    .profile-details {
+        width: 90%;
+        margin: 10px auto;
     }
 
     .profile-image img {
-        max-height: 150px; /* Ajustar la altura de la imagen */
+        max-height: 120px;
+    }
+   
+    .boton4 {
+        display: inline-block;
+        width: 45%; /* Ancho deseado */
+        margin: 5px; /* Espacio entre los botones */
+        padding: 8px 16px;
+        font-size: 14px;
+        text-align: center;
+    }
+    .button {
+        padding: 8px 12px;
+        font-size: 14px;
     }
 
-    /* Ajustes para las tablas */
+    button,
+    .back-link {
+        margin: 5px;
+    }
+
+    /* Ajustes para la tabla */
     table {
-        display: block;
-        overflow-x: auto; /* Hacer la tabla desplazable horizontalmente */
+        font-size: 12px;
+        overflow-x: auto;
     }
-
-    /* Ajustes para fuentes y botones */
-    body, p, h1, h2, a {
-        font-size: 16px; /* Aumentar el tamaño de la fuente */
-    }
-
-    .manage-loans a {
-        padding: 15px 30px; /* Aumentar el tamaño de los botones */
-    }
-    
+   
 }
