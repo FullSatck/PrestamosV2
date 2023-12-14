@@ -102,14 +102,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/gastos/gastos.php">
                 <div class="option">
@@ -137,7 +130,7 @@ date_default_timezone_set('America/Bogota');
     </div>
 
     <main>
-        <h1>Inicio cobrador de Puebla</h1>
+        <h1>Inicio cobrador de Quintana Roo</h1>
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
