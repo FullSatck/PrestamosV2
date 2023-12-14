@@ -171,12 +171,7 @@ date_default_timezone_set('America/Bogota');
             <div class="input-container">
                 <label for="telefono">Teléfono:</label>
                 <input type="text" id="telefono" name="telefono" required>
-            </div>
-
-            <div class="input-container">
-                <label for="historial">Historial Crediticio:</label>
-                <textarea id="historial" name="historial" rows="4"></textarea>
-            </div>
+            </div> 
 
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
@@ -203,11 +198,11 @@ date_default_timezone_set('America/Bogota');
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Chihuahua'";
+                $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Chihuahua'";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
+                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
                 }
                 ?>
                 </select>

@@ -188,7 +188,7 @@ mysqli_close($conexion);
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -242,7 +242,14 @@ mysqli_close($conexion);
                     <p>Mantenimiento</p>
                 </div>
             </div>
-        </div>
+
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
+
+                </div>
+
+            </div>
     </main>
 
 
