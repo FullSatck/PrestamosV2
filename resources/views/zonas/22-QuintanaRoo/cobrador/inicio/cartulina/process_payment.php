@@ -16,6 +16,7 @@ function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
 
 function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
     // Obtén el MontoAPagar actual.
+    $montoAPagar = 0;
     $sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ?";
     $stmt_monto_pagar = $conexion->prepare($sql_monto_pagar);
     $stmt_monto_pagar->bind_param("i", $id_cliente);
