@@ -234,7 +234,7 @@ date_default_timezone_set('America/Bogota');
                                 <strong>Dirección:</strong> <span id="modalClienteDireccion"></span><br>
                                 <strong>Teléfono:</strong> <span id="modalClienteTelefono"></span><br>
                                 <strong>CURP:</strong> <span id="modalClienteCURP"></span><br>
-                                <strong>Total a Prestamo:</strong> <span id="modalMontoAPagar"></span><br>
+                                <strong>Total Prestamo:</strong> <span id="modalMontoAPagar"></span><br>
                                 <strong>Monto Cuota:</strong>
                                 <strong><span id="modalMontoCuota" class="monto-cuota-rojo"></span><br></strong>
 
