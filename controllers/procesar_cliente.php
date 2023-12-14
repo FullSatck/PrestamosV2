@@ -1,16 +1,15 @@
 <?php
-// Incluir el archivo de conexión a la base de datos
-include("conexion.php");
-
-// Obtener el ID actual desde la URL
-$cliente_id_actual = isset($_GET['id']) ? $_GET['id'] : null;
- 
-
-// Lógica para la selección de cliente si no se presionó < o >
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['cliente'])) {
+// Verificar si se ha enviado el ID del cliente seleccionado
+if(isset($_POST['cliente'])){
+    // Obtener el ID del cliente seleccionado
     $cliente_id = $_POST['cliente'];
+
+    // Redireccionar a perfil_abonos.php con el ID del cliente seleccionado
     header("Location: perfil_abonos.php?id=$cliente_id");
-    exit();
+    exit(); // Asegúrate de detener la ejecución después de la redirección
+} else {
+    // Manejar el caso en que no se ha seleccionado ningún cliente
+    echo "No se ha seleccionado ningún cliente.";
 }
- 
 ?>
+
