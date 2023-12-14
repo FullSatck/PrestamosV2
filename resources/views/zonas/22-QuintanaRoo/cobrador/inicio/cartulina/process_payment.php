@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conexion.php"); // Incluye tu archivo de conexión a la base de datos.
+include("../../../../../../../controllers/conexion.php"); // Incluye tu archivo de conexión a la base de datos.
 
 function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
     $siguiente_cliente_id = 0;

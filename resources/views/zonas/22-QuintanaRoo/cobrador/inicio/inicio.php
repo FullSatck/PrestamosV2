@@ -26,12 +26,7 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
-
-
-
-
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
+ 
 date_default_timezone_set('America/Bogota');
 ?>
 
@@ -153,44 +148,35 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </div>
 
-            <?php
-            // Incluye el archivo de conexión
-include("../../../../../../controllers/conexion.php");
-            // Función para obtener el primer ID de préstamo no pagado hoy
-            function obtenerPrimerIDNoPagado($conexion) {
-                // Obtener la fecha actual
-                $fecha_actual = date('Y-m-d');
+            <!-- TRAER EL PRIMER ID -->
+
+            <?php 
+            function obtenerPrimerID($conexion) {
                 $primer_id = 0;
-            
-                // Consulta para obtener el primer ID de préstamo no pagado hoy y de zona 'Puebla'
-                $sql_primer_id = "SELECT p.ID
-                                  FROM prestamos p
-                                  LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo
-                                  WHERE (hp.FechaPago <> ? OR hp.FechaPago IS NULL)
-                                  AND p.Zona = 'Quintana Roo'
-                                  ORDER BY p.ID ASC
+
+                // Consulta para obtener el primer ID de préstamo
+                $sql_primer_id = "SELECT ID
+                                  FROM clientes
+                                  ORDER BY ID ASC
                                   LIMIT 1";
-            
-                $stmt_primer_id = $conexion->prepare($sql_primer_id);
-                $stmt_primer_id->bind_param("s", $fecha_actual);
+
+               $stmt_primer_id = $conexion->prepare($sql_primer_id);
                 $stmt_primer_id->execute();
                 $stmt_primer_id->bind_result($primer_id);
                 $stmt_primer_id->fetch();
                 $stmt_primer_id->close();
-            
+
                 return $primer_id;
             }
-            
-            // Obtener el primer ID de préstamo no pagado de la base de datos para la zona 'Puebla'
-            $primer_id = obtenerPrimerIDNoPagado($conexion);
-            
 
+            // Obtener el primer ID de préstamo de la base de datos
+            $primer_id = obtenerPrimerID($conexion);
             ?>
 
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>  

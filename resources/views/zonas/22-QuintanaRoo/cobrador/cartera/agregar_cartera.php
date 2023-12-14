@@ -154,7 +154,7 @@ $stmt->close();
                 // Incluye el archivo de conexión a la base de datos
                 include("../../../../../../controllers/conexion.php");
                 // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE iD = 20";
+                $consultaZonas = "SELECT iD, nombre FROM zonas WHERE iD = 22";
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
                 // Genera las opciones del menú desplegable para Zona
                 while ($row = mysqli_fetch_assoc($resultZonas)) {

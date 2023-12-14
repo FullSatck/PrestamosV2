@@ -134,7 +134,7 @@ $stmt->close();
         </div>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/cob/validar_clientes/validar_clientes20.php" method="POST"
+        <form action="/controllers/cob/validar_clientes/validar_clientes22.php" method="POST"
             enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
@@ -159,12 +159,7 @@ $stmt->close();
             <div class="input-container">
                 <label for="telefono">Teléfono:</label>
                 <input type="text" id="telefono" name="telefono" required>
-            </div>
-
-            <div class="input-container">
-                <label for="historial">Historial Crediticio:</label>
-                <textarea id="historial" name="historial" rows="4"></textarea>
-            </div>
+            </div> 
 
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>

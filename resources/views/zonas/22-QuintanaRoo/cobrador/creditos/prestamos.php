@@ -1,32 +1,77 @@
 <?php
+date_default_timezone_set('America/Bogota');
 session_start();
 
+// Validación de rol para ingresar a la página
+require_once '../../../../../../controllers/conexion.php'; 
+
 // Verifica si el usuario está autenticado
-if (isset($_SESSION["usuario_id"])) {
-    // El usuario está autenticado, puede acceder a esta página
-} else {
+if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+    header("Location: ../../../../index.php");
     exit();
+} else {
+    // El usuario está autenticado, obtén el ID del usuario de la sesión
+    $usuario_id = $_SESSION["usuario_id"];
+
+    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
+    // ID DEL CLIENTE
+    if (isset($_GET['cliente_id'])) {
+        $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+        $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id";
+    } else {
+        $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1";
+    }
+
+    // Si tienes un cliente_id, obtén su zona asignada
+    $zona_cliente = "";
+    if (isset($cliente_id)) {
+        $query_zona_cliente = "SELECT ZonaAsignada FROM clientes WHERE ID = $cliente_id";
+        $result_zona_cliente = $conexion->query($query_zona_cliente);
+        if ($row = $result_zona_cliente->fetch_assoc()) {
+            $zona_cliente = $row['ZonaAsignada'];
+        }
+    }
+    
+
+    // Preparar la consulta para obtener el rol del usuario
+    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+    $stmt->bind_param("i", $usuario_id);
+
+    // Ejecutar la consulta
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $fila = $resultado->fetch_assoc();
+
+    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
+    if (!$fila) {
+        // Redirige al usuario a una página de error o de inicio
+        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+        exit();
+    }
+
+    // Extrae el nombre del rol del resultado
+    $rol_usuario = $fila['Nombre'];
+    
+    // Verifica si el rol del usuario corresponde al necesario para esta página
+    if ($rol_usuario !== 'cobrador') {
+        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
+        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+        exit();
+    }
 }
 
-include "../../../../../../controllers/conexion.php";
 
-$usuario_id = $_SESSION["usuario_id"];
-
-$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-
-// El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -132,27 +177,35 @@ $stmt->close();
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
-        <form action="/controllers/cob/procesar_prestamos/procesar_prestamo20.php" method="POST" class="form-container">
-            <?php
-            // Incluir el archivo de conexión a la base de datos
-            include("../../../../../../controllers/conexion.php");
+        <form action="/controllers/cob/procesar_prestamos/procesar_prestamo22.php" method="POST" class="form-container">
+        <?php
+// Incluir el archivo de conexión a la base de datos
+include("../../../../../../controllers/conexion.php");
 
-            // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Quintana Roo' ORDER BY ID DESC LIMIT 1";
-            $query_monedas = "SELECT iD, nombre, simbolo FROM monedas";
-            $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Quintana Roo'";
+// ID DEL CLIENTE
+if (isset($_GET['cliente_id'])) {
+    $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+    $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id";
+} else {
+    $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
+}
 
-            $result_clientes = $conexion->query($query_clientes);
-            $result_monedas = $conexion->query($query_monedas);
-            $result_zonas = $conexion->query($query_zonas);
-            ?>
+// Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
+$result_clientes = $conexion->query($query_clientes);
+$query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
+$query_zonas = "SELECT Nombre FROM zonas";
+
+$result_monedas = $conexion->query($query_monedas);
+$result_zonas = $conexion->query($query_zonas);
+?>
+
             <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php
-                while ($row = $result_clientes->fetch_assoc()) {
-                    echo "<option value='" . $row['iD'] . "'>" . $row['nombre'] . "</option>";
-                }
-                ?>
+    while ($row = $result_clientes->fetch_assoc()) {
+        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+    }
+    ?>
             </select><br>
 
             <label for="monto">Monto:</label>
@@ -178,7 +231,7 @@ $stmt->close();
                 <?php
                 while ($row = $result_monedas->fetch_assoc()) {
                     // Agregar el símbolo de la moneda como un atributo data-*
-                    echo "<option value='" . $row['iD'] . "' data-simbolo='" . $row['simbolo'] . "'>" . $row['nombre'] . "</option>";
+                    echo "<option value='" . $row['ID'] . "' data-simbolo='" . $row['Simbolo'] . "'>" . $row['Nombre'] . "</option>";
                 }
                 ?>
             </select><br>
@@ -193,10 +246,10 @@ $stmt->close();
             <label for="zona">Estado:</label>
             <select name="zona" required>
                 <?php
-                while ($row = $result_zonas->fetch_assoc()) {
-                    echo "<option value='" . $row['nombre'] . "'>" . $row['nombre'] . "</option>";
-                }
-                ?>
+    if ($zona_cliente) {
+        echo "<option value='" . $zona_cliente . "'>" . $zona_cliente . "</option>";
+    }
+    ?>
             </select><br>
 
             <div class="result-container">

@@ -7,7 +7,7 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 }
 
@@ -20,7 +20,7 @@ if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 
 
 // Incluir el archivo de conexión a la base de datos
-include("conexion.php");
+include("../../../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
