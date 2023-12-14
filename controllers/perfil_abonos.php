@@ -178,7 +178,7 @@ $stmt_prestamo->close();
             <a href="<?= $ruta_filtro ?>" class="back-link2">Filtros</a>
 
             <a href="<?= $ruta_cliente ?>" class="back-link3">R Clientes</a>
-            
+
             <div class="nombre-usuario">
                 <?php
                 if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
@@ -215,190 +215,138 @@ $stmt_prestamo->close();
             </div>
 
             <div class="profile-loans">
-    <?php
-    if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
-        // Si se solicita mostrar todas las filas
-        $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
+                <?php
+                if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
+                    // Si se solicita mostrar todas las filas
+                    $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
         FROM facturas 
         WHERE cliente_id = ? AND monto_pagado != 0";
-$stmt = $conexion->prepare($sql);
-$stmt->bind_param("i", $id_cliente);
-$stmt->execute();
-$resultado = $stmt->get_result();
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bind_param("i", $id_cliente);
+                    $stmt->execute();
+                    $resultado = $stmt->get_result();
 
-$num_rows = $resultado->num_rows;
+                    $num_rows = $resultado->num_rows;
 
-        if ($num_rows > 0) {
-            echo "<table id='tabla-prestamos'>";
-            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
-            $last_row = null;
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
-                echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
-                echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
-                $last_row = $fila; // Actualizar la última fila en cada iteración
-                echo "</tr>";
-            }
+                    if ($num_rows > 0) {
+                        echo "<table id='tabla-prestamos'>";
+                        echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
+                        $last_row = null;
+                        while ($fila = $resultado->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                            echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+                            echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
+                            $last_row = $fila; // Actualizar la última fila en cada iteración
+                            echo "</tr>";
+                        }
 
-            echo "</table>";
+                        echo "</table>";
 
-            // Mostrar el enlace de "Editar" solo para la última fila
-            if ($last_row) {
-                echo "<div class='edit-button'>";
-                echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
-                echo "</div>";
-            }
+                        // Mostrar el enlace de "Editar" solo para la última fila
+                        if ($last_row) {
+                            echo "<div class='edit-button'>";
+                            echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
+                            echo "</div>";
+                        }
 
-            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
-        } else {
-            echo "<p>No se encontraron pagos para este cliente.</p>";
-        }
+                        echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
+                    } else {
+                        echo "<p>No se encontraron pagos para este cliente.</p>";
+                    }
 
-        $stmt->close();
-    } else {
-        $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
+                    $stmt->close();
+                } else {
+                    $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
         FROM facturas 
         WHERE cliente_id = ?";
-$stmt = $conexion->prepare($sql);
-$stmt->bind_param("i", $id_cliente);
-$stmt->execute();
-$resultado = $stmt->get_result();
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bind_param("i", $id_cliente);
+                    $stmt->execute();
+                    $resultado = $stmt->get_result();
 
-$num_rows = $resultado->num_rows;
-        if ($num_rows > 0) {
-            echo "<table id='tabla-prestamos'>";
-            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
-            $last_row = null;
-            while ($fila = $resultado->fetch_assoc()) {
-                $last_row = $fila; // Actualizar la última fila en cada iteración
-            }
+                    $num_rows = $resultado->num_rows;
+                    if ($num_rows > 0) {
+                        echo "<table id='tabla-prestamos'>";
+                        echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
+                        $last_row = null;
+                        while ($fila = $resultado->fetch_assoc()) {
+                            $last_row = $fila; // Actualizar la última fila en cada iteración
+                        }
 
-            // Mostrar solo la última fila
-            if ($last_row) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
-                echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
-                echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
-                echo "</tr>";
-            }
+                        // Mostrar solo la última fila
+                        if ($last_row) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+                            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+                            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+                            echo "</tr>";
+                        }
 
-            echo "</table>";
+                        echo "</table>";
 
-            // Mostrar el enlace de "Editar" solo para la última fila
-            if ($last_row) {
-                echo "<div class='edit-button'>";
-                echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
-                echo "</div>";
-            }
+                        // Mostrar el enlace de "Editar" solo para la última fila
+                        if ($last_row) {
+                            echo "<div class='edit-button'>";
+                            echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
+                            echo "</div>";
+                        }
 
-            echo "<button onclick='showMore()'>Ver más</button>";
-        } else {
-            echo "<p>No se encontraron pagos para este cliente.</p>";
-        }
+                        echo "<button onclick='showMore()'>Ver más</button>";
+                    } else {
+                        echo "<p>No se encontraron pagos para este cliente.</p>";
+                    }
 
-        $stmt->close();
-    }
-    ?>
-</div>
+                    $stmt->close();
+                }
+                ?>
+            </div>
 
-<script>
-    function showMore() {
-        window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
-    }
+            <script>
+                function showMore() {
+                    window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
+                }
 
-    function showLess() {
-        window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
-    }
-</script>
+                function showLess() {
+                    window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
+                }
+            </script>
 
-            <!-- CLIENTES -->
 
+            <!--LISTA CLIENTES -->
             <?php
-// ...
+            include 'load_clients.php';
+            $id_cliente = isset($_GET['id']) ? $_GET['id'] : null;
+            $clientes = obtenerClientes($conexion);
+            list($prevIndex, $currentIndex, $nextIndex) = obtenerIndicesClienteActual($clientes, $id_cliente);
+            ?>
 
-// Obtener el ID del cliente actual
-$id_cliente = isset($_GET['id']) ? $_GET['id'] : null;
+            <h2>Clientes:</h2>
+            <form action='procesar_cliente.php' method='post' id='clienteForm'>
+                <input type='hidden' id='selectedClientId' name='cliente' value='<?= $id_cliente ?>'>
+                <a href='perfil_abonos.php?id=<?= $clientes[$prevIndex]['id'] ?>' class='boton4'>Anterior</a>
+                <a href='perfil_abonos.php?id=<?= $clientes[$nextIndex]['id'] ?>' class='boton4'>Siguiente</a>
+                <select name='cliente' onchange='selectClient()'>
+                    <option>Seleccionar Cliente</option>
+                    <?php foreach ($clientes as $index => $cliente) : ?>
+                        <option value='<?= $cliente['id'] ?>' <?= $index === $currentIndex ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($cliente['nombre'] . " " . $cliente['apellido']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </form>
 
-// Consulta para obtener la lista de clientes
-$query = "SELECT id, Nombre, Apellido FROM clientes";
-$result = $conexion->query($query);
-
-// Verificar si la consulta fue exitosa
-if (!$result) {
-    die("Error en la consulta: " . mysqli_error($conexion));
-}
-
-// Obtener todos los clientes y almacenarlos en un array
-$clientes = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $id = $row['id'];
-    $nombre = $row['Nombre'];
-    $apellido = $row['Apellido'];
-    $clientes[] = ['id' => $id, 'nombre' => $nombre, 'apellido' => $apellido];
-}
-
-// Liberar el resultado de la consulta
-mysqli_free_result($result);
-
-// Encontrar el índice del cliente actual en la lista
-$currentIndex = null;
-if ($id_cliente !== null) {
-    foreach ($clientes as $index => $cliente) {
-        if ($cliente['id'] == $id_cliente) {
-            $currentIndex = $index;
-            break;
-        }
-    }
-}
-
-// Calcular el índice del cliente anterior y siguiente
-$prevIndex = ($currentIndex === null || $currentIndex === 0) ? count($clientes) - 1 : $currentIndex - 1;
-$nextIndex = ($currentIndex === null || $currentIndex === count($clientes) - 1) ? 0 : $currentIndex + 1;
-
-// Mostrar el formulario con los botones de navegación y la lista desplegable
-echo "<h2>Clientes:</h2>";
-echo "<form action='procesar_cliente.php' method='post' id='clienteForm'>";
-echo "<input type='hidden' id='selectedClientId' name='cliente' value='" . ($id_cliente !== null ? $id_cliente : '') . "'>";
-echo "<a href='perfil_abonos.php?id={$clientes[$prevIndex]['id']}' class='boton4'>Anterior</a>";
-echo "<a href='perfil_abonos.php?id={$clientes[$nextIndex]['id']}' class='boton4'>Siguiente</a>";
-echo "<select name='cliente' onchange='selectClient()'>";
-echo "<option>Selecionar Cliente</option>";
-
-// Mostrar opciones de clientes
-foreach ($clientes as $index => $cliente) {
-    $id = $cliente['id'];
-    $nombre = $cliente['nombre'];
-    $apellido = $cliente['apellido'];
-    $selected = ($index === $currentIndex) ? 'selected' : '';
-    echo "<option value='$id' $selected>$nombre $apellido</option>";
-}
-echo "</select>";
-echo "</form>";
-?>
-
-
+            <script>
+                function selectClient() {
+                    var form = document.getElementById('clienteForm');
+                    form.submit();
+                }
+            </script>
 
 
             <!-- BOTONES DE PAGO -->
 
             <?php
-            ob_start();
-
-            function obtenerSiguienteClienteId($conexion, $id_cliente_actual)
-            {
-                $siguiente_cliente_id = 0;
-                $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
-                $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
-                $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
-                $stmt_siguiente_cliente->execute();
-                $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
-                $stmt_siguiente_cliente->fetch();
-                $stmt_siguiente_cliente->close();
-            
-                return $siguiente_cliente_id;
-            }
- 
             // Verificar si se proporcionó el ID del cliente en la variable PHP $id_cliente
             if (isset($id_cliente))
 
@@ -420,177 +368,12 @@ echo "</form>";
 
             $stmt_monto_pagar->close();
 
-            // PAGO
-
-            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
-                $accion = $_POST['action'];
-
-                if ($accion === 'Pagar') {
-                    $sql_reset = "UPDATE prestamos SET Pospuesto = 0, mas_tarde = 0 WHERE IDCliente = ?";
-                    $stmt_reset = $conexion->prepare($sql_reset);
-                    $stmt_reset->bind_param("i", $id_cliente);
-
-                    if ($stmt_reset->execute()) {
-    // Obtener el siguiente ID de cliente
-    $siguiente_cliente_id = obtenerSiguienteClienteId($conexion, $id_cliente);
-
-    if ($siguiente_cliente_id !== null) {
-        // Redirigir al perfil del siguiente cliente
-        header("Location: perfil_abonos.php?id=$siguiente_cliente_id");
-        exit();
-    } else {
-        // Mostrar el mensaje ya que no hay más clientes
-        echo '<script>
-              window.onload = function() {
-                  alert("No hay más clientes");
-              };
-              </script>';
-    }
-} else {
-    echo "Error al actualizar los campos 'Pospuesto' y 'mas_tarde': " . $stmt_reset->error;
-}
-
-                    $stmt_reset->close();
-                }
-            } else {
-                echo "  ";
-            }
-
-            // NO PAGO Y MAS TARDE
-
-            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
-                $accion = $_POST['action'];
-
-                if ($accion === 'No pago' || $accion === 'Mas tarde') {
-                    $campo_actualizar = ($accion === 'No pago') ? 'Pospuesto' : 'mas_tarde';
-
-                    $sql_update = "UPDATE prestamos SET $campo_actualizar = 1 WHERE $campo_actualizar = 0 AND IDCliente = ?";
-                    $stmt_update = $conexion->prepare($sql_update);
-                    $stmt_update->bind_param("i", $id_cliente);
-
-                    if ($stmt_update->execute()) {
-                        echo "Acción '$accion' realizada: campo '$campo_actualizar' actualizado a 1";
-                    } else {
-                        echo "Error al actualizar el campo '$campo_actualizar': " . $stmt_update->error;
-                    }
-
-                    $stmt_update->close();
-                }
-            } else {
-                echo "  ";
-            }
-
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                // Obtener los valores ingresados
-                $cuota_ingresada = $_POST['cuota'];
-                $monto_deuda = (float)$montoAPagar - (float)$cuota_ingresada; // Calcular el monto de deuda
-
-                // Validar el monto ingresado para monto_pagado
-                $monto_pagado = floatval($cuota_ingresada); // Convertir a decimal
-
-                // Actualizar MontoAPagar en la tabla "prestamos"
-                $sql_update_prestamo = "UPDATE prestamos SET MontoAPagar = ? WHERE IDCliente = ?";
-                $stmt_update_prestamo = $conexion->prepare($sql_update_prestamo);
-                $stmt_update_prestamo->bind_param("di", $monto_deuda, $id_cliente);
-                $stmt_update_prestamo->execute();
-
-                // Insertar datos en la tabla "facturas"
-
-
-                // Obtener el ID del préstamo del cliente desde la tabla prestamos
-                $sql_id_prestamo = "SELECT ID FROM prestamos WHERE IDCliente = ?";
-                $stmt_id_prestamo = $conexion->prepare($sql_id_prestamo);
-                $stmt_id_prestamo->bind_param("i", $id_cliente);
-                $stmt_id_prestamo->execute();
-                $stmt_id_prestamo->bind_result($id_prestamo);
-                $stmt_id_prestamo->fetch();
-                $stmt_id_prestamo->close();
-
-                $fecha_pago = date('Y-m-d'); // Fecha actual
-                $monto_pagado_historial = $_POST['cuota']; // Obtener el monto pagado del formulario
-
-                // Insertar datos en la tabla "historial_pagos"
-                if ($_POST['action'] === 'Pagar') {
-                    // Solo si la acción es 'Pagar', se realiza la inserción en las tablas 'facturas' y 'historial_pagos'
-                    $stmt_update_prestamo->execute();
-
-                    // Insertar datos en la tabla "facturas" solo si es acción 'Pagar'
-                    $fecha_actual = date('Y-m-d');
-                    $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
-                    $stmt_insert_factura = $conexion->prepare($sql_insert_factura);
-                    $stmt_insert_factura->bind_param("idsss", $id_cliente, $montoAPagar, $fecha_actual, $monto_pagado, $monto_deuda);
-                    $stmt_insert_factura->execute();
-
-                    // Insertar datos en la tabla "historial_pagos" solo si es acción 'Pagar'
-                    $fecha_pago = date('Y-m-d'); // Fecha actual
-                    $monto_pagado_historial = $_POST['cuota']; // Obtener el monto pagado del formulario
-
-                    $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
-                    $stmt_insert_historial = $conexion->prepare($sql_insert_historial);
-                    $stmt_insert_historial->bind_param("ssdi", $id_cliente, $fecha_pago, $monto_pagado_historial, $id_prestamo);
-                    $stmt_insert_historial->execute();
-                }
-
-
-                function obtenerSiguienteClienteId($conexion, $id_cliente_actual)
-                {
-                    $siguiente_cliente_id = 0;
-                    $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
-                    $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
-                    $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
-                    $stmt_siguiente_cliente->execute();
-                    $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
-                    $stmt_siguiente_cliente->fetch();
-                    $stmt_siguiente_cliente->close();
-
-                    return $siguiente_cliente_id;
-                }
-
-                // Obtener el siguiente ID de cliente (cambia esta lógica según la manera en que tengas los clientes ordenados)
-                $siguiente_cliente_id = obtenerSiguienteClienteId($conexion, $id_cliente);
-
-                // Definir $es_ultimo_cliente fuera del bloque condicional POST
-                $es_ultimo_cliente = false;
-
-                // Verificar si la inserción fue exitosa
-                if ($stmt_insert_factura && $stmt_update_prestamo) {
-                    // Inserción y actualización exitosas
-
-                    // Verificar si es el último cliente
-                    $es_ultimo_cliente = ($siguiente_cliente_id === null);
-
-                    // Mostrar mensaje si es el último cliente
-                    if ($es_ultimo_cliente) {
-                        echo '<p>Este es el último cliente.</p>';
-                    }
-
-                    if ($siguiente_cliente_id !== null) {
-                        // Redirigir al perfil del siguiente cliente si hay más clientes
-                        header("Location: perfil_abonos.php?id=$siguiente_cliente_id");
-                        exit();
-                    } else {
-                        // Mostrar el modal ya que no hay más clientes
-                        echo '<script>
-                    window.onload = function() {
-                        alert("No hay más clientes");
-                    };
-                  </script>';
-                    }
-                } else {
-                    // Alguna inserción o actualización fallida
-                    // Manejar el error apropiadamente
-                    echo "Error al realizar el pago.";
-                }
-
-                $stmt_insert_factura->close();
-                $stmt_update_prestamo->close();
-            }
-
-            ob_end_flush();
             ?>
 
             <!-- Formulario de Pago -->
-            <form method="post" action="pagar.php">
+            <form method="post" action="process_payment.php">
+                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
+                <!-- Asegúrate de definir $id_cliente -->
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
                 <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
                 <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
@@ -598,7 +381,9 @@ echo "</form>";
             </form>
 
             <!-- Formulario de No Pago y Mas Tarde -->
-            <form method="post" action="pagar_no.php">
+            <form method="post" action="process_payment.php">
+                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
+                <!-- Asegúrate de definir $id_cliente -->
                 <input type="submit" name="action" value="No pago" class="boton2">
                 <input type="submit" name="action" value="Mas tarde" class="boton3">
             </form>
