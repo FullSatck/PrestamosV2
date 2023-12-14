@@ -19,9 +19,8 @@ if ($conexion->connect_error) {
 // Obtener clientes que han pasado ciertos días hábiles sin pagar una cuota
 $diasHabilesSinPagar = 15;
 $fechaLimite = date('Y-m-d', strtotime("-$diasHabilesSinPagar weekdays"));
-$query = "SELECT p.IDCliente, p.ID, p.MontoCuota, MAX(h.FechaPago) AS FechaUltimoPago
+$query = "SELECT p.IDCliente, p.ID, p.MontoCuota, MIN(p.FechaInicio) AS FechaInicio
           FROM prestamos p
-          LEFT JOIN historial_pagos h ON p.ID = h.IDPrestamo
           WHERE p.Estado = 'pendiente' AND p.FechaVencimiento <= '$fechaLimite'
           GROUP BY p.ID";
 $result = $conexion->query($query);
@@ -29,8 +28,8 @@ $result = $conexion->query($query);
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         // Calcular la fecha límite para la última cuota
-        $fechaUltimoPago = $row['FechaUltimoPago'] ? strtotime($row['FechaUltimoPago']) : strtotime($row['FechaInicio']);
-        $fechaLimiteCuota = date('Y-m-d', strtotime("+10 weekdays", $fechaUltimoPago));
+        $fechaInicio = isset($row['FechaInicio']) ? $row['FechaInicio'] : date('Y-m-d');
+        $fechaLimiteCuota = date('Y-m-d', strtotime("+10 weekdays", strtotime($fechaInicio)));
 
         // Verificar si ha pasado el plazo establecido desde la fecha de vencimiento
         if ($fechaLimiteCuota <= $fechaLimite) {
@@ -41,8 +40,7 @@ if ($result) {
 
             // Actualizar información en la tabla prestamos
             $prestamoID = $row['ID'];
-            $cuotasVencidas = $row['FechaUltimoPago'] ? 0 : $row['MontoCuota'];
-            $updatePrestamoQuery = "UPDATE prestamos SET FechaUltimoPago = NOW(), CuotasVencidas = $cuotasVencidas + 1 WHERE ID = $prestamoID";
+            $updatePrestamoQuery = "UPDATE prestamos SET CuotasVencidas = CuotasVencidas + 1 WHERE ID = $prestamoID";
             $conexion->query($updatePrestamoQuery);
         }
     }
