@@ -229,27 +229,27 @@ date_default_timezone_set('America/Bogota');
             <!-- TRAER EL PRIMER ID -->
 
             <?php 
-function obtenerPrimerID($conexion) {
-    $primer_id = 0;
+            function obtenerPrimerID($conexion) {
+                $primer_id = 0;
 
-    // Consulta para obtener el primer ID de préstamo
-    $sql_primer_id = "SELECT ID
-                      FROM prestamos
-                      ORDER BY ID ASC
-                      LIMIT 1";
+                // Consulta para obtener el primer ID de préstamo
+                $sql_primer_id = "SELECT ID
+                                  FROM clientes
+                                  ORDER BY ID ASC
+                                  LIMIT 1";
 
-    $stmt_primer_id = $conexion->prepare($sql_primer_id);
-    $stmt_primer_id->execute();
-    $stmt_primer_id->bind_result($primer_id);
-    $stmt_primer_id->fetch();
-    $stmt_primer_id->close();
+               $stmt_primer_id = $conexion->prepare($sql_primer_id);
+                $stmt_primer_id->execute();
+                $stmt_primer_id->bind_result($primer_id);
+                $stmt_primer_id->fetch();
+                $stmt_primer_id->close();
 
-    return $primer_id;
-}
+                return $primer_id;
+            }
 
-// Obtener el primer ID de préstamo de la base de datos
-$primer_id = obtenerPrimerID($conexion);
-?>
+            // Obtener el primer ID de préstamo de la base de datos
+            $primer_id = obtenerPrimerID($conexion);
+            ?>
 
 
 

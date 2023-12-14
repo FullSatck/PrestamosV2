@@ -17,7 +17,7 @@ if ($conexion->connect_error) {
 }
 
 // Obtener clientes que han pasado ciertos días hábiles sin pagar una cuota
-$diasHabilesSinPagar = 10;
+$diasHabilesSinPagar = 15;
 $fechaLimite = date('Y-m-d', strtotime("-$diasHabilesSinPagar weekdays"));
 $query = "SELECT p.IDCliente, p.ID, p.MontoCuota, MAX(h.FechaPago) AS FechaUltimoPago
           FROM prestamos p
