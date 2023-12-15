@@ -14,7 +14,7 @@ function obtenerIndicesClienteActual($clientes, $id_cliente_actual) {
 }
 
 
-function obtenerClientes($conexion, $zonaAsignada = 'Quintana Roo') {
+function obtenerClientes($conexion, $zonaAsignada = 'Puebla') {
     $query = "SELECT id, Nombre, Apellido FROM clientes WHERE ZonaAsignada = ?";
     $stmt = $conexion->prepare($query);
     $stmt->bind_param("s", $zonaAsignada);
