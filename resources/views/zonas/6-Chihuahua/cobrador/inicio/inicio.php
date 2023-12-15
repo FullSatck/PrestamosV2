@@ -109,14 +109,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
@@ -125,12 +118,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
+          
 
 
 
@@ -141,54 +129,37 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Inicio cobrador de Puebla</h1>
         <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cobro_inicio.php"
-                        class="titulo">Prestamos</a><br>
-                    <p>Mantenimiento
-                    </p>
-                </div>
-            </div>
+            
 
             <!-- TRAER EL PRIMER ID -->
             <?php
-            // Incluye el archivo de conexión
-include("../../../../../../controllers/conexion.php");
-            // Función para obtener el primer ID de préstamo no pagado hoy
-            function obtenerPrimerIDNoPagado($conexion) {
-                // Obtener la fecha actual
-                $fecha_actual = date('Y-m-d');
+            function obtenerPrimerID($conexion)
+            {
                 $primer_id = 0;
-            
-                // Consulta para obtener el primer ID de préstamo no pagado hoy y de zona 'Puebla'
-                $sql_primer_id = "SELECT p.ID
-                                  FROM prestamos p
-                                  LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo
-                                  WHERE (hp.FechaPago <> ? OR hp.FechaPago IS NULL)
-                                  AND p.Zona = 'Chihuhua'
-                                  ORDER BY p.ID ASC
-                                  LIMIT 1";
-            
+
+                // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
+                $sql_primer_id = "SELECT ID
+                      FROM clientes
+                      WHERE ZonaAsignada = 'Chihuahua'
+                      ORDER BY ID ASC
+                      LIMIT 1";
+
                 $stmt_primer_id = $conexion->prepare($sql_primer_id);
-                $stmt_primer_id->bind_param("s", $fecha_actual);
                 $stmt_primer_id->execute();
                 $stmt_primer_id->bind_result($primer_id);
                 $stmt_primer_id->fetch();
                 $stmt_primer_id->close();
-            
+
                 return $primer_id;
             }
-            
-            // Obtener el primer ID de préstamo no pagado de la base de datos para la zona 'Puebla'
-            $primer_id = obtenerPrimerIDNoPagado($conexion);
-            
 
-            ?>
-
+            // Obtener el primer ID de cliente de la base de datos
+            $primer_id = obtenerPrimerID($conexion);
+            ?> 
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>
@@ -200,13 +171,7 @@ include("../../../../../../controllers/conexion.php");
                 </div>
             </div>
 
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p>Mantenimiento
-                    </p>
-                </div>
-            </div>
+          
         </div>
     </main>
 

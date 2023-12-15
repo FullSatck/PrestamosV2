@@ -132,10 +132,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -195,21 +195,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
@@ -218,13 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
-
+         
 
 
         </div>
@@ -253,16 +240,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Estado</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                $sql_zonas = "SELECT * FROM zonas WHERE nombre = 'Puebla'";
-                $result_zonas = $conexion->query($sql_zonas);
+                    $sql_zonas = "SELECT * FROM zonas WHERE nombre = 'Puebla'";
+                    $result_zonas = $conexion->query($sql_zonas);
 
-                if ($result_zonas->num_rows > 0) {
-                    while ($row = $result_zonas->fetch_assoc()) {
-                        $selected = ($id_zona == $row['ID']) ? 'selected' : '';
-                        echo "<option value='" . $row['ID'] . "' $selected>" . $row['Nombre'] . "</option>";
+                    if ($result_zonas->num_rows > 0) {
+                        while ($row = $result_zonas->fetch_assoc()) {
+                            $selected = ($id_zona == $row['ID']) ? 'selected' : '';
+                            echo "<option value='" . $row['ID'] . "' $selected>" . $row['Nombre'] . "</option>";
+                        }
                     }
-                }
-                ?>
+                    ?>
                 </select>
                 <span class="help-block"><?php echo $id_zona_err; ?></span>
             </div>
@@ -272,20 +259,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select id="ciudad" name="ciudad" class="zona" required>
                     <option value="">Seleccionar Municipio</option>
                     <?php
-    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 20";
-    $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
-    while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
-        echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
-    }
-    ?>
+                    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 20";
+                    $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
+                    while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
+                        echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
+                    }
+                    ?>
                 </select>
 
             </div>
 
             <div class="input-container">
                 <label for="asentamiento">Colonia:</label>
-                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
-                    required>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento" required>
             </div>
 
             <div class="form-group">
@@ -296,8 +282,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <input type="text" name="descripcion" id="descripcion" class="form-control"
-                    value="<?php echo $descripcion; ?>">
+                <input type="text" name="descripcion" id="descripcion" class="form-control" value="<?php echo $descripcion; ?>">
                 <span class="help-block"><?php echo $descripcion_err; ?></span>
             </div>
 

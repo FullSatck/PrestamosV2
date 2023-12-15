@@ -132,7 +132,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 
                 <input type="text" name="busqueda" placeholder="Buscar...">
 
-                <a href="/resources/views/admin/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
             </div>
 
         </form>

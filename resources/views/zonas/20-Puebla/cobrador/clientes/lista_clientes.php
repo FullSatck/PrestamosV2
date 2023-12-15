@@ -111,26 +111,12 @@ $resultado = $conexion->query($sql);
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
                 </div>
             </a>
 

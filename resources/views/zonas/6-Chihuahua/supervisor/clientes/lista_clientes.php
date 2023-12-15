@@ -29,7 +29,7 @@ $stmt->close();
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS moneda, c.ZonaAsignada 
         FROM clientes c
         LEFT JOIN monedas m ON c.monedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Chihuhua'
+        WHERE c.ZonaAsignada = 'Chihuahua'
         ORDER BY c.ID DESC";
 
 
@@ -128,22 +128,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
-
+            </a> 
         </div>
 
     </div>

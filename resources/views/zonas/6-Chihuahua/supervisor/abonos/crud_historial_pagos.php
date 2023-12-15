@@ -116,23 +116,7 @@ if (isset($_GET['clienteId'])) {
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/lista_super.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
-
-
+            </a> 
         </div>
 
     </div>
@@ -149,17 +133,17 @@ if (isset($_GET['clienteId'])) {
         <table>
             <tr>
                 <th>ID de Factura</th>
-                <th>Monto</th>
+                <!-- <th>M Prestado</th> -->
                 <th>Fecha</th>
                 <th>Monto Pagado</th>
-                <th>Monto Deuda</th>
+                <th>M Pendiente</th>
                 <th>Generar PDF</th>
 
             </tr>
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
             <tr>
                 <td><?= $fila["id"] ?></td>
-                <td><?= $fila["monto"] ?></td>
+                <!-- <td><?= $fila["monto"] ?></td> -->
                 <td><?= $fila["fecha"] ?></td>
                 <td><?= $fila["monto_pagado"] ?></td>
                 <td><?= $fila["monto_deuda"] ?></td>

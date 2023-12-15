@@ -106,14 +106,7 @@ $stmt->close();
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
@@ -122,14 +115,7 @@ $stmt->close();
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
-
-
+        
 
 
         </div>
@@ -172,11 +158,7 @@ $stmt->close();
                 <input type="text" id="telefono" name="telefono" required>
             </div>
 
-            <div class="input-container">
-                <label for="historial">Historial Crediticio:</label>
-                <textarea id="historial" name="historial" rows="4"></textarea>
-            </div>
-
+         
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
                 <select id="moneda" name="moneda">

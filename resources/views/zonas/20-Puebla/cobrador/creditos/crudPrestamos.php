@@ -33,9 +33,11 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z"
-        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/crudpresta.css">
     <title>CRUD de Préstamos</title>
@@ -48,10 +50,10 @@ $stmt->close();
         </div>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -98,21 +100,14 @@ $stmt->close();
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a>
-
-            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
-                </div>
-            </a>
+            </a> 
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php">
                 <div class="option">
@@ -121,13 +116,7 @@ $stmt->close();
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
-
+           
 
 
         </div>
@@ -167,31 +156,31 @@ $stmt->close();
                                         <th scope="col">Deuda</th>
                                         <th scope="col">Frecuencia</th>
                                         <th scope="col">Cuota</th>
-                                        <th scope="col">Inf</th>
+                                        <!-- <th scope="col">Inf</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                            include("../../../../../../controllers/conexion.php");
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Puebla' AND EstadoP = 1");
-                            while ($datos = $sql->fetch_object()) { ?>
-                                    <tr>
-                                        <td><?= $datos->ID ?></td>
-                                        <td><?= $datos->NombreCliente ?></td>
-                                        <td><?= $datos->Monto ?></td>
-                                        <td><?= $datos->TasaInteres ?></td>
-                                        <td><?= $datos->Plazo ?></td>
-                                        <td><?= $datos->MonedaID ?></td>
-                                        <td class="estado"><?= $datos->Estado ?></td>
-                                        <td><?= $datos->Zona ?></td>
-                                        <td><?= $datos->MontoAPagar ?></td>
-                                        <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
-                                        <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
-                                        <!-- Formatear MontoCuota -->
-                                        <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>">
-                                                <ion-icon name="help-circle-outline"></ion-icon>
-                                            </a></td>
-                                    </tr>
+                                    include("../../../../../../controllers/conexion.php");
+                                    $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE prestamos.Zona = 'Puebla' AND EstadoP = 1");
+                                    while ($datos = $sql->fetch_object()) { ?>
+                                        <tr>
+                                            <td><?= $datos->ID ?></td>
+                                            <td><?= $datos->NombreCliente ?></td>
+                                            <td><?= $datos->Monto ?></td>
+                                            <td><?= $datos->TasaInteres ?></td>
+                                            <td><?= $datos->Plazo ?></td>
+                                            <td><?= $datos->MonedaID ?></td>
+                                            <td class="estado"><?= $datos->Estado ?></td>
+                                            <td><?= $datos->Zona ?></td>
+                                            <td><?= $datos->MontoAPagar ?></td>
+                                            <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
+                                            <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
+                                            <!-- Formatear MontoCuota -->
+                                            <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>">
+                                                    <ion-icon name="help-circle-outline"></ion-icon>
+                                                </a></td>
+                                        </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
@@ -203,27 +192,27 @@ $stmt->close();
     </main>
 
     <script>
-    $(document).ready(function() {
-        $('#search-button').on('click', function() {
-            var searchTerm = $('#search-input').val().toLowerCase();
-            $('tbody tr').each(function() {
-                var rowText = $(this).text().toLowerCase();
-                if (rowText.indexOf(searchTerm) !== -1) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
+        $(document).ready(function() {
+            $('#search-input').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('tbody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.indexOf(searchTerm) !== -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // Restaura las filas ocultas cuando se borra el campo de búsqueda
+            $('#search-input').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                if (searchTerm === '') {
+                    $('tbody tr').show();
                 }
             });
         });
-
-        // Restaura las filas ocultas cuando se borra el campo de búsqueda
-        $('#search-input').on('input', function() {
-            var searchTerm = $(this).val().toLowerCase();
-            if (searchTerm === '') {
-                $('tbody tr').show();
-            }
-        });
-    });
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
 
