@@ -277,6 +277,7 @@ date_default_timezone_set('America/Bogota');
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
+                    <p>Mantenimiento</p>
 
                 </div>
 
