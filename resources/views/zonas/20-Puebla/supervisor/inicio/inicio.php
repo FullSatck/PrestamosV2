@@ -190,7 +190,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-          
+            
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -215,30 +215,20 @@ mysqli_close($conexion);
     <main>
         <h1>Inicio Supervisor</h1>
         <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Prestamos</a><br>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
+           
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Recaudos</a><br>
+                    <a href="###" class="titulo">Abonos</a><br>
                     <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros </a>
                     <p>Version beta</p>
                 </div>
             </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Comision</a><br>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
+            
         </div>
     </main>
 

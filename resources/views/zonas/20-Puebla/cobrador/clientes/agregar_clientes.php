@@ -165,11 +165,7 @@ $stmt->close();
                 <input type="text" id="telefono" name="telefono" required>
             </div>
 
-            <div class="input-container">
-                <label for="historial">Historial Crediticio:</label>
-                <textarea id="historial" name="historial" rows="4"></textarea>
-            </div>
-
+         
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
                 <select id="moneda" name="moneda">

@@ -147,13 +147,7 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Inicio cobrador de Puebla</h1>
         <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p>Mantenimiento
-                    </p>
-                </div>
-            </div>
+         
 
             <?php
             // Incluye el archivo de conexión
@@ -193,25 +187,19 @@ date_default_timezone_set('America/Bogota');
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
                     <p>Version beta</p>
                 </div>
             </div>
 
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p>Mantenimiento
-                    </p>
-                </div>
-            </div>
+           
         </div>
     </main>
 
