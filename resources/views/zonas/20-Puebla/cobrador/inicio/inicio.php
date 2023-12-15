@@ -56,10 +56,10 @@ date_default_timezone_set('America/Bogota');
         </div>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -137,12 +137,6 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
 
 
 
@@ -153,24 +147,18 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Inicio cobrador de Puebla</h1>
         <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/cobro_inicio.php"
-                        class="titulo">Prestamos</a><br>
-                    <p>Mantenimiento
-                    </p>
-                </div>
-            </div>
+         
 
             <?php
             // Incluye el archivo de conexión
-include("../../../../../../controllers/conexion.php");
+            include("../../../../../../controllers/conexion.php");
             // Función para obtener el primer ID de préstamo no pagado hoy
-            function obtenerPrimerIDNoPagado($conexion) {
+            function obtenerPrimerIDNoPagado($conexion)
+            {
                 // Obtener la fecha actual
                 $fecha_actual = date('Y-m-d');
                 $primer_id = 0;
-            
+
                 // Consulta para obtener el primer ID de préstamo no pagado hoy y de zona 'Puebla'
                 $sql_primer_id = "SELECT p.ID
                                   FROM prestamos p
@@ -179,45 +167,39 @@ include("../../../../../../controllers/conexion.php");
                                   AND p.Zona = 'Puebla'
                                   ORDER BY p.ID ASC
                                   LIMIT 1";
-            
+
                 $stmt_primer_id = $conexion->prepare($sql_primer_id);
                 $stmt_primer_id->bind_param("s", $fecha_actual);
                 $stmt_primer_id->execute();
                 $stmt_primer_id->bind_result($primer_id);
                 $stmt_primer_id->fetch();
                 $stmt_primer_id->close();
-            
+
                 return $primer_id;
             }
-            
+
             // Obtener el primer ID de préstamo no pagado de la base de datos para la zona 'Puebla'
             $primer_id = obtenerPrimerIDNoPagado($conexion);
-            
+
 
             ?>
 
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                      <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
                     <p>Version beta</p>
                 </div>
             </div>
 
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p>Mantenimiento
-                    </p>
-                </div>
-            </div>
+           
         </div>
     </main>
 

@@ -127,12 +127,7 @@ $stmt->close();
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a> 
+           
 
         </div>
 
@@ -175,10 +170,7 @@ $stmt->close();
                 <input type="text" id="telefono" name="telefono" required>
             </div>
 
-            <div class="input-container">
-                <label for="historial">Historial Crediticio:</label>
-                <textarea id="historial" name="historial" rows="4"></textarea>
-            </div> 
+           
             
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>

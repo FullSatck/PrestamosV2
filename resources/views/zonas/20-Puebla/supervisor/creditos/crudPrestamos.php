@@ -30,15 +30,16 @@ $stmt->close();
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z"
-        crossorigin="anonymous"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/assets/css/crudpresta.css"> 
+    <link rel="stylesheet" href="/public/assets/css/crudpresta.css">
     <title>CRUD de Préstamos</title>
-
     <body id="body"> 
 
 <header>
@@ -127,12 +128,6 @@ $stmt->close();
             </div>
         </a>
 
-        <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
-            <div class="option">
-                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                <h4>Abonos</h4>
-            </div>
-        </a> 
     </div>
 
 </div>
@@ -170,7 +165,7 @@ $stmt->close();
                                         <th scope="col">Deuda</th>
                                         <th scope="col">Frecuencia</th>
                                         <th scope="col">Cuota</th>
-                                        <th scope="col">Inf</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -203,27 +198,27 @@ $stmt->close();
     </main>
 
     <script>
-    $(document).ready(function() {
-        $('#search-button').on('click', function() {
-            var searchTerm = $('#search-input').val().toLowerCase();
-            $('tbody tr').each(function() {
-                var rowText = $(this).text().toLowerCase();
-                if (rowText.indexOf(searchTerm) !== -1) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
+        $(document).ready(function() {
+            $('#search-input').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('tbody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.indexOf(searchTerm) !== -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // Restaura las filas ocultas cuando se borra el campo de búsqueda
+            $('#search-input').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                if (searchTerm === '') {
+                    $('tbody tr').show();
                 }
             });
         });
-
-        // Restaura las filas ocultas cuando se borra el campo de búsqueda
-        $('#search-input').on('input', function() {
-            var searchTerm = $(this).val().toLowerCase();
-            if (searchTerm === '') {
-                $('tbody tr').show();
-            }
-        });
-    });
     </script>
      <script src="/public/assets/js/MenuLate.js"></script>
 

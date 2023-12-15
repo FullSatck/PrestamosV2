@@ -190,12 +190,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
+            
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -211,12 +206,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/20-Puebla/supervisor/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
+          
 
         </div>
 
@@ -225,30 +215,20 @@ mysqli_close($conexion);
     <main>
         <h1>Inicio Supervisor</h1>
         <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Prestamos</a><br>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
+           
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Recaudos</a><br>
+                    <a href="###" class="titulo">Abonos</a><br>
                     <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Cuadro 3</a>
-                    <p>Mantenimiento</p>
+                    <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros </a>
+                    <p>Version beta</p>
                 </div>
             </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Comision</a><br>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
+            
         </div>
     </main>
 
