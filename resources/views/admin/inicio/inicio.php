@@ -248,7 +248,7 @@ date_default_timezone_set('America/Bogota');
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/controllers/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Cartulina</a>
+                    <a href="/controllers/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>
