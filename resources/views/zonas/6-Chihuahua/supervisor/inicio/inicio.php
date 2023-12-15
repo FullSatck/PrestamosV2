@@ -223,8 +223,8 @@ mysqli_close($conexion);
             </div>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Filtros</a><br>
-                    <p>Mantenimiento</p>
+                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a><br>
+                    <p>Version beta</p>
                 </div>
             </div>
 
