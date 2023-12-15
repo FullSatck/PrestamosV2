@@ -26,82 +26,6 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
-
-// COBROS 
-try {
-    // Consulta SQL para obtener la suma de MontoAPagar
-    $sqlCobros = "SELECT SUM(MontoAPagar) AS TotalMonto FROM prestamos";
-
-    // Realizar la consulta
-    $resultCobros = mysqli_query($conexion, $sqlCobros);
-
-    if ($resultCobros) {
-        $rowCobros = mysqli_fetch_assoc($resultCobros);
-
-        // Obtener el total de cobros
-        $totalMonto = $rowCobros['TotalMonto'];
-
-        // Cierra la consulta de cobros
-        mysqli_free_result($resultCobros);
-    } else {
-        echo "Error en la consulta de cobros: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (cobros): " . $e->getMessage();
-}
-
-// INGRESOS
-try {
-    // Consulta SQL para obtener la suma de MontoPagado
-    $sqlIngresos = "SELECT SUM(MontoPagado) AS TotalIngresos FROM historial_pagos";
-
-    // Realizar la consulta
-    $resultIngresos = mysqli_query($conexion, $sqlIngresos);
-
-    if ($resultIngresos) {
-        $rowIngresos = mysqli_fetch_assoc($resultIngresos);
-
-        // Obtener el total de ingresos
-        $totalIngresos = $rowIngresos['TotalIngresos'];
-
-        // Cierra la consulta de ingresos
-        mysqli_free_result($resultIngresos);
-    } else {
-        echo "Error en la consulta de ingresos: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (ingresos): " . $e->getMessage();
-}
-
-
-// COMISIONES
-try {
-    // Consulta SQL para obtener la suma de Comision
-    $sqlComisiones = "SELECT SUM(Comision) AS TotalComisiones FROM prestamos WHERE Zona = 'Puebla'";
-
-    // Realizar la consulta
-    $resultComisiones = mysqli_query($conexion, $sqlComisiones);
-
-    if ($resultComisiones) {
-        $rowComisiones = mysqli_fetch_assoc($resultComisiones);
-
-        // Obtener el total de comisiones
-        $totalComisiones = $rowComisiones['TotalComisiones'];
-
-        // Cierra la consulta de comisiones
-        mysqli_free_result($resultComisiones);
-    } else {
-        echo "Error en la consulta de comisiones: " . mysqli_error($conexion);
-    }
-} catch (Exception $e) {
-    echo "Error de conexión a la base de datos (comisiones): " . $e->getMessage();
-}
-
-
-
-
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
 ?>
 
 
@@ -125,10 +49,10 @@ mysqli_close($conexion);
         </div>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Supervisor<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -204,7 +128,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-         
+
 
         </div>
 
@@ -213,14 +137,40 @@ mysqli_close($conexion);
     <main>
         <h1>Inicio Supervisor</h1>
         <div class="cuadros-container">
-    
-           
+
+
+            <?php
+            function obtenerPrimerID($conexion)
+            {
+                $primer_id = 0;
+
+                // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
+                $sql_primer_id = "SELECT ID
+                      FROM clientes
+                      WHERE ZonaAsignada = 'Chihuahua'
+                      ORDER BY ID ASC
+                      LIMIT 1";
+
+                $stmt_primer_id = $conexion->prepare($sql_primer_id);
+                $stmt_primer_id->execute();
+                $stmt_primer_id->bind_result($primer_id);
+                $stmt_primer_id->fetch();
+                $stmt_primer_id->close();
+
+                return $primer_id;
+            }
+
+            // Obtener el primer ID de cliente de la base de datos
+            $primer_id = obtenerPrimerID($conexion);
+            ?>
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Abonos</a>
-                    <p>Mantenimiento</p>
+                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                    <p>Version beta</p>
                 </div>
             </div>
+
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a><br>
