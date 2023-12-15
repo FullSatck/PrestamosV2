@@ -45,6 +45,40 @@ if ($result) {
         }
     }
 }
+
+// Verificar y actualizar el estado de los clientes en la lista de clavos
+$clavosQuery = "SELECT p.ID AS PrestamoID, p.IDCliente
+                FROM prestamos p
+                WHERE p.Estado = 'clavo'"; // Asumiendo que 'clavo' es un estado en la tabla prestamos
+
+$clavosResult = $conexion->query($clavosQuery);
+
+if ($clavosResult) {
+    while ($clavoRow = $clavosResult->fetch_assoc()) {
+        $prestamoID = $clavoRow['PrestamoID'];
+        $clienteID = $clavoRow['IDCliente'];
+
+        // Verificar si el cliente ha realizado el pago de la cuota pendiente
+        $pagoQuery = "SELECT SUM(MontoPagado) AS TotalPagado
+                      FROM historial_pagos
+                      WHERE IDPrestamo = $prestamoID AND FechaPago >= '$fechaLimite'";
+        $pagoResult = $conexion->query($pagoQuery);
+        $pagoRow = $pagoResult->fetch_assoc();
+
+        // Obtener el monto total de la cuota pendiente
+        $montoCuotaQuery = "SELECT MontoCuota FROM prestamos WHERE ID = $prestamoID";
+        $montoCuotaResult = $conexion->query($montoCuotaQuery);
+        $montoCuotaRow = $montoCuotaResult->fetch_assoc();
+        $montoCuota = $montoCuotaRow['MontoCuota'];
+
+        if ($pagoRow['TotalPagado'] >= $montoCuota) {
+            // El cliente ha pagado, actualizar su estado para sacarlo de la lista de clavos
+            $updatePrestamoQuery = "UPDATE prestamos SET Estado = 'activo' WHERE ID = $prestamoID"; // Asumiendo que 'activo' es el estado normal
+            $conexion->query($updatePrestamoQuery);
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
