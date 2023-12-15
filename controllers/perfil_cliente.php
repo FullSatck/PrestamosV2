@@ -78,11 +78,11 @@ if ($_SESSION["rol"] == 1) {
 } elseif ($_SESSION["rol"] == 2) {
     // Ruta para el rol 2 (supervisor) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/cliente/lista_cliente.php";
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php";
     } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/cliente/lista_cliente.php";
+        $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php";
     } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/cliente/lista_cliente.php";
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/lista_clientes.php";
     } else {
         // Si no coincide con ninguna zona válida para supervisor, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";
@@ -90,11 +90,11 @@ if ($_SESSION["rol"] == 1) {
 } elseif ($_SESSION["rol"] == 3) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/cliente/lista_cliente.php";
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php";
     } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/cliente/lista_cliente.php";
+        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php";
     } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/cliente/lista_cliente.php";
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";
