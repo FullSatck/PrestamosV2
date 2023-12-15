@@ -143,17 +143,17 @@ if (isset($_GET['clienteId'])) {
         <table>
             <tr>
                 <th>ID de Factura</th>
-                <th>Monto</th>
+                <!-- <th>M Prestado</th> -->
                 <th>Fecha</th>
                 <th>Monto Pagado</th>
-                <th>Monto Deuda</th>
+                <th>M Pendiente</th>
                 <th>Generar PDF</th>
 
             </tr>
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
             <tr>
                 <td><?= $fila["id"] ?></td>
-                <td><?= $fila["monto"] ?></td>
+                <!-- <td><?= $fila["monto"] ?></td> -->
                 <td><?= $fila["fecha"] ?></td>
                 <td><?= $fila["monto_pagado"] ?></td>
                 <td><?= $fila["monto_deuda"] ?></td>

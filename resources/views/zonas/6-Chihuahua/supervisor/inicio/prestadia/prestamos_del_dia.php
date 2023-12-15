@@ -44,7 +44,7 @@ if (!isset($_SESSION["usuario_id"])) {
     $rol_usuario = $fila['Nombre'];
 
     // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'cobrador') {
+    if ($rol_usuario !== 'supervisor') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
         exit();
@@ -83,7 +83,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 <body>
 
     <header>
-        <a href="/resources/views/zonas/6-chihuahua/cobrador/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/6-chihuahua/supervisor/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -132,7 +132,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
 
                 <input type="text" name="busqueda" placeholder="Buscar...">
 
-                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+                <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
             </div>
 
         </form>
