@@ -120,7 +120,7 @@ if (isset($_GET['cliente_id'])) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
                 <div class="option">
@@ -156,7 +156,7 @@ if (isset($_GET['cliente_id'])) {
             class="form-container">
             <?php
 // Incluir el archivo de conexión a la base de datos
-include("../../../../controllers/conexion.php");
+include("../../../../../../controllers/conexion.php");
 
 // ID DEL CLIENTE
 if (isset($_GET['cliente_id'])) {
@@ -168,8 +168,8 @@ if (isset($_GET['cliente_id'])) {
 
 // Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
 $result_clientes = $conexion->query($query_clientes);
-$query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
-$query_zonas = "SELECT Nombre FROM zonas";
+$query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
+$query_zonas = "SELECT Nombre FROM Zonas";
 
 $result_monedas = $conexion->query($query_monedas);
 $result_zonas = $conexion->query($query_zonas);
@@ -207,7 +207,7 @@ $result_zonas = $conexion->query($query_zonas);
                 <?php
                 while ($row = $result_monedas->fetch_assoc()) {
                     // Agregar el símbolo de la moneda como un atributo data-*
-                    echo "<option value='" . $row['iD'] . "' data-simbolo='" . $row['simbolo'] . "'>" . $row['nombre'] . "</option>";
+                    echo "<option value='" . $row['ID'] . "' data-simbolo='" . $row['Simbolo'] . "'>" . $row['Nombre'] . "</option>";
                 }
                 ?>
             </select><br>
@@ -223,7 +223,7 @@ $result_zonas = $conexion->query($query_zonas);
             <select name="zona" required>
                 <?php
                 while ($row = $result_zonas->fetch_assoc()) {
-                    echo "<option value='" . $row['nombre'] . "'>" . $row['nombre'] . "</option>";
+                    echo "<option value='" . $row['Nombre'] . "'>" . $row['Nombre'] . "</option>";
                 }
                 ?>
             </select><br>
