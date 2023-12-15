@@ -26,7 +26,7 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
- 
+
 date_default_timezone_set('America/Bogota');
 ?>
 
@@ -51,10 +51,10 @@ date_default_timezone_set('America/Bogota');
         </div>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -102,7 +102,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/gastos/gastos.php">
                 <div class="option">
@@ -123,7 +123,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
                 </div>
-            </a> 
+            </a>
 
         </div>
 
@@ -134,8 +134,7 @@ date_default_timezone_set('America/Bogota');
         <div class="cuadros-container">
             <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/cobro_inicio.php"
-                        class="titulo">Prestamos</a><br>
+                    <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
                     <p>Mantenimiento
                     </p>
                 </div>
@@ -143,17 +142,19 @@ date_default_timezone_set('America/Bogota');
 
             <!-- TRAER EL PRIMER ID -->
 
-            <?php 
-            function obtenerPrimerID($conexion) {
+            <?php
+            function obtenerPrimerID($conexion)
+            {
                 $primer_id = 0;
 
-                // Consulta para obtener el primer ID de préstamo
+                // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
                 $sql_primer_id = "SELECT ID
-                                  FROM clientes
-                                  ORDER BY ID ASC
-                                  LIMIT 1";
+                      FROM clientes
+                      WHERE ZonaAsignada = 'Quintana Roo'
+                      ORDER BY ID ASC
+                      LIMIT 1";
 
-               $stmt_primer_id = $conexion->prepare($sql_primer_id);
+                $stmt_primer_id = $conexion->prepare($sql_primer_id);
                 $stmt_primer_id->execute();
                 $stmt_primer_id->bind_result($primer_id);
                 $stmt_primer_id->fetch();
@@ -162,21 +163,21 @@ date_default_timezone_set('America/Bogota');
                 return $primer_id;
             }
 
-            // Obtener el primer ID de préstamo de la base de datos
+            // Obtener el primer ID de cliente de la base de datos
             $primer_id = obtenerPrimerID($conexion);
             ?>
-
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
-            </div>  
+            </div>
+
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                      <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                    <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
                     <p>Version beta</p>
                 </div>
             </div>
