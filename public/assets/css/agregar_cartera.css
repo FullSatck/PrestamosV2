@@ -312,7 +312,7 @@ h1 {
     
     
 }
-
+/* ESTILOS PARA EL CONTENIDO PRINCIPAL */
 .main2 {
     max-width: 600px;
     margin: 20px auto;
@@ -328,7 +328,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Estilos del formulario */
+/* ESTILOS DEL FORMULARIO */
 form {
     display: flex;
     flex-direction: column;
@@ -350,10 +350,10 @@ form {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box; /* Asegura que padding no afecte el ancho total */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
 }
 
-/* Estilos específicos para el campo de fecha */
+/* ESTILOS ESPECÍFICOS PARA EL CAMPO DE FECHA */
 input[type="date"] {
     background-color: #fff;
     border: 1px solid #ced4da;
@@ -368,7 +368,7 @@ input[type="date"] {
     appearance: none; /* Desactiva la apariencia por defecto en estándares (no siempre soportado) */
 }
 
-/* Estilo para el ícono de calendario */
+/* ESTILO PARA EL ICONO DE CALENDARIO */
 input[type="date"]::-webkit-calendar-picker-indicator {
     color: rgba(0, 0, 0, 0);
     opacity: 1;
@@ -378,12 +378,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-width: thin;
 } 
 
-/* Estilos para mejorar la apariencia en Firefox */
+/* ESTILOS PARA MEJORAR LA APARIENCIA EN FIREFOX */
 input[type="date"]::-moz-focus-inner {
     border: 0;
 }
 
-/* Estilos para mejorar la apariencia en Internet Explorer */
+/* ESTILOS PARA MEJORAR LA APARIENCIA EN INTERNET EXPLORER */
 input[type="date"]::-ms-clear,
 input[type="date"]::-ms-reveal {
     display: none;
@@ -391,7 +391,7 @@ input[type="date"]::-ms-reveal {
     height: 0;
 }
 
-/* Estilos para mejorar la apariencia en Edge */
+/* ESTILOS PARA MEJORAR LA APARIENCIA EN EDGE */
 input[type="date"]::-ms-expand {
     display: none;
 }
@@ -405,7 +405,7 @@ input[type="date"]::-ms-expand {
     font-size: 0.85em;
 }
 
-/* Botones */
+/* BOTONES */
 .btn {
     padding: 10px 15px;
     border: none;
@@ -426,7 +426,7 @@ input[type="date"]::-ms-expand {
     background-color: #6c757d;
 }
 
-/* Responsive */
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .main2 {
         padding: 15px;
@@ -443,11 +443,7 @@ input[type="date"]::-ms-expand {
     }
 }
 
-@media (max-width: 768px) {
-    
-}
-
-/* Mensajes */
+/* MENSAJES */
 #mensaje {
     color: green;
     text-align: center;
