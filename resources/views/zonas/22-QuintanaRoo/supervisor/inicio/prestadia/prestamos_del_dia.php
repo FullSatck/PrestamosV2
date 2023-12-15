@@ -43,7 +43,7 @@ if (!isset($_SESSION["usuario_id"])) {
     $rol_usuario = $fila['Nombre'];
 
     // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'cobrador') {
+    if ($rol_usuario !== 'supervisor') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
@@ -83,7 +83,7 @@ date_default_timezone_set('America/Bogota');
 <body>
 
     <header>
-        <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -132,7 +132,8 @@ date_default_timezone_set('America/Bogota');
 
                 <input type="text" name="busqueda" placeholder="Buscar...">
 
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+                <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+            </div>
 
         </form>
 

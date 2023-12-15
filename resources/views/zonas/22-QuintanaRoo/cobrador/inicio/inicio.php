@@ -176,7 +176,7 @@ date_default_timezone_set('America/Bogota');
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                      <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Prestamos del dia </a>
+                      <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros </a>
                     <p>Version beta</p>
                 </div>
             </div>
