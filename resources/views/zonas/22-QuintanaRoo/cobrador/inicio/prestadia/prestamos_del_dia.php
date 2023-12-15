@@ -133,6 +133,7 @@ date_default_timezone_set('America/Bogota');
                 <input type="text" name="busqueda" placeholder="Buscar...">
 
                 <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+            </div>
 
         </form>
 
