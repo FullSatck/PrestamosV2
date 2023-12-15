@@ -7,14 +7,14 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../../index.php");
+    header("Location: ../index.php");
     exit();
 }
 
 // Verificar si se ha pasado un ID válido como parámetro GET
 if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
     // Redirigir a una página de error o a una página predeterminada
-    header("location: ../../../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    header("location: ../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
     exit();
 }
 
@@ -100,26 +100,6 @@ if ($_SESSION["rol"] == 1) {
         $ruta_filtro = "index.php";
         $ruta_cliente = "index.php";
     }
-} elseif ($_SESSION["rol"] == 2) {
-    // Ruta para el rol 3 (cobrador) en base a la zona
-    if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php";
-    } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php";
-    } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php";
-    } else {
-        // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
-        $ruta_volver = "index.php";
-        $ruta_filtro = "index.php";
-        $ruta_cliente = "index.php";
-    }
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
     $ruta_filtro = "/default_dashboard.php";
@@ -137,7 +117,7 @@ $total_prestamo = 0.00;
 $fecha_actual = date('Y-m-d');
 
 // Consulta SQL para obtener la información del préstamo
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, c.Nombre, c.Telefono 
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
                  WHERE p.IDCliente = ?
@@ -175,16 +155,32 @@ $stmt_prestamo->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/perfil_abonos.css">
-    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-
-    <!-- jQuery debe ir primero -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Luego incluye Select2 CSS y JS -->
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
-
     <title>Perfil del Cliente</title>
+    <style>
+        .resultados-busqueda ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.resultados-busqueda li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.resultados-busqueda li:hover {
+    background-color: #ececec;
+}
+
+    </style>
 </head>
 
 
@@ -235,6 +231,38 @@ $stmt_prestamo->close();
                     </p>
                 </div>
             </div>
+            <div class="info-cliente">
+                <div class="columna">
+                    <p><strong>Clavo: </strong>
+                        <?php
+                        if ($info_prestamo["CuotasVencidas"] == 1) {
+                            echo "Sí";
+                        } else {
+                            echo "No";
+                        }
+                        ?>
+                    </p>
+                </div>
+                <div class="columna">
+                    <?php
+                    $sql_total_clientes = "SELECT COUNT(*) AS TotalClientes FROM clientes";
+                    $resultado_total = $conexion->query($sql_total_clientes);
+                    $fila_total = $resultado_total->fetch_assoc();
+                    $total_clientes = $fila_total['TotalClientes'];
+
+                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ?";
+                    $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
+                    $stmt_posicion->bind_param("i", $id_cliente);
+                    $stmt_posicion->execute();
+                    $stmt_posicion->bind_result($posicion_cliente);
+                    $stmt_posicion->fetch();
+                    $stmt_posicion->close();
+                    ?>
+                    <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
+                </div>
+            </div>
+
+            <!-- CARTULINA DE FACTURAS -->
 
             <div class="profile-loans">
                 <?php
@@ -345,33 +373,53 @@ $stmt_prestamo->close();
 
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
-                <input type='hidden' id='selectedClientId' name='cliente' value='<?= $id_cliente ?>'>
-                <a href='perfil_abonos.php?id=<?= $clientes[$prevIndex]['id'] ?>' class='boton4'>Anterior</a>
-                <a href='perfil_abonos.php?id=<?= $clientes[$nextIndex]['id'] ?>' class='boton4'>Siguiente</a>
-                <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" onkeyup="filtrarClientes()">
-                <select name='cliente' id='listaClientes'>
-                    <option value="">Seleccionar Cliente</option>
-                    <?php foreach ($clientes as $cliente) : ?>
-                        <option value='<?= $cliente['id'] ?>'>
-                            <?= htmlspecialchars($cliente['nombre'] . " " . $cliente['apellido']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                <input type='hidden' id='selectedClientId' name='cliente'>
+                <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
+                <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
+
+                <input type="text" id="filtroBusqueda" placeholder="Buscar cliente">
+                <div id="resultadosBusqueda" class="resultados-busqueda">
+                    <!-- Los resultados de la búsqueda se mostrarán aquí -->
+                </div>
             </form>
 
             <script>
                 $(document).ready(function() {
-                    $('#listaClientes').select2({
-                        placeholder: "Buscar cliente",
-                        allowClear: true
+                    $('#filtroBusqueda').on('input', function() {
+                        var busqueda = $(this).val();
+                        if (busqueda.length > 2) {
+                            $.ajax({
+                                url: 'buscar_clientes.php',
+                                type: 'GET',
+                                data: {
+                                    'busqueda': busqueda
+                                },
+                                success: function(data) {
+                                    var clientes = JSON.parse(data);
+                                    var html = '<ul>';
+                                    for (var i = 0; i < clientes.length; i++) {
+                                        html += '<li onclick="seleccionarCliente(' + clientes[i].id + ')">' +
+                                            clientes[i].Nombre + ' ' + clientes[i].Apellido + ' - ' + clientes[i].Telefono +
+                                            '</li>';
+                                    }
+                                    html += '</ul>';
+                                    $('#resultadosBusqueda').html(html);
+                                }
+                            });
+                        } else {
+                            $('#resultadosBusqueda').html('');
+                        }
                     });
                 });
-            </script>
 
-            <script>
-                function selectClient() {
-                    var form = document.getElementById('clienteForm');
-                    form.submit();
+                function seleccionarCliente(clienteId) {
+                    window.location.href = 'perfil_abonos.php?id=' + clienteId;
+                }
+
+                function navigate(direction) {
+                    var selectedClientId = direction === "prev" ? <?= $clientes[$prevIndex]['id'] ?> : <?= $clientes[$nextIndex]['id'] ?>;
+                    $('#selectedClientId').val(selectedClientId);
+                    $('#clienteForm').submit();
                 }
             </script>
 
@@ -403,14 +451,14 @@ $stmt_prestamo->close();
             ?>
 
             <!-- Formulario de Pago -->
-            <form method="post" action="process_payment.php">
+            <form method="post" action="process_payment.php" id="formPago">
                 <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                <!-- Asegúrate de definir $id_cliente -->
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
                 <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
                 <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
                 <input type="submit" name="action" value="Pagar" class="boton1">
             </form>
+
 
             <!-- Formulario de No Pago y Mas Tarde -->
             <form method="post" action="process_payment.php">
@@ -425,21 +473,36 @@ $stmt_prestamo->close();
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
             <script>
                 window.onload = function() {
+                    var formPago = document.getElementById('formPago');
+                    var campoCuota = document.getElementById('cuota');
                     var campoResta = document.getElementById('campo2');
+                    var cuotaEsperada = <?= $info_prestamo['Cuota']; ?>;
+                    var montoAPagar = <?= $montoAPagar; ?>;
+
                     campoResta.addEventListener('input', function() {
-                        var cuota = <?= $info_prestamo['Cuota']; ?>;
-                        var montoAPagar = <?= $montoAPagar; ?>;
-                        var valorResta = parseFloat(campoResta.value.replace(',', '.')); // Manejar decimales
+                        var valorResta = parseFloat(campoResta.value.replace(',', '.'));
                         var resultadoResta = montoAPagar - valorResta;
 
-                        if (resultadoResta === cuota) {
+                        if (resultadoResta === cuotaEsperada) {
                             campoResta.style.backgroundColor = 'green';
                         } else {
                             campoResta.style.backgroundColor = 'red';
                         }
                     });
+
+                    formPago.addEventListener('submit', function(event) {
+                        var cuotaIngresada = parseFloat(campoCuota.value.replace(',', '.'));
+                        var colorCampoResta = window.getComputedStyle(campoResta).backgroundColor;
+
+                        // Verificar si la cuota ingresada es igual a la cuota esperada y si el campo de resta está en verde
+                        if (cuotaIngresada !== cuotaEsperada || colorCampoResta !== 'rgb(0, 128, 0)') { // 'rgb(0, 128, 0)' es el color verde
+                            event.preventDefault(); // Prevenir el envío del formulario
+                            alert('La cuota o el saldo que resta que se ingreso no es correcto.');
+                        }
+                    });
                 };
             </script>
+
 
         </main>
 
