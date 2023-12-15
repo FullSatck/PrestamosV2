@@ -156,17 +156,17 @@ $stmt_prestamo->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/perfil_abonos.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+
+    <!-- jQuery debe ir primero -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Luego incluye Select2 CSS y JS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
 
     <title>Perfil del Cliente</title>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <style>
-
-    </style>
 </head>
+
 
 <body>
 
@@ -347,8 +347,6 @@ $stmt_prestamo->close();
                     });
                 });
             </script>
-
-
 
             <script>
                 function selectClient() {

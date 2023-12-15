@@ -7,14 +7,14 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+    header("Location: ../../../../../../../index.php");
     exit();
 }
 
 // Verificar si se ha pasado un ID válido como parámetro GET
 if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
     // Redirigir a una página de error o a una página predeterminada
-    header("location: ../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    header("location: ../../../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
     exit();
 }
 
@@ -100,6 +100,26 @@ if ($_SESSION["rol"] == 1) {
         $ruta_filtro = "index.php";
         $ruta_cliente = "index.php";
     }
+} elseif ($_SESSION["rol"] == 2) {
+    // Ruta para el rol 3 (cobrador) en base a la zona
+    if ($_SESSION['user_zone'] === '6') {
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '20') {
+        $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '22') {
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php";
+    } else {
+        // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
+        $ruta_volver = "index.php";
+        $ruta_filtro = "index.php";
+        $ruta_cliente = "index.php";
+    }
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
     $ruta_filtro = "/default_dashboard.php";
@@ -156,15 +176,17 @@ $stmt_prestamo->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/perfil_abonos.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-    <!-- Asegúrate de incluir tu hoja de estilos CSS -->
-    <title>Perfil del Cliente</title>
 
+    <!-- jQuery debe ir primero -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <style>
+    <!-- Luego incluye Select2 CSS y JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
 
-    </style>
+    <title>Perfil del Cliente</title>
 </head>
+
 
 <body>
 
@@ -326,15 +348,25 @@ $stmt_prestamo->close();
                 <input type='hidden' id='selectedClientId' name='cliente' value='<?= $id_cliente ?>'>
                 <a href='perfil_abonos.php?id=<?= $clientes[$prevIndex]['id'] ?>' class='boton4'>Anterior</a>
                 <a href='perfil_abonos.php?id=<?= $clientes[$nextIndex]['id'] ?>' class='boton4'>Siguiente</a>
-                <select name='cliente' onchange='selectClient()'>
-                    <option>Seleccionar Cliente</option>
-                    <?php foreach ($clientes as $index => $cliente) : ?>
-                        <option value='<?= $cliente['id'] ?>' <?= $index === $currentIndex ? 'selected' : '' ?>>
+                <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" onkeyup="filtrarClientes()">
+                <select name='cliente' id='listaClientes'>
+                    <option value="">Seleccionar Cliente</option>
+                    <?php foreach ($clientes as $cliente) : ?>
+                        <option value='<?= $cliente['id'] ?>'>
                             <?= htmlspecialchars($cliente['nombre'] . " " . $cliente['apellido']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </form>
+
+            <script>
+                $(document).ready(function() {
+                    $('#listaClientes').select2({
+                        placeholder: "Buscar cliente",
+                        allowClear: true
+                    });
+                });
+            </script>
 
             <script>
                 function selectClient() {
