@@ -117,7 +117,7 @@ $total_prestamo = 0.00;
 $fecha_actual = date('Y-m-d');
 
 // Consulta SQL para obtener la información del préstamo
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, c.Nombre, c.Telefono 
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
                  WHERE p.IDCliente = ?
@@ -214,6 +214,20 @@ $stmt_prestamo->close();
                     <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
                     </p>
                 </div>
+            </div>
+            <div class="info-cliente">
+                <div class="columna">
+                    <p><strong>Clavo: </strong>
+                        <?php
+                        if ($info_prestamo["CuotasVencidas"] == 1) {
+                            echo "Sí";
+                        } else {
+                            echo "No";
+                        }
+                        ?>
+                    </p>
+                </div>
+
             </div>
 
             <div class="profile-loans">
