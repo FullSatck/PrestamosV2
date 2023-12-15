@@ -356,14 +356,18 @@ $stmt_prestamo->close();
 
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
-            <input type="text" id="filtroBusqueda"  class ="busqueda"placeholder="Buscar cliente">
-                <div id="resultadosBusqueda" class="resultados-busqueda">
-                    <!-- Los resultados de la búsqueda se mostrarán aquí -->
-                </div>
-                <br><br>
+            <div class="busqueda-container">
+          <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" class="input-busqueda">
+
+            <div id="resultadosBusqueda" class="resultados-busqueda">
+                <!-- Los resultados de la búsqueda se mostrarán aquí -->
+            </div><br>
+            <div class="navegacion-container">
                 <input type='hidden' id='selectedClientId' name='cliente'>
                 <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
                 <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
+                </div>
+                <br>
 
                
             </form>

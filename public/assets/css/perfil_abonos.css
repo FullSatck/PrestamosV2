@@ -354,7 +354,7 @@ button {
 .resultados-busqueda li:hover {
     background-color: #ececec;
 }
-.busqueda {
+.input-busqueda{
     width: calc(33.33% - 10px); /* Aquí definimos el ancho en escritorio */
     padding: 10px;
     border-radius: 5px;
@@ -366,7 +366,7 @@ button {
 
   
 /* Media Queries */
-@media only screen and (max-width: 600px) {
+@media (max-width: 600px)  {
     /* Estilos para dispositivos móviles */
 
     body {
@@ -376,11 +376,16 @@ button {
     header {
         height: 65px;
     }
-    .busqueda {
-        width: 100%; /* Ocupa todo el ancho disponible en móviles */
-        padding: 20px; /* Aumenta el espaciado interno */
-        font-size: 20px; /* Aumenta el tamaño de la fuente */
+    .busqueda-navegacion-container {
+        flex-direction: column;
     }
+    #filtroBusqueda {
+        width: 100%; /* Ajusta esto según tus necesidades */
+        /* Puedes agregar más estilos aquí si es necesario */
+    }
+
+ 
+    
     .nombre-usuario {
         top: 5px;
         right: 5px;
