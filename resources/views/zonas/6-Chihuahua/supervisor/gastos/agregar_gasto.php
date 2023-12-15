@@ -228,7 +228,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_GET['mensaje'])) {
                 echo htmlspecialchars($_GET['mensaje']);
             }
-            ?>z
+            ?>
         </div>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
