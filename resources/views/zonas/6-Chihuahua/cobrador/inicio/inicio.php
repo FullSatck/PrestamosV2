@@ -125,12 +125,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
+          
 
 
 
@@ -141,14 +136,7 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Inicio cobrador de Puebla</h1>
         <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cobro_inicio.php"
-                        class="titulo">Prestamos</a><br>
-                    <p>Mantenimiento
-                    </p>
-                </div>
-            </div>
+            
 
             <!-- TRAER EL PRIMER ID -->
             <?php
@@ -200,13 +188,7 @@ include("../../../../../../controllers/conexion.php");
                 </div>
             </div>
 
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p>Mantenimiento
-                    </p>
-                </div>
-            </div>
+          
         </div>
     </main>
 

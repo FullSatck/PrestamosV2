@@ -130,13 +130,7 @@ if (isset($_GET['mensaje'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
- 
+          
         </div>
 
     </div>

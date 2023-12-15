@@ -204,12 +204,7 @@ mysqli_close($conexion);
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/abonos.php">
-                <div class="option">
-                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
-                    <h4>Abonos</h4>
-                </div>
-            </a>
+         
 
         </div>
 
@@ -218,27 +213,17 @@ mysqli_close($conexion);
     <main>
         <h1>Inicio Supervisor</h1>
         <div class="cuadros-container">
-            <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Prestamos</a><br>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Recaudos</a><br>
-                    <p>Mantenimiento</p>
-                </div>
-            </div>
+    
+           
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Cuadro 3</a>
+                    <a href="###" class="titulo">Abonos</a>
                     <p>Mantenimiento</p>
                 </div>
             </div>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
-                    <a href="###" class="titulo">Comision</a><br>
+                    <a href="###" class="titulo">Filtros</a><br>
                     <p>Mantenimiento</p>
                 </div>
             </div>
