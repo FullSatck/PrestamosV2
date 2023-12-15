@@ -1,5 +1,5 @@
 <?php
-// load_clients.php
+include 'conexion.php';
 
 function obtenerClientes($conexion) {
     $query = "SELECT id, Nombre, Apellido FROM clientes";
@@ -14,7 +14,7 @@ function obtenerClientes($conexion) {
         $clientes[] = [
             'id' => $row['id'],
             'nombre' => $row['Nombre'],
-            'apellido' => $row['Apellido']
+            'apellido' => $row['Apellido'] 
         ];
     }
 

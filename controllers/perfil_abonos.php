@@ -155,18 +155,34 @@ $stmt_prestamo->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/perfil_abonos.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
-
     <title>Perfil del Cliente</title>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <style>
+        .resultados-busqueda ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.resultados-busqueda li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.resultados-busqueda li:hover {
+    background-color: #ececec;
+}
 
     </style>
 </head>
+
 
 <body>
 
@@ -227,8 +243,26 @@ $stmt_prestamo->close();
                         ?>
                     </p>
                 </div>
+                <div class="columna">
+                    <?php
+                    $sql_total_clientes = "SELECT COUNT(*) AS TotalClientes FROM clientes";
+                    $resultado_total = $conexion->query($sql_total_clientes);
+                    $fila_total = $resultado_total->fetch_assoc();
+                    $total_clientes = $fila_total['TotalClientes'];
 
+                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ?";
+                    $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
+                    $stmt_posicion->bind_param("i", $id_cliente);
+                    $stmt_posicion->execute();
+                    $stmt_posicion->bind_result($posicion_cliente);
+                    $stmt_posicion->fetch();
+                    $stmt_posicion->close();
+                    ?>
+                    <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
+                </div>
             </div>
+
+            <!-- CARTULINA DE FACTURAS -->
 
             <div class="profile-loans">
                 <?php
@@ -339,37 +373,53 @@ $stmt_prestamo->close();
 
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
-                <input type='hidden' id='selectedClientId' name='cliente' value='<?= $id_cliente ?>'>
-                <a href='perfil_abonos.php?id=<?= $clientes[$prevIndex]['id'] ?>' class='boton4'>Anterior</a>
-                <a href='perfil_abonos.php?id=<?= $clientes[$nextIndex]['id'] ?>' class='boton4'>Siguiente</a>
+                <input type='hidden' id='selectedClientId' name='cliente'>
+                <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
+                <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
 
-                <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" onkeyup="filtrarClientes()">
-                <select name='cliente' id='listaClientes'>
-                    <option value="">Seleccionar Cliente</option>
-                    <?php foreach ($clientes as $cliente) : ?>
-                        <option value='<?= $cliente['id'] ?>'>
-                            <?= htmlspecialchars($cliente['nombre'] . " " . $cliente['apellido']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-
+                <input type="text" id="filtroBusqueda" placeholder="Buscar cliente">
+                <div id="resultadosBusqueda" class="resultados-busqueda">
+                    <!-- Los resultados de la búsqueda se mostrarán aquí -->
+                </div>
             </form>
 
             <script>
                 $(document).ready(function() {
-                    $('#listaClientes').select2({
-                        placeholder: "Buscar cliente",
-                        allowClear: true
+                    $('#filtroBusqueda').on('input', function() {
+                        var busqueda = $(this).val();
+                        if (busqueda.length > 2) {
+                            $.ajax({
+                                url: 'buscar_clientes.php',
+                                type: 'GET',
+                                data: {
+                                    'busqueda': busqueda
+                                },
+                                success: function(data) {
+                                    var clientes = JSON.parse(data);
+                                    var html = '<ul>';
+                                    for (var i = 0; i < clientes.length; i++) {
+                                        html += '<li onclick="seleccionarCliente(' + clientes[i].id + ')">' +
+                                            clientes[i].Nombre + ' ' + clientes[i].Apellido + ' - ' + clientes[i].Telefono +
+                                            '</li>';
+                                    }
+                                    html += '</ul>';
+                                    $('#resultadosBusqueda').html(html);
+                                }
+                            });
+                        } else {
+                            $('#resultadosBusqueda').html('');
+                        }
                     });
                 });
-            </script>
 
+                function seleccionarCliente(clienteId) {
+                    window.location.href = 'perfil_abonos.php?id=' + clienteId;
+                }
 
-
-            <script>
-                function selectClient() {
-                    var form = document.getElementById('clienteForm');
-                    form.submit();
+                function navigate(direction) {
+                    var selectedClientId = direction === "prev" ? <?= $clientes[$prevIndex]['id'] ?> : <?= $clientes[$nextIndex]['id'] ?>;
+                    $('#selectedClientId').val(selectedClientId);
+                    $('#clienteForm').submit();
                 }
             </script>
 
@@ -401,14 +451,14 @@ $stmt_prestamo->close();
             ?>
 
             <!-- Formulario de Pago -->
-            <form method="post" action="process_payment.php">
+            <form method="post" action="process_payment.php" id="formPago">
                 <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                <!-- Asegúrate de definir $id_cliente -->
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
                 <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
                 <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
                 <input type="submit" name="action" value="Pagar" class="boton1">
             </form>
+
 
             <!-- Formulario de No Pago y Mas Tarde -->
             <form method="post" action="process_payment.php">
@@ -423,21 +473,36 @@ $stmt_prestamo->close();
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
             <script>
                 window.onload = function() {
+                    var formPago = document.getElementById('formPago');
+                    var campoCuota = document.getElementById('cuota');
                     var campoResta = document.getElementById('campo2');
+                    var cuotaEsperada = <?= $info_prestamo['Cuota']; ?>;
+                    var montoAPagar = <?= $montoAPagar; ?>;
+
                     campoResta.addEventListener('input', function() {
-                        var cuota = <?= $info_prestamo['Cuota']; ?>;
-                        var montoAPagar = <?= $montoAPagar; ?>;
-                        var valorResta = parseFloat(campoResta.value.replace(',', '.')); // Manejar decimales
+                        var valorResta = parseFloat(campoResta.value.replace(',', '.'));
                         var resultadoResta = montoAPagar - valorResta;
 
-                        if (resultadoResta === cuota) {
+                        if (resultadoResta === cuotaEsperada) {
                             campoResta.style.backgroundColor = 'green';
                         } else {
                             campoResta.style.backgroundColor = 'red';
                         }
                     });
+
+                    formPago.addEventListener('submit', function(event) {
+                        var cuotaIngresada = parseFloat(campoCuota.value.replace(',', '.'));
+                        var colorCampoResta = window.getComputedStyle(campoResta).backgroundColor;
+
+                        // Verificar si la cuota ingresada es igual a la cuota esperada y si el campo de resta está en verde
+                        if (cuotaIngresada !== cuotaEsperada || colorCampoResta !== 'rgb(0, 128, 0)') { // 'rgb(0, 128, 0)' es el color verde
+                            event.preventDefault(); // Prevenir el envío del formulario
+                            alert('La cuota o el saldo que resta que se ingreso no es correcto.');
+                        }
+                    });
                 };
             </script>
+
 
         </main>
 
