@@ -156,7 +156,9 @@ $stmt_prestamo->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/assets/css/perfil_abonos.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-    <!-- Asegúrate de incluir tu hoja de estilos CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
+
     <title>Perfil del Cliente</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -326,15 +328,29 @@ $stmt_prestamo->close();
                 <input type='hidden' id='selectedClientId' name='cliente' value='<?= $id_cliente ?>'>
                 <a href='perfil_abonos.php?id=<?= $clientes[$prevIndex]['id'] ?>' class='boton4'>Anterior</a>
                 <a href='perfil_abonos.php?id=<?= $clientes[$nextIndex]['id'] ?>' class='boton4'>Siguiente</a>
-                <select name='cliente' onchange='selectClient()'>
-                    <option>Seleccionar Cliente</option>
-                    <?php foreach ($clientes as $index => $cliente) : ?>
-                        <option value='<?= $cliente['id'] ?>' <?= $index === $currentIndex ? 'selected' : '' ?>>
+
+                <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" onkeyup="filtrarClientes()">
+                <select name='cliente' id='listaClientes'>
+                    <option value="">Seleccionar Cliente</option>
+                    <?php foreach ($clientes as $cliente) : ?>
+                        <option value='<?= $cliente['id'] ?>'>
                             <?= htmlspecialchars($cliente['nombre'] . " " . $cliente['apellido']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
+
             </form>
+
+            <script>
+                $(document).ready(function() {
+                    $('#listaClientes').select2({
+                        placeholder: "Buscar cliente",
+                        allowClear: true
+                    });
+                });
+            </script>
+
+
 
             <script>
                 function selectClient() {
