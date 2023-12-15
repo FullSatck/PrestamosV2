@@ -336,6 +336,33 @@ button {
 .edit-button a:hover {
     background-color: #9729b9;
 }
+.resultados-busqueda ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.resultados-busqueda li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.resultados-busqueda li:hover {
+    background-color: #ececec;
+}
+.busqueda {
+    width: calc(33.33% - 10px); /* Aquí definimos el ancho en escritorio */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    /* Agregar otros estilos necesarios aquí */
+}
+
 
   
 /* Media Queries */
@@ -349,7 +376,11 @@ button {
     header {
         height: 65px;
     }
-
+    .busqueda {
+        width: 100%; /* Ocupa todo el ancho disponible en móviles */
+        padding: 20px; /* Aumenta el espaciado interno */
+        font-size: 20px; /* Aumenta el tamaño de la fuente */
+    }
     .nombre-usuario {
         top: 5px;
         right: 5px;
@@ -379,6 +410,7 @@ button {
         font-size: 14px;
         text-align: center;
     }
+ 
     .button {
         padding: 8px 12px;
         font-size: 14px;

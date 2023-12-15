@@ -161,24 +161,7 @@ $stmt_prestamo->close();
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
     <title>Perfil del Cliente</title>
     <style>
-        .resultados-busqueda ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.resultados-busqueda li {
-    padding: 8px;
-    cursor: pointer;
-}
-
-.resultados-busqueda li:hover {
-    background-color: #ececec;
-}
+    
 
     </style>
 </head>
@@ -373,14 +356,16 @@ $stmt_prestamo->close();
 
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
+            <input type="text" id="filtroBusqueda"  class ="busqueda"placeholder="Buscar cliente">
+                <div id="resultadosBusqueda" class="resultados-busqueda">
+                    <!-- Los resultados de la búsqueda se mostrarán aquí -->
+                </div>
+                <br><br>
                 <input type='hidden' id='selectedClientId' name='cliente'>
                 <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
                 <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
 
-                <input type="text" id="filtroBusqueda" placeholder="Buscar cliente">
-                <div id="resultadosBusqueda" class="resultados-busqueda">
-                    <!-- Los resultados de la búsqueda se mostrarán aquí -->
-                </div>
+               
             </form>
 
             <script>
