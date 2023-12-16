@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 23-11-2023 a las 04:30:57
+-- Tiempo de generación: 15-12-2023 a las 23:41:44
 -- Versión del servidor: 8.0.30
--- Versión de PHP: 7.3.0
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,6 +33,13 @@ CREATE TABLE `carteras` (
   `zona` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `carteras`
+--
+
+INSERT INTO `carteras` (`id`, `nombre`, `zona`) VALUES
+(1, '0001', '20');
+
 -- --------------------------------------------------------
 
 --
@@ -53,42 +60,9 @@ CREATE TABLE `ciudades` (
 
 
 --
--- Estructura de tabla para la tabla `clientes`
+-- Volcado de datos para la tabla `clientes`
 --
-
-CREATE TABLE `clientes` (
-  `ID` int NOT NULL,
-  `Nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Apellido` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Domicilio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Telefono` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `HistorialCrediticio` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `ReferenciasPersonales` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `MonedaPreferida` int DEFAULT NULL,
-  `ZonaAsignada` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `IdentificacionCURP` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `ImagenCliente` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Estado` tinyint(1) DEFAULT '1',
-  `ciudad` int DEFAULT NULL,
-  `asentamiento` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cartera_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `configuracion_sistema`
---
-
-CREATE TABLE `configuracion_sistema` (
-  `id` int NOT NULL,
-  `sistema_activo` tinyint(1) NOT NULL DEFAULT '1',
-  `hora_apertura` time NOT NULL DEFAULT '08:00:00',
-  `hora_cierre` time NOT NULL DEFAULT '18:00:00',
-  `administrador_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
+-----------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `facturas`
@@ -100,10 +74,15 @@ CREATE TABLE `facturas` (
   `monto` decimal(10,2) NOT NULL,
   `fecha` date NOT NULL,
   `monto_pagado` decimal(10,2) NOT NULL,
-  `monto_deuda` decimal(10,2) NOT NULL
+  `monto_deuda` decimal(10,2) NOT NULL,
+  `id_prestamos` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
+--
+-- Volcado de datos para la tabla `facturas`
+--
+
+-------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `fechas_pago`
@@ -117,7 +96,9 @@ CREATE TABLE `fechas_pago` (
   `Zona` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
+--
+-- Volcado de datos para la tabla `fechas_pago`
+--
 
 --
 -- Estructura de tabla para la tabla `gastos`
@@ -147,6 +128,13 @@ CREATE TABLE `historial_pagos` (
   `MontoPagado` decimal(10,2) DEFAULT NULL,
   `IDPrestamo` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `historial_pagos`
+--
+
+INSERT INTO `historial_pagos` (`ID`, `IDCliente`, `FechaPago`, `MontoPagado`, `IDPrestamo`) VALUES
+(24, 19, '2023-12-15', 2800.00, 19);
 
 -- --------------------------------------------------------
 
@@ -193,8 +181,21 @@ CREATE TABLE `prestamos` (
   `Cuota` decimal(10,2) DEFAULT NULL,
   `Comision` decimal(10,2) DEFAULT '0.00',
   `EstadoP` tinyint(1) DEFAULT '1',
-  `Pospuesto` tinyint(1) DEFAULT '0'
+  `Pospuesto` tinyint(1) DEFAULT '0',
+  `mas_tarde` tinyint(1) DEFAULT '0',
+  `CuotasVencidas` int DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prestamos`
+--
+
+INSERT INTO `prestamos` (`ID`, `IDCliente`, `Monto`, `TasaInteres`, `Plazo`, `MonedaID`, `FechaInicio`, `FechaVencimiento`, `Estado`, `CobradorAsignado`, `Zona`, `MontoAPagar`, `FrecuenciaPago`, `MontoCuota`, `Cuota`, `Comision`, `EstadoP`, `Pospuesto`, `mas_tarde`, `CuotasVencidas`) VALUES
+(21, 18, 3000.00, 12.00, 12, 1, '2023-12-15', '2023-12-27', 'pendiente', NULL, 'Chihuahua', 3360.00, 'diario', 280.00, 280.00, 0.00, 1, 0, 0, 2),
+(22, 18, 3000.00, 12.00, 12, 1, '2023-12-15', '2023-12-27', 'pendiente', NULL, 'Chihuahua', 3360.00, 'diario', 280.00, 280.00, 0.00, 1, 0, 0, 2),
+(23, 18, 3000.00, 12.00, 12, 1, '2023-12-15', '2023-12-27', 'pendiente', NULL, 'Chihuahua', 3360.00, 'diario', 280.00, 280.00, 0.00, 1, 0, 0, 2),
+(24, 18, 3000.00, 12.00, 12, 1, '2023-12-15', '2023-12-27', 'pendiente', NULL, 'Chihuahua', 3360.00, 'diario', 280.00, 280.00, 0.00, 1, 0, 0, 2),
+(25, 19, 30000.00, 12.00, 12, 1, '2023-12-14', '2023-12-26', 'pendiente', NULL, 'Chihuahua', 30800.00, 'diario', 2800.00, 2800.00, 0.00, 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -243,6 +244,26 @@ CREATE TABLE `saldo_admin` (
   `Monto_Neto` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `saldo_admin`
+--
+
+INSERT INTO `saldo_admin` (`ID`, `IDUsuario`, `Monto`, `Monto_Neto`) VALUES
+(1, 1, 5000000.00, 5000000);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sistema_estado`
+--
+
+CREATE TABLE `sistema_estado` (
+  `ID` int NOT NULL,
+  `Estado` enum('activo','inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'activo',
+  `FechaCambio` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `CambiadoPor` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -264,13 +285,6 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`ID`, `Nombre`, `Apellido`, `Email`, `Password`, `Zona`, `RolID`, `Estado`) VALUES
-(1, 'Stiven', 'Delgado', 'admin@admin.com', '0123', '2', 1, 'activo'),
-(6, 'supervisor', 'super', 'supervisor@super.com', '0123', '20', 2, 'activo'),
-(7, 'cobrador', 'cob', 'cobrador@cob.com', '0123', '20', 3, 'activo'),
-(8, 'supervisor', 'super', 'supervisor2@super.com', '0123', '6', 2, 'activo'),
-(9, 'cobrador', 'cob', 'cobrador2@cob.com', '0123', '6', 3, 'activo');
-
 -- --------------------------------------------------------
 
 --
@@ -288,39 +302,6 @@ CREATE TABLE `zonas` (
 --
 -- Volcado de datos para la tabla `zonas`
 --
-
-INSERT INTO `zonas` (`ID`, `Nombre`, `Capital`, `CobradorAsignado`, `CodigoPostal`) VALUES
-(1, 'Aguascalientes', 'Aguascalientes', NULL, '20000'),
-(2, 'Baja California', 'Mexicali', NULL, '21000'),
-(3, 'Baja California Sur', 'La Paz', NULL, '23000'),
-(4, 'Campeche', 'San Francisco de Campeche', NULL, '24000'),
-(5, 'Chiapas', 'Tuxtla Gutiérrez', NULL, '29000'),
-(6, 'Chihuahua', 'Chihuahua', NULL, '31000'),
-(7, 'Coahuila', 'Saltillo', NULL, '25000'),
-(8, 'Colima', 'Colima', NULL, '28000'),
-(9, 'Durango', 'Victoria de Durango', NULL, '34000'),
-(10, 'Guanajuato', 'Guanajuato', NULL, '36000'),
-(11, 'Guerrero', 'Chilpancingo', NULL, '39000'),
-(12, 'Hidalgo', 'Pachuca', NULL, '42000'),
-(13, 'Jalisco', 'Guadalajara', NULL, '44100'),
-(14, 'Estado de México', 'Toluca', NULL, '50000'),
-(15, 'Michoacán', 'Morelia', NULL, '58000'),
-(16, 'Morelos', 'Cuernavaca', NULL, '62000'),
-(17, 'Nayarit', 'Tepic', NULL, '63000'),
-(18, 'Nuevo León', 'Monterrey', NULL, '64000'),
-(19, 'Oaxaca', 'Oaxaca de Juárez', NULL, '68000'),
-(20, 'Puebla', 'Puebla', NULL, '72000'),
-(21, 'Querétaro', 'Santiago de Querétaro', NULL, '76000'),
-(22, 'Quintana Roo', 'Chetumal', NULL, '77000'),
-(23, 'San Luis Potosí', 'San Luis Potosí', NULL, '78000'),
-(24, 'Sinaloa', 'Culiacán', NULL, '80000'),
-(25, 'Sonora', 'Hermosillo', NULL, '83000'),
-(26, 'Tabasco', 'Villahermosa', NULL, '86000'),
-(27, 'Tamaulipas', 'Ciudad Victoria', NULL, '87000'),
-(28, 'Tlaxcala', 'Tlaxcala', NULL, '90000'),
-(29, 'Veracruz', 'Xalapa', NULL, '91000'),
-(30, 'Yucatán', 'Mérida', NULL, '97000'),
-(31, 'Zacatecas', 'Zacatecas', NULL, '98000');
 
 -- --------------------------------------------------------
 
@@ -362,18 +343,12 @@ ALTER TABLE `clientes`
   ADD KEY `fk_cliente_cartera` (`cartera_id`);
 
 --
--- Indices de la tabla `configuracion_sistema`
---
-ALTER TABLE `configuracion_sistema`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `administrador_id` (`administrador_id`);
-
---
 -- Indices de la tabla `facturas`
 --
 ALTER TABLE `facturas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `cliente_id` (`cliente_id`);
+  ADD KEY `cliente_id` (`cliente_id`),
+  ADD KEY `id_prestamos` (`id_prestamos`);
 
 --
 -- Indices de la tabla `fechas_pago`
@@ -431,6 +406,13 @@ ALTER TABLE `saldo_admin`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indices de la tabla `sistema_estado`
+--
+ALTER TABLE `sistema_estado`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `CambiadoPor` (`CambiadoPor`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -462,37 +444,31 @@ ALTER TABLE `zona_cobrador`
 -- AUTO_INCREMENT de la tabla `carteras`
 --
 ALTER TABLE `carteras`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=308;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `configuracion_sistema`
---
-ALTER TABLE `configuracion_sistema`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `fechas_pago`
 --
 ALTER TABLE `fechas_pago`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2364;
 
 --
 -- AUTO_INCREMENT de la tabla `gastos`
@@ -504,7 +480,7 @@ ALTER TABLE `gastos`
 -- AUTO_INCREMENT de la tabla `historial_pagos`
 --
 ALTER TABLE `historial_pagos`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `monedas`
@@ -516,13 +492,13 @@ ALTER TABLE `monedas`
 -- AUTO_INCREMENT de la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `retiros`
 --
 ALTER TABLE `retiros`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -534,13 +510,19 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `saldo_admin`
 --
 ALTER TABLE `saldo_admin`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `sistema_estado`
+--
+ALTER TABLE `sistema_estado`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `zonas`
@@ -573,16 +555,11 @@ ALTER TABLE `clientes`
   ADD CONSTRAINT `fk_cliente_cartera` FOREIGN KEY (`cartera_id`) REFERENCES `carteras` (`id`);
 
 --
--- Filtros para la tabla `configuracion_sistema`
---
-ALTER TABLE `configuracion_sistema`
-  ADD CONSTRAINT `configuracion_sistema_ibfk_1` FOREIGN KEY (`administrador_id`) REFERENCES `usuarios` (`ID`);
-
---
 -- Filtros para la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  ADD CONSTRAINT `facturas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`ID`);
+  ADD CONSTRAINT `facturas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`ID`),
+  ADD CONSTRAINT `facturas_ibfk_2` FOREIGN KEY (`id_prestamos`) REFERENCES `prestamos` (`ID`);
 
 --
 -- Filtros para la tabla `gastos`
@@ -604,6 +581,12 @@ ALTER TABLE `prestamos`
 --
 ALTER TABLE `retiros`
   ADD CONSTRAINT `retiros_ibfk_1` FOREIGN KEY (`IDUsuario`) REFERENCES `usuarios` (`ID`);
+
+--
+-- Filtros para la tabla `sistema_estado`
+--
+ALTER TABLE `sistema_estado`
+  ADD CONSTRAINT `sistema_estado_ibfk_1` FOREIGN KEY (`CambiadoPor`) REFERENCES `usuarios` (`ID`);
 
 --
 -- Filtros para la tabla `usuarios`
