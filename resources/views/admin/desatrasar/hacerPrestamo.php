@@ -2,75 +2,40 @@
 date_default_timezone_set('America/Bogota');
 session_start();
 
-// Validación de rol para ingresar a la página
-require_once '../../../../controllers/conexion.php';
+require_once '../../../../controllers/conexion.php'; 
 
-// Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
+}
 
-    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-    $stmt = $conexion->prepare($sql_nombre);
-    $stmt->bind_param("i", $usuario_id);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    if ($fila = $resultado->fetch_assoc()) {
-        $_SESSION["nombre_usuario"] = $fila["nombre"];
-    }
-    $stmt->close();
+$usuario_id = $_SESSION["usuario_id"];
 
-    // ID DEL CLIENTE
-    if (isset($_GET['cliente_id'])) {
-        $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
-        $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id";
-    } else {
-        $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1";
-    }
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
 
-    // Si tienes un cliente_id, obtén su zona asignada
-    $zona_cliente = "";
-    if (isset($cliente_id)) {
-        $query_zona_cliente = "SELECT ZonaAsignada FROM clientes WHERE ID = $cliente_id";
-        $result_zona_cliente = $conexion->query($query_zona_cliente);
-        if ($row = $result_zona_cliente->fetch_assoc()) {
-            $zona_cliente = $row['ZonaAsignada'];
-        }
-    }
+$cliente_id = isset($_GET['cliente_id']) ? mysqli_real_escape_string($conexion, $_GET['cliente_id']) : null;
+$query_clientes = isset($cliente_id) ? "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id" : "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1";
 
-
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'admin') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
+$zona_cliente = "";
+if ($cliente_id) {
+    $query_zona_cliente = "SELECT ZonaAsignada FROM clientes WHERE ID = $cliente_id";
+    $result_zona_cliente = $conexion->query($query_zona_cliente);
+    if ($row = $result_zona_cliente->fetch_assoc()) {
+        $zona_cliente = $row['ZonaAsignada'];
     }
 }
 
-
+$result_clientes = $conexion->query($query_clientes);
+$query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
+$result_monedas = $conexion->query($query_monedas);
 ?>
 
 
@@ -200,7 +165,7 @@ if (!isset($_SESSION["usuario_id"])) {
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
-        <form action="/controllers/procesar_prestamo.php" method="POST" class="form-container">
+        <form action="procesar_prestamo.php" method="POST" class="form-container">
             <?php
             // Incluir el archivo de conexión a la base de datos
             include("../../../../controllers/conexion.php");
@@ -208,9 +173,9 @@ if (!isset($_SESSION["usuario_id"])) {
             // ID DEL CLIENTE
             if (isset($_GET['cliente_id'])) {
                 $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
-                $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id";
+                $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM Clientes WHERE ID = $cliente_id";
             } else {
-                $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
+                $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM Clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
             }
 
             // Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
@@ -259,15 +224,16 @@ if (!isset($_SESSION["usuario_id"])) {
                 ?>
             </select><br>
 
-            <!-- Reemplaza el campo de fecha de inicio con un campo de texto readonly -->
+
+            <!-- Reemplaza el campo de fecha de inicio con un campo de fecha editable -->
             <label for="fecha_inicio">Fecha de Inicio:</label>
-            <input type="text" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d'); ?>" readonly><br>
+            <input type="date" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d'); ?>" required><br>
 
             <label for="zona">Zona:</label>
             <select name="zona" required>
                 <?php
                 if ($zona_cliente) {
-                    echo "<option value='" . $zona_cliente . "'>" . $zona_cliente . "</option>";
+                    echo "<option value='" . htmlspecialchars($zona_cliente) . "'>" . htmlspecialchars($zona_cliente) . "</option>";
                 }
                 ?>
             </select><br>

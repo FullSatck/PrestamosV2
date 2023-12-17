@@ -455,7 +455,7 @@ $stmt_prestamo->close();
                 <!-- Asegúrate de definir $id_cliente -->
                 <input type="submit" name="action" value="No pago" class="boton2">
                 <input type="submit" name="action" value="Mas tarde" class="boton3">
-                <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='rutaa.php';">
+                <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/index.php';">
                 
             </form>
           
