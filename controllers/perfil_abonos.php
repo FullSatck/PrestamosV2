@@ -440,24 +440,25 @@ $stmt_prestamo->close();
             ?>
 
 
-            <div class="contenedor-formularios">
-                <!-- Formulario de Pago -->
-                <form method="post" action="process_payment.php" id="formPago">
-                    <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                    <input type="text" id="cuota" name="cuota" placeholder="Cuota">
-                    <input type="text" id="campo2" name="campo2" placeholder="Resta">
-                    <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
-                    <input type="submit" name="action" value="Pagar" class="boton1">
-                    <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>"> 
-                </form>
+            <!-- Formulario de Pago -->
+            <form method="post" action="process_payment.php" id="formPago">
+                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
+                <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
+                <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
+                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
+                <input type="submit" name="action" value="Pagar" class="boton1">
+            </form>
 
-                <!-- Formulario de Pago -->
-                <form method="post" action="process_payment.php" id="formPago">
-                    <input type="submit" name="action" value="No pago" class="boton2">
-                    <input type="submit" name="action" value="Mas tarde" class="boton3">
-                    <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
-                </form>
-            </div>
+
+            <!-- Formulario de No Pago y Mas Tarde -->
+            <form method="post" action="process_payment.php">
+                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
+                <!-- Asegúrate de definir $id_cliente -->
+                <input type="submit" name="action" value="No pago" class="boton2">
+                <input type="submit" name="action" value="Mas tarde" class="boton3">
+                <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
+                
+            </form>
 
 
 
