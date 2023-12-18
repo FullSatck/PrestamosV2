@@ -291,6 +291,24 @@ h1 {
 .calcular-button:hover {
     background-color: #0056b3;
 }
+/* Estilos para el campo de entrada de fecha de inicio */
+#fecha_inicio {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+  
+  /* Estilos para la etiqueta asociada al campo de entrada */
+  label[for="fecha_inicio"] {
+    font-weight: bold;
+    display: block; /* Hace que la etiqueta ocupe toda la línea */
+    margin-bottom: 5px;
+  }
 @media screen and (max-width: 600px) {
     .cuadros-container {
         flex-direction: column;
