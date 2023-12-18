@@ -7,7 +7,27 @@ header {
     background: #ada6a6;
     color: #fff;
     padding: 20px 0;
-  }
+}
+
+/* Estilos para el nombre de usuario y rol */
+.nombre-usuario {
+    position: fixed;
+    top: 30px; /* Originalmente 10px, ahora aumentado en 76px */
+    right: 70px; /* Originalmente 10px, ahora disminuido en 114px */
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    color: blue;
+    max-width: 200px;
+    word-wrap: break-word;
+}
+
+
+.nombre-usuario span {
+    color: grey;
+}
 
 .container {
     width: 80%;
@@ -46,7 +66,7 @@ form {
     margin-top: 20px;
     display: flex;
     align-items: center;
-    
+
 }
 
 label {
@@ -65,28 +85,36 @@ button {
     background-color: #4caf50;
     color: white;
     border: none;
+    margin-left: 10.6px;
+    /* Mueve el botón a la derecha */
 }
 
 .botonn {
     display: inline-block;
-    padding: 10px 20px;
-    border: 2px solid rgb(109, 127, 228); /* Marco gris */
+    padding: 10px 10px;
+    border: 2px solid rgb(109, 127, 228);
+    /* Marco gris */
     text-decoration: none;
-    color: rgb(251, 248, 248); /* Color del texto negro por defecto */
-    transition: color 0.3s; /* Transición del color del texto */
+    color: rgb(6, 5, 5);
+    /* Color del texto negro por defecto */
+    transition: color 0.3s;
+    /* Transición del color del texto */
 
 }
 
 .botonn:hover {
-    color: blue; /* Color del texto al pasar el cursor sobre el botón */
+    color: blue;
+    /* Color del texto al pasar el cursor sobre el botón */
 }
 
 /* Estilo para el ícono */
 .botonn i {
-    margin-right: 5px; /* Espacio a la derecha del ícono */
+    margin-right: 5px;
+    /* Espacio a la derecha del ícono */
 }
 
 /* Estilo para el texto */
 .botonn .spann {
-    font-weight: bold; /* Texto en negrita */
+    font-weight: bold;
+    /* Texto en negrita */
 }

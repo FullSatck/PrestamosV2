@@ -1,19 +1,44 @@
 <?php
-// Configuración de la zona horaria
 date_default_timezone_set('America/Bogota');
+session_start();
 
-// Configuración de la base de datos
-$servidor = "localhost";
-$usuario = "root";
-$contrasena = "";
-$dbnombre = "prestamos";
+// Verifica si el usuario está autenticado
+if (!isset($_SESSION["usuario_id"])) {
+    header("Location: ../index.php");
+    exit();
+}
 
-// Creación de la conexión a la base de datos
-$conexion = new mysqli($servidor, $usuario, $contrasena, $dbnombre);
+// Incluye la configuración de conexión a la base de datos
+require_once 'conexion.php'; 
 
-// Verificación de la conexión
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+// El usuario está autenticado, obtén el ID del usuario de la sesión
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
+// Preparar la consulta para obtener el rol del usuario
+$stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+$stmt->bind_param("i", $usuario_id);
+
+// Ejecutar la consulta
+$stmt->execute();
+$resultado = $stmt->get_result();
+$fila = $resultado->fetch_assoc();
+
+$stmt->close();
+
+// Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
+if (!$fila || $fila['Nombre'] !== 'admin') {
+    header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+    exit();
 }
 
 // Obtener clientes que han pasado ciertos días hábiles sin pagar una cuota
