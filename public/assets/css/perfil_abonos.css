@@ -95,6 +95,14 @@ header {
     background-color: #93cc93;
 }
 
+.no-prestamo-mensaje {
+    color: #333; 
+    font-size: 16px; 
+    margin-bottom: 10px; 
+    background-color: pink;
+    padding: 10px;
+    border-radius: 10px;
+} 
 
 /* Encabezado */
 h1 {
