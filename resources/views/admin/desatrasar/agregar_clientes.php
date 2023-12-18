@@ -63,7 +63,7 @@ if (!isset($_SESSION["usuario_id"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Clientes</title>
-    <link rel="stylesheet" href="/public/assets/css/registrar_cliente.css">
+    <link rel="stylesheet" href="/resources/views/admin/desatrasar/css/registrar_cliente.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
@@ -186,10 +186,7 @@ if (!isset($_SESSION["usuario_id"])) {
         }
         ?>
 
-        <div id="mensaje-emergente" style="display: none;">
-            <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
-            <a href="" id="enlace-perfil">Ir al perfil</a>
-        </div>
+
 
         <h1>Registro de Clientes Atrasados </h1>
         <form action="/controllers/validar_cliente2.php" method="POST" enctype="multipart/form-data">
@@ -238,38 +235,38 @@ if (!isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="zona">Zona:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
-    <?php
-    // Incluye el archivo de conexión a la base de datos
-    include("../../../../controllers/conexion.php");
-    // Consulta SQL para obtener las zonas
-    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Puebla', 'Chihuahua', 'Quintana Roo')";
-    $resultZonas = mysqli_query($conexion, $consultaZonas);
-    
-    // Inicializa un arreglo para almacenar las opciones
-    $zonasOptions = array();
+                    <?php
+                    // Incluye el archivo de conexión a la base de datos
+                    include("../../../../controllers/conexion.php");
+                    // Consulta SQL para obtener las zonas
+                    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Puebla', 'Chihuahua', 'Quintana Roo')";
+                    $resultZonas = mysqli_query($conexion, $consultaZonas);
 
-    // Genera las opciones del menú desplegable para Zona y almacénalas en el arreglo
-    while ($row = mysqli_fetch_assoc($resultZonas)) {
-        $zonasOptions[] = $row;
-    }
-    
-    // Ordena el arreglo para que "Puebla" aparezca primero
-    usort($zonasOptions, function($a, $b) {
-        if ($a['Nombre'] == 'Puebla') {
-            return -1;
-        } elseif ($b['Nombre'] == 'Puebla') {
-            return 1;
-        } else {
-            return strcmp($a['Nombre'], $b['Nombre']);
-        }
-    });
+                    // Inicializa un arreglo para almacenar las opciones
+                    $zonasOptions = array();
 
-    // Genera las opciones del menú desplegable en el orden actualizado
-    foreach ($zonasOptions as $option) {
-        echo '<option value="' . $option['ID'] . '">' . $option['Nombre'] . '</option>';
-    }
-    ?>
-</select>
+                    // Genera las opciones del menú desplegable para Zona y almacénalas en el arreglo
+                    while ($row = mysqli_fetch_assoc($resultZonas)) {
+                        $zonasOptions[] = $row;
+                    }
+
+                    // Ordena el arreglo para que "Puebla" aparezca primero
+                    usort($zonasOptions, function ($a, $b) {
+                        if ($a['Nombre'] == 'Puebla') {
+                            return -1;
+                        } elseif ($b['Nombre'] == 'Puebla') {
+                            return 1;
+                        } else {
+                            return strcmp($a['Nombre'], $b['Nombre']);
+                        }
+                    });
+
+                    // Genera las opciones del menú desplegable en el orden actualizado
+                    foreach ($zonasOptions as $option) {
+                        echo '<option value="' . $option['ID'] . '">' . $option['Nombre'] . '</option>';
+                    }
+                    ?>
+                </select>
 
             </div>
 
@@ -299,6 +296,10 @@ if (!isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="imagen">Imagen del Cliente:</label>
                 <input type="file" id="imagen" name="imagen">
+            </div>
+            <div id="mensaje-emergente" style="display: none;">
+                <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
+                <a href="" id="enlace-perfil">Ir al perfil</a>
             </div>
 
             <div class="btn-container">

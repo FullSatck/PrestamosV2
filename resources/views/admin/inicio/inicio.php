@@ -9,7 +9,7 @@ if (!isset($_SESSION["usuario_id"])) {
 }
 
 // Incluye la configuración de conexión a la base de datos
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // El usuario está autenticado, obtén el ID del usuario de la sesión
 $usuario_id = $_SESSION["usuario_id"];
@@ -43,7 +43,8 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 
 
 // Función para obtener la suma de una columna de una tabla
-function obtenerSuma($conexion, $tabla, $columna) {
+function obtenerSuma($conexion, $tabla, $columna)
+{
     $sql = "SELECT SUM($columna) AS Total FROM $tabla";
     $resultado = mysqli_query($conexion, $sql);
     if ($resultado) {
@@ -87,10 +88,10 @@ date_default_timezone_set('America/Bogota');
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -171,7 +172,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -187,29 +188,20 @@ date_default_timezone_set('America/Bogota');
         <h1>Inicio Administrador</h1>
         <div class="cuadros-container">
 
-            <div class="cuadro cuadro-1">
+
+
+
+
+            
+            <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
-                    </p>
+                    <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
+                    <p>Mantenimiento</p>
+
                 </div>
+
             </div>
 
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
-                    </p>
-                </div>
-            </div>
-
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
-                    </p>
-                </div>
-            </div>
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
@@ -221,8 +213,9 @@ date_default_timezone_set('America/Bogota');
 
             <!-- TRAER EL PRIMER ID -->
 
-            <?php 
-            function obtenerPrimerID($conexion) {
+            <?php
+            function obtenerPrimerID($conexion)
+            {
                 $primer_id = 0;
 
                 // Consulta para obtener el primer ID de préstamo
@@ -231,7 +224,7 @@ date_default_timezone_set('America/Bogota');
                                   ORDER BY ID ASC
                                   LIMIT 1";
 
-               $stmt_primer_id = $conexion->prepare($sql_primer_id);
+                $stmt_primer_id = $conexion->prepare($sql_primer_id);
                 $stmt_primer_id->execute();
                 $stmt_primer_id->bind_result($primer_id);
                 $stmt_primer_id->fetch();
@@ -252,15 +245,33 @@ date_default_timezone_set('America/Bogota');
                     <p>Version beta</p>
                 </div>
             </div>
-
-
+            <div class="cuadro cuadro-1">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
+                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
+                    </p>
+                </div>
+            </div>
+            <div class="cuadro cuadro-3">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
+                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
+                    </p>
+                </div>
+            </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/contabilidad/contabilidad.php" class="titulo">Contabilidad </a>
                     <p>Version Beta v1</p>
                 </div>
             </div>
-
+            <div class="cuadro cuadro-4">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
+                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
+                    </p>
+                </div>
+            </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
@@ -270,14 +281,6 @@ date_default_timezone_set('America/Bogota');
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
-                    <p>Mantenimiento</p>
-
-                </div>
-
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
                     <p>Mantenimiento</p>
 
                 </div>

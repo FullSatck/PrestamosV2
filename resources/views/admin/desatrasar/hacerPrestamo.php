@@ -83,7 +83,7 @@ if (!isset($_SESSION["usuario_id"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prestamos</title>
 
-    <link rel="stylesheet" href="/public/assets/css/prestamo.css">
+    <link rel="stylesheet" href="/resources/views/admin/desatrasar/css/prestamo.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
@@ -236,7 +236,7 @@ if (!isset($_SESSION["usuario_id"])) {
             <input type="text" name="monto" id="monto" required oninput="calcularMontoPagar()"><br>
 
             <label for="tasa_interes">Tasa de Interés (%):</label>
-            <input type="text" name="TasaInteres" id="TasaInteres" required><br>
+            <input type="text" name="TasaInteres" id="TasaInteres" required oninput="calcularMontoPagar()"><br>
 
             <label for="frecuencia_pago">Frecuencia de Pago:</label>
             <select name="frecuencia_pago" id="frecuencia_pago" required onchange="calcularMontoPagar()">
@@ -247,7 +247,8 @@ if (!isset($_SESSION["usuario_id"])) {
             </select><br>
 
             <label for="plazo">Plazo:</label>
-            <input type="text" name="plazo" id="plazo" required><br>
+            <input type="text" name="plazo" id="plazo" required oninput="calcularMontoPagar()"><br>
+
 
             <label for="moneda_id">Moneda:</label>
             <select name="moneda_id" id="moneda_id" required onchange="calcularMontoPagar()">
