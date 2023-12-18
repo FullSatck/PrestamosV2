@@ -177,10 +177,6 @@ if (!isset($_SESSION["usuario_id"])) {
     </div>
 
     <main>
-        <div id="mensaje-emergente" style="display: none;">
-            <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
-            <a href="" id="enlace-perfil">Ir al perfil</a>
-        </div>
 
         <h1>Registro de Clientes</h1>
         <form action="/controllers/validar_clientes.php" method="POST" enctype="multipart/form-data">
@@ -233,6 +229,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     // Incluye el archivo de conexión a la base de datos
                     include("../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
+<<<<<<< Updated upstream
                     $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Puebla', 'Chihuahua', 'Quintana Roo')";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
 
@@ -258,6 +255,13 @@ if (!isset($_SESSION["usuario_id"])) {
                     // Genera las opciones del menú desplegable en el orden actualizado
                     foreach ($zonasOptions as $option) {
                         echo '<option value="' . $option['ID'] . '">' . $option['Nombre'] . '</option>';
+=======
+                    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Chihuahua', 'Puebla', 'Quintana Roo')";
+                    $resultZonas = mysqli_query($conexion, $consultaZonas);
+                    // Genera las opciones del menú desplegable para Zona
+                    while ($row = mysqli_fetch_assoc($resultZonas)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+>>>>>>> Stashed changes
                     }
                     ?>
                 </select>
@@ -290,6 +294,11 @@ if (!isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="imagen">Imagen del Cliente:</label>
                 <input type="file" id="imagen" name="imagen">
+            </div>
+
+            <div id="mensaje-emergente" style="display: none;">
+                <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
+                <a href="" id="enlace-perfil">Ir al perfil</a>
             </div>
 
             <div class="btn-container">
@@ -336,6 +345,7 @@ if (!isset($_SESSION["usuario_id"])) {
             const mensajeEmergente = document.getElementById("mensaje-emergente");
             const mensajeError = document.getElementById("mensaje-error");
             const enlacePerfil = document.getElementById("enlace-perfil");
+<<<<<<< Updated upstream
 
             if (curp) {
                 // Crear una nueva solicitud AJAX
@@ -373,6 +383,35 @@ if (!isset($_SESSION["usuario_id"])) {
                 // Si el campo CURP está vacío, oculta el mensaje de error y restablece el enlace
                 mensajeEmergente.style.display = "none";
                 enlacePerfil.href = "";
+=======
+            const botonRegistrar = document.querySelector(".btn-container"); // Referencia al botón de registro
+
+            if (curp) {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/controllers/verificar_cliente.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const respuesta = JSON.parse(xhr.responseText);
+
+                        if (respuesta.existe) {
+                            mensajeEmergente.style.display = "block";
+                            mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
+                            enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta.cliente_id;
+                            botonRegistrar.disabled = true; // Deshabilitar el botón de registro
+                        } else {
+                            mensajeEmergente.style.display = "none";
+                            enlacePerfil.href = "";
+                            botonRegistrar.disabled = false; // Habilitar el botón de registro
+                        }
+                    }
+                };
+                xhr.send("curp=" + curp);
+            } else {
+                mensajeEmergente.style.display = "none";
+                enlacePerfil.href = "";
+                botonRegistrar.disabled = false; // Habilitar el botón de registro si CURP está vacío
+>>>>>>> Stashed changes
             }
         });
     </script>
