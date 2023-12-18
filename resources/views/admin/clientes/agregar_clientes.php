@@ -177,10 +177,6 @@ if (!isset($_SESSION["usuario_id"])) {
     </div>
 
     <main>
-        <div id="mensaje-emergente" style="display: none;">
-            <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
-            <a href="" id="enlace-perfil">Ir al perfil</a>
-        </div>
 
         <h1>Registro de Clientes</h1>
         <form action="/controllers/validar_clientes.php" method="POST" enctype="multipart/form-data">
@@ -290,6 +286,11 @@ if (!isset($_SESSION["usuario_id"])) {
             <div class="input-container">
                 <label for="imagen">Imagen del Cliente:</label>
                 <input type="file" id="imagen" name="imagen">
+            </div>
+
+            <div id="mensaje-emergente" style="display: none;">
+                <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
+                <a href="" id="enlace-perfil">Ir al perfil</a>
             </div>
 
             <div class="btn-container">
