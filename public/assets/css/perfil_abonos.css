@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,16 +8,16 @@
     font-family: 'Open Sans', sans-serif;
 }
 
-body{
+body {
     padding: 20px;
     padding-top: 85px;
     background-color: rgb(250, 226, 229);
 }
- 
-header{
+
+header {
     width: 100%;
     height: 80px;
-    background:  rgb(250, 226, 229);
+    background: rgb(250, 226, 229);
     display: flex;
     align-items: center;
     position: fixed;
@@ -38,11 +38,11 @@ header{
     color: blue;
     max-width: 200px;
     word-wrap: break-word;
-  }
-  
-  .nombre-usuario span {
+}
+
+.nombre-usuario span {
     color: grey;
-  }
+}
 
 .back-link1 {
     display: inline-block;
@@ -52,7 +52,7 @@ header{
     background-color: #a9f0f0;
     color: rgb(0, 0, 0);
     text-decoration: none;
-    border-radius: 5px; 
+    border-radius: 5px;
     font-family: Arial, sans-serif;
     font-size: 16px;
 }
@@ -94,11 +94,11 @@ header{
 .back-link3:hover {
     background-color: #93cc93;
 }
- 
+
 
 /* Encabezado */
 h1 {
-    text-align: center; 
+    text-align: center;
     color: #333;
 }
 
@@ -107,19 +107,20 @@ h1 {
     display: flex;
     border: 10px;
     justify-content: center;
-    align-items: flex-start; /* Alinea los elementos al inicio */
+    align-items: flex-start;
+    /* Alinea los elementos al inicio */
     margin: 20px;
-    background-color: rgb(250, 228, 235); 
+    background-color: rgb(250, 228, 235);
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Detalles del perfil */
-.profile-details { 
-    text-align: left; 
+.profile-details {
+    text-align: left;
     flex: 2;
-    margin: 10px; 
-    background-color: rgb(250, 228, 235); 
+    margin: 10px;
+    background-color: rgb(250, 228, 235);
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -136,14 +137,14 @@ h1 {
 }
 
 /* Préstamos del cliente */
-.profile-loans { 
+.profile-loans {
     background-color: #f5d6d6;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-loans h2 {
-    font-size: 24px; 
+    font-size: 24px;
     margin-bottom: 10px;
     color: #333;
 }
@@ -151,31 +152,31 @@ h1 {
 
 .info-cliente {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     border-top: 100px;
 }
 
 .columna {
     flex: 1;
-    padding: 0 10px; 
+    padding: 0 10px;
 }
- 
+
 
 /* Estilos para el formulario y el menú desplegable */
 form {
     font-family: Arial, sans-serif;
     margin-bottom: 20px;
-  }
-  
-  select {
+}
+
+select {
     padding: 8px;
     font-size: 16px;
     border-radius: 5px;
     border: 1px solid #ccc;
     width: 300px;
-  }
-  
-  .boton1 {
+}
+
+.boton1 {
     padding: 8px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -183,13 +184,13 @@ form {
     background-color: rgba(54, 162, 235, 0.6);
     color: #000000;
     cursor: pointer;
-  }
-  
-  .boton1:hover {
-    background-color: rgba(30, 114, 170, 0.6);
-  }
+}
 
-  .boton2{
+.boton1:hover {
+    background-color: rgba(30, 114, 170, 0.6);
+}
+
+.boton2 {
     padding: 8px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -197,13 +198,13 @@ form {
     background-color: rgba(255, 206, 86, 0.6);
     color: #000000;
     cursor: pointer;
-  }
+}
 
-  .boton2:hover{
+.boton2:hover {
     background-color: rgba(179, 137, 34, 0.6);
-  }
+}
 
-  .boton3{
+.boton3 {
     padding: 8px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -211,13 +212,13 @@ form {
     background-color: rgba(123, 123, 192, 0.6);
     color: #000000;
     cursor: pointer;
-  }
+}
 
-  .boton3:hover{
+.boton3:hover {
     background-color: rgba(81, 81, 133, 0.6);
-  }
+}
 
-  .boton4{
+.boton4 {
     padding: 8px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -225,13 +226,13 @@ form {
     background-color: rgba(255, 99, 132, 0.6);
     color: #000000;
     cursor: pointer;
-  }
+}
 
-  .boton4:hover{
+.boton4:hover {
     background-color: rgba(255, 99, 132, 0.6);
-  }
-   
-  .contenedor {
+}
+
+.contenedor {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -266,10 +267,12 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: rgba(255, 255, 255, 0.7); /* Fondo transparente */
+    background-color: rgba(255, 255, 255, 0.7);
+    /* Fondo transparente */
 }
 
-th, td {
+th,
+td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -281,21 +284,25 @@ th, td {
     border-collapse: collapse;
 }
 
-#tabla-prestamos th, #tabla-prestamos td {
+#tabla-prestamos th,
+#tabla-prestamos td {
     padding: 10px;
     text-align: left;
 }
 
 #tabla-prestamos th {
-    background-color: pink; /* Color rosa claro */
+    background-color: pink;
+    /* Color rosa claro */
 }
 
 .color-claro {
-    background-color: rgb(245, 220, 224); /* Color rosa más claro para filas pares */
+    background-color: rgb(245, 220, 224);
+    /* Color rosa más claro para filas pares */
 }
 
 .color-oscuro {
-    background-color: rgb(240, 215, 219); /* Color rosa más oscuro para filas impares */
+    background-color: rgb(240, 215, 219);
+    /* Color rosa más oscuro para filas impares */
 }
 
 /* Estilos para los botones */
@@ -308,16 +315,18 @@ button {
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #585858;
-  }
+}
 
-  /* Estilos para el botón de editar */
+button:hover {
+    background-color: #585858;
+}
+
+/* Estilos para el botón de editar */
 .edit-button {
-    margin-top: 20px; /* Espacio superior */
-    text-align: right; /* Alineación del contenido a la derecha */
+    margin-top: 20px;
+    /* Espacio superior */
+    text-align: right;
+    /* Alineación del contenido a la derecha */
 }
 
 .edit-button a {
@@ -333,6 +342,7 @@ button {
 .edit-button a:hover {
     background-color: #9729b9;
 }
+
 .resultados-busqueda ul {
     list-style: none;
     padding: 0;
@@ -351,8 +361,10 @@ button {
 .resultados-busqueda li:hover {
     background-color: #ececec;
 }
-.input-busqueda{
-    width: calc(33.33% - 10px); /* Aquí definimos el ancho en escritorio */
+
+.input-busqueda {
+    width: calc(33.33% - 10px);
+    /* Aquí definimos el ancho en escritorio */
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -361,9 +373,9 @@ button {
 }
 
 
-  
+
 /* Media Queries */
-@media (max-width: 600px)  {
+@media (max-width: 600px) {
     /* Estilos para dispositivos móviles */
 
     body {
@@ -373,16 +385,19 @@ button {
     header {
         height: 65px;
     }
+
     .busqueda-navegacion-container {
         flex-direction: column;
     }
+
     #filtroBusqueda {
-        width: 100%; /* Ajusta esto según tus necesidades */
+        width: 100%;
+        /* Ajusta esto según tus necesidades */
         /* Puedes agregar más estilos aquí si es necesario */
     }
 
- 
-    
+
+
     .nombre-usuario {
         top: 5px;
         right: 5px;
@@ -403,16 +418,52 @@ button {
     .profile-image img {
         max-height: 120px;
     }
-   
-    .boton4 {
+
+    .boton1 {
         display: inline-block;
-        width: 45%; /* Ancho deseado */
-        margin: 5px; /* Espacio entre los botones */
+        width: 45%;
+        /* Ancho deseado */
+        margin: 5px;
+        /* Espacio entre los botones */
         padding: 8px 16px;
         font-size: 14px;
         text-align: center;
     }
- 
+
+    .boton2 {
+        display: inline-block;
+        width: 45%;
+        /* Ancho deseado */
+        margin: 5px;
+        /* Espacio entre los botones */
+        padding: 8px 16px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .boton3 {
+        display: inline-block;
+        width: 45%;
+        /* Ancho deseado */
+        margin: 5px;
+        /* Espacio entre los botones */
+        padding: 8px 16px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+
+    .boton4 {
+        display: inline-block;
+        width: 45%;
+        /* Ancho deseado */
+        margin: 5px;
+        /* Espacio entre los botones */
+        padding: 8px 16px;
+        font-size: 14px;
+        text-align: center;
+    }
+
     .button {
         padding: 8px 12px;
         font-size: 14px;
@@ -428,5 +479,5 @@ button {
         font-size: 12px;
         overflow-x: auto;
     }
-   
+
 }
