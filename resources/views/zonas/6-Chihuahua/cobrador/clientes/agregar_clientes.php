@@ -50,10 +50,10 @@ date_default_timezone_set('America/Bogota');
         </div>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -100,14 +100,14 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
@@ -116,7 +116,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-       
+
 
 
 
@@ -127,14 +127,9 @@ date_default_timezone_set('America/Bogota');
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <div id="mensaje-emergente" style="display: none;">
-            <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
-            <a href="" id="enlace-perfil">Ir al perfil</a>
-        </div>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/cob/validar_clientes/validar_clientes6.php" method="POST"
-            enctype="multipart/form-data">
+        <form action="/controllers/cob/validar_clientes/validar_clientes6.php" method="POST" enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -158,23 +153,23 @@ date_default_timezone_set('America/Bogota');
             <div class="input-container">
                 <label for="telefono">Teléfono:</label>
                 <input type="text" id="telefono" name="telefono" required>
-            </div> 
+            </div>
 
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
                 <select id="moneda" name="moneda">
                     <?php
-                require_once("../../../../../../controllers/conexion.php");
+                    require_once("../../../../../../controllers/conexion.php");
 
-                $query = "SELECT * FROM monedas";
-                $result = mysqli_query($conexion, $query);
+                    $query = "SELECT * FROM monedas";
+                    $result = mysqli_query($conexion, $query);
 
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
-                }
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+                    }
 
-                mysqli_close($conexion);
-                ?>
+                    mysqli_close($conexion);
+                    ?>
                 </select>
             </div>
 
@@ -182,16 +177,16 @@ date_default_timezone_set('America/Bogota');
                 <label for="zona">Estado:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
-                // Incluye el archivo de conexión a la base de datos
-                include("../../../../../../controllers/conexion.php");
-                // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Chihuahua'";
-                $resultZonas = mysqli_query($conexion, $consultaZonas);
-                // Genera las opciones del menú desplegable para Zona
-                while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
-                }
-                ?>
+                    // Incluye el archivo de conexión a la base de datos
+                    include("../../../../../../controllers/conexion.php");
+                    // Consulta SQL para obtener las zonas
+                    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Chihuahua'";
+                    $resultZonas = mysqli_query($conexion, $consultaZonas);
+                    // Genera las opciones del menú desplegable para Zona
+                    while ($row = mysqli_fetch_assoc($resultZonas)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
@@ -199,23 +194,22 @@ date_default_timezone_set('America/Bogota');
                 <label for="ciudad">Municipio:</label>
                 <select id="ciudad" name="ciudad" required>
                     <?php
-                // Incluye el archivo de conexión a la base de datos
-                include("../../../../../../controllers/conexion.php");
-                // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT * FROM ciudades WHERE iDZona = 6";
-                $resultZonas = mysqli_query($conexion, $consultaZonas);
-                // Genera las opciones del menú desplegable para Zona
-                while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
-                }
-                ?>
+                    // Incluye el archivo de conexión a la base de datos
+                    include("../../../../../../controllers/conexion.php");
+                    // Consulta SQL para obtener las zonas
+                    $consultaZonas = "SELECT * FROM ciudades WHERE iDZona = 6";
+                    $resultZonas = mysqli_query($conexion, $consultaZonas);
+                    // Genera las opciones del menú desplegable para Zona
+                    while ($row = mysqli_fetch_assoc($resultZonas)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
             <div class="input-container">
                 <label for="asentamiento">Colonia:</label>
-                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento"
-                    required>
+                <input type="text" id="asentamiento" name="asentamiento" placeholder="Por favor ingrese el asentamiento" required>
             </div>
 
             <div class="input-container">
@@ -223,18 +217,18 @@ date_default_timezone_set('America/Bogota');
                 <select id="cartera_id" name="cartera_id" required>
                     <option value="">Escoge cartera</option>
                     <?php
-        // Incluye el archivo de conexión a la base de datos
-        include("../../../../../../controllers/conexion.php");
-        
-        // Consulta SQL para obtener las carteras
-        $consultaCarteras = "SELECT id, nombre FROM carteras";
-        $resultCarteras = mysqli_query($conexion, $consultaCarteras);
-        
-        // Genera las opciones del menú desplegable para las carteras
-        while ($row = mysqli_fetch_assoc($resultCarteras)) {
-            echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
-        }
-        ?>
+                    // Incluye el archivo de conexión a la base de datos
+                    include("../../../../../../controllers/conexion.php");
+
+                    // Consulta SQL para obtener las carteras
+                    $consultaCarteras = "SELECT id, nombre FROM carteras";
+                    $resultCarteras = mysqli_query($conexion, $consultaCarteras);
+
+                    // Genera las opciones del menú desplegable para las carteras
+                    while ($row = mysqli_fetch_assoc($resultCarteras)) {
+                        echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
@@ -243,6 +237,11 @@ date_default_timezone_set('America/Bogota');
             <div class="input-container">
                 <label for="imagen">Imagen del Cliente:</label>
                 <input type="file" id="imagen" name="imagen">
+            </div>
+
+            <div id="mensaje-emergente" style="display: none;">
+                <p id="mensaje-error">Este cliente ya existe. No se puede registrar.</p>
+                <a href="" id="enlace-perfil">Ir al perfil</a>
             </div>
 
             <div class="btn-container">
@@ -254,50 +253,50 @@ date_default_timezone_set('America/Bogota');
     </main>
 
     <script>
-    document.getElementById("curp").addEventListener("input", function() {
-        const curp = this.value;
-        const mensajeEmergente = document.getElementById("mensaje-emergente");
-        const mensajeError = document.getElementById("mensaje-error");
-        const enlacePerfil = document.getElementById("enlace-perfil");
+        document.getElementById("curp").addEventListener("input", function() {
+            const curp = this.value;
+            const mensajeEmergente = document.getElementById("mensaje-emergente");
+            const mensajeError = document.getElementById("mensaje-error");
+            const enlacePerfil = document.getElementById("enlace-perfil");
 
-        if (curp) {
-            // Crear una nueva solicitud AJAX
-            const xhr = new XMLHttpRequest();
+            if (curp) {
+                // Crear una nueva solicitud AJAX
+                const xhr = new XMLHttpRequest();
 
-            // Definir el método y la URL del archivo PHP
-            xhr.open("POST", "/controllers/verificar_cliente.php", true);
+                // Definir el método y la URL del archivo PHP
+                xhr.open("POST", "/controllers/verificar_cliente.php", true);
 
-            // Establecer el encabezado necesario para el envío de datos POST
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                // Establecer el encabezado necesario para el envío de datos POST
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            // Definir la función de respuesta
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const respuesta = JSON.parse(xhr.responseText);
+                // Definir la función de respuesta
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const respuesta = JSON.parse(xhr.responseText);
 
-                    if (respuesta.existe) {
-                        // Si el cliente ya existe, muestra un mensaje de error
-                        mensajeEmergente.style.display = "block";
-                        mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
-                        // Configura el enlace para ir al perfil con el ID
-                        enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta
-                            .cliente_id;
-                    } else {
-                        // Si el cliente no existe, oculta el mensaje de error y restablece el enlace
-                        mensajeEmergente.style.display = "none";
-                        enlacePerfil.href = "";
+                        if (respuesta.existe) {
+                            // Si el cliente ya existe, muestra un mensaje de error
+                            mensajeEmergente.style.display = "block";
+                            mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
+                            // Configura el enlace para ir al perfil con el ID
+                            enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta
+                                .cliente_id;
+                        } else {
+                            // Si el cliente no existe, oculta el mensaje de error y restablece el enlace
+                            mensajeEmergente.style.display = "none";
+                            enlacePerfil.href = "";
+                        }
                     }
-                }
-            };
+                };
 
-            // Enviar la solicitud con el CURP como datos POST
-            xhr.send("curp=" + curp);
-        } else {
-            // Si el campo CURP está vacío, oculta el mensaje de error y restablece el enlace
-            mensajeEmergente.style.display = "none";
-            enlacePerfil.href = "";
-        }
-    });
+                // Enviar la solicitud con el CURP como datos POST
+                xhr.send("curp=" + curp);
+            } else {
+                // Si el campo CURP está vacío, oculta el mensaje de error y restablece el enlace
+                mensajeEmergente.style.display = "none";
+                enlacePerfil.href = "";
+            }
+        });
     </script>
 
     <script src="/public/assets/js/MenuLate.js"></script>
