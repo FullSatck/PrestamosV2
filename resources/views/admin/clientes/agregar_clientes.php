@@ -4,7 +4,7 @@ session_start();
 
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -16,19 +16,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -43,15 +43,13 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
@@ -81,10 +79,10 @@ $stmt->close();
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -150,7 +148,7 @@ $stmt->close();
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -163,7 +161,7 @@ $stmt->close();
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -209,22 +207,22 @@ $stmt->close();
             <div class="input-container">
                 <label for="telefono">Teléfono:</label>
                 <input type="text" id="telefono" name="telefono" required>
-            </div> 
+            </div>
             <div class="input-container">
                 <label for="moneda">Moneda Preferida:</label>
                 <select id="moneda" name="moneda">
                     <?php
-                require_once("../../../../controllers/conexion.php");
+                    require_once("../../../../controllers/conexion.php");
 
-                $query = "SELECT * FROM monedas";
-                $result = mysqli_query($conexion, $query);
+                    $query = "SELECT * FROM monedas";
+                    $result = mysqli_query($conexion, $query);
 
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
-                }
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+                    }
 
-                mysqli_close($conexion);
-                ?>
+                    mysqli_close($conexion);
+                    ?>
                 </select>
             </div>
 
@@ -232,33 +230,54 @@ $stmt->close();
                 <label for="zona">Zona:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
-                // Incluye el archivo de conexión a la base de datos
-                include("../../../../controllers/conexion.php");
-                // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Chihuahua', 'Puebla', 'Quintana Roo')";
-                $resultZonas = mysqli_query($conexion, $consultaZonas);
-                // Genera las opciones del menú desplegable para Zona
-                while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
-                }
-                ?>
+                    // Incluye el archivo de conexión a la base de datos
+                    include("../../../../controllers/conexion.php");
+                    // Consulta SQL para obtener las zonas
+                    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Puebla', 'Chihuahua', 'Quintana Roo')";
+                    $resultZonas = mysqli_query($conexion, $consultaZonas);
+
+                    // Inicializa un arreglo para almacenar las opciones
+                    $zonasOptions = array();
+
+                    // Genera las opciones del menú desplegable para Zona y almacénalas en el arreglo
+                    while ($row = mysqli_fetch_assoc($resultZonas)) {
+                        $zonasOptions[] = $row;
+                    }
+
+                    // Ordena el arreglo para que "Puebla" aparezca primero
+                    usort($zonasOptions, function ($a, $b) {
+                        if ($a['Nombre'] == 'Puebla') {
+                            return -1;
+                        } elseif ($b['Nombre'] == 'Puebla') {
+                            return 1;
+                        } else {
+                            return strcmp($a['Nombre'], $b['Nombre']);
+                        }
+                    });
+
+                    // Genera las opciones del menú desplegable en el orden actualizado
+                    foreach ($zonasOptions as $option) {
+                        echo '<option value="' . $option['ID'] . '">' . $option['Nombre'] . '</option>';
+                    }
+                    ?>
                 </select>
+
             </div>
 
             <div class="input-container">
                 <label for="ciudad">Ciudad:</label>
                 <select id="ciudad" name="ciudad">
                     <?php
-                // Incluye el archivo de conexión a la base de datos
-                include("../../../../controllers/conexion.php");
-                // Consulta SQL para obtener las zonas
-                $consultaZonas = "SELECT * FROM ciudades";
-                $resultZonas = mysqli_query($conexion, $consultaZonas);
-                // Genera las opciones del menú desplegable para Zona
-                while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
-                }
-                ?>
+                    // Incluye el archivo de conexión a la base de datos
+                    include("../../../../controllers/conexion.php");
+                    // Consulta SQL para obtener las zonas
+                    $consultaZonas = "SELECT * FROM ciudades";
+                    $resultZonas = mysqli_query($conexion, $consultaZonas);
+                    // Genera las opciones del menú desplegable para Zona
+                    while ($row = mysqli_fetch_assoc($resultZonas)) {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Nombre'] . '</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
@@ -282,80 +301,80 @@ $stmt->close();
     </main>
 
     <script>
-    document.getElementById('zona').addEventListener('change', function() {
-        var IDZona = this.value;
-        var ciudadSelect = document.getElementById('ciudad');
+        document.getElementById('zona').addEventListener('change', function() {
+            var IDZona = this.value;
+            var ciudadSelect = document.getElementById('ciudad');
 
-        // Clear existing options
-        ciudadSelect.innerHTML = '';
+            // Clear existing options
+            ciudadSelect.innerHTML = '';
 
-        if (IDZona) {
-            // AJAX request to fetch cities
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'fetch_cities.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                if (this.status === 200) {
-                    var cities = JSON.parse(this.responseText);
-                    cities.forEach(function(city) {
-                        var option = document.createElement('option');
-                        option.value = city.id;
-                        option.textContent = city.nombre;
-                        ciudadSelect.appendChild(option);
-                    });
-                }
-            };
-            xhr.send('IDZona=' + IDZona);
-        }
-    });
+            if (IDZona) {
+                // AJAX request to fetch cities
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'fetch_cities.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (this.status === 200) {
+                        var cities = JSON.parse(this.responseText);
+                        cities.forEach(function(city) {
+                            var option = document.createElement('option');
+                            option.value = city.id;
+                            option.textContent = city.nombre;
+                            ciudadSelect.appendChild(option);
+                        });
+                    }
+                };
+                xhr.send('IDZona=' + IDZona);
+            }
+        });
     </script>
 
 
     <script>
-    document.getElementById("curp").addEventListener("input", function() {
-        const curp = this.value;
-        const mensajeEmergente = document.getElementById("mensaje-emergente");
-        const mensajeError = document.getElementById("mensaje-error");
-        const enlacePerfil = document.getElementById("enlace-perfil");
+        document.getElementById("curp").addEventListener("input", function() {
+            const curp = this.value;
+            const mensajeEmergente = document.getElementById("mensaje-emergente");
+            const mensajeError = document.getElementById("mensaje-error");
+            const enlacePerfil = document.getElementById("enlace-perfil");
 
-        if (curp) {
-            // Crear una nueva solicitud AJAX
-            const xhr = new XMLHttpRequest();
+            if (curp) {
+                // Crear una nueva solicitud AJAX
+                const xhr = new XMLHttpRequest();
 
-            // Definir el método y la URL del archivo PHP
-            xhr.open("POST", "/controllers/verificar_cliente.php", true);
+                // Definir el método y la URL del archivo PHP
+                xhr.open("POST", "/controllers/verificar_cliente.php", true);
 
-            // Establecer el encabezado necesario para el envío de datos POST
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                // Establecer el encabezado necesario para el envío de datos POST
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            // Definir la función de respuesta
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const respuesta = JSON.parse(xhr.responseText);
+                // Definir la función de respuesta
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const respuesta = JSON.parse(xhr.responseText);
 
-                    if (respuesta.existe) {
-                        // Si el cliente ya existe, muestra un mensaje de error
-                        mensajeEmergente.style.display = "block";
-                        mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
-                        // Configura el enlace para ir al perfil con el ID
-                        enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta
-                            .cliente_id;
-                    } else {
-                        // Si el cliente no existe, oculta el mensaje de error y restablece el enlace
-                        mensajeEmergente.style.display = "none";
-                        enlacePerfil.href = "";
+                        if (respuesta.existe) {
+                            // Si el cliente ya existe, muestra un mensaje de error
+                            mensajeEmergente.style.display = "block";
+                            mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
+                            // Configura el enlace para ir al perfil con el ID
+                            enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta
+                                .cliente_id;
+                        } else {
+                            // Si el cliente no existe, oculta el mensaje de error y restablece el enlace
+                            mensajeEmergente.style.display = "none";
+                            enlacePerfil.href = "";
+                        }
                     }
-                }
-            };
+                };
 
-            // Enviar la solicitud con el CURP como datos POST
-            xhr.send("curp=" + curp);
-        } else {
-            // Si el campo CURP está vacío, oculta el mensaje de error y restablece el enlace
-            mensajeEmergente.style.display = "none";
-            enlacePerfil.href = "";
-        }
-    });
+                // Enviar la solicitud con el CURP como datos POST
+                xhr.send("curp=" + curp);
+            } else {
+                // Si el campo CURP está vacío, oculta el mensaje de error y restablece el enlace
+                mensajeEmergente.style.display = "none";
+                enlacePerfil.href = "";
+            }
+        });
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
 

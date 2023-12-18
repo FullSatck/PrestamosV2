@@ -198,7 +198,7 @@ if (!isset($_SESSION["usuario_id"])) {
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        <h1>Solicitud de Préstamo</h1><br><br>
+        <h1>Solicitud de Préstamo Atrasados</h1><br><br>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="procesar_prestamo.php" method="POST" class="form-container">
             <?php
