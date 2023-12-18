@@ -161,24 +161,7 @@ $stmt_prestamo->close();
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
     <title>Perfil del Cliente</title>
     <style>
-        .resultados-busqueda ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    max-height: 200px;
-    overflow-y: auto;
-}
 
-.resultados-busqueda li {
-    padding: 8px;
-    cursor: pointer;
-}
-
-.resultados-busqueda li:hover {
-    background-color: #ececec;
-}
 
     </style>
 </head>
@@ -373,14 +356,20 @@ $stmt_prestamo->close();
 
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
-                <input type='hidden' id='selectedClientId' name='cliente'>
-                <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
-                <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
+                <div class="busqueda-container">
+                    <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" class="input-busqueda">
 
-                <input type="text" id="filtroBusqueda" placeholder="Buscar cliente">
-                <div id="resultadosBusqueda" class="resultados-busqueda">
-                    <!-- Los resultados de la búsqueda se mostrarán aquí -->
-                </div>
+                    <div id="resultadosBusqueda" class="resultados-busqueda">
+                        <!-- Los resultados de la búsqueda se mostrarán aquí -->
+                    </div><br>
+                    <div class="navegacion-container">
+                        <input type='hidden' id='selectedClientId' name='cliente'>
+                        <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
+                        <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
+                    </div>
+                    <br>
+
+
             </form>
 
             <script>
@@ -450,23 +439,22 @@ $stmt_prestamo->close();
 
             ?>
 
-            <!-- Formulario de Pago -->
-            <form method="post" action="process_payment.php" id="formPago">
-                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
-                <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
-                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
-                <input type="submit" name="action" value="Pagar" class="boton1">
-            </form>
 
-
-            <!-- Formulario de No Pago y Mas Tarde -->
-            <form method="post" action="process_payment.php">
-                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                <!-- Asegúrate de definir $id_cliente -->
-                <input type="submit" name="action" value="No pago" class="boton2">
-                <input type="submit" name="action" value="Mas tarde" class="boton3">
-            </form>
+            <div class="contenedor-formularios">
+                <!-- Formulario de Pago -->
+                <form method="post" action="process_payment.php" id="formPago">
+                    <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
+                    <input type="text" id="cuota" name="cuota" placeholder="Cuota">
+                    <input type="text" id="campo2" name="campo2" placeholder="Resta">
+                    <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
+                    <input type="submit" name="action" value="Pagar" class="boton1">
+                    <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
+                    <!-- Asegúrate de definir $id_cliente -->
+                    <input type="submit" name="action" value="No pago" class="boton2">
+                    <input type="submit" name="action" value="Mas tarde" class="boton3">
+                    <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
+                </form>
+            </div>
 
 
 

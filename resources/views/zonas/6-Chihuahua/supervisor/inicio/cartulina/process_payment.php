@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("../../../../../../../controllers/conexion.php"); // Incluye tu archivo de conexión a la base de datos.
-
+ 
 function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
     $siguiente_cliente_id = 0;
     $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
@@ -15,18 +15,19 @@ function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
 }
 
 function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
-    // Obtén el MontoAPagar actual.
+    // Obtén el MontoAPagar y el ID del préstamo.
     $montoAPagar = 0;
-    $sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ?";
-    $stmt_monto_pagar = $conexion->prepare($sql_monto_pagar);
-    $stmt_monto_pagar->bind_param("i", $id_cliente);
-    $stmt_monto_pagar->execute();
-    $stmt_monto_pagar->bind_result($montoAPagar);
-    if (!$stmt_monto_pagar->fetch()) {
-        echo "Error al encontrar el monto a pagar.";
+    $idPrestamo = 0;
+    $sql_prestamo = "SELECT MontoAPagar, ID FROM prestamos WHERE IDCliente = ?";
+    $stmt_prestamo = $conexion->prepare($sql_prestamo);
+    $stmt_prestamo->bind_param("i", $id_cliente);
+    $stmt_prestamo->execute();
+    $stmt_prestamo->bind_result($montoAPagar, $idPrestamo);
+    if (!$stmt_prestamo->fetch()) {
+        echo "Error al encontrar el préstamo.";
         return;
     }
-    $stmt_monto_pagar->close();
+    $stmt_prestamo->close();
 
     // Actualizar MontoAPagar en la tabla "prestamos".
     $monto_deuda = $montoAPagar - $cuota_ingresada;
@@ -43,7 +44,7 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
     $fecha_pago = date('Y-m-d');
     $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
     $stmt_insert_historial = $conexion->prepare($sql_insert_historial);
-    $stmt_insert_historial->bind_param("issi", $id_cliente, $fecha_pago, $cuota_ingresada, $id_cliente); // Asumiendo IDPrestamo es igual a IDCliente
+    $stmt_insert_historial->bind_param("issi", $id_cliente, $fecha_pago, $cuota_ingresada, $idPrestamo); 
     if (!$stmt_insert_historial->execute()) {
         echo "Error al insertar en historial de pagos.";
         return;
