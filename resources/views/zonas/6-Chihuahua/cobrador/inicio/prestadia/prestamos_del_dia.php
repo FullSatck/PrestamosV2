@@ -167,7 +167,7 @@ $conteosPrestamos = contarPrestamosPorEstado($conexion, 'Chihuahua');
                                 <td><?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
                                 <td>
-                                    <a href="../../../../../controllers/perfil_abonos.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cartulina/perfil_abonos.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
                                 </td>
 
