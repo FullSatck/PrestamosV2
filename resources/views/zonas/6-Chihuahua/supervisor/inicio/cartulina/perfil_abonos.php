@@ -80,20 +80,40 @@ if ($_SESSION["rol"] == 1) {
     $ruta_volver = "/resources/views/admin/inicio/inicio.php";
     $ruta_filtro = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
     $ruta_cliente = "/resources/views/admin/clientes/agregar_clientes.php";
-} elseif ($_SESSION["rol"] == 2) {
+} elseif ($_SESSION["rol"] == 3) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php";
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php";
     } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php";
+        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php";
     } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php";
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php";
+    } elseif ($_SESSION["rol"] == 2) {
+        // Ruta para el rol 3 (cobrador) en base a la zona
+        if ($_SESSION['user_zone'] === '6') {
+            $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
+            $ruta_filtro = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php";
+            $ruta_cliente = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php";
+        } elseif ($_SESSION['user_zone'] === '20') {
+            $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
+            $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
+            $ruta_cliente = "/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php";
+        } elseif ($_SESSION['user_zone'] === '22') {
+            $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
+            $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php";
+            $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php";
+        } else {
+            // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
+            $ruta_volver = "index.php";
+            $ruta_filtro = "index.php";
+            $ruta_cliente = "index.php";
+        }
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "index.php";
@@ -120,20 +140,22 @@ $fecha_actual = date('Y-m-d');
 $sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
-                 WHERE p.IDCliente = ?
-                 ";
+                 WHERE p.IDCliente = ?";
 $stmt_prestamo = $conexion->prepare($sql_prestamo);
 $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
 $resultado_prestamo = $stmt_prestamo->get_result();
 
 if ($resultado_prestamo->num_rows > 0) {
+    // Cliente tiene préstamos
     $info_prestamo = $resultado_prestamo->fetch_assoc();
     $total_prestamo = $info_prestamo['Monto'] + ($info_prestamo['Monto'] * $info_prestamo['TasaInteres'] / 100);
 } else {
-    // Manejar el caso donde no se encuentra información del préstamo
-    // Puedes asignar valores predeterminados o mostrar un mensaje de error
-    // Aquí se asignan valores vacíos o predeterminados para evitar los errores de acceso a índices inexistentes
+    // Cliente no tiene préstamos
+    echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos.</p>";
+    echo "<a href='../resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
+
+    // Asignar valores predeterminados para evitar errores de acceso a índices inexistentes
     $info_prestamo = [
         'Plazo' => 'No encontrado',
         'Telefono' => 'No encontrado',
@@ -142,6 +164,7 @@ if ($resultado_prestamo->num_rows > 0) {
     $total_prestamo = 0.00;
 }
 $stmt_prestamo->close();
+
 
 
 ?>
@@ -196,17 +219,25 @@ $stmt_prestamo->close();
                     <p><strong>Curp: </strong><?= $fila["IdentificacionCURP"] ?> </p>
                     <p><strong>Domicilio: </strong><?= $fila["Domicilio"] ?> </p>
                     <p><strong>Teléfono: </strong><?= $fila["Telefono"] ?> </p>
-                    <p><strong>Cuota:</strong> <?= htmlspecialchars(number_format($info_prestamo['Cuota'])); ?></p>
+                    <?php
+                    if (is_numeric($info_prestamo['Cuota'])) {
+                        echo "<p><strong>Cuota:</strong> " . htmlspecialchars(number_format($info_prestamo['Cuota'])) . "</p>";
+                    } else {
+                        echo "<p><strong>Cuota:</strong> " . htmlspecialchars($info_prestamo['Cuota']) . "</p>";
+                    }
+                    ?>
+
                     <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo)); ?>
                 </div>
                 <div class="columna">
                     <p><strong>Estado: </strong><?= $fila["ZonaAsignada"] ?> </p>
                     <p><strong>Municipio: </strong><?= $fila["CiudadNombre"] ?> </p>
                     <p><strong>Colonia: </strong><?= $fila["asentamiento"] ?> </p>
-                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
-                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
-                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
-                    <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
+                    <p><strong>Plazo:</strong> <?= isset($info_prestamo['Plazo']) ? htmlspecialchars($info_prestamo['Plazo']) : "No hay préstamo"; ?></p>
+                    <p><strong>Estado:</strong> <?= isset($info_prestamo['Estado']) ? htmlspecialchars($info_prestamo['Estado']) : "No hay préstamo"; ?></p>
+                    <p><strong>Inicio:</strong> <?= isset($info_prestamo['FechaInicio']) ? htmlspecialchars($info_prestamo['FechaInicio']) : "No hay préstamo"; ?></p>
+                    <p><strong>Fin:</strong> <?= isset($info_prestamo['FechaVencimiento']) ? htmlspecialchars($info_prestamo['FechaVencimiento']) : "No hay préstamo"; ?></p>
+
                     </p>
                 </div>
             </div>
@@ -214,13 +245,18 @@ $stmt_prestamo->close();
                 <div class="columna">
                     <p><strong>Clavo: </strong>
                         <?php
-                        if ($info_prestamo["CuotasVencidas"] == 1) {
-                            echo "Sí";
+                        if (isset($info_prestamo["CuotasVencidas"])) {
+                            if ($info_prestamo["CuotasVencidas"] == 1) {
+                                echo "Sí";
+                            } else {
+                                echo "No";
+                            }
                         } else {
-                            echo "No";
+                            echo "No hay préstamo";
                         }
                         ?>
                     </p>
+
                 </div>
                 <div class="columna">
                     <?php
@@ -414,7 +450,7 @@ $stmt_prestamo->close();
                 <!-- Asegúrate de definir $id_cliente -->
                 <input type="submit" name="action" value="No pago" class="boton2">
                 <input type="submit" name="action" value="Mas tarde" class="boton3">
-                
+
             </form>
 
 
@@ -454,7 +490,12 @@ $stmt_prestamo->close();
                 <input type="submit" name="action" value="Pagar" class="boton1">
                 <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
             </form>
- 
+
+
+
+
+
+
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
             <script>
                 window.onload = function() {
