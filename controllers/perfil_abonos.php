@@ -159,11 +159,7 @@ $stmt_prestamo->close();
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
-    <title>Perfil del Cliente</title>
-    <style>
-
-
-    </style>
+    <title>Perfil del Cliente</title> 
 </head>
 
 

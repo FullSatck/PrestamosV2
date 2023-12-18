@@ -159,11 +159,7 @@ $stmt_prestamo->close();
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
-    <title>Perfil del Cliente</title>
-    <style>
-
-
-    </style>
+    <title>Perfil del Cliente</title> 
 </head>
 
 
@@ -412,6 +408,15 @@ $stmt_prestamo->close();
                 }
             </script>
 
+            <!-- Formulario de No Pago y Mas Tarde -->
+            <form method="post" action="process_payment.php">
+                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
+                <!-- Asegúrate de definir $id_cliente -->
+                <input type="submit" name="action" value="No pago" class="boton2">
+                <input type="submit" name="action" value="Mas tarde" class="boton3">
+                
+            </form>
+
 
             <!-- BOTONES DE PAGO -->
 
@@ -440,21 +445,18 @@ $stmt_prestamo->close();
             ?>
 
 
-            <div class="contenedor-formularios">
-                <!-- Formulario de Pago -->
-                <form method="post" action="process_payment.php" id="formPago">
-                    <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                    <input type="text" id="cuota" name="cuota" placeholder="Cuota">
-                    <input type="text" id="campo2" name="campo2" placeholder="Resta">
-                    <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
-                    <input type="submit" name="action" value="Pagar" class="boton1">
-                    <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                    <!-- Asegúrate de definir $id_cliente -->
-                    <input type="submit" name="action" value="No pago" class="boton2">
-                    <input type="submit" name="action" value="Mas tarde" class="boton3">
-                    <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
-                </form>
-            </div>
+            <!-- Formulario de Pago -->
+            <form method="post" action="process_payment.php" id="formPago">
+                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
+                <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
+                <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
+                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
+                <input type="submit" name="action" value="Pagar" class="boton1">
+                <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
+            </form>
+
+
+            
 
 
 
