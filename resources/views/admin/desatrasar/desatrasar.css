@@ -1,82 +1,127 @@
+/* Estilos Generales */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    padding: 20px;
+    background-color: #f4f4f4;
     color: #333;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+/* Estilos para el botón más pequeño */
+.botonn {
+    display: inline-block;
+    padding: 5px 10px; /* Tamaño más pequeño del botón */
+    background-color: #6494b4; /* Cambia el color de fondo a tu preferencia */
+    color: #fff; /* Cambia el color del texto a tu preferencia */
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .botonn:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+  }
+  
+  /* Estilos para el ícono */
+  .fa-right-to-bracket {
+    margin-right: 5px;
+  }
+  
+  /* Estilos para el texto dentro del botón */
+  .spann {
+    font-weight: bold;
+  }
+  
+
+  
+  
+.container {
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
+/* Títulos y Encabezados */
 h2 {
+    color: #4a90e2;
     text-align: center;
-    color: #0d6efd;
+    margin-bottom: 30px;
 }
 
+/* Estilos del Formulario */
 form {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 600px;
-    margin: 30px auto;
+    margin: auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
 }
 
 label {
-    display: block;
-    margin-bottom: 10px;
-    color: #555;
-    font-weight: 600;
+    font-weight: bold;
+    color: #333;
 }
 
+/* Campos de Entrada y Selectores */
 input[type="number"],
 input[type="date"],
-select {
+select.form-control {
     width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-input[type="submit"] {
-    background-color: #0d6efd;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: background-color 0.3s;
-}
-
-input[type="submit"]:hover {
-    background-color: #0b5ed7;
-}
-
-#formularios_cuotas p {
-    margin-bottom: 15px;
     padding: 10px;
-    background-color: #e9ecef;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    box-sizing: border-box;
+}
+
+/* Botones */
+button.btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+button.btn-primary:hover {
+    background-color: #357abd;
+    border-color: #357abd;
+}
+
+/* Estilos para los Formularios de Cuotas */
+.cuota-group {
+    background-color: #f8f9fa;
+    padding: 15px;
     border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
-#formularios_cuotas input {
-    margin-right: 10px;
-    margin-top: 5px;
+.cuota-group h5 {
+    margin-bottom: 10px;
+    color: #4a90e2;
 }
 
-/* Estilo adicional para responsividad */
+.cuota-group .form-row .col {
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
+    .container {
+        padding: 15px;
     }
 
     form {
-        padding: 20px;
-        margin: 10px;
+        padding: 10px;
+    }
+
+    .cuota-group .form-row .col {
+        margin-bottom: 0;
     }
 }
