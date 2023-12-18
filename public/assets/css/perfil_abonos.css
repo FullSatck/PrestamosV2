@@ -159,38 +159,7 @@ h1 {
     flex: 1;
     padding: 0 10px; 
 }
-
-.pagos{
-    border: 30px;
-}
-
-.contenedor-formularios {
-    display: flex;
-    flex-direction: column;
-}
-
-.contenedor-formularios form:first-child {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.contenedor-formularios form:first-child input[type=submit], 
-.contenedor-formularios form:first-child input[type=button],
-.contenedor-formularios form:first-child input[type=text] {
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
-
-.contenedor-formularios form:last-child {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.contenedor-formularios form:last-child input[type=submit],
-.contenedor-formularios form:last-child input[type=button] {
-    margin-right: 10px;
-}
+ 
 
 /* Estilos para el formulario y el menú desplegable */
 form {
