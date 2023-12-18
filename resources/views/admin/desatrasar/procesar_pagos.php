@@ -28,18 +28,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
         foreach ($montosCuota as $index => $monto) {
             $fecha = $fechasCuota[$index];
 
-            $stmtPago = $conexion->prepare("INSERT INTO historial_pagos (IDCliente, IDPrestamo, MontoPagado, FechaPago) VALUES (?, ?, ?, ?)");
-            $stmtPago->bind_param("iids", $clienteId, $prestamoId, $monto, $fecha);
-            $stmtPago->execute();
-            $stmtPago->close();
+            if (!empty($monto)) { // Verificar si el monto no está vacío
+                $stmtPago = $conexion->prepare("INSERT INTO historial_pagos (IDCliente, IDPrestamo, MontoPagado, FechaPago) VALUES (?, ?, ?, ?)");
+                $stmtPago->bind_param("iids", $clienteId, $prestamoId, $monto, $fecha);
+                $stmtPago->execute();
+                $stmtPago->close();
 
-            $montoRestante -= $monto;
-            $montoDeuda = max($montoRestante, 0);
+                $montoRestante -= $monto;
+                $montoDeuda = max($montoRestante, 0);
 
-            $stmtFactura = $conexion->prepare("INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda, id_prestamos) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmtFactura->bind_param("idssii", $clienteId, $monto, $fecha, $monto, $montoDeuda, $prestamoId);
-            $stmtFactura->execute();
-            $stmtFactura->close();
+                $stmtFactura = $conexion->prepare("INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda, id_prestamos) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmtFactura->bind_param("idssii", $clienteId, $monto, $fecha, $monto, $montoDeuda, $prestamoId);
+                $stmtFactura->execute();
+                $stmtFactura->close();
+            }
         }
 
         $stmtActualizarPrestamo = $conexion->prepare("UPDATE prestamos SET MontoAPagar = ? WHERE ID = ?");
@@ -62,6 +64,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
     header("Location: /ruta_a_tu_pagina_destino.php");
     exit;
 }
-
-
 ?>

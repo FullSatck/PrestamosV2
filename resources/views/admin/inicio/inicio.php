@@ -275,6 +275,15 @@ date_default_timezone_set('America/Bogota');
                 </div>
 
             </div>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
+                    <p>Mantenimiento</p>
+
+                </div>
+
+            </div>
+
 
 
 
