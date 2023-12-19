@@ -44,10 +44,10 @@ $id_cliente = $_GET['id'];
 
 // Consulta SQL para obtener los detalles del cliente con la moneda y la fecha de hoy en historial_pagos
 $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
-        FROM clientes c
-        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-        LEFT JOIN ciudades ciu ON c.id = ciu.ID
-        WHERE c.ID = $id_cliente";
+            FROM clientes c
+            LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
+            LEFT JOIN ciudades ciu ON c.ciudad = ciu.ID
+            WHERE c.ID = $id_cliente";
 
 
 
