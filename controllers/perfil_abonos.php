@@ -182,7 +182,7 @@ $stmt_prestamo->close();
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
-    <title>Perfil del Cliente</title> 
+    <title>Perfil del Cliente</title>
 </head>
 
 
@@ -315,8 +315,6 @@ $stmt_prestamo->close();
                             echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
                             echo "</div>";
                         }
-
-                        
                     } else {
                         echo "<p>No se encontraron pagos para este cliente.</p>";
                     }
@@ -358,8 +356,6 @@ $stmt_prestamo->close();
                             echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
                             echo "</div>";
                         }
-
-                        
                     } else {
                         echo "<p>No se encontraron pagos para este cliente.</p>";
                     }
@@ -388,21 +384,24 @@ $stmt_prestamo->close();
             list($prevIndex, $currentIndex, $nextIndex) = obtenerIndicesClienteActual($clientes, $id_cliente);
             ?>
 
+            <br>
+            <div class="navegacion-container">
+                <input type='hidden' id='selectedClientId' name='cliente'>
+                <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
+                <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
+            </div>
+            <br>
+
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
                 <div class="busqueda-container">
                     <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" class="input-busqueda">
 
+
+
                     <div id="resultadosBusqueda" class="resultados-busqueda">
                         <!-- Los resultados de la búsqueda se mostrarán aquí -->
                     </div><br>
-                    <div class="navegacion-container">
-                        <input type='hidden' id='selectedClientId' name='cliente'>
-                        <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
-                        <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
-                    </div>
-                    <br>
-
 
             </form>
 
