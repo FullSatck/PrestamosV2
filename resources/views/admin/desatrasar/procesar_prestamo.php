@@ -17,7 +17,7 @@ $valor_comision = isset($_POST['valor_comision']) ? floatval($_POST['valor_comis
 
 // Validar que la tasa de interés sea un número válido
 if (!is_numeric($tasa_interes)) {
-    header('Location: /resources/views/admin/creditos/prestamos.php?mensaje=La tasa de interés no es válida.');
+    header('Location: /resources/views/admin/desatrasar/hacerPrestamo.php?mensaje=La tasa de interés no es válida.');
     exit; // Detener la ejecución
 }
 
@@ -59,7 +59,7 @@ if ($conexion->query($sql) === TRUE) {
     exit;
 } else {
     // Redirigir al usuario a crudprestamo.php con un mensaje de error
-    header('Location: /resources/views/admin/creditos/crudPrestamos.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
+    header('Location: /resources/views/admin/desatrasar/hacerPrestamo.php?mensaje=Error al solicitar el préstamo: ' . $conexion->error);
     exit;
 }
 
