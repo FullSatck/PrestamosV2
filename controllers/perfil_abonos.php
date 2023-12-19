@@ -49,9 +49,6 @@ $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
         LEFT JOIN ciudades ciu ON c.id = ciu.ID
         WHERE c.ID = $id_cliente";
 
-
-
-
 $resultado = $conexion->query($sql);
 
 if ($resultado->num_rows === 1) {
@@ -136,8 +133,7 @@ $info_prestamo = [
 $total_prestamo = 0.00;
 $fecha_actual = date('Y-m-d');
 
-// Consulta SQL para obtener la información del préstamo
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
                  WHERE p.IDCliente = ?";
@@ -146,26 +142,30 @@ $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
 $resultado_prestamo = $stmt_prestamo->get_result();
 
+$mostrarMensajeAgregarPrestamo = false;
+
 if ($resultado_prestamo->num_rows > 0) {
     // Cliente tiene préstamos
     $info_prestamo = $resultado_prestamo->fetch_assoc();
     $total_prestamo = $info_prestamo['Monto'] + ($info_prestamo['Monto'] * $info_prestamo['TasaInteres'] / 100);
+
+    // Verificar si el préstamo está pagado o EstadoP es 1
+    if ($info_prestamo['Estado'] === 'pagado' || $info_prestamo['EstadoP'] == 1) {
+        $mostrarMensajeAgregarPrestamo = true;
+    }
 } else {
     // Cliente no tiene préstamos
-    echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos.</p>";
-    echo "<a href='../resources/views/admin/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
-
-    // Asignar valores predeterminados para evitar errores de acceso a índices inexistentes
-    $info_prestamo = [
-        'Plazo' => 'No encontrado',
-        'Telefono' => 'No encontrado',
-        'Cuota' => 'No encontrado',
-    ];
-    $total_prestamo = 0.00;
+    $mostrarMensajeAgregarPrestamo = true;
 }
+
+if ($mostrarMensajeAgregarPrestamo) {
+    echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos activos o están completamente pagados.</p>";
+    // echo "<a href='../resources/views/admin/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
+} else {
+    // Aquí puedes continuar con el procesamiento normal si el cliente tiene un préstamo activo
+}
+
 $stmt_prestamo->close();
-
-
 
 ?>
 
@@ -182,7 +182,7 @@ $stmt_prestamo->close();
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
-    <title>Perfil del Cliente</title> 
+    <title>Perfil del Cliente</title>
 </head>
 
 
@@ -280,12 +280,13 @@ $stmt_prestamo->close();
             <!-- CARTULINA DE FACTURAS -->
 
             <div class="profile-loans">
+                <!-- TABLA DE VER MENOS -->
                 <?php
                 if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
                     // Si se solicita mostrar todas las filas
                     $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
-        FROM facturas 
-        WHERE cliente_id = ? AND monto_pagado != 0";
+                            FROM facturas 
+                            WHERE cliente_id = ? AND monto_pagado != 0";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bind_param("i", $id_cliente);
                     $stmt->execute();
@@ -295,15 +296,21 @@ $stmt_prestamo->close();
 
                     if ($num_rows > 0) {
                         echo "<table id='tabla-prestamos'>";
-                        echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
+                        echo "<tr><th>No. cuota</th><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
                         $last_row = null;
+                        $contador_cuota = 1; // Iniciar el contador de cuotas
+
                         while ($fila = $resultado->fetch_assoc()) {
+                            // Mostrar el número de cuota como "cuota actual / plazo total"
                             echo "<tr>";
+                            echo "<td>" . $contador_cuota . "/" . $info_prestamo['Plazo'] . "</td>";
                             echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
                             echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
                             echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
-                            $last_row = $fila; // Actualizar la última fila en cada iteración
                             echo "</tr>";
+
+                            $contador_cuota++; // Incrementar el contador de cuotas
+                            $last_row = $fila; // Actualizar la última fila en cada iteración
                         }
 
                         echo "</table>";
@@ -315,17 +322,19 @@ $stmt_prestamo->close();
                             echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
                             echo "</div>";
                         }
-
-                        
                     } else {
                         echo "<p>No se encontraron pagos para este cliente.</p>";
                     }
 
                     $stmt->close();
-                } else {
+                }
+
+                //  TABLA DE VER MAS  
+
+                else {
                     $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
-        FROM facturas 
-        WHERE cliente_id = ?";
+                            FROM facturas 
+                            WHERE cliente_id = ?";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bind_param("i", $id_cliente);
                     $stmt->execute();
@@ -334,15 +343,19 @@ $stmt_prestamo->close();
                     $num_rows = $resultado->num_rows;
                     if ($num_rows > 0) {
                         echo "<table id='tabla-prestamos'>";
-                        echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
+                        echo "<tr><th>No. cuota</th><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
                         $last_row = null;
+                        $contador_cuota = 0;
+
                         while ($fila = $resultado->fetch_assoc()) {
                             $last_row = $fila; // Actualizar la última fila en cada iteración
+                            $contador_cuota++; // Incrementar el contador de cuotas
                         }
 
                         // Mostrar solo la última fila
                         if ($last_row) {
                             echo "<tr>";
+                            echo "<td>" . $contador_cuota . "/" . $info_prestamo['Plazo'] . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
@@ -358,8 +371,6 @@ $stmt_prestamo->close();
                             echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
                             echo "</div>";
                         }
-
-                        
                     } else {
                         echo "<p>No se encontraron pagos para este cliente.</p>";
                     }
@@ -388,21 +399,25 @@ $stmt_prestamo->close();
             list($prevIndex, $currentIndex, $nextIndex) = obtenerIndicesClienteActual($clientes, $id_cliente);
             ?>
 
+
+
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
                 <div class="busqueda-container">
                     <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" class="input-busqueda">
 
+
+
                     <div id="resultadosBusqueda" class="resultados-busqueda">
                         <!-- Los resultados de la búsqueda se mostrarán aquí -->
                     </div><br>
+
                     <div class="navegacion-container">
                         <input type='hidden' id='selectedClientId' name='cliente'>
                         <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
                         <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
                     </div>
                     <br>
-
 
             </form>
 
@@ -488,48 +503,74 @@ $stmt_prestamo->close();
                 <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota" required>
                 <input type="text" id="campo2" name="campo2" placeholder="Resta" required>
-                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars($montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
+                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars(($montoAPagar - $info_prestamo['Cuota'] < 0) ? 0 : $montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
                 <input type="submit" name="action" value="Pagar" class="boton1">
                 <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
             </form>
 
-
-
-
-
-
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+            
             <script>
-                window.onload = function() {
-                    var formPago = document.getElementById('formPago');
-                    var campoCuota = document.getElementById('cuota');
-                    var campoResta = document.getElementById('campo2');
-                    var cuotaEsperada = <?= $info_prestamo['Cuota']; ?>;
-                    var montoAPagar = <?= $montoAPagar; ?>;
+    var cuotaEsperada = <?= json_encode($info_prestamo['Cuota']); ?>;
+    var montoAPagar = <?= json_encode($montoAPagar); ?>;
+    console.log("Cuota esperada:", cuotaEsperada); // Para depuración
+    console.log("Monto a pagar:", montoAPagar); // Para depuración
 
-                    campoResta.addEventListener('input', function() {
-                        var valorResta = parseFloat(campoResta.value.replace(',', '.'));
-                        var resultadoResta = montoAPagar - valorResta;
+    window.onload = function() {
+        var formPago = document.getElementById('formPago');
+        var campoCuota = document.getElementById('cuota');
+        var campoResta = document.getElementById('campo2');
+        var campoDeuda = document.getElementById('variable');
 
-                        if (resultadoResta === cuotaEsperada) {
-                            campoResta.style.backgroundColor = 'green';
-                        } else {
-                            campoResta.style.backgroundColor = 'red';
-                        }
-                    });
+        campoResta.addEventListener('input', function() {
+            var valorResta = parseFloat(campoResta.value.replace(',', '.'));
+            var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
 
-                    formPago.addEventListener('submit', function(event) {
-                        var cuotaIngresada = parseFloat(campoCuota.value.replace(',', '.'));
-                        var colorCampoResta = window.getComputedStyle(campoResta).backgroundColor;
+            // Cambiar a verde si el valor de Resta es exactamente igual a la Deuda
+            if (valorResta === deudaActual) {
+                campoResta.style.backgroundColor = 'green';
+            }
+            // En cualquier otro caso, poner en rojo
+            else {
+                campoResta.style.backgroundColor = 'red';
+            }
+        });
 
-                        // Verificar si la cuota ingresada es igual a la cuota esperada y si el campo de resta está en verde
-                        if (cuotaIngresada !== cuotaEsperada || colorCampoResta !== 'rgb(0, 128, 0)') { // 'rgb(0, 128, 0)' es el color verde
-                            event.preventDefault(); // Prevenir el envío del formulario
-                            alert('La cuota o el saldo que resta que se ingreso no es correcto.');
-                        }
-                    });
-                };
-            </script>
+        formPago.addEventListener('submit', function(event) {
+            var cuotaIngresada = parseFloat(campoCuota.value.replace(',', '.'));
+            var valorResta = parseFloat(campoResta.value.replace(',', '.'));
+            var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
+
+            // Añadir una pequeña tolerancia para la comparación de números flotantes
+            var tolerancia = 0.01;
+
+            // Verificar si la deuda y la resta son 0
+            if (deudaActual === 0 && valorResta === 0) {
+                // En este caso, la cuota ingresada debe ser igual al monto a pagar
+                if (Math.abs(cuotaIngresada - montoAPagar) > tolerancia) {
+                    event.preventDefault(); // Prevenir el envío del formulario
+                    alert('La cuota ingresada debe ser igual al monto total a pagar.');
+                    return;
+                }
+            } else {
+                // Verificar si la cuota ingresada es igual a la cuota esperada
+                if (Math.abs(cuotaIngresada - cuotaEsperada) > tolerancia) {
+                    event.preventDefault(); // Prevenir el envío del formulario
+                    alert('La cuota ingresada no es correcta.');
+                    return;
+                }
+
+                // Verificar las condiciones de envío para el campo Resta
+                if (valorResta !== deudaActual) {
+                    event.preventDefault(); // Prevenir el envío del formulario
+                    alert('El saldo que resta que se ingresó no es correcto.');
+                    return;
+                }
+            }
+        });
+    };
+</script>
+
 
 
         </main>
