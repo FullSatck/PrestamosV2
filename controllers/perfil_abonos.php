@@ -492,11 +492,6 @@ $stmt_prestamo->close();
                 <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
             </form>
 
-
-
-
-
-
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
             <script>
                 window.onload = function() {
