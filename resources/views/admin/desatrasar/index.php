@@ -44,6 +44,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,6 +55,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/resources/views/admin/desatrasar/css/desatrasar.css">
 </head>
+
 <body>
     <header>
         <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
@@ -79,8 +81,6 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
             $stmt_cliente->close();
 
             if ($cliente) {
-                
-
                 // Cargar los préstamos del cliente
                 $query_prestamos = "SELECT ID, MontoAPagar, FechaInicio, MontoCuota, Plazo FROM prestamos WHERE IDCliente = ?";
                 $stmt_prestamos = $conexion->prepare($query_prestamos);
@@ -97,7 +97,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                 $plazoPrestamo = $row_prestamo['Plazo'];
 
                 // Limitar el número de cuotas al plazo del préstamo
-                $numCuotas = min($plazoPrestamo, floor(($fechaActual - $fechaInicio) / (60 * 60 * 24)) + 1);
+                $numCuotas = min($plazoPrestamo, floor(($fechaActual - strtotime('+1 day', $fechaInicio)) / (60 * 60 * 24)));
 
                 echo '<form action="procesar_pagos.php" method="post" class="card card-body">';
                 echo '<input type="hidden" name="prestamo_id" value="' . $row_prestamo['ID'] . '">';
@@ -110,37 +110,150 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                 echo '<label for="prestamo_detalle">Préstamo:</label>';
                 echo '<input type="text" id="prestamo_detalle" class="form-control" value="Préstamo: ' . number_format($row_prestamo['MontoAPagar'], 0, ',', '') . ' - Fecha: ' . date("d/m/Y", $fechaInicio) . '" readonly>';
                 echo '</div>';
-                
+
                 echo '<div class="form-group">';
                 echo '<label for="num_cuotas">Número de Cuotas a Pagar:</label>';
                 echo '<input type="number" id="num_cuotas" name="num_cuotas" min="1" max="' . $plazoPrestamo . '" class="form-control" value="' . $numCuotas . '" readonly>';
                 echo '</div>';
-                
+
                 echo '<div id="formularios_cuotas" class="mb-3">';
                 // Generar automáticamente los formularios de cuotas
                 $fechaHoy = strtotime("today");
                 $fechaCuota = strtotime("+1 day", $fechaInicio); // Ajustar la fecha para que comience un día después
+                $totalCuotas = 0; // Inicializa la variable para el total de cuotas
                 for ($i = 1; $i <= $numCuotas; $i++) {
                     if ($fechaCuota <= $fechaHoy) {
+                        $montoCuota = $row_prestamo['MontoCuota'];
                         echo '<div class="cuota-group mb-3">';
                         echo '<h5>Cuota ' . $i . '</h5>';
                         echo '<div class="form-row">';
-                        echo '<div class="col"><label>Monto:</label><input type="text" name="monto_cuota[]" class="form-control" placeholder="Monto" value="' . number_format($row_prestamo['MontoCuota'], 0, ',', '') . '" oninput="this.value = this.value.replace(/\D/g, \'\')"></div>';
-                        echo '<div class="col"><label>Fecha:</label><input type="date" name="fecha_cuota[]" class="form-control" value="' . date("Y-m-d", $fechaCuota) . '"></div>';
+                        echo '<div class="col"><label>Monto:</label><input type="text" name="monto_cuota[]" class="form-control cuota-monto" placeholder="Monto" value="' . number_format($montoCuota, 0, ',', '') . '" oninput="this.value = this.value.replace(/\D/g, \'\')"></div>';
+                        echo '<div class="col"><label>Fecha:</label><input type="date" name="fecha_cuota[]" class="form-control cuota-fecha" value="' . date("Y-m-d", $fechaCuota) . '"></div>';
                         echo '</div></div>';
+                        $totalCuotas += $montoCuota; // Sumar al total de cuotas
                     }
                     $fechaCuota = strtotime("+1 day", $fechaCuota); // Incrementar la fecha para la próxima cuota
                 }
                 echo '</div>';
-                
-                echo '<button type="submit" class="btn btn-primary">Registrar Pagos</button>';
+
+                echo '<div class="total-cuotas">Total a pagar de las cuotas mostradas: <span id="total_cuotas" class="font-weight-bold h4 text-success">' . number_format($totalCuotas, 0, ',', '') . '</span></div>';
+
+                echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="mostrarDetalles()">Registrar Pagos</button>';
                 echo '</form>';
             }
         }
         ?>
     </div>
 
+    <!-- Modal para mostrar los detalles de los pagos -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detalles de los Pagos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Dentro del div modal-body en tu modal existente -->
+                <div class="modal-body">
+                    <p><strong>Cliente:</strong> <span id="modal-cliente"></span></p>
+                    <p><strong>Préstamo:</strong> <span id="modal-prestamo"></span></p>
+                    
+                    <h5>Detalle de las Cuotas:</h5>
+                    <ul id="modal-cuotas"></ul>
+                    <p><strong>Total de las Cuotas Pagadas:</strong> <span id="modal-total-cuotas"></span></p>
+                    <p><strong>Número de Cuotas a Pagar:</strong> <span id="modal-num-cuotas"></span></p
+                </div>
+
+                <div class="modal-footer">
+                    <!-- Botón para pagar las cuotas -->
+                    <button type="button" class="btn btn-success" id="botonPagarCuotas" onclick="procesarPagos()">Pagar Cuotas</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function procesarPagos() {
+            var datosPago = {
+                prestamo_id: $('input[name="prestamo_id"]').val(),
+                cliente_id: $('input[name="cliente_id"]').val(),
+                monto_cuota: $('input[name="monto_cuota[]"]').map(function() {
+                    return $(this).val();
+                }).get(),
+                fecha_cuota: $('input[name="fecha_cuota[]"]').map(function() {
+                    return $(this).val();
+                }).get()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "procesar_pagos.php", // Asegúrate de poner la ruta correcta a tu script PHP
+                data: datosPago,
+                success: function(response) {
+                    alert("Pagos procesados correctamente");
+                    $('#myModal').modal('hide');
+                    location.reload(); // Esto recargará la página para reflejar los cambios
+                },
+                error: function() {
+                    alert("Error al procesar el pago");
+                }
+            });
+        }
+    </script>
+
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        // Agregar un listener para los cambios en las cuotas
+        $(document).on('input', '.cuota-monto', function() {
+            recalcularTotalCuotas();
+        });
+
+        function recalcularTotalCuotas() {
+            let total = 0;
+            $('.cuota-monto').each(function() {
+                let monto = parseFloat($(this).val().replace(/\D/g, ''));
+                if (!isNaN(monto)) {
+                    total += monto;
+                }
+            });
+            $('#total_cuotas').text(total.toLocaleString());
+        }
+
+        // Función para mostrar detalles en el modal
+        function mostrarDetalles() {
+            let cliente = $("#cliente_nombre").val();
+            let prestamo = $("#prestamo_detalle").val();
+            let numCuotas = $("#num_cuotas").val();
+
+            // Obtener los datos de las cuotas
+            let cuotas = [];
+            $(".cuota-group").each(function(index) {
+                let monto = $(this).find(".cuota-monto").val();
+                let fecha = $(this).find(".cuota-fecha").val();
+                cuotas.push("Cuota " + (index + 1) + ": Monto: " + monto + ", Fecha: " + fecha);
+            });
+
+            let totalCuotas = $("#total_cuotas").text();
+
+            // Actualizar el contenido del modal
+            $("#modal-cliente").text(cliente);
+            $("#modal-prestamo").text(prestamo);
+            $("#modal-num-cuotas").text(numCuotas);
+            $("#modal-cuotas").html("<li>" + cuotas.join("</li><li>") + "</li>");
+            $("#modal-total-cuotas").text(totalCuotas);
+        }
+
+        // Llamar a la función de recálculo al cargar la página
+        recalcularTotalCuotas();
+    </script>
+
+
 </body>
+
 </html>

@@ -5,6 +5,7 @@ body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
 }
+
 /* Estilos para el botón más pequeño */
 .botonn {
     display: inline-block;
@@ -17,26 +18,24 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  
-  .botonn:hover {
+}
+
+.botonn:hover {
     background-color: #2980b9;
     transform: scale(1.05);
-  }
-  
-  /* Estilos para el ícono */
-  .fa-right-to-bracket {
-    margin-right: 5px;
-  }
-  
-  /* Estilos para el texto dentro del botón */
-  .spann {
-    font-weight: bold;
-  }
-  
+}
 
-  
-  
+/* Estilos para el ícono */
+.fa-right-to-bracket {
+    margin-right: 5px;
+}
+
+/* Estilos para el texto dentro del botón */
+.spann {
+    font-weight: bold;
+}
+
+/* Estilos del Contenedor */
 .container {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -110,6 +109,29 @@ button.btn-primary:hover {
 .cuota-group .form-row .col {
     margin-bottom: 10px;
 }
+
+/* Estilos para el campo del total de cuotas */
+.total-cuotas {
+    text-align: center;
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.total-cuotas span {
+    font-size: 24px;
+    color: #a72828; 
+    font-weight: bold;
+}
+
+.total-label {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

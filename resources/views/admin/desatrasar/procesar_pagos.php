@@ -1,7 +1,11 @@
 <?php
 date_default_timezone_set('America/Bogota');
-session_start(); // Iniciar la sesión para usar variables de sesión
+session_start();
 include '../../../../controllers/conexion.php';
+
+header('Content-Type: application/json'); // Indicar que la respuesta será en formato JSON
+
+$response = ['success' => false, 'message' => ''];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST['monto_cuota'], $_POST['fecha_cuota'])) {
     $prestamoId = $_POST['prestamo_id'];
@@ -29,12 +33,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
         foreach ($montosCuota as $index => $monto) {
             $fecha = $fechasCuota[$index];
 
-            if (!empty($monto)) { // Verificar si el monto no está vacío
+            // Verificar si el monto de la cuota es mayor que cero
+            if (!empty($monto)) {
+                // Insertar la cuota en el historial de pagos
                 $stmtPago = $conexion->prepare("INSERT INTO historial_pagos (IDCliente, IDPrestamo, MontoPagado, FechaPago, IDUsuario) VALUES (?, ?, ?, ?, ?)");
                 $stmtPago->bind_param("iidsi", $clienteId, $prestamoId, $monto, $fecha, $usuarioId);
                 $stmtPago->execute();
                 $stmtPago->close();
 
+                // Actualizar el monto restante y la factura solo si el monto de la cuota es mayor que cero
                 $montoRestante -= $monto;
                 $montoDeuda = max($montoRestante, 0);
 
@@ -50,7 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
         $stmtActualizarPrestamo->execute();
         $stmtActualizarPrestamo->close();
 
-        // Verificar si el monto restante es igual a 0 y actualizar el estado del préstamo
         if ($montoRestante == 0) {
             $stmtActualizarEstadoPrestamo = $conexion->prepare("UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?");
             $stmtActualizarEstadoPrestamo->bind_param("i", $prestamoId);
@@ -59,18 +65,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
         }
 
         $conexion->commit();
-        $_SESSION['mensaje'] = "Pagos procesados correctamente.";
-        header("Location: /resources/views/admin/desatrasar/agregar_clientes.php");
-        exit;
+        $response['success'] = true;
+        $response['message'] = "Pagos procesados correctamente.";
     } catch (Exception $e) {
         $conexion->rollback();
-        $_SESSION['mensaje'] = "Error al procesar los pagos: " . $e->getMessage();
-        header("Location: /ruta_a_tu_pagina_destino.php");
-        exit;
+        $response['message'] = "Error al procesar los pagos: " . $e->getMessage();
     }
 } else {
-    $_SESSION['mensaje'] = "Datos POST necesarios no recibidos.";
-    header("Location: /ruta_a_tu_pagina_destino.php");
-    exit;
+    $response['message'] = "Datos POST necesarios no recibidos.";
+}
+
+// Mostrar el mensaje como respuesta JSON
+echo json_encode($response);
+
+// Realizar la redirección después de mostrar el mensaje
+if ($response['success']) {
+    header("Location: /resources/views/admin/desatrasar/agregar_clientes.php");
+    exit();
 }
 ?>
