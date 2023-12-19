@@ -133,7 +133,7 @@ $info_prestamo = [
 $total_prestamo = 0.00;
 $fecha_actual = date('Y-m-d');
 
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.MontoAPagar, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
                  WHERE p.IDCliente = ? AND p.Estado = 'pendiente'
@@ -233,11 +233,13 @@ $stmt_prestamo->close();
                         <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
                         <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
                         <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
+                        <p><strong>Deuda:</strong> <?= htmlspecialchars($info_prestamo['MontoAPagar']); ?></p>
                     <?php else : ?>
                         <p><strong>Plazo:</strong> No hay préstamo</p>
                         <p><strong>Estado:</strong> No hay préstamo</p>
                         <p><strong>Inicio:</strong> No hay préstamo</p>
                         <p><strong>Fin:</strong> No hay préstamo</p>
+                        <p><strong>Deuda:</strong> No hay préstamo</p>
                     <?php endif; ?>
                 </div>
             </div>
