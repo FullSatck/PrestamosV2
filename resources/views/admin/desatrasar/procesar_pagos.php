@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
     $prestamoId = $_POST['prestamo_id'];
     $montosCuota = $_POST['monto_cuota'];
     $fechasCuota = $_POST['fecha_cuota'];
+    $usuarioId = $_SESSION['usuario_id']; // Asumiendo que el ID del usuario está almacenado en la sesión
 
     $conexion->begin_transaction();
 
@@ -29,8 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
             $fecha = $fechasCuota[$index];
 
             if (!empty($monto)) { // Verificar si el monto no está vacío
-                $stmtPago = $conexion->prepare("INSERT INTO historial_pagos (IDCliente, IDPrestamo, MontoPagado, FechaPago) VALUES (?, ?, ?, ?)");
-                $stmtPago->bind_param("iids", $clienteId, $prestamoId, $monto, $fecha);
+                $stmtPago = $conexion->prepare("INSERT INTO historial_pagos (IDCliente, IDPrestamo, MontoPagado, FechaPago, IDUsuario) VALUES (?, ?, ?, ?, ?)");
+                $stmtPago->bind_param("iidsi", $clienteId, $prestamoId, $monto, $fecha, $usuarioId);
                 $stmtPago->execute();
                 $stmtPago->close();
 

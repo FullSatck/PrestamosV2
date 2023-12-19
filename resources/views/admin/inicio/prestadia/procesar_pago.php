@@ -6,11 +6,24 @@ include '../../../../../controllers/conexion.php';
 
 header('Content-Type: application/json');
 
+// Iniciar sesión (si aún no se ha iniciado)
+session_start();
+
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION["usuario_id"])) {
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    echo json_encode(["success" => false, "message" => "Usuario no autenticado."]);
+    exit();
+} else {
+    // El usuario está autenticado, obtén el ID del usuario de la sesión
+    $usuario_id = $_SESSION["usuario_id"];
+}
+
 // Verificar si se han enviado los datos necesarios
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['montoPagado'])) {
     $prestamoId = $_POST['prestamoId'];
-    $montoPagado = $_POST['montoPagado']; // Asegúrate de validar y limpiar esta entrada
-
+    $montoPagado = $_POST['montoPagado'];
+    
     // Iniciar transacción
     $conexion->begin_transaction();
 
@@ -42,10 +55,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamoId'], $_POST['
             $clienteDireccion = $filaCliente['Domicilio'];
             $stmtCliente->close();
 
-            // Registrar el pago en la tabla 'historial_pagos'
-            $sqlRegistrarPago = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, CURDATE(), ?, ?)";
+            // Registrar el pago en la tabla 'historial_pagos' incluyendo el IDUsuario
+            $sqlRegistrarPago = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo, IDUsuario) VALUES (?, CURDATE(), ?, ?, ?)";
             $stmtPago = $conexion->prepare($sqlRegistrarPago);
-            $stmtPago->bind_param("idi", $clienteId, $montoPagado, $prestamoId);
+            $stmtPago->bind_param("idii", $clienteId, $montoPagado, $prestamoId, $usuario_id);
             $stmtPago->execute();
             $stmtPago->close();
 
