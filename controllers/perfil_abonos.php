@@ -133,8 +133,7 @@ $info_prestamo = [
 $total_prestamo = 0.00;
 $fecha_actual = date('Y-m-d');
 
-// Consulta SQL para obtener la información del préstamo
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.FechaInicio, p.FechaVencimiento, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
                  WHERE p.IDCliente = ?";
@@ -143,26 +142,30 @@ $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
 $resultado_prestamo = $stmt_prestamo->get_result();
 
+$mostrarMensajeAgregarPrestamo = false;
+
 if ($resultado_prestamo->num_rows > 0) {
     // Cliente tiene préstamos
     $info_prestamo = $resultado_prestamo->fetch_assoc();
     $total_prestamo = $info_prestamo['Monto'] + ($info_prestamo['Monto'] * $info_prestamo['TasaInteres'] / 100);
+
+    // Verificar si el préstamo está pagado o EstadoP es 1
+    if ($info_prestamo['Estado'] === 'pagado' || $info_prestamo['EstadoP'] == 1) {
+        $mostrarMensajeAgregarPrestamo = true;
+    }
 } else {
     // Cliente no tiene préstamos
-    echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos.</p>";
-    echo "<a href='../resources/views/admin/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
-
-    // Asignar valores predeterminados para evitar errores de acceso a índices inexistentes
-    $info_prestamo = [
-        'Plazo' => 'No encontrado',
-        'Telefono' => 'No encontrado',
-        'Cuota' => 'No encontrado',
-    ];
-    $total_prestamo = 0.00;
+    $mostrarMensajeAgregarPrestamo = true;
 }
+
+if ($mostrarMensajeAgregarPrestamo) {
+    echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos activos o están completamente pagados.</p>";
+    // echo "<a href='../resources/views/admin/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
+} else {
+    // Aquí puedes continuar con el procesamiento normal si el cliente tiene un préstamo activo
+}
+
 $stmt_prestamo->close();
-
-
 
 ?>
 

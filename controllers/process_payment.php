@@ -40,6 +40,17 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
     }
     $stmt_update_prestamo->close();
 
+    if ($monto_deuda == 0) {
+        $sql_update_estado = "UPDATE prestamos SET Estado = 'pagado', EstadoP = 1 WHERE IDCliente = ?";
+        $stmt_update_estado = $conexion->prepare($sql_update_estado);
+        $stmt_update_estado->bind_param("i", $id_cliente);
+        if (!$stmt_update_estado->execute()) {
+            echo "Error al actualizar el estado del préstamo.";
+            return;
+        }
+        $stmt_update_estado->close();
+    }
+
     // Insertar en la tabla "historial_pagos" y "facturas".
     $fecha_pago = date('Y-m-d');
     $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
