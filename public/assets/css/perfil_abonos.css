@@ -431,7 +431,7 @@ td {
 
     .boton1 {
         display: inline-block;
-        width: 45%;
+        width: 28%;
         /* Ancho deseado */
         margin: 5px;
         /* Espacio entre los botones */
@@ -442,7 +442,7 @@ td {
 
     .boton2 {
         display: inline-block;
-        width: 45%;
+        width: 28%;
         /* Ancho deseado */
         margin: 5px;
         /* Espacio entre los botones */
@@ -453,7 +453,7 @@ td {
 
     .boton3 {
         display: inline-block;
-        width: 45%;
+        width: 28%;
         /* Ancho deseado */
         margin: 5px;
         /* Espacio entre los botones */
