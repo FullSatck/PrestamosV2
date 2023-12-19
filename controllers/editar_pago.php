@@ -84,7 +84,7 @@ date_default_timezone_set('America/Bogota');
 <body>
     <h1>Editar Factura</h1>
     <form method="POST">
-        <label for="monto">Monto:</label>
+        <label for="monto">Deuda antes:</label>
         <input type="text" id="monto" name="monto" value="<?= $factura['monto'] ?>"><br>
 
         <label for="fecha">Fecha:</label>
@@ -93,7 +93,7 @@ date_default_timezone_set('America/Bogota');
         <label for="monto_pagado">Monto Pagado:</label>
         <input type="text" id="monto_pagado" name="monto_pagado" value="<?= $factura['monto_pagado'] ?>"><br>
 
-        <label for="monto_deuda">Monto Deuda:</label>
+        <label for="monto_deuda">Deuda ahora:</label>
         <input type="text" id="monto_deuda" name="monto_deuda" value="<?= $factura['monto_deuda'] ?>"><br>
 
         <input type="submit" value="Actualizar">

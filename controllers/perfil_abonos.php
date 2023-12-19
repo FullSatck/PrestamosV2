@@ -280,12 +280,13 @@ $stmt_prestamo->close();
             <!-- CARTULINA DE FACTURAS -->
 
             <div class="profile-loans">
+                <!-- TABLA DE VER MENOS -->
                 <?php
                 if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
                     // Si se solicita mostrar todas las filas
                     $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
-        FROM facturas 
-        WHERE cliente_id = ? AND monto_pagado != 0";
+                            FROM facturas 
+                            WHERE cliente_id = ? AND monto_pagado != 0";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bind_param("i", $id_cliente);
                     $stmt->execute();
@@ -295,15 +296,21 @@ $stmt_prestamo->close();
 
                     if ($num_rows > 0) {
                         echo "<table id='tabla-prestamos'>";
-                        echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
+                        echo "<tr><th>No. cuota</th><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
                         $last_row = null;
+                        $contador_cuota = 1; // Iniciar el contador de cuotas
+
                         while ($fila = $resultado->fetch_assoc()) {
+                            // Mostrar el número de cuota como "cuota actual / plazo total"
                             echo "<tr>";
+                            echo "<td>" . $contador_cuota . "/" . $info_prestamo['Plazo'] . "</td>";
                             echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
                             echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
                             echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
-                            $last_row = $fila; // Actualizar la última fila en cada iteración
                             echo "</tr>";
+
+                            $contador_cuota++; // Incrementar el contador de cuotas
+                            $last_row = $fila; // Actualizar la última fila en cada iteración
                         }
 
                         echo "</table>";
@@ -320,10 +327,14 @@ $stmt_prestamo->close();
                     }
 
                     $stmt->close();
-                } else {
+                }
+
+                //  TABLA DE VER MAS  
+
+                else {
                     $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
-        FROM facturas 
-        WHERE cliente_id = ?";
+                            FROM facturas 
+                            WHERE cliente_id = ?";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bind_param("i", $id_cliente);
                     $stmt->execute();
@@ -332,15 +343,19 @@ $stmt_prestamo->close();
                     $num_rows = $resultado->num_rows;
                     if ($num_rows > 0) {
                         echo "<table id='tabla-prestamos'>";
-                        echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
+                        echo "<tr><th>No. cuota</th><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
                         $last_row = null;
+                        $contador_cuota = 0;
+
                         while ($fila = $resultado->fetch_assoc()) {
                             $last_row = $fila; // Actualizar la última fila en cada iteración
+                            $contador_cuota++; // Incrementar el contador de cuotas
                         }
 
                         // Mostrar solo la última fila
                         if ($last_row) {
                             echo "<tr>";
+                            echo "<td>" . $contador_cuota . "/" . $info_prestamo['Plazo'] . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
