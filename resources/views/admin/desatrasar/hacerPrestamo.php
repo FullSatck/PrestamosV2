@@ -87,13 +87,13 @@ if (!isset($_SESSION["usuario_id"])) {
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
-<body id="body">
+<body >
 
     <header>
-        <div class="icon__menu">
-            <i class="fas fa-bars" id="btn_open"></i>
-        </div>
-
+        <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
+            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+            <span class="spann">Volver al Inicio</span>
+        </a>
         <div class="nombre-usuario">
             <?php
             if (isset($_SESSION["nombre_usuario"])) {
@@ -101,103 +101,15 @@ if (!isset($_SESSION["usuario_id"])) {
             }
             ?>
         </div>
-    </header>
-
-    <div class="menu__side" id="menu_side">
-
-        <div class="name__page">
-            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-            <h4>Recaudo</h4>
-        </div>
-
-        <div class="options__menu">
-
-            <a href="/controllers/cerrar_sesion.php">
-                <div class="option">
-                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                    <h4>Cerrar Sesion</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/inicio/inicio.php">
-                <div class="option">
-                    <i class="fa-solid fa-landmark" title="Inicio"></i>
-                    <h4>Inicio</h4>
-                </div>
-            </a>
-
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/usuarios/crudusuarios.php">
-                <div class="option">
-                    <i class="fa-solid fa-users" title=""></i>
-                    <h4>Usuarios</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/usuarios/registrar.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-plus" title=""></i>
-                    <h4>Registrar Usuario</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/clientes/lista_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-people-group" title=""></i>
-                    <h4>Clientes</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/clientes/agregar_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-tag" title=""></i>
-                    <h4>Registrar Clientes</h4>
-                </div>
-            </a>
-            <a href="/resources/views/admin/creditos/crudPrestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                    <h4>Prestamos</h4>
-                </div>
-            </a>
-            <a href="/resources/views/admin/cobros/cobros.php">
-                <div class="option">
-                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
-                    <h4>Zonas de cobro</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/gastos/gastos.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
-                    <h4>Gastos</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
-        </div>
-
-    </div>
+    </header><br><br><br><br><br>
+    
 
 
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
+        <br>
         <h1>Solicitud de Préstamo Atrasados</h1><br><br>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="procesar_prestamo.php" method="POST" class="form-container">
@@ -346,7 +258,7 @@ if (!isset($_SESSION["usuario_id"])) {
             }
         }
     </script>
-    <script src="/public/assets/js/MenuLate.js"></script>
+    
 
 
 </body>
