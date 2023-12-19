@@ -313,21 +313,6 @@ td {
     /* Color rosa más oscuro para filas impares */
 }
 
-/* Estilos para los botones */
-button {
-    padding: 8px 16px;
-    margin: 8px;
-    border: none;
-    border-radius: 4px;
-    background-color: #747474;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #585858;
-}
 
 /* Estilos para el botón de editar */
 .edit-button {
@@ -342,6 +327,7 @@ button:hover {
     padding: 8px 12px;
     background-color: #af6fcc;
     color: #fff;
+    margin: 10px;
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
@@ -349,6 +335,22 @@ button:hover {
 
 .edit-button a:hover {
     background-color: #9729b9;
+}
+
+.edit-button button {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #cc97e6;
+    color: #fff;
+    margin: 10px;
+    text-decoration: none;
+    border: 1px solid #bd6de6;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button button:hover {
+    background-color: #8a42a0;
 }
 
 .resultados-busqueda ul {
