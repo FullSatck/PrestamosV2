@@ -44,10 +44,10 @@ $id_cliente = $_GET['id'];
 
 // Consulta SQL para obtener los detalles del cliente con la moneda y la fecha de hoy en historial_pagos
 $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
-            FROM clientes c
-            LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-            LEFT JOIN ciudades ciu ON c.ciudad = ciu.ID
-            WHERE c.ID = $id_cliente";
+        FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
+        LEFT JOIN ciudades ciu ON c.id = ciu.ID
+        WHERE c.ID = $id_cliente";
 
 
 
@@ -311,11 +311,12 @@ $stmt_prestamo->close();
                         // Mostrar el enlace de "Editar" solo para la última fila
                         if ($last_row) {
                             echo "<div class='edit-button'>";
+                            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
                             echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
                             echo "</div>";
                         }
 
-                        echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
+                        
                     } else {
                         echo "<p>No se encontraron pagos para este cliente.</p>";
                     }
@@ -353,11 +354,12 @@ $stmt_prestamo->close();
                         // Mostrar el enlace de "Editar" solo para la última fila
                         if ($last_row) {
                             echo "<div class='edit-button'>";
+                            echo "<button onclick='showMore()' class='edit-button'>Ver más</button>";
                             echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
                             echo "</div>";
                         }
 
-                        echo "<button onclick='showMore()'>Ver más</button>";
+                        
                     } else {
                         echo "<p>No se encontraron pagos para este cliente.</p>";
                     }
