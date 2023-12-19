@@ -118,14 +118,17 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                 
                 echo '<div id="formularios_cuotas" class="mb-3">';
                 // Generar automáticamente los formularios de cuotas
-                $fechaCuota = $fechaInicio; // Inicializar la fecha de la primera cuota
+                $fechaHoy = strtotime("today");
+                $fechaCuota = strtotime("+1 day", $fechaInicio); // Ajustar la fecha para que comience un día después
                 for ($i = 1; $i <= $numCuotas; $i++) {
-                    echo '<div class="cuota-group mb-3">';
-                    echo '<h5>Cuota ' . $i . '</h5>';
-                    echo '<div class="form-row">';
-                    echo '<div class="col"><label>Monto:</label><input type="text" name="monto_cuota[]" class="form-control" placeholder="Monto" value="' . number_format($row_prestamo['MontoCuota'], 0, ',', '') . '" oninput="this.value = this.value.replace(/\D/g, \'\')"></div>';
-                    echo '<div class="col"><label>Fecha:</label><input type="date" name="fecha_cuota[]" class="form-control" value="' . date("Y-m-d", $fechaCuota) . '"></div>';
-                    echo '</div></div>';
+                    if ($fechaCuota <= $fechaHoy) {
+                        echo '<div class="cuota-group mb-3">';
+                        echo '<h5>Cuota ' . $i . '</h5>';
+                        echo '<div class="form-row">';
+                        echo '<div class="col"><label>Monto:</label><input type="text" name="monto_cuota[]" class="form-control" placeholder="Monto" value="' . number_format($row_prestamo['MontoCuota'], 0, ',', '') . '" oninput="this.value = this.value.replace(/\D/g, \'\')"></div>';
+                        echo '<div class="col"><label>Fecha:</label><input type="date" name="fecha_cuota[]" class="form-control" value="' . date("Y-m-d", $fechaCuota) . '"></div>';
+                        echo '</div></div>';
+                    }
                     $fechaCuota = strtotime("+1 day", $fechaCuota); // Incrementar la fecha para la próxima cuota
                 }
                 echo '</div>';
