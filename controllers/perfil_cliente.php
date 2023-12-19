@@ -73,7 +73,7 @@ $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
 if ($_SESSION["rol"] == 1) {
-    $ruta_volver = "/resources/views/admin/cliente/lista_cliente.php";
+    $ruta_volver = "/resources/views/admin/clientes/lista_clientes.php";
 } elseif ($_SESSION["rol"] == 2) {
     // Ruta para el rol 2 (supervisor) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
