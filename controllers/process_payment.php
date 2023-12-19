@@ -18,13 +18,13 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
     // Obtén el MontoAPagar y el ID del préstamo.
     $montoAPagar = 0;
     $idPrestamo = 0;
-    $sql_prestamo = "SELECT MontoAPagar, ID FROM prestamos WHERE IDCliente = ?";
+    $sql_prestamo = "SELECT MontoAPagar, ID FROM prestamos WHERE IDCliente = ? AND Estado = 'pendiente' ORDER BY FechaInicio ASC LIMIT 1";
     $stmt_prestamo = $conexion->prepare($sql_prestamo);
     $stmt_prestamo->bind_param("i", $id_cliente);
     $stmt_prestamo->execute();
     $stmt_prestamo->bind_result($montoAPagar, $idPrestamo);
     if (!$stmt_prestamo->fetch()) {
-        echo "Error al encontrar el préstamo.";
+        echo "Error al encontrar el préstamo pendiente.";
         return;
     }
     $stmt_prestamo->close();
@@ -62,9 +62,9 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
     }
     $stmt_insert_historial->close();
 
-    $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda) VALUES (?, ?, ?, ?, ?)";
+    $sql_insert_factura = "INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda, id_prestamos) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt_insert_factura = $conexion->prepare($sql_insert_factura);
-    $stmt_insert_factura->bind_param("idsss", $id_cliente, $montoAPagar, $fecha_pago, $cuota_ingresada, $monto_deuda);
+    $stmt_insert_factura->bind_param("idsssi", $id_cliente, $montoAPagar, $fecha_pago, $cuota_ingresada, $monto_deuda, $idPrestamo);
     if (!$stmt_insert_factura->execute()) {
         echo "Error al insertar en facturas.";
         return;
