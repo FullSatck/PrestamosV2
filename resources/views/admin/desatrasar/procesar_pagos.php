@@ -49,6 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
         $stmtActualizarPrestamo->execute();
         $stmtActualizarPrestamo->close();
 
+        // Verificar si el monto restante es igual a 0 y actualizar el estado del préstamo
+        if ($montoRestante == 0) {
+            $stmtActualizarEstadoPrestamo = $conexion->prepare("UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?");
+            $stmtActualizarEstadoPrestamo->bind_param("i", $prestamoId);
+            $stmtActualizarEstadoPrestamo->execute();
+            $stmtActualizarEstadoPrestamo->close();
+        }
+
         $conexion->commit();
         $_SESSION['mensaje'] = "Pagos procesados correctamente.";
         header("Location: /resources/views/admin/desatrasar/agregar_clientes.php");
