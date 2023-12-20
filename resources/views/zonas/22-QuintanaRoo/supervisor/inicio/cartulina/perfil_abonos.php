@@ -285,7 +285,7 @@ $stmt_prestamo->close();
                     // Si se solicita mostrar todas las filas
                     $sql = "SELECT id, fecha, monto_pagado, monto_deuda 
         FROM facturas 
-        WHERE cliente_id = ? AND monto_pagado != 0";
+        WHERE cliente_id = ?";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bind_param("i", $id_cliente);
                     $stmt->execute();

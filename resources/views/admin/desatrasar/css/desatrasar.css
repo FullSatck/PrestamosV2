@@ -131,6 +131,64 @@ button.btn-primary:hover {
     color: #333;
     margin-bottom: 10px;
 }
+/* Estilo para el fondo oscuro detrás del modal */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Estilo para el contenido del modal */
+.modal-content {
+    border-radius: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el encabezado del modal */
+.modal-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: none;
+    padding: 15px;
+}
+
+/* Estilo para el título del modal */
+.modal-title {
+    font-size: 1.25rem;
+}
+
+/* Estilo para el cuerpo del modal */
+.modal-body {
+    padding: 15px;
+}
+
+/* Estilo para el pie del modal */
+.modal-footer {
+    border-top: none;
+    padding: 15px;
+}
+
+/* Estilo para el botón de cerrar del modal */
+.close {
+    color: #fff;
+    opacity: 0.8;
+    font-size: 1.5rem;
+}
+
+/* Estilo para el botón de cerrar del modal al pasar el cursor */
+.close:hover {
+    opacity: 1;
+}
+
+/* Estilo para el botón de "Pagar Cuotas" */
+#botonPagarCuotas {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+}
+
+/* Estilo para el botón de "Pagar Cuotas" al pasar el cursor */
+#botonPagarCuotas:hover {
+    background-color: #218838;
+}
 
 
 /* Responsive Design */
