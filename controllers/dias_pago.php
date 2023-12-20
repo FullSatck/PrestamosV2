@@ -110,7 +110,7 @@ date_default_timezone_set('America/Bogota');
             }
 
             echo "<table>";
-            echo "<tr><th>Frecuencia</th><th>Fecha</th><th>Cuota</th><th>Pagado</th></tr>";
+            echo "<tr><th>Frecuencia</th><th>Fecha</th></tr>";
             $numeroFecha = 1;
             $sumaPagos = 0;
             foreach ($fechasPago as $fecha) {
@@ -140,9 +140,9 @@ date_default_timezone_set('America/Bogota');
                     $stmt = $conexion->prepare("UPDATE clientes SET Estado = 'Vencido' WHERE ID = ?");
                     $stmt->bind_param("i", $usuario_id); // Asegúrate de tener el ID del cliente
                     $stmt->execute();
-                }
+                } 
 
-                echo "<tr><td>$frecuencia</td><td>$fechaFormato</td><td>$cuota</td><td>$estadoPago</td></tr>";
+                echo "<tr><td>$frecuencia</td><td>$fechaFormato</td></tr>";
                 $numeroFecha++;
             }
             echo "</table>";

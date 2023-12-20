@@ -150,6 +150,13 @@ if ($result->num_rows > 0) {
                     <h4>Gastos</h4>
                 </div>
             </a> 
+
+            <a href="/resources/views/admin/ruta/ruta.php">
+            <div class="option">
+                <i class="fa-solid fa-map" title=""></i>
+                <h4>Enrutar</h4>
+            </div>
+        </a>
  
             <a href="/resources/views/admin/retiros/retiros.php" class="selected">
                 <div class="option">

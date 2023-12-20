@@ -5,6 +5,7 @@ body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
 }
+
 /* Estilos para el botón más pequeño */
 .botonn {
     display: inline-block;
@@ -17,26 +18,24 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  
-  .botonn:hover {
+}
+
+.botonn:hover {
     background-color: #2980b9;
     transform: scale(1.05);
-  }
-  
-  /* Estilos para el ícono */
-  .fa-right-to-bracket {
-    margin-right: 5px;
-  }
-  
-  /* Estilos para el texto dentro del botón */
-  .spann {
-    font-weight: bold;
-  }
-  
+}
 
-  
-  
+/* Estilos para el ícono */
+.fa-right-to-bracket {
+    margin-right: 5px;
+}
+
+/* Estilos para el texto dentro del botón */
+.spann {
+    font-weight: bold;
+}
+
+/* Estilos del Contenedor */
 .container {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -110,6 +109,87 @@ button.btn-primary:hover {
 .cuota-group .form-row .col {
     margin-bottom: 10px;
 }
+
+/* Estilos para el campo del total de cuotas */
+.total-cuotas {
+    text-align: center;
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.total-cuotas span {
+    font-size: 24px;
+    color: #a72828; 
+    font-weight: bold;
+}
+
+.total-label {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+/* Estilo para el fondo oscuro detrás del modal */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Estilo para el contenido del modal */
+.modal-content {
+    border-radius: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el encabezado del modal */
+.modal-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: none;
+    padding: 15px;
+}
+
+/* Estilo para el título del modal */
+.modal-title {
+    font-size: 1.25rem;
+}
+
+/* Estilo para el cuerpo del modal */
+.modal-body {
+    padding: 15px;
+}
+
+/* Estilo para el pie del modal */
+.modal-footer {
+    border-top: none;
+    padding: 15px;
+}
+
+/* Estilo para el botón de cerrar del modal */
+.close {
+    color: #fff;
+    opacity: 0.8;
+    font-size: 1.5rem;
+}
+
+/* Estilo para el botón de cerrar del modal al pasar el cursor */
+.close:hover {
+    opacity: 1;
+}
+
+/* Estilo para el botón de "Pagar Cuotas" */
+#botonPagarCuotas {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+}
+
+/* Estilo para el botón de "Pagar Cuotas" al pasar el cursor */
+#botonPagarCuotas:hover {
+    background-color: #218838;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

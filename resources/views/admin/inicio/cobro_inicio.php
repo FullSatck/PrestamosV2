@@ -156,13 +156,7 @@ if ($sql === false) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a>
-            <a href="/resources/views/admin/creditos/prestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
-                    <h4>Registrar Prestamos</h4>
-                </div>
-            </a>
+            </a> 
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -176,6 +170,13 @@ if ($sql === false) {
                     <h4>Gastos</h4>
                 </div>
             </a> 
+
+            <a href="/resources/views/admin/ruta/ruta.php">
+            <div class="option">
+                <i class="fa-solid fa-map" title=""></i>
+                <h4>Enrutar</h4>
+            </div>
+        </a>
  
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">

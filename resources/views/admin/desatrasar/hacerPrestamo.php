@@ -85,11 +85,19 @@ if (!isset($_SESSION["usuario_id"])) {
 
     <link rel="stylesheet" href="/resources/views/admin/desatrasar/css/prestamo.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS y dependencias (jQuery y Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 
-<body >
+<body style="background-color: #a8dbd6;">
 
-    <header>
+    <header><br>
         <a href="/resources/views/admin/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
@@ -101,8 +109,8 @@ if (!isset($_SESSION["usuario_id"])) {
             }
             ?>
         </div>
-    </header><br><br><br><br><br>
-    
+    </header><br><br><br>
+
 
 
 
@@ -110,7 +118,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
     <main>
         <br>
-        <h1>Solicitud de Préstamo Atrasados</h1><br><br>
+        <h1>Solicitud de Préstamo Atrasados</h1><br>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="procesar_prestamo.php" method="POST" class="form-container">
             <?php
@@ -173,7 +181,9 @@ if (!isset($_SESSION["usuario_id"])) {
             </select><br>
 
             <!-- Reemplaza el campo de fecha de inicio con un campo de texto readonly -->
+           
             <label for="fecha_inicio">Fecha de Inicio:</label>
+            <span style="color: red; font-weight: bold;">POR FAVOR INGRESA LA FECHA</span>
             <input type="date" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d'); ?>" required><br>
 
             <label for="zona">Zona:</label>
@@ -206,7 +216,32 @@ if (!isset($_SESSION["usuario_id"])) {
                 <p>Moneda: <span id="moneda_simbolo">USD</span></p>
             </div>
 
-            <input type="submit" value="Hacer préstamo" class="calcular-button">
+            <button type="button" onclick="mostrarModalPrestamo()" class="calcular-button">Hacer préstamo</button>
+
+            <!-- Modal para Confirmación de Préstamo -->
+            <div id="modalPrestamo" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="cerrarModal()">&times;</span>
+
+                    <h2>Confirmar Préstamo</h2>
+                    <p>Cliente: <strong><span id="modalCliente"></span></strong></p>
+                    <p>Monto: <strong><span id="modalMonto"></span></strong></p>
+                    <p>Tasa de Interés:<strong> <span id="modalTasaInteres"></span></strong></p>
+                    <p>Frecuencia de Pago:<strong> <span id="modalFrecuenciaPago"></strong></span></p>
+                    <p>Plazo:<strong> <span id="modalPlazo"></span></strong></p>
+                    <p>Moneda: <strong><span id="modalMoneda"></span></strong></p>
+                    <p><strong><span style="color: red;">Fecha de Inicio:</span></strong> <span id="modalFechaInicio"></span></p>
+                    <p>Zona:<strong> <span id="modalZona"></span></strong></p>
+                    <p>Aplicar Comisión: <strong><span id="modalAplicarComision"></span></strong></p>
+                    <p>Valor Comisión:<strong> <span id="modalValorComision"></span></strong></p>
+
+                 
+
+
+                    <button onclick="confirmarPrestamo()">Confirmar</button>
+                </div>
+            </div>
+
         </form>
 
     </main>
@@ -216,9 +251,7 @@ if (!isset($_SESSION["usuario_id"])) {
             var comisionContainer = document.getElementById('comision_container');
             comisionContainer.style.display = (aplicarComision === 'si') ? 'block' : 'none';
         }
-    </script>
 
-    <script>
         function calcularMontoPagar() {
             // Obtener los valores ingresados por el usuario
             var monto = parseFloat(document.getElementById('monto').value);
@@ -257,8 +290,44 @@ if (!isset($_SESSION["usuario_id"])) {
                     return 'día(s)';
             }
         }
+
+        //modal
+        function cerrarModal() {
+            document.getElementById('modalPrestamo').style.display = 'none';
+        }
+
+        function mostrarModalPrestamo() {
+            // Capturar los valores del formulario
+            var cliente = document.querySelector('select[name="id_cliente"]').selectedOptions[0].text;
+            var monto = document.getElementById('monto').value;
+            var tasaInteres = document.getElementById('TasaInteres').value;
+            var frecuenciaPago = document.getElementById('frecuencia_pago').value;
+            var plazo = document.getElementById('plazo').value;
+            var moneda = document.querySelector('select[name="moneda_id"]').selectedOptions[0].text;
+            var fechaInicio = document.getElementById('fecha_inicio').value;
+            var zona = document.querySelector('select[name="zona"]').selectedOptions[0].text;
+            var aplicarComision = document.getElementById('aplicar_comision').value;
+            var valorComision = document.getElementById('valor_comision').value;
+
+            // Mostrar los valores en el modal
+            document.getElementById('modalCliente').textContent = cliente;
+            document.getElementById('modalMonto').textContent = monto;
+            document.getElementById('modalTasaInteres').textContent = tasaInteres;
+            document.getElementById('modalFrecuenciaPago').textContent = frecuenciaPago;
+            document.getElementById('modalPlazo').textContent = plazo;
+            document.getElementById('modalMoneda').textContent = moneda;
+            document.getElementById('modalFechaInicio').textContent = fechaInicio;
+            document.getElementById('modalZona').textContent = zona;
+            document.getElementById('modalAplicarComision').textContent = aplicarComision;
+            document.getElementById('modalValorComision').textContent = valorComision;
+
+            // Mostrar el modal
+            document.getElementById('modalPrestamo').style.display = 'block';
+
+
+        }
     </script>
-    
+
 
 
 </body>

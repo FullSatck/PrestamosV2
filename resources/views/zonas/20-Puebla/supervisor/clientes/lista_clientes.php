@@ -128,6 +128,13 @@ $resultado = $conexion->query($sql);
                     <h4>Gastos</h4>
                 </div>
             </a> 
+
+            <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutada</h4>
+                </div>
+            </a>
         </div>
 
     </div>

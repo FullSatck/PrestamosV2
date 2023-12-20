@@ -4,7 +4,7 @@ session_start();
 
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -16,19 +16,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -43,15 +43,13 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
@@ -70,17 +68,17 @@ $stmt->close();
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -146,7 +144,7 @@ $stmt->close();
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -159,8 +157,15 @@ $stmt->close();
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
- 
+            </a>
+
+            <a href="/resources/views/admin/ruta/ruta.php">
+            <div class="option">
+                <i class="fa-solid fa-map" title=""></i>
+                <h4>Enrutar</h4>
+            </div>
+        </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -183,44 +188,44 @@ $stmt->close();
                 <th>CD Postal</th>
             </tr>
             <?php
-    // Realiza la conexión a la base de datos
-    include("../../../../controllers/conexion.php");
+            // Realiza la conexión a la base de datos
+            include("../../../../controllers/conexion.php");
 
-    // Query SQL para obtener todas las zonas
-    $sql = "SELECT * FROM zonas";
-    $result = mysqli_query($conexion, $sql);
+            // Query SQL para obtener todas las zonas
+            $sql = "SELECT * FROM zonas";
+            $result = mysqli_query($conexion, $sql);
 
-    // Muestra los datos en una tabla
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<tr 'zona-row'>";
-        echo "<td>REC-10" . $row["ID"] . "</td>"; 
-        echo "<td><a href='ciudades.php?zona=" . $row["ID"] . "'>" . $row["Nombre"] . "</a></td>";
-        echo "<td>" . $row["Capital"] . "</td>";
-        echo "<td>" . $row["CodigoPostal"] . "</td>";  
-        echo "</tr>";
-    }
+            // Muestra los datos en una tabla
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr 'zona-row'>";
+                echo "<td>REC-10" . $row["ID"] . "</td>";
+                echo "<td><a href='ciudades.php?zona=" . $row["ID"] . "'>" . $row["Nombre"] . "</a></td>";
+                echo "<td>" . $row["Capital"] . "</td>";
+                echo "<td>" . $row["CodigoPostal"] . "</td>";
+                echo "</tr>";
+            }
 
-    // Cierra la conexión a la base de datos
-    mysqli_close($conexion);
-    ?>
+            // Cierra la conexión a la base de datos
+            mysqli_close($conexion);
+            ?>
         </table>
 
     </main>
 
     <script>
-    document.getElementById('search-input').addEventListener('keyup', function(event) {
-        var searchQuery = event.target.value.toLowerCase();
-        var rows = document.querySelectorAll('table tr');
+        document.getElementById('search-input').addEventListener('keyup', function(event) {
+            var searchQuery = event.target.value.toLowerCase();
+            var rows = document.querySelectorAll('table tr');
 
-        rows.forEach(function(row) {
-            var text = row.textContent.toLowerCase();
-            if (text.includes(searchQuery)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            rows.forEach(function(row) {
+                var text = row.textContent.toLowerCase();
+                if (text.includes(searchQuery)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
-    });
     </script>
 
     <script src="/public/assets/js/MenuLate.js"></script>

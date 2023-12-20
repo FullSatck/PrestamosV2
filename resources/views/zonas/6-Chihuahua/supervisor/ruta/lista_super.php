@@ -127,7 +127,7 @@ date_default_timezone_set('America/Bogota');
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutada</h4>
                 </div>
             </a>
 

@@ -98,39 +98,50 @@ header{
     border-radius: 5px;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
+  
     max-width: 400px;
     width: 100%;
     position: relative;
     margin: 0 auto; /* Esto centrará el contenido del modal horizontalmente */
 }
 
-/* Estilo para el botón de cierre del modal */
+/* Botón para cerrar */
 .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
     color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
 }
 
-/* Estilo para el botón de confirmación dentro del modal */
-#confirmarRegistro {
-    background-color: #007bff;
-    color: #fff;
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Botón general del modal */
+.modal button {
     border: none;
+    outline: none;
     padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
     font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: 10px;
 }
 
-/* Estilo para el botón de confirmación al pasar el mouse */
-#confirmarRegistro:hover {
+.modal button:hover {
     background-color: #0056b3;
 }
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #ccece9;
@@ -153,7 +164,7 @@ h1 {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
-    color: #007BFF;
+    color: #007bff;
 }
 
 .form-container label {

@@ -174,6 +174,13 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
+            <a href="/resources/views/admin/ruta/ruta.php">
+            <div class="option">
+                <i class="fa-solid fa-map" title=""></i>
+                <h4>Enrutar</h4>
+            </div>
+        </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -192,7 +199,7 @@ date_default_timezone_set('America/Bogota');
 
 
 
-            
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>

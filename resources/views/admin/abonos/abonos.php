@@ -3,7 +3,7 @@ date_default_timezone_set('America/Bogota');
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -15,19 +15,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -42,15 +42,13 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 
 
@@ -82,10 +80,10 @@ $stmt->close();
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -165,13 +163,19 @@ $stmt->close();
                     <h4>Gastos</h4>
                 </div>
             </a>
- 
+
             <a href="/resources/views/admin/abonos/abonos.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
+            <a href="/resources/views/admin/ruta/ruta.php">
+            <div class="option">
+                <i class="fa-solid fa-map" title=""></i>
+                <h4>Enrutar</h4>
+            </div>
+        </a>
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -214,90 +218,90 @@ $stmt->close();
 
             <div class="profile-loans">
                 <?php
-    include("../../../../controllers/conexion.php");
+                include("../../../../controllers/conexion.php");
 
-    if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
-        // Si se solicita mostrar todas las filas
-        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("i", $id_cliente);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
+                if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
+                    // Si se solicita mostrar todas las filas
+                    $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bind_param("i", $id_cliente);
+                    $stmt->execute();
+                    $resultado = $stmt->get_result();
 
-        $num_rows = $resultado->num_rows;
-        if ($num_rows > 0) {
-            echo "<table id='tabla-prestamos'>";
-            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
-            $last_row = null;
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
-                echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
-                echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
-                $last_row = $fila; // Actualizar la última fila en cada iteración
-                echo "</tr>";
-            }
+                    $num_rows = $resultado->num_rows;
+                    if ($num_rows > 0) {
+                        echo "<table id='tabla-prestamos'>";
+                        echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+                        $last_row = null;
+                        while ($fila = $resultado->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                            echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+                            echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
+                            $last_row = $fila; // Actualizar la última fila en cada iteración
+                            echo "</tr>";
+                        }
 
-            // Mostrar el enlace de "Editar" solo para la última fila
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
-            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
-            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
-            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
-            echo "</tr>";
+                        // Mostrar el enlace de "Editar" solo para la última fila
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+                        echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+                        echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+                        echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+                        echo "</tr>";
 
-            echo "</table>";
-            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
-        } else {
-            echo "<p>No se encontraron pagos para este cliente.</p>";
-        }
+                        echo "</table>";
+                        echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
+                    } else {
+                        echo "<p>No se encontraron pagos para este cliente.</p>";
+                    }
 
-        $stmt->close();
-    } else {
-        // Mostrar solo la última fila inicialmente
-        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("i", $id_cliente);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
+                    $stmt->close();
+                } else {
+                    // Mostrar solo la última fila inicialmente
+                    $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bind_param("i", $id_cliente);
+                    $stmt->execute();
+                    $resultado = $stmt->get_result();
 
-        $num_rows = $resultado->num_rows;
-        if ($num_rows > 0) {
-            echo "<table id='tabla-prestamos'>";
-            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
-            $last_row = null;
-            while ($fila = $resultado->fetch_assoc()) {
-                $last_row = $fila; // Actualizar la última fila en cada iteración
-            }
+                    $num_rows = $resultado->num_rows;
+                    if ($num_rows > 0) {
+                        echo "<table id='tabla-prestamos'>";
+                        echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+                        $last_row = null;
+                        while ($fila = $resultado->fetch_assoc()) {
+                            $last_row = $fila; // Actualizar la última fila en cada iteración
+                        }
 
-            // Mostrar solo la última fila
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
-            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
-            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
-            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
-            echo "</tr>";
+                        // Mostrar solo la última fila
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+                        echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+                        echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+                        echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+                        echo "</tr>";
 
-            echo "</table>";
+                        echo "</table>";
 
-            echo "<button onclick='showMore()'>Ver más</button>";
-        } else {
-            echo "<p>No se encontraron pagos para este cliente.</p>";
-        }
+                        echo "<button onclick='showMore()'>Ver más</button>";
+                    } else {
+                        echo "<p>No se encontraron pagos para este cliente.</p>";
+                    }
 
-        $stmt->close();
-    }
-    ?>
+                    $stmt->close();
+                }
+                ?>
             </div>
 
             <script>
-            function showMore() {
-                window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
-            }
+                function showMore() {
+                    window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
+                }
 
-            function showLess() {
-                window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
-            }
+                function showLess() {
+                    window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
+                }
             </script>
 
 
@@ -313,8 +317,7 @@ $stmt->close();
                         </div>
                         <div class="form-group col-md-6">
                             <label for="fecha-pago">Fecha del Pago:</label>
-                            <input type="date" id="fecha-pago" class="form-control" value="<?php echo date('Y-m-d'); ?>"
-                                readonly>
+                            <input type="date" id="fecha-pago" class="form-control" value="<?php echo date('Y-m-d'); ?>" readonly>
                         </div>
                     </div>
                     <button type="button" id="registrarPago" class="btn btn-primary">Registrar Pago</button>
@@ -329,8 +332,7 @@ $stmt->close();
         </div>
 
         <!-- Modal para confirmar el pago -->
-        <div class="modal fade" id="confirmarPagoModal" tabindex="-1" role="dialog"
-            aria-labelledby="confirmarPagoModalLabel" aria-hidden="true">
+        <div class="modal fade" id="confirmarPagoModal" tabindex="-1" role="dialog" aria-labelledby="confirmarPagoModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -351,8 +353,7 @@ $stmt->close();
         </div>
 
         <!-- Modal para pago confirmado -->
-        <div class="modal fade" id="pagoConfirmadoModal" tabindex="-1" role="dialog"
-            aria-labelledby="pagoConfirmadoModalLabel" aria-hidden="true">
+        <div class="modal fade" id="pagoConfirmadoModal" tabindex="-1" role="dialog" aria-labelledby="pagoConfirmadoModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

@@ -127,6 +127,14 @@ $result = $conexion->query($sql);
                     <h4>Gastos</h4>
                 </div>
             </a> 
+
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="selected">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>

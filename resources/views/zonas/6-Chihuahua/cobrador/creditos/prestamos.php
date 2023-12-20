@@ -55,14 +55,14 @@ date_default_timezone_set('America/Bogota');
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
-        </div> 
+        </div>
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -110,14 +110,21 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
+
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">
                 <div class="option">
@@ -126,7 +133,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-         
+
 
 
 
@@ -139,34 +146,34 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
         <form action="/controllers/cob/procesar_prestamos/procesar_prestamo6.php" method="POST" class="form-container">
-        <?php
-// Incluir el archivo de conexión a la base de datos
-include("../../../../controllers/conexion.php");
+            <?php
+            // Incluir el archivo de conexión a la base de datos
+            include("../../../../../../controllers/conexion.php");
 
-// ID DEL CLIENTE
-if (isset($_GET['cliente_id'])) {
-    $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
-    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
-} else {
-    $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
-}
+            // ID DEL CLIENTE
+            if (isset($_GET['cliente_id'])) {
+                $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
+                $query_clientes = "SELECT ID, Nombre FROM clientes WHERE ID = $cliente_id";
+            } else {
+                $query_clientes = "SELECT ID, Nombre FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
+            }
 
-// Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
-$result_clientes = $conexion->query($query_clientes);
-$query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
-$query_zonas = "SELECT Nombre FROM zonas";
+            // Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
+            $result_clientes = $conexion->query($query_clientes);
+            $query_monedas = "SELECT ID, Nombre, Simbolo FROM Monedas";
+            $query_zonas = "SELECT Nombre FROM zonas";
 
-$result_monedas = $conexion->query($query_monedas);
-$result_zonas = $conexion->query($query_zonas);
-?>
+            $result_monedas = $conexion->query($query_monedas);
+            $result_zonas = $conexion->query($query_zonas);
+            ?>
 
             <label for="id_cliente">Cliente:</label>
             <select name="id_cliente" required>
                 <?php
-    while ($row = $result_clientes->fetch_assoc()) {
-        echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
-    }
-    ?>
+                while ($row = $result_clientes->fetch_assoc()) {
+                    echo "<option value='" . $row['ID'] . "'>" . $row['Nombre'] . "</option>";
+                }
+                ?>
             </select><br>
 
 
@@ -186,14 +193,14 @@ $result_zonas = $conexion->query($query_zonas);
 
 
             <label for="plazo">Plazo:</label>
-            <input type="text" name="plazo" id="plazo" required><br>
+            <input type="text" name="plazo" id="plazo" required oninput="calcularMontoPagar()"><br>
 
             <label for="moneda_id">Moneda:</label>
             <select name="moneda_id" id="moneda_id" required onchange="calcularMontoPagar()">
                 <?php
                 while ($row = $result_monedas->fetch_assoc()) {
                     // Agregar el símbolo de la moneda como un atributo data-*
-                    echo "<option value='" . $row['iD'] . "' data-simbolo='" . $row['simbolo'] . "'>" . $row['nombre'] . "</option>";
+                    echo "<option value='" . $row['iD'] . "' data-simbolo='" . $row['simbolo'] . "'>" . $row['Nombre'] . "</option>";
                 }
                 ?>
             </select><br>
@@ -209,7 +216,7 @@ $result_zonas = $conexion->query($query_zonas);
             <select name="zona" required>
                 <?php
                 while ($row = $result_zonas->fetch_assoc()) {
-                    echo "<option value='" . $row['nombre'] . "'>" . $row['nombre'] . "</option>";
+                    echo "<option value='" . $row['Nombre'] . "'>" . $row['Nombre'] . "</option>";
                 }
                 ?>
             </select><br>
@@ -228,44 +235,44 @@ $result_zonas = $conexion->query($query_zonas);
     </main>
 
     <script>
-    function calcularMontoPagar() {
-        // Obtener los valores ingresados por el usuario
-        var monto = parseFloat(document.getElementById('monto').value);
-        var tasa_interes = parseFloat(document.getElementById('TasaInteres').value);
-        var plazo = parseFloat(document.getElementById('plazo').value);
-        var frecuencia_pago = document.getElementById('frecuencia_pago').value;
-        var moneda_select = document.getElementById('moneda_id');
-        var moneda_option = moneda_select.options[moneda_select.selectedIndex];
-        var simbolo_moneda = moneda_option.getAttribute('data-simbolo');
+        function calcularMontoPagar() {
+            // Obtener los valores ingresados por el usuario
+            var monto = parseFloat(document.getElementById('monto').value);
+            var tasa_interes = parseFloat(document.getElementById('TasaInteres').value);
+            var plazo = parseFloat(document.getElementById('plazo').value);
+            var frecuencia_pago = document.getElementById('frecuencia_pago').value;
+            var moneda_select = document.getElementById('moneda_id');
+            var moneda_option = moneda_select.options[moneda_select.selectedIndex];
+            var simbolo_moneda = moneda_option.getAttribute('data-simbolo');
 
-        // Calcular el monto total, incluyendo el interés
-        var monto_total = monto + (monto * (tasa_interes / 100));
+            // Calcular el monto total, incluyendo el interés
+            var monto_total = monto + (monto * (tasa_interes / 100));
 
-        // Calcular la cantidad a pagar por cuota
-        var cantidad_por_cuota = monto_total / plazo;
+            // Calcular la cantidad a pagar por cuota
+            var cantidad_por_cuota = monto_total / plazo;
 
-        // Actualizar los elementos HTML para mostrar los resultados en tiempo real
-        document.getElementById('monto_a_pagar').textContent = monto_total.toFixed(2);
-        document.getElementById('plazo_mostrado').textContent = plazo + ' ' + getPlazoText(frecuencia_pago);
-        document.getElementById('frecuencia_pago_mostrada').textContent = frecuencia_pago;
-        document.getElementById('cantidad_por_cuota').textContent = cantidad_por_cuota.toFixed(2);
-        document.getElementById('moneda_simbolo').textContent = simbolo_moneda;
-    }
-
-    function getPlazoText(frecuencia_pago) {
-        switch (frecuencia_pago) {
-            case 'diario':
-                return 'día(s)';
-            case 'semanal':
-                return 'semana(s)';
-            case 'quincenal':
-                return 'quincena(s)';
-            case 'mensual':
-                return 'mes(es)';
-            default:
-                return 'día(s)';
+            // Actualizar los elementos HTML para mostrar los resultados en tiempo real
+            document.getElementById('monto_a_pagar').textContent = monto_total.toFixed(2);
+            document.getElementById('plazo_mostrado').textContent = plazo + ' ' + getPlazoText(frecuencia_pago);
+            document.getElementById('frecuencia_pago_mostrada').textContent = frecuencia_pago;
+            document.getElementById('cantidad_por_cuota').textContent = cantidad_por_cuota.toFixed(2);
+            document.getElementById('moneda_simbolo').textContent = simbolo_moneda;
         }
-    }
+
+        function getPlazoText(frecuencia_pago) {
+            switch (frecuencia_pago) {
+                case 'diario':
+                    return 'día(s)';
+                case 'semanal':
+                    return 'semana(s)';
+                case 'quincenal':
+                    return 'quincena(s)';
+                case 'mensual':
+                    return 'mes(es)';
+                default:
+                    return 'día(s)';
+            }
+        }
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
 
