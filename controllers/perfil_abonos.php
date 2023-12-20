@@ -51,6 +51,18 @@ $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
 
 $resultado = $conexion->query($sql);
 
+$_SESSION['alerta'] = 'La acción "No pago" o "Más tarde" ya se ha realizado anteriormente.';
+
+if (isset($_SESSION['alerta'])) {
+    echo "<script>
+            alert('" . $_SESSION['alerta'] . "');
+            window.location.href = 'perfil_abonos.php?id=" . $id_cliente . "';
+          </script>";
+    unset($_SESSION['alerta']);
+    exit(); // Importante para prevenir la ejecución de más código
+}
+
+
 if ($resultado->num_rows === 1) {
     // Mostrar los detalles del cliente aquí
     $fila = $resultado->fetch_assoc();
@@ -487,8 +499,8 @@ $stmt_prestamo->close();
 
                 <!-- Botones para las acciones -->
                 <input type="submit" name="action" value="Pagar" class="boton1">
-                <input type="submit" name="action" value="No pago" class="boton2">
-                <input type="submit" name="action" value="Mas tarde" class="boton3">
+                <input type="submit" name="action" value="No pago" class="boton2" id="noPago">
+                <input type="submit" name="action" value="Mas tarde" class="boton3" id="masTarde">
 
             </form>
 
@@ -497,6 +509,7 @@ $stmt_prestamo->close();
             </form>
 
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+
 
             <script>
                 var cuotaEsperada = <?= json_encode($info_prestamo['Cuota']); ?>;
