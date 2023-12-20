@@ -43,23 +43,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
             $montoRestante -= $monto;
             $montoDeuda = max($montoRestante, 0);
 
+            // Actualizar el campo MontoAPagar en la tabla prestamos basado en la cuota pagada
+            $stmtActualizarMontoPrestamo = $conexion->prepare("UPDATE prestamos SET MontoAPagar = ? WHERE ID = ?");
+            $stmtActualizarMontoPrestamo->bind_param("di", $montoRestante, $prestamoId);
+            $stmtActualizarMontoPrestamo->execute();
+            $stmtActualizarMontoPrestamo->close();
+
             // Insertar la factura sin verificar el monto
             $stmtFactura = $conexion->prepare("INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda, id_prestamos) VALUES (?, ?, ?, ?, ?, ?)");
             $stmtFactura->bind_param("idssii", $clienteId, $monto, $fecha, $monto, $montoDeuda, $prestamoId);
             $stmtFactura->execute();
             $stmtFactura->close();
-        }
-
-        $stmtActualizarPrestamo = $conexion->prepare("UPDATE prestamos SET MontoAPagar = ? WHERE ID = ?");
-        $stmtActualizarPrestamo->bind_param("di", $montoRestante, $prestamoId);
-        $stmtActualizarPrestamo->execute();
-        $stmtActualizarPrestamo->close();
-
-        if ($montoRestante == 0) {
-            $stmtActualizarEstadoPrestamo = $conexion->prepare("UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?");
-            $stmtActualizarEstadoPrestamo->bind_param("i", $prestamoId);
-            $stmtActualizarEstadoPrestamo->execute();
-            $stmtActualizarEstadoPrestamo->close();
         }
 
         $conexion->commit();
