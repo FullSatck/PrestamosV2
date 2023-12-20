@@ -56,6 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
             $stmtFactura->close();
         }
 
+        // Verificar si el monto restante es igual a cero y actualizar el estado del préstamo a "pagado" si es necesario
+        if ($montoRestante == 0) {
+            // Actualizar el estado del préstamo a "pagado"
+            $stmtActualizarEstadoPrestamo = $conexion->prepare("UPDATE prestamos SET Estado = 'pagado' WHERE ID = ?");
+            $stmtActualizarEstadoPrestamo->bind_param("i", $prestamoId);
+            $stmtActualizarEstadoPrestamo->execute();
+            $stmtActualizarEstadoPrestamo->close();
+        }
+
         $conexion->commit();
         $response['success'] = true;
         $response['message'] = "Pagos procesados correctamente.";
