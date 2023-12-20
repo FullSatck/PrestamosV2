@@ -250,7 +250,7 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <?php
-                    $sql_total_clientes = "SELECT COUNT(*) AS TotalClientes FROM clientes";
+                    $sql_total_clientes = "SELECT COUNT(*) AS TotalClientes FROM clientes WHERE ZonaAsignada = 'Puebla'";
                     $resultado_total = $conexion->query($sql_total_clientes);
                     $fila_total = $resultado_total->fetch_assoc();
                     $total_clientes = $fila_total['TotalClientes'];

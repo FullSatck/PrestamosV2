@@ -50,10 +50,10 @@ $stmt->close();
         </div>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Supervisor<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -115,30 +115,30 @@ $stmt->close();
                 </div>
             </a>
 
-            
+
 
             <a href="/resources/views/zonas/20-Puebla/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
-        </div>
+            </a>
 
-        <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
+
+            <a href="/resources/views/zonas/20-Puebla/supervisor/ruta/lista_super.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Enrutada</h4>
                 </div>
             </a>
-
+        </div>
     </div>
 
     <main>
         <h1>Inicio Supervisor</h1>
         <div class="cuadros-container">
-           
-        <?php
+
+            <?php
             function obtenerPrimerID($conexion)
             {
                 $primer_id = 0;
@@ -161,7 +161,7 @@ $stmt->close();
 
             // Obtener el primer ID de cliente de la base de datos
             $primer_id = obtenerPrimerID($conexion);
-            ?> 
+            ?>
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
@@ -176,7 +176,7 @@ $stmt->close();
                     <p>Version beta</p>
                 </div>
             </div>
-            
+
         </div>
     </main>
 
