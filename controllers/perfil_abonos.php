@@ -275,9 +275,9 @@ $stmt_prestamo->close();
                 if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
                     // Si se solicita mostrar todas las filas
                     $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda 
-            FROM facturas f
-            JOIN prestamos p ON f.id_prestamos = p.ID
-            WHERE f.cliente_id = ? AND f.monto_pagado != 0 AND p.estado != 'pagado'";
+                FROM facturas f
+                JOIN prestamos p ON f.id_prestamos = p.ID
+                WHERE f.cliente_id = ? AND p.estado != 'pagado'";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bind_param("i", $id_cliente);
                     $stmt->execute();
@@ -319,14 +319,13 @@ $stmt_prestamo->close();
 
                     $stmt->close();
                 }
-
                 //  TABLA DE VER MAS  
-
                 else {
+                    // Mantén la consulta original sin cambios, mostrará todas las cuotas sin importar su monto.
                     $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda 
-            FROM facturas f
-            JOIN prestamos p ON f.id_prestamos = p.ID
-            WHERE f.cliente_id = ? AND p.estado != 'pagado'";
+                FROM facturas f
+                JOIN prestamos p ON f.id_prestamos = p.ID
+                WHERE f.cliente_id = ? AND p.estado != 'pagado'";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bind_param("i", $id_cliente);
                     $stmt->execute();
@@ -371,6 +370,7 @@ $stmt_prestamo->close();
                 }
                 ?>
             </div>
+
 
             <script>
                 function showMore() {
@@ -489,64 +489,64 @@ $stmt_prestamo->close();
                 <input type="submit" name="action" value="Pagar" class="boton1">
                 <input type="submit" name="action" value="No pago" class="boton2">
                 <input type="submit" name="action" value="Mas tarde" class="boton3">
-               
+
             </form>
 
             <form method="post" action="process_payment.php" id="formPago">
-            <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
+                <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
             </form>
 
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
 
             <script>
-    var cuotaEsperada = <?= json_encode($info_prestamo['Cuota']); ?>;
-    var montoAPagar = <?= json_encode($montoAPagar); ?>;
-    console.log("Cuota esperada:", cuotaEsperada); // Para depuración
-    console.log("Monto a pagar:", montoAPagar); // Para depuración
+                var cuotaEsperada = <?= json_encode($info_prestamo['Cuota']); ?>;
+                var montoAPagar = <?= json_encode($montoAPagar); ?>;
+                console.log("Cuota esperada:", cuotaEsperada); // Para depuración
+                console.log("Monto a pagar:", montoAPagar); // Para depuración
 
-    window.onload = function() {
-        var formPago = document.getElementById('formPago');
-        var campoCuota = document.getElementById('cuota');
-        var campoResta = document.getElementById('campo2');
-        var campoDeuda = document.getElementById('variable');
+                window.onload = function() {
+                    var formPago = document.getElementById('formPago');
+                    var campoCuota = document.getElementById('cuota');
+                    var campoResta = document.getElementById('campo2');
+                    var campoDeuda = document.getElementById('variable');
 
-        campoResta.addEventListener('input', function() {
-            var valorResta = parseFloat(campoResta.value.replace(',', '.'));
-            var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
-            campoResta.style.backgroundColor = valorResta === deudaActual ? 'green' : 'red';
-        });
+                    campoResta.addEventListener('input', function() {
+                        var valorResta = parseFloat(campoResta.value.replace(',', '.'));
+                        var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
+                        campoResta.style.backgroundColor = valorResta === deudaActual ? 'green' : 'red';
+                    });
 
-        formPago.addEventListener('submit', function(event) {
-            // Verificar si la acción es "Pagar"
-            var accion = formPago.querySelector('input[name="action"]:checked').value;
-            if (accion === 'Pagar') {
-                var cuotaIngresada = parseFloat(campoCuota.value.replace(',', '.'));
-                var valorResta = parseFloat(campoResta.value.replace(',', '.'));
-                var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
-                var tolerancia = 0.01;
+                    formPago.addEventListener('submit', function(event) {
+                        // Verificar si la acción es "Pagar"
+                        var accion = formPago.querySelector('input[name="action"]:checked').value;
+                        if (accion === 'Pagar') {
+                            var cuotaIngresada = parseFloat(campoCuota.value.replace(',', '.'));
+                            var valorResta = parseFloat(campoResta.value.replace(',', '.'));
+                            var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
+                            var tolerancia = 0.01;
 
-                if (deudaActual === 0 && valorResta === 0) {
-                    if (Math.abs(cuotaIngresada - montoAPagar) > tolerancia) {
-                        event.preventDefault();
-                        alert('La cuota ingresada debe ser igual al monto total a pagar.');
-                        return;
-                    }
-                } else {
-                    if (Math.abs(cuotaIngresada - cuotaEsperada) > tolerancia) {
-                        event.preventDefault();
-                        alert('La cuota ingresada no es correcta.');
-                        return;
-                    }
-                    if (valorResta !== deudaActual) {
-                        event.preventDefault();
-                        alert('El saldo que resta que se ingresó no es correcto.');
-                        return;
-                    }
-                }
-            }
-        });
-    };
-</script>
+                            if (deudaActual === 0 && valorResta === 0) {
+                                if (Math.abs(cuotaIngresada - montoAPagar) > tolerancia) {
+                                    event.preventDefault();
+                                    alert('La cuota ingresada debe ser igual al monto total a pagar.');
+                                    return;
+                                }
+                            } else {
+                                if (Math.abs(cuotaIngresada - cuotaEsperada) > tolerancia) {
+                                    event.preventDefault();
+                                    alert('La cuota ingresada no es correcta.');
+                                    return;
+                                }
+                                if (valorResta !== deudaActual) {
+                                    event.preventDefault();
+                                    alert('El saldo que resta que se ingresó no es correcto.');
+                                    return;
+                                }
+                            }
+                        }
+                    });
+                };
+            </script>
 
 
 

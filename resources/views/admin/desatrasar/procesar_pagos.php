@@ -33,23 +33,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
         foreach ($montosCuota as $index => $monto) {
             $fecha = $fechasCuota[$index];
 
-            // Verificar si el monto de la cuota es mayor que cero
-            if (!empty($monto)) {
-                // Insertar la cuota en el historial de pagos
-                $stmtPago = $conexion->prepare("INSERT INTO historial_pagos (IDCliente, IDPrestamo, MontoPagado, FechaPago, IDUsuario) VALUES (?, ?, ?, ?, ?)");
-                $stmtPago->bind_param("iidsi", $clienteId, $prestamoId, $monto, $fecha, $usuarioId);
-                $stmtPago->execute();
-                $stmtPago->close();
+            // Insertar la cuota en el historial de pagos sin verificar el monto
+            $stmtPago = $conexion->prepare("INSERT INTO historial_pagos (IDCliente, IDPrestamo, MontoPagado, FechaPago, IDUsuario) VALUES (?, ?, ?, ?, ?)");
+            $stmtPago->bind_param("iidsi", $clienteId, $prestamoId, $monto, $fecha, $usuarioId);
+            $stmtPago->execute();
+            $stmtPago->close();
 
-                // Actualizar el monto restante y la factura solo si el monto de la cuota es mayor que cero
-                $montoRestante -= $monto;
-                $montoDeuda = max($montoRestante, 0);
+            // Actualizar el monto restante y la factura
+            $montoRestante -= $monto;
+            $montoDeuda = max($montoRestante, 0);
 
-                $stmtFactura = $conexion->prepare("INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda, id_prestamos) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmtFactura->bind_param("idssii", $clienteId, $monto, $fecha, $monto, $montoDeuda, $prestamoId);
-                $stmtFactura->execute();
-                $stmtFactura->close();
-            }
+            // Insertar la factura sin verificar el monto
+            $stmtFactura = $conexion->prepare("INSERT INTO facturas (cliente_id, monto, fecha, monto_pagado, monto_deuda, id_prestamos) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmtFactura->bind_param("idssii", $clienteId, $monto, $fecha, $monto, $montoDeuda, $prestamoId);
+            $stmtFactura->execute();
+            $stmtFactura->close();
         }
 
         $stmtActualizarPrestamo = $conexion->prepare("UPDATE prestamos SET MontoAPagar = ? WHERE ID = ?");
@@ -67,6 +65,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
         $conexion->commit();
         $response['success'] = true;
         $response['message'] = "Pagos procesados correctamente.";
+
+        // Redirigir al usuario a otro formulario después del procesamiento exitoso
+        header("Location: /resources/views/admin/desatrasar/agregar_clientes.php");
+        exit();
     } catch (Exception $e) {
         $conexion->rollback();
         $response['message'] = "Error al procesar los pagos: " . $e->getMessage();
@@ -75,12 +77,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['prestamo_id'], $_POST[
     $response['message'] = "Datos POST necesarios no recibidos.";
 }
 
-// Mostrar el mensaje como respuesta JSON
 echo json_encode($response);
-
-// Realizar la redirección después de mostrar el mensaje
-if ($response['success']) {
-    header("Location: /resources/views/admin/desatrasar/agregar_clientes.php");
-    exit();
-}
 ?>

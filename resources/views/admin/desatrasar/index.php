@@ -159,99 +159,104 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                 <div class="modal-body">
                     <p><strong>Cliente:</strong> <span id="modal-cliente"></span></p>
                     <p><strong>Préstamo:</strong> <span id="modal-prestamo"></span></p>
-                    
+
                     <h5>Detalle de las Cuotas:</h5>
                     <ul id="modal-cuotas"></ul>
                     <p><strong>Total de las Cuotas Pagadas:</strong> <span id="modal-total-cuotas"></span></p>
-                    <p><strong>Número de Cuotas a Pagar:</strong> <span id="modal-num-cuotas"></span></p
-                </div>
+                    <p><strong>Número de Cuotas a Pagar:</strong> <span id="modal-num-cuotas"></span></p </div>
 
-                <div class="modal-footer">
-                    <!-- Botón para pagar las cuotas -->
-                    <button type="button" class="btn btn-success" id="botonPagarCuotas" onclick="procesarPagos()">Pagar Cuotas</button>
+                    <div class="modal-footer">
+                        <!-- Botón para pagar las cuotas -->
+                        <button type="button" class="btn btn-success" id="botonPagarCuotas" onclick="procesarPagos()">Pagar Cuotas</button>
 
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        function procesarPagos() {
-            var datosPago = {
-                prestamo_id: $('input[name="prestamo_id"]').val(),
-                cliente_id: $('input[name="cliente_id"]').val(),
-                monto_cuota: $('input[name="monto_cuota[]"]').map(function() {
-                    return $(this).val();
-                }).get(),
-                fecha_cuota: $('input[name="fecha_cuota[]"]').map(function() {
-                    return $(this).val();
-                }).get()
-            };
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script>
 
-            $.ajax({
-                type: "POST",
-                url: "procesar_pagos.php", // Asegúrate de poner la ruta correcta a tu script PHP
-                data: datosPago,
-                success: function(response) {
-                    alert("Pagos procesados correctamente");
-                    $('#myModal').modal('hide');
-                    location.reload(); // Esto recargará la página para reflejar los cambios
-                },
-                error: function() {
-                    alert("Error al procesar el pago");
-                }
+        </script>
+
+
+
+
+        <script>
+            // Agregar un listener para los cambios en las cuotas
+            $(document).on('input', '.cuota-monto', function() {
+                recalcularTotalCuotas();
             });
-        }
-    </script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+            function recalcularTotalCuotas() {
+                let total = 0;
+                $('.cuota-monto').each(function() {
+                    let monto = parseFloat($(this).val().replace(/\D/g, ''));
+                    if (!isNaN(monto)) {
+                        total += monto;
+                    }
+                });
+                $('#total_cuotas').text(total.toLocaleString());
+            }
 
+            // Función para mostrar detalles en el modal
+            function mostrarDetalles() {
+                let cliente = $("#cliente_nombre").val();
+                let prestamo = $("#prestamo_detalle").val();
+                let numCuotas = $("#num_cuotas").val();
 
-    <script>
-        // Agregar un listener para los cambios en las cuotas
-        $(document).on('input', '.cuota-monto', function() {
+                // Obtener los datos de las cuotas
+                let cuotas = [];
+                $(".cuota-group").each(function(index) {
+                    let monto = $(this).find(".cuota-monto").val();
+                    let fecha = $(this).find(".cuota-fecha").val();
+                    cuotas.push("Cuota " + (index + 1) + ": Monto: " + monto + ", Fecha: " + fecha);
+                });
+
+                let totalCuotas = $("#total_cuotas").text();
+
+                // Actualizar el contenido del modal
+                $("#modal-cliente").text(cliente);
+                $("#modal-prestamo").text(prestamo);
+                $("#modal-num-cuotas").text(numCuotas);
+                $("#modal-cuotas").html("<li>" + cuotas.join("</li><li>") + "</li>");
+                $("#modal-total-cuotas").text(totalCuotas);
+            }
+
+            // Llamar a la función de recálculo al cargar la página
             recalcularTotalCuotas();
-        });
 
-        function recalcularTotalCuotas() {
-            let total = 0;
-            $('.cuota-monto').each(function() {
-                let monto = parseFloat($(this).val().replace(/\D/g, ''));
-                if (!isNaN(monto)) {
-                    total += monto;
-                }
-            });
-            $('#total_cuotas').text(total.toLocaleString());
-        }
 
-        // Función para mostrar detalles en el modal
-        function mostrarDetalles() {
-            let cliente = $("#cliente_nombre").val();
-            let prestamo = $("#prestamo_detalle").val();
-            let numCuotas = $("#num_cuotas").val();
+            function procesarPagos() {
+                var datosPago = {
+                    prestamo_id: $('input[name="prestamo_id"]').val(),
+                    cliente_id: $('input[name="cliente_id"]').val(),
+                    monto_cuota: $('input[name="monto_cuota[]"]').map(function() {
+                        return $(this).val();
+                    }).get(),
+                    fecha_cuota: $('input[name="fecha_cuota[]"]').map(function() {
+                        return $(this).val();
+                    }).get()
+                };
 
-            // Obtener los datos de las cuotas
-            let cuotas = [];
-            $(".cuota-group").each(function(index) {
-                let monto = $(this).find(".cuota-monto").val();
-                let fecha = $(this).find(".cuota-fecha").val();
-                cuotas.push("Cuota " + (index + 1) + ": Monto: " + monto + ", Fecha: " + fecha);
-            });
+                $.ajax({
+                    type: "POST",
+                    url: "procesar_pagos.php",
+                    data: datosPago,
+                    success: function(response) {
+                        alert("Pagos procesados correctamente");
+                        $('#myModal').modal('hide');
 
-            let totalCuotas = $("#total_cuotas").text();
-
-            // Actualizar el contenido del modal
-            $("#modal-cliente").text(cliente);
-            $("#modal-prestamo").text(prestamo);
-            $("#modal-num-cuotas").text(numCuotas);
-            $("#modal-cuotas").html("<li>" + cuotas.join("</li><li>") + "</li>");
-            $("#modal-total-cuotas").text(totalCuotas);
-        }
-
-        // Llamar a la función de recálculo al cargar la página
-        recalcularTotalCuotas();
-    </script>
+                        // Redirige a la página deseada
+                        window.location.href = "agregar_clientes.php";
+                    },
+                    error: function() {
+                        alert("Error al procesar el pago");
+                    }
+                });
+            }
+        </script>
 
 
 </body>
