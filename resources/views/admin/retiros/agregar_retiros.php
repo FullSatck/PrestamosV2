@@ -198,10 +198,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </a> 
 
-            <a href="/resources/views/admin/ruta/lista_super.php" class="selected">
+            <a href="/resources/views/admin/ruta/ruta.php">
             <div class="option">
                 <i class="fa-solid fa-map" title=""></i>
-                <h4>Ruta</h4>
+                <h4>Enrutar</h4>
             </div>
         </a>
  
