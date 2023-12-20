@@ -140,7 +140,7 @@ date_default_timezone_set('America/Bogota');
                     $stmt = $conexion->prepare("UPDATE clientes SET Estado = 'Vencido' WHERE ID = ?");
                     $stmt->bind_param("i", $usuario_id); // Asegúrate de tener el ID del cliente
                     $stmt->execute();
-                }
+                } 
 
                 echo "<tr><td>$frecuencia</td><td>$fechaFormato</td></tr>";
                 $numeroFecha++;
