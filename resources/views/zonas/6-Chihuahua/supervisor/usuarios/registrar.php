@@ -120,6 +120,13 @@ $stmt->close();
                     <h4>Gastos</h4>
                 </div>
             </a> 
+
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutada</h4>
+                </div>
+            </a>
         </div>
 
     </div>

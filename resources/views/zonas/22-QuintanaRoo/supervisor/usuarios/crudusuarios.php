@@ -124,6 +124,13 @@ if (isset($_GET['mensaje'])) {
                     <h4>Gastos</h4>
                 </div>
             </a> 
+
+            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/ruta/lista_super.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
         </div>
 
     </div>
