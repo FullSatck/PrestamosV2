@@ -50,18 +50,7 @@ $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
         WHERE c.ID = $id_cliente";
 
 $resultado = $conexion->query($sql);
-
-$_SESSION['alerta'] = 'La acción "No pago" o "Más tarde" ya se ha realizado anteriormente.';
-
-if (isset($_SESSION['alerta'])) {
-    echo "<script>
-            alert('" . $_SESSION['alerta'] . "');
-            window.location.href = 'perfil_abonos.php?id=" . $id_cliente . "';
-          </script>";
-    unset($_SESSION['alerta']);
-    exit(); // Importante para prevenir la ejecución de más código
-}
-
+ 
 
 if ($resultado->num_rows === 1) {
     // Mostrar los detalles del cliente aquí
@@ -467,7 +456,7 @@ $stmt_prestamo->close();
 
             <!-- BOTONES DE PAGO -->
 
-            <?php
+            <?php 
             $sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ? AND estado = 'pendiente' ORDER BY FechaInicio ASC LIMIT 1";
             $stmt_monto_pagar = $conexion->prepare($sql_monto_pagar);
             $stmt_monto_pagar->bind_param("i", $id_cliente);
