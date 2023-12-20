@@ -166,7 +166,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <p>Estado: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
                     <p>Municipio: <strong><?= $fila["CiudadNombre"] ?></strong></p>
                     <p>Colonia: <strong><?= $fila["asentamiento"] ?></strong></p>
-                    <p>Estado de cliente: <strong><?= $fila["ClaseDeCliente"] ?></strong></p>
+                    
                 </div>
             </div>
  
