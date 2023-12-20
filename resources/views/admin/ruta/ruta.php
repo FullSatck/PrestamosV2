@@ -1,20 +1,23 @@
 <?php
-date_default_timezone_set('America/Bogota');
 session_start();
 
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
 
 // Verifica si el usuario está autenticado
-if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
-    exit();
+if (isset($_SESSION["usuario_id"])) {
+    // El usuario está autenticado, puede acceder a esta página
 } else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
+    // El usuario no está autenticado, redirige a la página de inicio de sesión
+    header("Location: ../../../../../../index.php");
+    exit();
+}
 
-    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+
+// Incluye el archivo de conexión
+include("../../../../controllers/conexion.php");
+
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
@@ -23,72 +26,12 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
-    
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-    
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
 
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
 
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-    
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'admin') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-    
-   
-}
 
-  // Incluye tu archivo de conexión a la base de datos
-  include("../../../../controllers/conexion.php");
 
-  // Obtener el nombre de la zona desde la URL
-  if (isset($_GET['zona'])) {
-      $nombreZona = $_GET['zona'];
-  }
-
-  // Verifica si se ha proporcionado una zona válida
-  if (isset($_GET['zona'])) {
-      $nombreZona = $_GET['zona'];
-  } else {
-      // Maneja el caso donde no se proporcionó una zona válida
-      echo "Zona no especificada.";
-  }
-  
-  // Manejar la solicitud POST para actualizar el orden
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      // Obtener el nuevo orden desde la solicitud POST
-      $nuevoOrden = $_POST["nuevoOrden"];
-      
-      // Actualizar el orden en la base de datos (debes adaptar esto a tu estructura)
-      $sqlUpdate = "UPDATE nueva_lista_pagos SET Orden = ? WHERE Zona = ?";
-      $stmt = $conexion->prepare($sqlUpdate);
-      $stmt->bind_param("is", $nuevoOrden, $nombreZona);
-      
-      if ($stmt->execute()) {
-          echo "Nuevo orden actualizado con éxito.";
-      } else {
-          echo "Error al actualizar el nuevo orden: " . $conexion->error;
-      }
-      
-      $stmt->close();
-  }
-  $conexion->close();
-  date_default_timezone_set('America/Bogota');
+// Cierra la conexión a la base de datos
+mysqli_close($conexion);
 ?>
 
 <!DOCTYPE html>
@@ -97,155 +40,230 @@ $stmt->close();
 <html>
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Fechas de Pago</title>
-    <link rel="stylesheet" href="/public/assets/css/ruta.css">
-    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script> 
+    <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <style>
+        /* Agrega estilos específicos si es necesario */
+        #lista-pagos tbody tr {
+            cursor: move;
+        }
+    </style>
 </head>
 
 <body>
-<body id="body">
 
-<header>
-        <div class="icon__menu">
-            <i class="fas fa-bars" id="btn_open"></i>
+    <body id="body">
+
+        <header>
+            <div class="icon__menu">
+                <i class="fas fa-bars" id="btn_open"></i>
+            </div>
+
+            <div class="nombre-usuario">
+                <?php
+                if (isset($_SESSION["nombre_usuario"])) {
+                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+                }
+                ?>
+            </div>
+        </header>
+
+        <div class="menu__side" id="menu_side">
+
+            <div class="name__page">
+                <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+                <h4>Recaudo</h4>
+            </div>
+
+            <div class="options__menu">
+
+                <a href="/controllers/cerrar_sesion.php">
+                    <div class="option">
+                        <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                        <h4>Cerrar Sesion</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/inicio/inicio.php">
+                    <div class="option">
+                        <i class="fa-solid fa-landmark" title="Inicio"></i>
+                        <h4>Inicio</h4>
+                    </div>
+                </a>
+
+                <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
+                    <div class="option">
+                        <i class="fa-solid fa-sack-dollar" title=""></i>
+                        <h4>Saldo Inicial</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                    <div class="option">
+                        <i class="fa-solid fa-users" title=""></i>
+                        <h4>Usuarios</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/usuarios/registrar.php">
+                    <div class="option">
+                        <i class="fa-solid fa-user-plus" title=""></i>
+                        <h4>Registrar Usuario</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/clientes/lista_clientes.php">
+                    <div class="option">
+                        <i class="fa-solid fa-people-group" title=""></i>
+                        <h4>Clientes</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                    <div class="option">
+                        <i class="fa-solid fa-user-tag" title=""></i>
+                        <h4>Registrar Clientes</h4>
+                    </div>
+                </a>
+                <a href="/resources/views/admin/creditos/crudPrestamos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                        <h4>Prestamos</h4>
+                    </div>
+                </a>
+                <a href="/resources/views/admin/cobros/cobros.php">
+                    <div class="option">
+                        <i class="fa-solid fa-arrow-right-to-city" title=""></i>
+                        <h4>Zonas de cobro</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/gastos/gastos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-sack-xmark" title=""></i>
+                        <h4>Gastos</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/ruta/lista_super.php" class="selected">
+                    <div class="option">
+                        <i class="fa-solid fa-map" title=""></i>
+                        <h4>Ruta</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/retiros/retiros.php">
+                    <div class="option">
+                        <i class="fa-solid fa-scale-balanced" title=""></i>
+                        <h4>Retiros</h4>
+                    </div>
+                </a>
+            </div>
         </div>
 
-        <div class="nombre-usuario">
-            <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
-        </div>
-    </header>
+        <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
-    <div class="menu__side" id="menu_side">
+        <main>
+            <h2>Orden de pagos</h2>
 
-        <div class="name__page">
-            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-            <h4>Recaudo</h4>
-        </div>
+            <!-- <button onclick="guardarCambios()">Guardar Cambios</button> -->
 
-        <div class="options__menu">
+            <div id="aviso-guardado" class="aviso">
+                Nuevo orden guardado.
+            </div><br>
 
-            <a href="/controllers/cerrar_sesion.php">
-                <div class="option">
-                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                    <h4>Cerrar Sesion</h4>
-                </div>
-            </a>
+            <div class="table-scroll-container">
+                <table id="lista-pagos">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Fecha de Pago</th>
+                            <th>Enrutar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        include "../../../../controllers/conexion.php";
 
-        <a href="/resources/views/admin/inicio/inicio.php">
-            <div class="option">
-                <i class="fa-solid fa-landmark" title="Inicio"></i>
-                <h4>Inicio</h4>
+                        $fecha_actual = date("Y-m-d");
+
+                        $sql = "SELECT fechas_pago.ID, fechas_pago.FechaPago, clientes.Nombre, clientes.Apellido
+        FROM fechas_pago 
+        INNER JOIN prestamos ON fechas_pago.IDPrestamo = prestamos.ID 
+        INNER JOIN clientes ON prestamos.IDCliente = clientes.ID 
+        WHERE fechas_pago.FechaPago = ? AND prestamos.Estado = 'pendiente'";
+
+
+                        $stmt = $conexion->prepare($sql);
+                        $stmt->bind_param("s", $fecha_actual);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . $row["ID"] . "</td>";
+                                echo "<td>" . $row["Nombre"] . "</td>";
+                                echo "<td>" . $row["Apellido"] . "</td>";
+                                echo "<td>" . $row["FechaPago"] . "</td>";
+                                echo "<td class='drag-handle'>|||</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='5'>No hay pagos pendientes para hoy.</td></tr>";
+                        }
+
+                        $stmt->close();
+                        $conexion->close();
+                        ?>
+                    </tbody>
+                </table>
             </div>
-        </a>
 
-        <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-            <div class="option">
-                <i class="fa-solid fa-sack-dollar" title=""></i>
-                <h4>Saldo Inicial</h4>
-            </div>
-        </a>
+        </main>
 
-        <a href="/resources/views/admin/usuarios/crudusuarios.php">
-            <div class="option">
-                <i class="fa-solid fa-users" title=""></i>
-                <h4>Usuarios</h4>
-            </div>
-        </a>
 
-        <a href="/resources/views/admin/usuarios/registrar.php">
-            <div class="option">
-                <i class="fa-solid fa-user-plus" title=""></i>
-                <h4>Registrar Usuario</h4>
-            </div>
-        </a>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js">
+        </script>
 
-        <a href="/resources/views/admin/clientes/lista_clientes.php">
-            <div class="option">
-                <i class="fa-solid fa-people-group" title=""></i>
-                <h4>Clientes</h4>
-            </div>
-        </a>
+        <script>
+            $(document).ready(function() {
+                const listaPagos = $("#lista-pagos tbody");
 
-        <a href="/resources/views/admin/clientes/agregar_clientes.php">
-            <div class="option">
-                <i class="fa-solid fa-user-tag" title=""></i>
-                <h4>Registrar Clientes</h4>
-            </div>
-        </a>
-        <a href="/resources/views/admin/creditos/crudPrestamos.php">
-            <div class="option">
-                <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                <h4>Prestamos</h4>
-            </div>
-        </a> 
-        <a href="/resources/views/admin/cobros/cobros.php">
-            <div class="option">
-                <i class="fa-solid fa-arrow-right-to-city" title=""></i>
-                <h4>Zonas de cobro</h4>
-            </div>
-        </a>
+                // Recuperar el orden almacenado en el localStorage, si existe
+                const savedOrder = localStorage.getItem('sortableTableOrder');
+                if (savedOrder) {
+                    listaPagos.html(savedOrder);
+                }
 
-        <a href="/resources/views/admin/gastos/gastos.php">
-            <div class="option">
-                <i class="fa-solid fa-sack-xmark" title=""></i>
-                <h4>Gastos</h4>
-            </div>
-        </a>
+                // Habilitar la función de arrastrar en la tabla
+                listaPagos.sortable({
+                    helper: 'clone',
+                    axis: 'y',
+                    opacity: 0.5,
+                    update: function(event, ui) {
+                        guardarCambios();
+                    }
+                });
+            });
 
-        <a href="/resources/views/admin/ruta/lista_super.php" class="selected">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Ruta</h4>
-            </div>
-        </a>
- 
-        <a href="/resources/views/admin/retiros/retiros.php">
-            <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
-                <h4>Retiros</h4>
-            </div>
-        </a>
-    </div>
-</div>
+            function guardarCambios() {
+                const currentOrder = $('#lista-pagos tbody').html();
+                localStorage.setItem('sortableTableOrder', currentOrder);
 
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
-    <main>
-        <div id="fechasPagoContainer">
-            <!-- Aquí se mostrará la lista de fechas de pago en tiempo real -->
-        </div>
-    </main>
-
-   
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-    // Función para cargar y mostrar las fechas de pago en tiempo real
-    function cargarFechasDePago() {
-        $.ajax({
-            url: 'cargar_fechas_pago.php?zona=<?php echo $nombreZona; ?>',
-            method: 'GET',
-            success: function(data) {
-                $('#fechasPagoContainer').html(data);
+                // Mostrar el mensaje de confirmación
+                $('#aviso-guardado').fadeIn().delay(3000).fadeOut(); // Mostrar por 2 segundos y luego ocultar
             }
-        });
-    }
-
-    // Cargar las fechas de pago al cargar la página
-    cargarFechasDePago();
-
-    // Actualizar las fechas de pago cada 30 segundos
-    setInterval(cargarFechasDePago, 30000); // 30,000 milisegundos = 30 segundos
-    </script>
-   <script src="/public/assets/js/MenuLate.js"></script>
-</body>
+        </script>
+        <script src="/public/assets/js/MenuLate.js"></script>
+    </body>
 
 </html>
