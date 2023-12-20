@@ -164,6 +164,7 @@ mysqli_close($conexion);
                 </a>
             </div>
         </div>
+        <script src="/public/assets/js/MenuLate.js"></script>
 
         <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
@@ -263,7 +264,7 @@ mysqli_close($conexion);
                 $('#aviso-guardado').fadeIn().delay(3000).fadeOut(); // Mostrar por 2 segundos y luego ocultar
             }
         </script>
-        <script src="/public/assets/js/MenuLate.js"></script>
+       
     </body>
 
 </html>

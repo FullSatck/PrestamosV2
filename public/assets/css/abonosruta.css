@@ -316,3 +316,25 @@ th {
         font-size: 14px;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .cuadros-container {
+        flex-direction: column;
+    }
+
+    .cuadro {
+        width: 100%;
+        max-width: 100%;
+    }
+   
+        .body_move{
+            margin-left: 0px;
+        }
+    
+        .menu__side_move{
+            width: 80px;
+            left: -80px;
+        }
+    
+    
+}
