@@ -3,7 +3,7 @@ date_default_timezone_set('America/Bogota');
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -15,19 +15,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -42,15 +42,13 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 
 
@@ -78,10 +76,10 @@ $stmt->close();
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -147,7 +145,7 @@ $stmt->close();
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -161,8 +159,14 @@ $stmt->close();
                     <h4>Gastos</h4>
                 </div>
             </a>
- 
-            
+
+            <a href="/resources/views/admin/ruta/lista_super.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -182,39 +186,39 @@ $stmt->close();
 
     <main>
         <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['guardar_saldo'])) {
-        // Obtén el monto del formulario
-        $monto = isset($_POST['monto']) ? floatval($_POST['monto']) : 0; // Asegúrate de tener un valor válido
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['guardar_saldo'])) {
+            // Obtén el monto del formulario
+            $monto = isset($_POST['monto']) ? floatval($_POST['monto']) : 0; // Asegúrate de tener un valor válido
 
-        // Realiza la validación del monto si es necesario
+            // Realiza la validación del monto si es necesario
 
-        // Incluye el archivo de conexión a la base de datos
-        include("../../../../controllers/conexion.php");
+            // Incluye el archivo de conexión a la base de datos
+            include("../../../../controllers/conexion.php");
 
-        // Supongamos que el ID de administrador es 1 (reemplaza con el valor correcto)
-        $idAdmin = 1;
+            // Supongamos que el ID de administrador es 1 (reemplaza con el valor correcto)
+            $idAdmin = 1;
 
-        // Inserta el saldo inicial en la tabla saldo_admin en ambas columnas
-        $sql = "INSERT INTO saldo_admin (IDUsuario, Monto, Monto_Neto) VALUES (?, ?, ?)";
-        $stmt = $conexion->prepare($sql);
+            // Inserta el saldo inicial en la tabla saldo_admin en ambas columnas
+            $sql = "INSERT INTO saldo_admin (IDUsuario, Monto, Monto_Neto) VALUES (?, ?, ?)";
+            $stmt = $conexion->prepare($sql);
 
-        if ($stmt) {
-            $stmt->bind_param("idd", $idAdmin, $monto, $monto);
+            if ($stmt) {
+                $stmt->bind_param("idd", $idAdmin, $monto, $monto);
 
-            if ($stmt->execute()) {
-                echo '<p class="success-message">Saldo inicial guardado con éxito.</p>';
+                if ($stmt->execute()) {
+                    echo '<p class="success-message">Saldo inicial guardado con éxito.</p>';
+                } else {
+                    echo '<p class="error-message">Error al guardar el saldo inicial: ' . $stmt->error . '</p>';
+                }
+
+                $stmt->close();
             } else {
-                echo '<p class="error-message">Error al guardar el saldo inicial: ' . $stmt->error . '</p>';
+                echo "Error de consulta preparada: " . $conexion->error;
             }
-            
-            $stmt->close();
-        } else {
-            echo "Error de consulta preparada: " . $conexion->error;
-        }
 
-        $conexion->close();
-    }
-    ?>
+            $conexion->close();
+        }
+        ?>
         <div class="container">
             <h2>Asignar Saldo Inicial al Administrador</h2>
             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">

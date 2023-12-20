@@ -174,6 +174,13 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
+            <a href="/resources/views/admin/ruta/lista_super.php" class="selected">
+            <div class="option">
+                <i class="fa-solid fa-map" title=""></i>
+                <h4>Ruta</h4>
+            </div>
+        </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>

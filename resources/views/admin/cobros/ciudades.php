@@ -17,7 +17,7 @@ $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
 $resultado = $stmt->get_result();
 if ($fila = $resultado->fetch_assoc()) {
-$_SESSION["nombre_usuario"] = $fila["nombre"];
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
 
@@ -41,17 +41,17 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -117,7 +117,7 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -130,8 +130,15 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
- 
+            </a>
+
+            <a href="/resources/views/admin/ruta/lista_super.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -151,7 +158,7 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
         <?php
         if ($idZona) {
             echo "<div><p>Mostrando ciudades para la Zona ID: $idZona</p></div>";
-            
+
             // Realizar la consulta SQL para obtener las ciudades de la zona especificada
             $sql = "SELECT * FROM ciudades WHERE IDZona = ?";
             if ($stmt = $conexion->prepare($sql)) {
@@ -161,12 +168,12 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
 
                 echo "<table>";
                 echo "<tr><th>ID</th><th>Ciudad</th><th>CD Postal</th></tr>";
-                
+
                 // Verifica si hay ciudades en la base de datos para esta zona
                 if ($resultado->num_rows > 0) {
                     while ($row = $resultado->fetch_assoc()) {
                         echo "<tr 'zona-row'>";
-                        echo "<td>".'REC-10' . $row['ID'] . "</td>";
+                        echo "<td>" . 'REC-10' . $row['ID'] . "</td>";
                         echo "<td>" . $row['Nombre'] . "</td>";
                         echo "<td>" . $row['codigoPostal'] . "</td>";
                         echo "</tr>";
@@ -186,19 +193,19 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
     </main>
 
     <script>
-    document.getElementById('search-input').addEventListener('keyup', function(event) {
-        var searchQuery = event.target.value.toLowerCase();
-        var rows = document.querySelectorAll('table tr');
+        document.getElementById('search-input').addEventListener('keyup', function(event) {
+            var searchQuery = event.target.value.toLowerCase();
+            var rows = document.querySelectorAll('table tr');
 
-        rows.forEach(function(row) {
-            var text = row.textContent.toLowerCase();
-            if (text.includes(searchQuery)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            rows.forEach(function(row) {
+                var text = row.textContent.toLowerCase();
+                if (text.includes(searchQuery)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
-    });
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
 </body>

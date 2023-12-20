@@ -5,7 +5,7 @@ session_start();
 
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -17,19 +17,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -44,15 +44,13 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
@@ -66,12 +64,12 @@ include("../../../../controllers/conexion.php");
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada, c.Estado FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID WHERE c.Estado = 1 ORDER BY c.ID DESC";
 $resultado = $conexion->query($sql);
-?> 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,17 +81,17 @@ $resultado = $conexion->query($sql);
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -159,7 +157,7 @@ $resultado = $conexion->query($sql);
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -172,8 +170,15 @@ $resultado = $conexion->query($sql);
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
-            
+            </a>
+
+            <a href="/resources/views/admin/ruta/lista_super.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -194,7 +199,7 @@ $resultado = $conexion->query($sql);
     <main>
         <h1>Clientes Activados</h1>
 
-        
+
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
@@ -202,75 +207,73 @@ $resultado = $conexion->query($sql);
         </div>
 
         <?php if ($resultado->num_rows > 0) { ?>
-        <div class="table-scroll-container"> 
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th> 
-                    <th>Apellido</th>
-                    <th>Domicilio</th>
-                    <th>Teléfono</th> 
-                    <th>Moneda Preferida</th>
-                    <th>Zona Asignada</th>
-                    <th>Estado</th>
-                    <th>Des/Act</th>
-                    <th>Perfil</th>
-                    <th>Pagos</th>
-                </tr>
-                <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <tr>
-                    <td><?= "REC 100" .$fila["ID"] ?></td>
-                    <td><?= $fila["Nombre"] ?></td>
-                    <td><?= $fila["Apellido"] ?></td>
-                    <td><?= $fila["Domicilio"] ?></td>
-                    <td><?= $fila["Telefono"] ?></td> 
-                    <td><?= $fila["Moneda"] ?></td>
-                    <td><?= $fila["ZonaAsignada"] ?></td>
-                    <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td>
-                    <td>
-                        <a href="cambiarEstadoCliente.php?id=<?= $fila["ID"] ?>&estado=<?= $fila["Estado"] ?>">
-                            <i class="fas <?= $fila["Estado"] == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
-                            <?= $fila["Estado"] == 1 ? 'Desactivar' : 'Activar' ?>
-                        </a>
-                    </td>
-                    <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                    <td><a
-                            href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                    </td>
-                </tr>
-                <?php } ?>
-            </table>
+            <div class="table-scroll-container">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Domicilio</th>
+                        <th>Teléfono</th>
+                        <th>Moneda Preferida</th>
+                        <th>Zona Asignada</th>
+                        <th>Estado</th>
+                        <th>Des/Act</th>
+                        <th>Perfil</th>
+                        <th>Pagos</th>
+                    </tr>
+                    <?php while ($fila = $resultado->fetch_assoc()) { ?>
+                        <tr>
+                            <td><?= "REC 100" . $fila["ID"] ?></td>
+                            <td><?= $fila["Nombre"] ?></td>
+                            <td><?= $fila["Apellido"] ?></td>
+                            <td><?= $fila["Domicilio"] ?></td>
+                            <td><?= $fila["Telefono"] ?></td>
+                            <td><?= $fila["Moneda"] ?></td>
+                            <td><?= $fila["ZonaAsignada"] ?></td>
+                            <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td>
+                            <td>
+                                <a href="cambiarEstadoCliente.php?id=<?= $fila["ID"] ?>&estado=<?= $fila["Estado"] ?>">
+                                    <i class="fas <?= $fila["Estado"] == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
+                                    <?= $fila["Estado"] == 1 ? 'Desactivar' : 'Activar' ?>
+                                </a>
+                            </td>
+                            <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
+                            <td><a href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </table>
             <?php } else { ?>
-            <p>No se encontraron clientes en la base de datos.</p>
+                <p>No se encontraron clientes en la base de datos.</p>
             <?php } ?>
-        </div>
+            </div>
     </main>
 
     <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
+        // JavaScript para la búsqueda en tiempo real
+        const searchInput = document.getElementById('search-input');
+        const table = document.querySelector('table');
+        const rows = table.querySelectorAll('tbody tr');
 
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.toLowerCase();
 
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
+            rows.forEach((row) => {
+                const rowData = Array.from(row.children)
+                    .map((cell) => cell.textContent.toLowerCase())
+                    .join('');
 
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+                if (rowData.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
-    });
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
 
 </body>

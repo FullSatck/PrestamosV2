@@ -5,7 +5,7 @@ session_start();
 
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -17,19 +17,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -44,15 +44,13 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
@@ -72,17 +70,17 @@ $stmt->close();
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -148,7 +146,7 @@ $stmt->close();
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -161,8 +159,15 @@ $stmt->close();
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
- 
+            </a>
+
+            <a href="/resources/views/admin/ruta/lista_super.php" class="selected">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -181,7 +186,7 @@ $stmt->close();
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-        
+
         <h1 class="text-center">Préstamos Desactivados</h1>
 
         <div class="container-fluid">
@@ -218,36 +223,34 @@ $stmt->close();
                                 </thead>
                                 <tbody>
                                     <?php
-                            include("../../../../controllers/conexion.php");  
-                            $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 0");
-                            while ($datos = $sql->fetch_object()) { ?>
-                                    <tr>
-                                        <td><?= "10" . $datos->ID ?></td>
-                                        <td><?= $datos->NombreCliente ?></td>
-                                        <td><?= number_format($datos->Monto, 0, '.', '.') ?></td>
-                                        <td><?= number_format($datos->TasaInteres, 0, '.', '.')."%" ?></td>
-                                        <td><?= $datos->Plazo ?></td>
-                                        <td><?= $datos->MonedaID ?></td>
-                                        <td class="estado"><?= $datos->Estado ?></td>
-                                        <td><?= $datos->Zona ?></td>
-                                        <td><?= number_format($datos->MontoAPagar, 0, '.', '.') ?></td>
-                                        <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
-                                        <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
-                                        <td class="estado"><?= $datos->EstadoP == 1 ? 'Activado' : 'Desactivado' ?></td>
+                                    include("../../../../controllers/conexion.php");
+                                    $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 0");
+                                    while ($datos = $sql->fetch_object()) { ?>
+                                        <tr>
+                                            <td><?= "10" . $datos->ID ?></td>
+                                            <td><?= $datos->NombreCliente ?></td>
+                                            <td><?= number_format($datos->Monto, 0, '.', '.') ?></td>
+                                            <td><?= number_format($datos->TasaInteres, 0, '.', '.') . "%" ?></td>
+                                            <td><?= $datos->Plazo ?></td>
+                                            <td><?= $datos->MonedaID ?></td>
+                                            <td class="estado"><?= $datos->Estado ?></td>
+                                            <td><?= $datos->Zona ?></td>
+                                            <td><?= number_format($datos->MontoAPagar, 0, '.', '.') ?></td>
+                                            <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
+                                            <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
+                                            <td class="estado"><?= $datos->EstadoP == 1 ? 'Activado' : 'Desactivado' ?></td>
 
-                                        <td>
-                                            <a
-                                                href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->EstadoP ?>">
-                                                <i
-                                                    class="fas <?= $datos->EstadoP == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
-                                                <?= $datos->EstadoP == 1 ? ' Desactivar' : ' Activar' ?>
-                                            </a>
-                                        </td>
+                                            <td>
+                                                <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->EstadoP ?>">
+                                                    <i class="fas <?= $datos->EstadoP == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
+                                                    <?= $datos->EstadoP == 1 ? ' Desactivar' : ' Activar' ?>
+                                                </a>
+                                            </td>
 
-                                        <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>">
-                                                <ion-icon name="help-circle-outline"></ion-icon>
-                                            </a></td>
-                                    </tr>
+                                            <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>">
+                                                    <ion-icon name="help-circle-outline"></ion-icon>
+                                                </a></td>
+                                        </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
@@ -259,21 +262,21 @@ $stmt->close();
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#search-input').on('input', function() {
-        var searchTerm = $(this).val().toLowerCase();
-        $('tbody tr').each(function() {
-            var rowText = $(this).text().toLowerCase();
-            if (rowText.indexOf(searchTerm) !== -1) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
+    <script>
+        $(document).ready(function() {
+            $('#search-input').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('tbody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.indexOf(searchTerm) !== -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
         });
-    });
-});
-</script>
+    </script>
 
     <script src="/public/assets/js/MenuLate.js"></script>
 
