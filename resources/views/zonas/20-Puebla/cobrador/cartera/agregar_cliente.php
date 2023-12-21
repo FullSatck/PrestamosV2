@@ -28,7 +28,7 @@ $cartera_id_actual = isset($_GET['id']) ? $_GET['id'] : null;
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
         FROM clientes c
         LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
-        WHERE c.ZonaAsignada = 'Chihuahua' AND c.cartera_id IS NULL";
+        WHERE c.ZonaAsignada = 'Puebla' AND c.cartera_id IS NULL";
 
 $resultado = $conexion->query($sql);
 
@@ -88,7 +88,7 @@ date_default_timezone_set('America/Bogota');
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
-        <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/clientes_por_cartera.php?id=<?= $cartera_id_actual ?>" class="back-link1">
+        <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/clientes_por_cartera.php?id=<?= $cartera_id_actual ?>" class="back-link1">
             Volver
         </a>
 
@@ -118,7 +118,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -127,42 +127,42 @@ date_default_timezone_set('America/Bogota');
 
 
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
                     <h4>Ruta</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="selected">
+            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php" class="selected">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>
