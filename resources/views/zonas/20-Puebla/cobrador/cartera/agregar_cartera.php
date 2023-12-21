@@ -10,14 +10,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-    $stmt_nombre = $conexion->prepare($sql_nombre);
-    $stmt_nombre->bind_param("i", $usuario_id);
-    $stmt_nombre->execute();
-    $resultado_nombre = $stmt_nombre->get_result();
-    if ($fila_nombre = $resultado_nombre->fetch_assoc()) {
-        $_SESSION["nombre_usuario"] = $fila_nombre["nombre"];
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
     }
-    $stmt_nombre->close();
+    $stmt->close();
 
     // Obtener los datos del formulario
     $nombre = $_POST["nombre"];
@@ -27,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Preparar la consulta para insertar una nueva cartera
     $stmt = $conexion->prepare("INSERT INTO carteras (nombre, zona, ciudad, asentamiento) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("siii", $nombre, $idZona, $idCiudad, $asentamiento);
+    $stmt->bind_param("siis", $nombre, $idZona, $idCiudad, $asentamiento);
 
     // Ejecutar la consulta
     if ($stmt->execute()) {
@@ -35,15 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: lista_cartera.php");
         exit();
     } else {
-        echo "Error al agregar la cartera: " . $conexion->error;
+        echo "Error al agregar la cartera: " . $stmt->error;
     }
 
     $stmt->close();
 }
 ?>
 
-<!-- Resto del código HTML y JavaScript -->
-
+<!-- Resto del código HTML -->
 
 
 <head>
@@ -149,54 +149,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
         <main class="main2">
-    <h2 class="h11">Agregar Nuevo Cobro</h2>
+            <h2 class="h11">Agregar Nuevo Cobro</h2>
 
-    <form method="post" action="agregar_cartera.php">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre"><br><br>
+            <form method="post" action="agregar_cartera.php">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre"><br><br>
 
-        <label for="zona">Estado:</label>
-        <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
-            <?php
-            // Incluye el archivo de conexión a la base de datos
-            include("../../../../../../controllers/conexion.php");
-            // Consulta SQL para obtener todas las zonas
-            $consultaZonas = "SELECT iD, nombre FROM zonas";
-            $resultZonas = mysqli_query($conexion, $consultaZonas);
-            // Genera las opciones del menú desplegable para Zona
-            while ($row = mysqli_fetch_assoc($resultZonas)) {
-                echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
-            }
-            ?>
-        </select><br><br>
+                <label for="zona">Estado:</label>
+                <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
+                    <?php
+                     require_once '../../../../../../controllers/conexion.php';
+                    // Consulta SQL para obtener las zonas
+                    $consultaZonas = "SELECT iD, nombre FROM zonas WHERE iD = 20";
+                    $resultZonas = mysqli_query($conexion, $consultaZonas);
+                    // Genera las opciones del menú desplegable para Zona
+                    while ($row = mysqli_fetch_assoc($resultZonas)) {
+                        echo '<option value="' . $row['iD'] . '">' . $row['nombre'] . '</option>';
+                    }
+                    ?>
+                </select><br><br>
 
-        <label for="ciudad">Ciudad:</label>
-        <select id="ciudad" name="ciudad" required>
-            <?php
-            // Consulta SQL para obtener todas las ciudades
-            $consultaCiudades = "SELECT ID, Nombre FROM ciudades";
-            $resultCiudades = mysqli_query($conexion, $consultaCiudades);
+                <label for="ciudad">Ciudad:</label>
+                <select id="ciudad" name="ciudad" required>
+                
+                    <?php
+                     require_once '../../../../../../controllers/conexion.php';
+                    // Consulta SQL para obtener las ciudades de la zona 20
+                    $consultaCiudades = "SELECT ID, Nombre FROM ciudades WHERE IDZona = 20";
+                    $resultCiudades = mysqli_query($conexion, $consultaCiudades);
+                    // Genera las opciones del menú desplegable para Ciudad
+                    while ($rowCiudad = mysqli_fetch_assoc($resultCiudades)) {
+                        echo '<option value="' . $rowCiudad['ID'] . '">' . $rowCiudad['Nombre'] . '</option>';
+                    }
+                    ?>
+                </select><br><br>
 
-            // Genera las opciones del menú desplegable para Ciudad
-            while ($rowCiudad = mysqli_fetch_assoc($resultCiudades)) {
-                echo '<option value="' . $rowCiudad['ID'] . '">' . $rowCiudad['Nombre'] . '</option>';
-            }
-            ?>
-        </select><br><br>
+                <label for="asentamiento">Asentamiento:</label>
+                <input type="text" id="asentamiento" name="asentamiento"><br><br>
 
-        <label for="asentamiento">Asentamiento:</label>
-        <input type="text" id="asentamiento" name="asentamiento" required><br><br>
-
-        <input type="submit" value="Agregar">
-    </form>
-</main>
-
-
-
+                <input type="submit" value="Agregar">
+            </form>
+        </main>
 
         <script src="/public/assets/js/MenuLate.js"></script>
     </body>
 
     </html>
-
- 
