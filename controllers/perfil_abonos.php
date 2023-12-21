@@ -50,6 +50,7 @@ $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
         WHERE c.ID = $id_cliente";
 
 $resultado = $conexion->query($sql);
+ 
 
 if ($resultado->num_rows === 1) {
     // Mostrar los detalles del cliente aquí
@@ -455,7 +456,7 @@ $stmt_prestamo->close();
 
             <!-- BOTONES DE PAGO -->
 
-            <?php
+            <?php 
             $sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ? AND estado = 'pendiente' ORDER BY FechaInicio ASC LIMIT 1";
             $stmt_monto_pagar = $conexion->prepare($sql_monto_pagar);
             $stmt_monto_pagar->bind_param("i", $id_cliente);
@@ -487,8 +488,8 @@ $stmt_prestamo->close();
 
                 <!-- Botones para las acciones -->
                 <input type="submit" name="action" value="Pagar" class="boton1">
-                <input type="submit" name="action" value="No pago" class="boton2">
-                <input type="submit" name="action" value="Mas tarde" class="boton3">
+                <input type="submit" name="action" value="No pago" class="boton2" id="noPago">
+                <input type="submit" name="action" value="Mas tarde" class="boton3" id="masTarde">
 
             </form>
 
@@ -497,6 +498,7 @@ $stmt_prestamo->close();
             </form>
 
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+
 
             <script>
                 var cuotaEsperada = <?= json_encode($info_prestamo['Cuota']); ?>;
