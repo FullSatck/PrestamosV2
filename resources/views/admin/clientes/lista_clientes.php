@@ -173,11 +173,11 @@ $resultado = $conexion->query($sql);
             </a>
 
             <a href="/resources/views/admin/ruta/ruta.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Enrutar</h4>
-            </div>
-        </a>
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -221,6 +221,8 @@ $resultado = $conexion->query($sql);
                         <th>Des/Act</th>
                         <th>Perfil</th>
                         <th>Pagos</th>
+                        <th>Prestamo Atrasado </th>
+
                     </tr>
                     <?php while ($fila = $resultado->fetch_assoc()) { ?>
                         <tr>
@@ -241,8 +243,16 @@ $resultado = $conexion->query($sql);
                             <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                             <td><a href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
                             </td>
-                        </tr>
-                    <?php } ?>
+                            <td>
+                                <a href="/resources/views/admin/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    <span>Hacer Préstamo</span>
+                                </a>
+
+
+                            </td>
+
+                        <?php } ?>
                 </table>
             <?php } else { ?>
                 <p>No se encontraron clientes en la base de datos.</p>
