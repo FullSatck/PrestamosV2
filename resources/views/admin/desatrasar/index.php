@@ -65,7 +65,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     </header>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registrar Pagos Retroactivos</h2>
-
+       
         <?php
         include '../../../../controllers/conexion.php';
         $id_cliente_url = isset($_GET['id_cliente']) ? $_GET['id_cliente'] : null;

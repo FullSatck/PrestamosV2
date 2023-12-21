@@ -75,11 +75,11 @@ button:hover {
     color: blue;
     max-width: 200px;
     word-wrap: break-word;
-  }
-  
-  .nombre-usuario span {
+}
+
+.nombre-usuario span {
     color: grey;
-  }
+}
 
 .menu__side {
     width: 80px;
@@ -416,6 +416,129 @@ h1 {
     /* Tamaño de fuente en el pie de página */
 }
 
+/* Estilo para los td con enlaces e íconos */
+.icon-td {
+    text-align: center;
+    /* Centra el contenido horizontalmente dentro del td */
+    padding: 5px;
+    /* Añade un poco de espacio alrededor del contenido */
+    vertical-align: middle;
+    /* Centra verticalmente el contenido */
+}
+
+.icon-td a {
+    text-decoration: none;
+    /* Quita la subrayado del enlace */
+    color: #f00;
+    /* Color rojo para los íconos (personalizable) */
+    font-size: 18px;
+    /* Tamaño de los íconos (ajústalo según tus preferencias) */
+    transition: color 0.3s ease-in-out;
+    /* Transición suave del color al pasar el mouse */
+}
+
+.icon-td a:hover {
+    color: #d00;
+    /* Cambia el color al pasar el mouse por encima del ícono */
+}
+
+/* MODAL */
+
+
+.modal-custom {
+    display: none; /* Oculto inicialmente */
+    position: fixed; /* Fijo en la pantalla */
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Permite desplazamiento si es necesario */
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semitransparente */
+    align-items: center; /* Centrado vertical */
+    justify-content: center; /* Centrado horizontal */
+}
+
+.modal-visible {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 50%; /* Ajusta según tus necesidades */
+    max-width: 500px;
+}
+
+/* Resto del CSS... */
+
+/* Botón de Cerrar */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #222;
+}
+
+/* Título del Modal */
+.modal-content h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Botones del Modal */
+.modal-content button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+/* Botón de Confirmar */
+#confirmDelete {
+    background-color: #d9534f;
+    color: white;
+}
+
+#confirmDelete:hover {
+    background-color: #c9302c;
+}
+
+/* Botón de Cancelar */
+#cancelDelete {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+#cancelDelete:hover {
+    background-color: #e0e0e0;
+}
+
+/* Pequeña animación al abrir */
+@keyframes modalOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-custom .modal-content {
+    animation: modalOpen 0.3s ease;
+}
+
 @media screen and (max-width: 600px) {
     .cuadros-container {
         flex-direction: column;
@@ -434,6 +557,11 @@ h1 {
         width: 80px;
         left: -80px;
     }
+    .modal-content {
+        width: 95%; /* Más ancho en pantallas pequeñas */
+        padding: 10px; /* Menos padding en pantallas pequeñas */
+    }
+
 
 
 }

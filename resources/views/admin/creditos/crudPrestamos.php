@@ -53,6 +53,11 @@ if (!isset($_SESSION["usuario_id"])) {
     }
 }
 
+// mesaje de boorado 
+if (isset($_SESSION["mensaje_borrado"])) {
+    echo "<p id='mensaje-exito' class='mensaje-exito'>" . $_SESSION["mensaje_borrado"] . "</p>";
+    unset($_SESSION["mensaje_borrado"]);
+}
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 <!DOCTYPE html>
@@ -63,16 +68,16 @@ if (!isset($_SESSION["usuario_id"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Prestamos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
 
+    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/public/assets/css/crudpresta.css">
-    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
 <body id="body">
@@ -91,102 +96,7 @@ if (!isset($_SESSION["usuario_id"])) {
         </div>
     </header>
 
-    <div class="menu__side" id="menu_side">
 
-        <div class="name__page">
-            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-            <h4>Recaudo</h4>
-        </div>
-
-        <div class="options__menu">
-
-            <a href="/controllers/cerrar_sesion.php">
-                <div class="option">
-                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                    <h4>Cerrar Sesion</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/inicio/inicio.php">
-                <div class="option">
-                    <i class="fa-solid fa-landmark" title="Inicio"></i>
-                    <h4>Inicio</h4>
-                </div>
-            </a>
-
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/usuarios/crudusuarios.php">
-                <div class="option">
-                    <i class="fa-solid fa-users" title=""></i>
-                    <h4>Usuarios</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/usuarios/registrar.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-plus" title=""></i>
-                    <h4>Registrar Usuario</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/clientes/lista_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-people-group" title=""></i>
-                    <h4>Clientes</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/clientes/agregar_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-tag" title=""></i>
-                    <h4>Registrar Clientes</h4>
-                </div>
-            </a>
-            <a href="/resources/views/admin/creditos/crudPrestamos.php" class="selected">
-                <div class="option">
-                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                    <h4>Prestamos</h4>
-                </div>
-            </a>
-            <a href="/resources/views/admin/cobros/cobros.php">
-                <div class="option">
-                    <i class="fa-solid fa-arrow-right-to-city" title=""></i>
-                    <h4>Zonas de cobro</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/gastos/gastos.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
-                    <h4>Gastos</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/admin/ruta/ruta.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Enrutar</h4>
-            </div>
-        </a>
-
-            <a href="/resources/views/admin/retiros/retiros.php">
-                <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
-                    <h4>Retiros</h4>
-                </div>
-            </a>
-
-
-
-        </div>
-
-    </div>
 
 
 
@@ -202,7 +112,102 @@ if (!isset($_SESSION["usuario_id"])) {
             echo "<p class='mensaje $claseMensaje'>" . $_GET['mensaje'] . "</p>";
         }
         ?>
+        <div class="menu__side" id="menu_side">
 
+            <div class="name__page">
+                <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+                <h4>Recaudo</h4>
+            </div>
+
+            <div class="options__menu">
+
+                <a href="/controllers/cerrar_sesion.php">
+                    <div class="option">
+                        <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                        <h4>Cerrar Sesion</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/inicio/inicio.php">
+                    <div class="option">
+                        <i class="fa-solid fa-landmark" title="Inicio"></i>
+                        <h4>Inicio</h4>
+                    </div>
+                </a>
+
+                <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
+                    <div class="option">
+                        <i class="fa-solid fa-sack-dollar" title=""></i>
+                        <h4>Saldo Inicial</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/usuarios/crudusuarios.php">
+                    <div class="option">
+                        <i class="fa-solid fa-users" title=""></i>
+                        <h4>Usuarios</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/usuarios/registrar.php">
+                    <div class="option">
+                        <i class="fa-solid fa-user-plus" title=""></i>
+                        <h4>Registrar Usuario</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/clientes/lista_clientes.php">
+                    <div class="option">
+                        <i class="fa-solid fa-people-group" title=""></i>
+                        <h4>Clientes</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                    <div class="option">
+                        <i class="fa-solid fa-user-tag" title=""></i>
+                        <h4>Registrar Clientes</h4>
+                    </div>
+                </a>
+                <a href="/resources/views/admin/creditos/crudPrestamos.php" class="selected">
+                    <div class="option">
+                        <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                        <h4>Prestamos</h4>
+                    </div>
+                </a>
+                <a href="/resources/views/admin/cobros/cobros.php">
+                    <div class="option">
+                        <i class="fa-solid fa-arrow-right-to-city" title=""></i>
+                        <h4>Zonas de cobro</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/gastos/gastos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-sack-xmark" title=""></i>
+                        <h4>Gastos</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/ruta/ruta.php">
+                    <div class="option">
+                        <i class="fa-solid fa-map" title=""></i>
+                        <h4>Enrutar</h4>
+                    </div>
+                </a>
+
+                <a href="/resources/views/admin/retiros/retiros.php">
+                    <div class="option">
+                        <i class="fa-solid fa-scale-balanced" title=""></i>
+                        <h4>Retiros</h4>
+                    </div>
+                </a>
+
+
+
+            </div>
+
+        </div>
 
         <div class="container-fluid">
             <div class="row">
@@ -235,6 +240,8 @@ if (!isset($_SESSION["usuario_id"])) {
                                         <th scope="col">Cuota</th>
                                         <th scope="col">Estado</th>
                                         <th scope="col">Dec/Act</th>
+                                        <th scope="col">Borrar</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -258,18 +265,25 @@ if (!isset($_SESSION["usuario_id"])) {
                                             <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
                                             <td class="estado"><?= $datos->EstadoP == 1 ? 'Activado' : 'Desactivado' ?></td>
 
-                                            <td>
+                                            <td class="icon-td">
                                                 <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->EstadoP ?>">
                                                     <i class="fas <?= $datos->EstadoP == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
                                                     <?= $datos->EstadoP == 1 ? ' Desactivar' : ' Activar' ?>
                                                 </a>
                                             </td>
 
-                                            <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>">
-                                                    <ion-icon name="help-circle-outline"></ion-icon>
-                                                </a></td>
-                                        </tr>
-                                    <?php } ?>
+
+
+                                            <td class="icon-td">
+                                                <a href="#" class="delete-btn" data-id="<?= $datos->ID ?>">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </a>
+
+
+                                            </td>
+
+
+                                        <?php } ?>
                                 </tbody>
 
                             </table>
@@ -278,10 +292,77 @@ if (!isset($_SESSION["usuario_id"])) {
                 </div>
             </div>
         </div>
+        <!-- Modal de Confirmación -->
+        <div id="confirmModal" class="modal-custom">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Confirmar Borrado</h2>
+                <p>¿Estás seguro de que quieres borrar este préstamo?</p>
+                <button id="confirmDelete">Borrar</button>
+                <button id="cancelDelete">Cancelar</button>
+            </div>
+        </div>
+
+
     </main>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
+
     <script>
+        //MODAL 
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtener el modal
+            var modal = document.getElementById("confirmModal");
+
+            // Obtener todos los botones que abren el modal
+            var deleteButtons = document.querySelectorAll(".delete-btn");
+
+            // Obtener el elemento <span> que cierra el modal
+            var span = document.querySelector(".close-button");
+
+            // Obtener el botón de confirmar borrado
+            var confirmDelete = document.getElementById("confirmDelete");
+
+            // Obtener el botón de cancelar borrado
+            var cancelDelete = document.getElementById("cancelDelete");
+
+            // Variable para almacenar el ID del préstamo a borrar
+            var prestamoId;
+
+            // Agregar evento click a cada botón de borrar
+            deleteButtons.forEach(function(button) {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    modal.classList.add("modal-visible"); // Hace visible el modal
+                    prestamoId = this.getAttribute("data-id");
+                });
+            });
+
+            // Función para cerrar el modal
+            function closeModal() {
+                modal.classList.remove("modal-visible");
+            }
+
+            // Evento para cerrar el modal al hacer clic en <span> (x)
+            span.addEventListener('click', closeModal);
+
+            // Evento para cerrar el modal al hacer clic en el botón de cancelar
+            cancelDelete.addEventListener('click', closeModal);
+
+            // Evento para realizar la acción de borrado y cerrar el modal
+            confirmDelete.addEventListener('click', function() {
+                window.location.href = 'borrar_prestamo.php?id=' + prestamoId;
+            });
+
+            // Evento para cerrar el modal al hacer clic fuera de él
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    closeModal();
+                }
+            });
+        });
+
+        //DESACTIVAR Y ACTIVAR PRESTAMO 
         $(document).ready(function() {
             $('#search-input').on('input', function() {
                 var searchTerm = $(this).val().toLowerCase();
@@ -295,9 +376,21 @@ if (!isset($_SESSION["usuario_id"])) {
                 });
             });
         });
+        //MESAJE 
+        document.addEventListener("DOMContentLoaded", function() {
+            // Verifica si el mensaje existe
+            var mensajeExito = document.getElementById('mensaje-exito');
+            if (mensajeExito) {
+                // Oculta el mensaje después de 5 segundos (5000 milisegundos)
+                setTimeout(function() {
+                    mensajeExito.style.display = 'none';
+                }, 2000);
+            }
+        });
     </script>
 
-    <script src="/public/assets/js/MenuLate.js"></script>
+
+
 
 </body>
 
