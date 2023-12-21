@@ -65,7 +65,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     </header>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registrar Pagos Retroactivos</h2>
-       
+
         <?php
         include '../../../../controllers/conexion.php';
         $id_cliente_url = isset($_GET['id_cliente']) ? $_GET['id_cliente'] : null;
@@ -113,7 +113,9 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 
                 echo '<div class="form-group">';
                 echo '<label for="num_cuotas">Número de Cuotas a Pagar:</label>';
-                echo '<input type="number" id="num_cuotas" name="num_cuotas" min="1" max="' . $plazoPrestamo . '" class="form-control" value="' . $numCuotas . '" readonly>';
+                echo '<input type="number" id="num_cuotas" name="num_cuotas" min="1" max="' . $plazoPrestamo . '" class="form-control" value="' . $numCuotas . '">';
+                echo '<input type="hidden" id="monto_cuota_oculto" value="' . $row_prestamo['MontoCuota'] . '">';
+
                 echo '</div>';
 
                 echo '<div id="formularios_cuotas" class="mb-3">';
@@ -184,15 +186,71 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 
 
         <script>
-            // Agregar un listener para los cambios en las cuotas
-            $(document).on('input', '.cuota-monto', function() {
+            $(document).ready(function() {
+                // Listener para cambios en el número de cuotas
+                $('#num_cuotas').change(function() {
+                    ajustarFormularioCuotas();
+                });
+
+                // Listener para cambios en los montos de las cuotas
+                $(document).on('input', '.cuota-monto', function() {
+                    recalcularTotalCuotas();
+                });
+
+                // Llamar a la función de recálculo al cargar la página
                 recalcularTotalCuotas();
             });
+
+            function obtenerMontoCuota() {
+                return $('#monto_cuota_oculto').val() || '0';
+            }
+
+            function ajustarFormularioCuotas() {
+                var numCuotasDeseadas = parseInt($('#num_cuotas').val(), 10);
+                var numCuotasActuales = $('.cuota-group').length;
+
+                if (numCuotasDeseadas > numCuotasActuales) {
+                    for (var i = numCuotasActuales + 1; i <= numCuotasDeseadas; i++) {
+                        var fechaCuota = calcularFechaCuota(i, numCuotasActuales);
+                        agregarCuota(i, fechaCuota);
+                    }
+                } else if (numCuotasDeseadas < numCuotasActuales) {
+                    while (numCuotasActuales > numCuotasDeseadas) {
+                        $('.cuota-group').last().remove();
+                        numCuotasActuales--;
+                    }
+                }
+
+                recalcularTotalCuotas();
+            }
+
+            function agregarCuota(numeroCuota, fechaCuota) {
+                var montoCuota = parseInt(obtenerMontoCuota(), 10); // Convertir a entero para eliminar decimales
+                var cuotaHtml = '<div class="cuota-group mb-3">' +
+                    '<h5>Cuota ' + numeroCuota + '</h5>' +
+                    '<div class="form-row">' +
+                    '<div class="col"><label>Monto:</label><input type="text" name="monto_cuota[]" class="form-control cuota-monto" placeholder="Monto" value="' + montoCuota + '" oninput="this.value = this.value.replace(/\D/g, \'\')"></div>' +
+                    '<div class="col"><label>Fecha:</label><input type="date" name="fecha_cuota[]" class="form-control cuota-fecha" value="' + fechaCuota + '"></div>' +
+                    '</div></div>';
+                $('#formularios_cuotas').append(cuotaHtml);
+            }
+
+            function calcularFechaCuota(numeroCuota, numCuotasActuales) {
+                var fechaUltimaCuota;
+                if (numCuotasActuales > 0) {
+                    fechaUltimaCuota = new Date($('.cuota-fecha').last().val());
+                } else {
+                    fechaUltimaCuota = new Date($('#fecha_inicio_prestamo').val());
+                }
+
+                fechaUltimaCuota.setDate(fechaUltimaCuota.getDate() + 1);
+                return fechaUltimaCuota.toISOString().split('T')[0];
+            }
 
             function recalcularTotalCuotas() {
                 let total = 0;
                 $('.cuota-monto').each(function() {
-                    let monto = parseFloat($(this).val().replace(/\D/g, ''));
+                    let monto = parseInt($(this).val(), 10);
                     if (!isNaN(monto)) {
                         total += monto;
                     }
@@ -200,13 +258,11 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                 $('#total_cuotas').text(total.toLocaleString());
             }
 
-            // Función para mostrar detalles en el modal
             function mostrarDetalles() {
                 let cliente = $("#cliente_nombre").val();
                 let prestamo = $("#prestamo_detalle").val();
                 let numCuotas = $("#num_cuotas").val();
 
-                // Obtener los datos de las cuotas
                 let cuotas = [];
                 $(".cuota-group").each(function(index) {
                     let monto = $(this).find(".cuota-monto").val();
@@ -216,17 +272,12 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 
                 let totalCuotas = $("#total_cuotas").text();
 
-                // Actualizar el contenido del modal
                 $("#modal-cliente").text(cliente);
                 $("#modal-prestamo").text(prestamo);
                 $("#modal-num-cuotas").text(numCuotas);
                 $("#modal-cuotas").html("<li>" + cuotas.join("</li><li>") + "</li>");
                 $("#modal-total-cuotas").text(totalCuotas);
             }
-
-            // Llamar a la función de recálculo al cargar la página
-            recalcularTotalCuotas();
-
 
             function procesarPagos() {
                 var datosPago = {
@@ -247,8 +298,6 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                     success: function(response) {
                         alert("Pagos procesados correctamente");
                         $('#myModal').modal('hide');
-
-                        // Redirige a la página deseada
                         window.location.href = "agregar_clientes.php";
                     },
                     error: function() {
