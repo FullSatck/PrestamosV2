@@ -123,10 +123,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-
-
-
-
+ 
         </div>
 
     </div>
@@ -220,7 +217,7 @@ date_default_timezone_set('America/Bogota');
             </div>
 
             <div class="input-container">
-                <label for="cartera_id">Cartera:</label>
+                <label for="cartera_id">Cobro:</label>
                 <select id="cartera_id" name="cartera_id" required>
                     <option value="">Escoge cartera</option>
                     <?php
@@ -228,7 +225,7 @@ date_default_timezone_set('America/Bogota');
                     include("../../../../../../controllers/conexion.php");
 
                     // Consulta SQL para obtener las carteras
-                    $consultaCarteras = "SELECT id, nombre FROM carteras";
+                    $consultaCarteras = "SELECT id, nombre FROM carteras WHERE zona = 6";
                     $resultCarteras = mysqli_query($conexion, $consultaCarteras);
 
                     // Genera las opciones del menú desplegable para las carteras
