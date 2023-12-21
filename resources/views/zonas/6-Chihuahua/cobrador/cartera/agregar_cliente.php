@@ -167,7 +167,7 @@ date_default_timezone_set('America/Bogota');
                                 <form action="opciones/asignar_cartera.php" method="GET">
                                     <input type="hidden" name="cliente_id" value="<?= $fila['ID'] ?>">
                                     <input type="hidden" name="cartera_id" value="<?= $cartera_id_actual ?>">
-                                    <input type="submit" value="Asignar a Cartera">
+                                    <input type="submit" value="Asignar a Cobro">
                                 </form>
                             </td>
                         </tr>
