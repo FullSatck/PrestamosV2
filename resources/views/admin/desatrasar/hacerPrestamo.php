@@ -25,23 +25,21 @@ if (!isset($_SESSION["usuario_id"])) {
     $stmt->close();
 
     // ID DEL CLIENTE
-    if (isset($_GET['cliente_id'])) {
-        $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
-        $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id";
-    } else {
-        $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1";
-    }
+    $cliente_id = isset($_GET['clienteId']) ? $_GET['clienteId'] : null;
 
     // Si tienes un cliente_id, obtén su zona asignada
     $zona_cliente = "";
-    if (isset($cliente_id)) {
-        $query_zona_cliente = "SELECT ZonaAsignada FROM clientes WHERE ID = $cliente_id";
-        $result_zona_cliente = $conexion->query($query_zona_cliente);
+    if ($cliente_id) {
+        $query_zona_cliente = "SELECT ZonaAsignada FROM clientes WHERE ID = ?";
+        $stmt = $conexion->prepare($query_zona_cliente);
+        $stmt->bind_param("i", $cliente_id);
+        $stmt->execute();
+        $result_zona_cliente = $stmt->get_result();
         if ($row = $result_zona_cliente->fetch_assoc()) {
             $zona_cliente = $row['ZonaAsignada'];
         }
+        $stmt->close();
     }
-
 
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
@@ -69,8 +67,6 @@ if (!isset($_SESSION["usuario_id"])) {
         exit();
     }
 }
-
-
 ?>
 
 
@@ -121,20 +117,42 @@ if (!isset($_SESSION["usuario_id"])) {
         <h1>Solicitud de Préstamo Atrasados</h1><br>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="procesar_prestamo.php" method="POST" class="form-container">
+        <?php
+        // Obtener el nombre del cliente seleccionado a través de la URL
+        if ($cliente_id) {
+            $query_cliente = "SELECT Nombre FROM clientes WHERE ID = ?";
+            $stmt = $conexion->prepare($query_cliente);
+            $stmt->bind_param("i", $cliente_id);
+            $stmt->execute();
+            $result_cliente = $stmt->get_result();
+
+            if ($row_cliente = $result_cliente->fetch_assoc()) {
+                $nombre_cliente = $row_cliente['Nombre'];
+               
+            }
+            $stmt->close();
+        }
+        ?>
             <?php
             // Incluir el archivo de conexión a la base de datos
             include("../../../../controllers/conexion.php");
 
             // ID DEL CLIENTE
-            if (isset($_GET['cliente_id'])) {
-                $cliente_id = mysqli_real_escape_string($conexion, $_GET['cliente_id']);
-                $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = $cliente_id";
+            if ($cliente_id) {
+                $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE ID = ?";
             } else {
                 $query_clientes = "SELECT ID, Nombre, ZonaAsignada FROM clientes WHERE Estado = 1"; // Asegúrate de que solo se seleccionen los clientes activos
             }
 
             // Ejecutar las consultas para obtener la lista de clientes, monedas y zonas
-            $result_clientes = $conexion->query($query_clientes);
+            $stmt = $conexion->prepare($query_clientes);
+            if ($cliente_id) {
+                $stmt->bind_param("i", $cliente_id);
+            }
+            $stmt->execute();
+            $result_clientes = $stmt->get_result();
+            $stmt->close();
+
             $query_monedas = "SELECT ID, Nombre, Simbolo FROM monedas";
             $query_zonas = "SELECT Nombre FROM zonas";
 

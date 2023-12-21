@@ -1,17 +1,17 @@
 <?php
 session_start();
 date_default_timezone_set('America/Bogota');
- // Verifica si el usuario está autenticado
- if (!isset($_SESSION["usuario_id"])) {
-     header("Location: ../../../../../../index.php");
-     exit();
- }
- 
- // Incluye la configuración de conexión a la base de datos
- require_once '../../../../../../controllers/conexion.php'; 
- 
- // El usuario está autenticado, obtén el ID del usuario de la sesión
- $usuario_id = $_SESSION["usuario_id"];
+// Verifica si el usuario está autenticado
+if (!isset($_SESSION["usuario_id"])) {
+    header("Location: ../../../../../../index.php");
+    exit();
+}
+
+// Incluye la configuración de conexión a la base de datos
+require_once '../../../../../../controllers/conexion.php';
+
+// El usuario está autenticado, obtén el ID del usuario de la sesión
+$usuario_id = $_SESSION["usuario_id"];
 
 $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
 $stmt = $conexion->prepare($sql_nombre);
@@ -22,26 +22,26 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
- 
- // Preparar la consulta para obtener el rol del usuario
- $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
- $stmt->bind_param("i", $usuario_id);
- 
- // Ejecutar la consulta
- $stmt->execute();
- $resultado = $stmt->get_result();
- $fila = $resultado->fetch_assoc();
- 
- $stmt->close();
- 
- // Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
- if (!$fila || $fila['Nombre'] !== 'cobrador') {
-     header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-     exit();
- }
+
+// Preparar la consulta para obtener el rol del usuario
+$stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+$stmt->bind_param("i", $usuario_id);
+
+// Ejecutar la consulta
+$stmt->execute();
+$resultado = $stmt->get_result();
+$fila = $resultado->fetch_assoc();
+
+$stmt->close();
+
+// Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
+if (!$fila || $fila['Nombre'] !== 'cobrador') {
+    header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+    exit();
+}
 
 // Consulta SQL para obtener las carteras
-$sql = "SELECT id, nombre, zona FROM carteras WHERE zona =20";
+$sql = "SELECT id, nombre, zona FROM carteras WHERE zona = 6";
 $result = $conexion->query($sql);
 ?>
 
@@ -67,12 +67,12 @@ $result = $conexion->query($sql);
             </a>
 
             <div class="nombre-usuario">
-            <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
-        </div>
+                <?php
+                if (isset($_SESSION["nombre_usuario"])) {
+                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+                }
+                ?>
+            </div>
         </header>
 
         <div class="menu__side" id="menu_side">
@@ -84,66 +84,63 @@ $result = $conexion->query($sql);
 
             <div class="options__menu">
 
-            <a href="/controllers/cerrar_sesion.php">
-                <div class="option">
-                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                    <h4>Cerrar Sesion</h4>
-                </div>
-            </a>
+                <a href="/controllers/cerrar_sesion.php">
+                    <div class="option">
+                        <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                        <h4>Cerrar Sesion</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
-                <div class="option">
-                    <i class="fa-solid fa-landmark" title="Inicio"></i>
-                    <h4>Inicio</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
+                    <div class="option">
+                        <i class="fa-solid fa-landmark" title="Inicio"></i>
+                        <h4>Inicio</h4>
+                    </div>
+                </a>
 
-         
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-people-group" title=""></i>
-                    <h4>Clientes</h4>
-                </div>
-            </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-tag" title=""></i>
-                    <h4>Registrar Clientes</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
+                    <div class="option">
+                        <i class="fa-solid fa-people-group" title=""></i>
+                        <h4>Clientes</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                    <h4>Prestamos</h4>
-                </div>
-            </a> 
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
+                    <div class="option">
+                        <i class="fa-solid fa-user-tag" title=""></i>
+                        <h4>Registrar Clientes</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
-                    <h4>Gastos</h4>
-                </div>
-            </a> 
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                        <h4>Prestamos</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
+                    <div class="option">
+                        <i class="fa-solid fa-sack-xmark" title=""></i>
+                        <h4>Gastos</h4>
+                    </div>
+                </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="selected">
-                <div class="option">
-                    <i class="fa-regular fa-address-book"></i>
-                    <h4>Cobros</h4>
-                </div>
-            </a>
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
+                    <div class="option">
+                        <i class="fa-solid fa-map" title=""></i>
+                        <h4>Ruta</h4>
+                    </div>
+                </a>
 
-      
-
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="selected">
+                    <div class="option">
+                        <i class="fa-regular fa-address-book"></i>
+                        <h4>Cobros</h4>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -162,18 +159,18 @@ $result = $conexion->query($sql);
                         <th>Nombre</th>
                     </tr>
                     <?php
-        // Mostrar los resultados en la tabla
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . "REC-100" . $row["id"] . "</td>";
-                echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'>" . $row["nombre"] . "</a></td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='3'>No se encontraron resultados</td></tr>";
-        }
-        ?>
+                    // Mostrar los resultados en la tabla
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . "REC-100" . $row["id"] . "</td>";
+                            echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'>" . $row["nombre"] . "</a></td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>No se encontraron resultados</td></tr>";
+                    }
+                    ?>
                 </table>
 
             </div>
@@ -182,69 +179,7 @@ $result = $conexion->query($sql);
         </main>
 
         <script src="/public/assets/js/MenuLate.js"></script>
-
-
-
-
+ 
     </body>
 
     </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-    <?php
-// Cerrar la conexión con la base de datos
-$conexion->close();
-?>

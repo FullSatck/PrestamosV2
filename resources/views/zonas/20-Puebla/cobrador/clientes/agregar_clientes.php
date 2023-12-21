@@ -219,7 +219,7 @@ $stmt->close();
             </div>
 
             <div class="input-container">
-                <label for="cartera_id">Cartera:</label>
+                <label for="cartera_id">Cobros:</label>
                 <select id="cartera_id" name="cartera_id" required>
                     <option value="">Escoge cartera</option>
                     <?php
@@ -227,7 +227,7 @@ $stmt->close();
                     include("../../../../../../controllers/conexion.php");
 
                     // Consulta SQL para obtener las carteras
-                    $consultaCarteras = "SELECT id, nombre FROM carteras";
+                    $consultaCarteras = "SELECT id, nombre FROM carteras WHERE zona = 20";
                     $resultCarteras = mysqli_query($conexion, $consultaCarteras);
 
                     // Genera las opciones del menú desplegable para las carteras

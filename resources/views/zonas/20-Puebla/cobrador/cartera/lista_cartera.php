@@ -41,7 +41,7 @@ $stmt->close();
  }
 
 // Consulta SQL para obtener las carteras
-$sql = "SELECT id, nombre, zona FROM carteras WHERE zona =20";
+$sql = "SELECT id, nombre, zona FROM carteras WHERE zona = 20";
 $result = $conexion->query($sql);
 ?>
 
@@ -183,68 +183,8 @@ $result = $conexion->query($sql);
 
         <script src="/public/assets/js/MenuLate.js"></script>
 
-
-
-
+ 
     </body>
 
     </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  
-
-    <?php
-// Cerrar la conexión con la base de datos
-$conexion->close();
-?>
