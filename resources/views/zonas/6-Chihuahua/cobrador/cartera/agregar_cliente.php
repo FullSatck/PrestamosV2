@@ -47,6 +47,39 @@ date_default_timezone_set('America/Bogota');
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <title>Listado de Clientes</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .buttom {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .buttom:hover {
+            background-color: #45a049;
+        }
+
+        .back-link1 {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border: 1px solid #74d8d8;
+            background-color: #a9f0f0;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .back-link1:hover {
+            background-color: #2cc0c0;
+        }
+    </style>
 </head>
 
 <body id="body">
@@ -55,7 +88,7 @@ date_default_timezone_set('America/Bogota');
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
-        <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/clientes_por_cartera.php?id=<?= $cartera_id_actual ?>">
+        <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/clientes_por_cartera.php?id=<?= $cartera_id_actual ?>" class="back-link1">
             Volver
         </a>
 
@@ -66,7 +99,7 @@ date_default_timezone_set('America/Bogota');
             }
             ?>
         </div>
-        
+
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -167,7 +200,7 @@ date_default_timezone_set('America/Bogota');
                                 <form action="opciones/asignar_cartera.php" method="GET">
                                     <input type="hidden" name="cliente_id" value="<?= $fila['ID'] ?>">
                                     <input type="hidden" name="cartera_id" value="<?= $cartera_id_actual ?>">
-                                    <input type="submit" value="Asignar a Cobro">
+                                    <input type="submit" value="Asignar a Cobro" class="buttom">
                                 </form>
                             </td>
                         </tr>
