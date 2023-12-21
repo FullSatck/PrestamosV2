@@ -219,6 +219,7 @@ $resultado = $conexion->query($sql);
                         <th>Zona Asignada</th>
                         <th>Estado</th>
                         <th>Des/Act</th>
+                        <th>Editar</th>
                         <th>Perfil</th>
                         <th>Pagos</th>
                         <th>Prestamo Atrasado </th>
@@ -240,6 +241,7 @@ $resultado = $conexion->query($sql);
                                     <?= $fila["Estado"] == 1 ? 'Desactivar' : 'Activar' ?>
                                 </a>
                             </td>
+                            <td><a href="editar_cliente.php?id=<?= $fila["ID"] ?>">Editar</a></td>
                             <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                             <td><a href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
                             </td>
