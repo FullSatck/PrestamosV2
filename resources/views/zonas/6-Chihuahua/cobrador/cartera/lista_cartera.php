@@ -52,6 +52,41 @@ $result = $conexion->query($sql);
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <title>Lista de Carteras</title>
+    <style>
+        .back-link1 {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border: 1px solid #74d8d8;
+            background-color: #a9f0f0;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .back-link1:hover {
+            background-color: #2cc0c0;
+        }
+
+        .back-link3 {
+            display: inline-block;
+            padding: 10px 11px;
+            margin: 10px 5px;
+            border: 1px solid #73e773;
+            background-color: #a3e4a3;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .back-link3:hover {
+            background-color: #93cc93;
+        }
+    </style>
 </head>
 
 <body>
@@ -62,7 +97,7 @@ $result = $conexion->query($sql);
             <div class="icon__menu">
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
-            <a href="agregar_cartera.php">
+            <a href="agregar_cartera.php?" class="back-link1">
                 <span>Agregar Cobro</span>
             </a>
 
@@ -164,7 +199,7 @@ $result = $conexion->query($sql);
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
                             echo "<td>" . "REC-100" . $row["id"] . "</td>";
-                            echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'>" . $row["nombre"] . "</a></td>";
+                            echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'  class='back-link3'>" . $row["nombre"] . "</a></td>";
                             echo "</tr>";
                         }
                     } else {
@@ -179,7 +214,7 @@ $result = $conexion->query($sql);
         </main>
 
         <script src="/public/assets/js/MenuLate.js"></script>
- 
+
     </body>
 
     </html>
