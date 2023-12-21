@@ -94,7 +94,7 @@ function procesarNoPagoOMasTarde($conexion, $id_cliente, $accion) {
     $stmt_verificar->close();
 
     if ($pospuesto == 1 || $mas_tarde == 1) {
-        $_SESSION['alerta'] = 'La acción "No pago" o "Más tarde" ya se ha realizado anteriormente.';
+        echo "<script>alert('Ya se ha realizado una acción de \"No pago\" o \"Más tarde\" anteriormente.');</script>";
         return;
     }
 
@@ -109,6 +109,7 @@ function procesarNoPagoOMasTarde($conexion, $id_cliente, $accion) {
     }
     $stmt_update->close();
 }
+
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'], $_POST['id_cliente'])) {
