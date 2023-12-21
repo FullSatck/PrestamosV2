@@ -62,7 +62,7 @@ $result = $conexion->query($sql);
             <div class="icon__menu">
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
-            <a href="agregar_cartera.php">
+            <a href="agregar_cartera.php?">
                 <span>Agregar Cobro</span>
             </a>
 

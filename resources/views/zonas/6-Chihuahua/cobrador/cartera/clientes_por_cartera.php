@@ -76,7 +76,9 @@ if (isset($_GET['id'])) {
             <div class="icon__menu">
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
-            <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php">Volver </a>
+
+            <a href="agregar_cliente.php?id=<?= $cartera_id ?>" class="back-link">R Cliente</a>
 
             <div class="nombre-usuario">
             <?php
@@ -163,7 +165,7 @@ if (isset($_GET['id'])) {
 
         <main>
             <!-- Botón para volver a la página anterior -->
-            <h1>Clientes por Cartera</h1>
+            <h1>Clientes de este Cobro</h1>
 
             <table>
                 <!-- Encabezados de tabla para los datos de los clientes -->
