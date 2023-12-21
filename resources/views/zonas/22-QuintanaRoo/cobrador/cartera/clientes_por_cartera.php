@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -65,6 +66,41 @@ if (isset($_GET['id'])) {
     <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <title>Clientes por Carteras</title>
+    <style>
+        .back-link1 {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border: 1px solid #74d8d8;
+            background-color: #a9f0f0;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .back-link1:hover {
+            background-color: #2cc0c0;
+        }
+
+        .back-link2 {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border: 1px solid #a05a5a;
+            background-color: #ec7f7f;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .back-link2:hover {
+            background-color: rgb(160, 91, 91);
+        }
+    </style>
 </head>
 
 <body>
@@ -75,15 +111,17 @@ if (isset($_GET['id'])) {
             <div class="icon__menu">
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
-            <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/cartera/lista_cartera.php" class="back-link1">Volver </a>
+
+            <a href="agregar_cliente.php?id=<?= $cartera_id ?>" class="back-link2">R Cliente</a>
 
             <div class="nombre-usuario">
-            <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
-        </div>
+                <?php
+                if (isset($_SESSION["nombre_usuario"])) {
+                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+                }
+                ?>
+            </div>
         </header>
 
         <div class="menu__side" id="menu_side">
@@ -95,12 +133,12 @@ if (isset($_GET['id'])) {
 
             <div class="options__menu">
 
-            <a href="/controllers/cerrar_sesion.php">
-                <div class="option">
-                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                    <h4>Cerrar Sesion</h4>
-                </div>
-            </a>
+                <a href="/controllers/cerrar_sesion.php">
+                    <div class="option">
+                        <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                        <h4>Cerrar Sesion</h4>
+                    </div>
+                </a>
 
                 <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php" class="selected">
                     <div class="option">
@@ -130,28 +168,29 @@ if (isset($_GET['id'])) {
                         <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                         <h4>Prestamos</h4>
                     </div>
-                </a> 
+                </a>
 
                 <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/gastos/gastos.php">
                     <div class="option">
                         <i class="fa-solid fa-sack-xmark" title=""></i>
                         <h4>Gastos</h4>
                     </div>
-                </a> 
+                </a>
 
                 <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutar</h4>
-                </div>
-            </a>
+                    <div class="option">
+                        <i class="fa-solid fa-map" title=""></i>
+                        <h4>Ruta</h4>
+                    </div>
+                </a>
 
                 <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/cartera/lista_cartera.php" class="selected">
                     <div class="option">
                         <i class="fa-regular fa-address-book"></i>
                         <h4>Cobros</h4>
                     </div>
-                </a> 
+                </a>
+
 
             </div>
         </div>
@@ -160,31 +199,28 @@ if (isset($_GET['id'])) {
         <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
         <main>
-            <!-- Botón para volver a la página anterior -->
-            <h1>Clientes por Cartera</h1>
+            <h1>Clientes de este Cobro</h1>
 
             <table>
-                <!-- Encabezados de tabla para los datos de los clientes -->
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <!-- Otros encabezados necesarios -->
                 </tr>
 
                 <!-- Mostrar los datos de los clientes en la tabla -->
                 <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["ID"] . "</td>";
-                echo "<td>" . $row["Nombre"] . "</td>";
-                // Puedes mostrar más información de los clientes según sea necesario
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='2'>No se encontraron clientes para esta cartera</td></tr>";
-        }
-        ?>
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["ID"] . "</td>";
+                        echo "<td>" . $row["Nombre"] . "</td>";
+                        // Puedes mostrar más información de los clientes según sea necesario
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='2'>No se encontraron clientes para esta cartera</td></tr>";
+                }
+                ?>
             </table>
 
         </main>
