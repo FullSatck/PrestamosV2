@@ -283,8 +283,7 @@ date_default_timezone_set('America/Bogota');
     document.getElementById("curp").addEventListener("input", verificarCliente);
     document.getElementById("telefono").addEventListener("input", verificarCliente);
 </script>
-
-    <script src="/public/assets/js/MenuLate.js"></script>
+ 
     <script src="/public/assets/js/mensaje.js"></script>
 
 </body>
