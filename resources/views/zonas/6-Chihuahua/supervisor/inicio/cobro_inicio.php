@@ -127,10 +127,10 @@ if ($sql === false) {
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
  

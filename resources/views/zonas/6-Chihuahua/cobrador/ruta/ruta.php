@@ -133,7 +133,7 @@ mysqli_close($conexion);
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Ruta</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
 

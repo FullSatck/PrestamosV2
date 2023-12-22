@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 // Verifica si el usuario está autenticado
 if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
@@ -8,8 +9,11 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../../../index.php");
     exit();
+}
 
-}include "../../../../../../controllers/conexion.php";
+
+// Incluye el archivo de conexión
+include("../../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
@@ -22,8 +26,14 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
-date_default_timezone_set('America/Bogota');
+
+
+
+
+// Cierra la conexión a la base de datos
+mysqli_close($conexion);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,8 +61,7 @@ date_default_timezone_set('America/Bogota');
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
-
+        
         <div class="nombre-usuario">
             <?php
         if (isset($_SESSION["nombre_usuario"])) {
@@ -85,19 +94,6 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/crudusuarios.php">
-                <div class="option">
-                    <i class="fa-solid fa-users" title=""></i>
-                    <h4>Usuarios</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/registrar.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-plus" title=""></i>
-                    <h4>Registrar Usuario</h4>
-                </div>
-            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php">
                 <div class="option">
@@ -118,29 +114,44 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
+
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-file-invoice-dollar" title=""></i>
+                    <h4>Registrar Prestamos</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a>
+            </a> 
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php" class="selected">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/ruta.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
 
-          
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
+
+            
         </div>
     </div>
 
+    <script src="/public/assets/js/MenuLate.js"></script>
 
     <main>
-        <h2>Pagos para Hoy</h2>
+        <h2>Orden de pagos</h2>
 
         <!-- <button onclick="guardarCambios()">Guardar Cambios</button> -->
 
@@ -148,18 +159,19 @@ date_default_timezone_set('America/Bogota');
             Nuevo orden guardado.
         </div><br>
 
-        <table id="lista-pagos">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Fecha de Pago</th>
-                    <th>Enrutar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
+        <div class="table-scroll-container">
+            <table id="lista-pagos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Fecha de Pago</th>
+                        <th>Enrutar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
             include "../../../../../../controllers/conexion.php";
 
             $fecha_actual = date("Y-m-d");
@@ -168,7 +180,7 @@ date_default_timezone_set('America/Bogota');
                     FROM fechas_pago 
                     INNER JOIN prestamos ON fechas_pago.IDPrestamo = prestamos.ID 
                     INNER JOIN clientes ON prestamos.IDCliente = clientes.ID 
-                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Chihuahua'";
+                    WHERE fechas_pago.FechaPago = ? AND fechas_pago.Zona = 'Chihuhua'";
 
             $stmt = $conexion->prepare($sql);
             $stmt->bind_param("s", $fecha_actual);
@@ -192,8 +204,9 @@ date_default_timezone_set('America/Bogota');
             $stmt->close();
             $conexion->close();
             ?>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
 
     </main>
 
@@ -232,6 +245,8 @@ date_default_timezone_set('America/Bogota');
         $('#aviso-guardado').fadeIn().delay(3000).fadeOut(); // Mostrar por 2 segundos y luego ocultar
     }
     </script>
+
+
 </body>
 
 </html>
