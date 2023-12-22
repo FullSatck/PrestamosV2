@@ -40,6 +40,17 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     header("Location: /ruta_a_pagina_de_error_o_inicio.php");
     exit();
 }
+// Evitar recarga manual de la página
+if ($_SERVER["REQUEST_METHOD"] === "POST" || isset($_SESSION['reloaded'])) {
+    // El usuario intentó recargar la página después de enviar un formulario u otra acción.
+    // Redirigirlo a la página actual para evitar recargas accidentales.
+    $_SESSION['reloaded'] = true; // Establece una bandera de sesión para evitar múltiples redirecciones en caso de recarga continua.
+    header("Location: " . $_SERVER["REQUEST_URI"]);
+    exit();
+}
+
+// Resto de tu código PHP
+
 ?>
 
 <!DOCTYPE html>
@@ -49,11 +60,24 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+  // Evitar que el usuario utilice el botón Atrás del navegador
+window.history.forward();
+
+// Bloquear la navegación hacia atrás
+window.onbeforeunload = function () {
+    return "La navegación hacia atrás está desactivada en esta página.";
+};
+
+</script>
+
     <title>Registrar Pagos Retroactivos</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/resources/views/admin/desatrasar/css/desatrasar.css">
+ 
+
 </head>
 
 <body>
@@ -63,6 +87,9 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
             <span class="spann">Volver al Inicio</span>
         </a>
     </header>
+
+
+
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registrar Pagos Retroactivos</h2>
 
@@ -180,15 +207,15 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
         </div>
         <!-- Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-        <script>
-
-        </script>
+        
 
 
 
 
         <script>
-            $(document).ready(function() {
+
+
+      $(document).ready(function() {
                 // Listener para cambios en el número de cuotas
                 $('#num_cuotas').change(function() {
                     ajustarFormularioCuotas();

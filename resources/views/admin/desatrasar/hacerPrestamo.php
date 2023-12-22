@@ -115,24 +115,33 @@ if (!isset($_SESSION["usuario_id"])) {
     <main>
         <br>
         <h1>Solicitud de Préstamo Atrasados</h1><br>
+        <?php
+        // Verificar si hay un mensaje de error en la URL y mostrarlo
+        if (isset($_GET['mensaje'])) {
+            $mensaje_error = htmlspecialchars($_GET['mensaje']);
+            echo '<div class="alert alert-danger" role="alert">' . $mensaje_error . '</div>';
+        }
+
+        // Recuperar el id_cliente de la URL si está presente
+        $id_cliente = isset($_GET['id_cliente']) ? htmlspecialchars($_GET['id_cliente']) : '';
+        ?>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="procesar_prestamo.php" method="POST" class="form-container">
-        <?php
-        // Obtener el nombre del cliente seleccionado a través de la URL
-        if ($cliente_id) {
-            $query_cliente = "SELECT Nombre FROM clientes WHERE ID = ?";
-            $stmt = $conexion->prepare($query_cliente);
-            $stmt->bind_param("i", $cliente_id);
-            $stmt->execute();
-            $result_cliente = $stmt->get_result();
+            <?php
+            // Obtener el nombre del cliente seleccionado a través de la URL
+            if ($cliente_id) {
+                $query_cliente = "SELECT Nombre FROM clientes WHERE ID = ?";
+                $stmt = $conexion->prepare($query_cliente);
+                $stmt->bind_param("i", $cliente_id);
+                $stmt->execute();
+                $result_cliente = $stmt->get_result();
 
-            if ($row_cliente = $result_cliente->fetch_assoc()) {
-                $nombre_cliente = $row_cliente['Nombre'];
-               
+                if ($row_cliente = $result_cliente->fetch_assoc()) {
+                    $nombre_cliente = $row_cliente['Nombre'];
+                }
+                $stmt->close();
             }
-            $stmt->close();
-        }
-        ?>
+            ?>
             <?php
             // Incluir el archivo de conexión a la base de datos
             include("../../../../controllers/conexion.php");
@@ -199,7 +208,7 @@ if (!isset($_SESSION["usuario_id"])) {
             </select><br>
 
             <!-- Reemplaza el campo de fecha de inicio con un campo de texto readonly -->
-           
+
             <label for="fecha_inicio">Fecha de Inicio:</label>
             <span style="color: red; font-weight: bold;">POR FAVOR INGRESA LA FECHA</span>
             <input type="date" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d'); ?>" required><br>
@@ -253,7 +262,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     <p>Aplicar Comisión: <strong><span id="modalAplicarComision"></span></strong></p>
                     <p>Valor Comisión:<strong> <span id="modalValorComision"></span></strong></p>
 
-                 
+
 
 
                     <button onclick="confirmarPrestamo()">Confirmar</button>

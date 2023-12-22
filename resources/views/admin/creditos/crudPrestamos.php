@@ -240,7 +240,9 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                         <th scope="col">Cuota</th>
                                         <th scope="col">Estado</th>
                                         <th scope="col">Dec/Act</th>
+                                        <th scope="col">Editar</th>
                                         <th scope="col">Borrar</th>
+
 
                                     </tr>
                                 </thead>
@@ -272,8 +274,11 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                                 </a>
                                             </td>
 
-
-
+                                            <td class="icon-td">
+                                                <a href="editar_prestamo.php?prestamo_id=<?= $datos->ID ?>" class="edit-btn">
+                                                    <i class="fas fa-edit"></i> Editar
+                                                </a>
+                                            </td>
                                             <td class="icon-td">
                                                 <a href="#" class="delete-btn" data-id="<?= $datos->ID ?>">
                                                     <i class="fa-solid fa-trash-can"></i>
