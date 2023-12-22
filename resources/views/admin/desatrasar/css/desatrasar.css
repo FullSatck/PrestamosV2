@@ -5,6 +5,30 @@ body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
 }
+.boton-contenedor {
+    text-align: right; /* Alinear el contenido a la derecha */
+    padding-right: 260px; /* Espacio a la derecha para no pegar el botón al borde */
+    
+}
+.btn-editar-prestamo {
+    background-color: #007bff; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Remover subrayado del texto */
+    display: inline-block; /* Hacer que se comporte como un botón */
+    font-size: 16px; /* Tamaño del texto */
+    margin: 4px 2px; /* Margen alrededor del botón */
+    transition-duration: 0.4s; /* Duración de la transición al cambiar de estado */
+    cursor: pointer; /* Cambiar el cursor a una mano al pasar sobre el botón */
+    border: none; /* Remover el borde */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.btn-editar-prestamo:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el mouse */
+    color: white; /* Color del texto al pasar el mouse */
+}
 
 /* Estilos para el botón más pequeño */
 .botonn {

@@ -7,7 +7,7 @@ include '../../../../controllers/conexion.php';
 $id_cliente = $_POST['id_cliente'];
 
 // Verificar si el cliente ya tiene un préstamo en los últimos 5 minutos
-$sql_verificar_prestamo = "SELECT COUNT(*) as count FROM prestamos WHERE IDCliente = ? AND FechaCreacion >= NOW() - INTERVAL 30 MINUTE";
+$sql_verificar_prestamo = "SELECT COUNT(*) as count FROM prestamos WHERE IDCliente = ? AND FechaCreacion >= NOW() - INTERVAL 90 MINUTE";
 $stmt = $conexion->prepare($sql_verificar_prestamo);
 $stmt->bind_param("i", $id_cliente);
 $stmt->execute();
@@ -16,12 +16,9 @@ if ($fila = $resultado->fetch_assoc()) {
     $cantidad_prestamos_recientes = $fila['count'];
     if ($cantidad_prestamos_recientes > 0) {
         // El cliente ya tiene un préstamo reciente, puedes tomar una acción aquí
-        // Por ejemplo, mostrar un mensaje de error o redireccionar a otra página con el id_cliente
-        $id_cliente = urlencode($id_cliente); // Codificar el id_cliente para asegurarte de que sea seguro en la URL
-        $mensaje_error = urlencode('Acabastes de hacer un prestamo a este cliente !TEN CUIDADO!.
-        SI TE EQUIVOCASTES VE A PRESTAMOS Y EDITALO Y DESATRASALO DES DE  ALLÁ');
-        header("Location: /resources/views/admin/desatrasar/hacerPrestamo.php?mensaje=$mensaje_error&clienteId=$id_cliente");
-        exit();
+       // Redirigir de vuelta al formulario con mensaje de error y parámetro adicional
+    header("Location: hacerPrestamo.php?error=prestamo_reciente&clienteId=$id_cliente");
+    exit();
     }
 }
 $stmt->close();

@@ -339,7 +339,7 @@ if (!isset($_SESSION["usuario_id"])) {
 <script>
     function verificarCliente() {
         const curp = document.getElementById("curp").value;
-        const telefono = document.getElementById("telefono").value;
+        // const telefono = document.getElementById("telefono").value;
         const mensajeEmergente = document.getElementById("mensaje-emergente");
         const mensajeError = document.getElementById("mensaje-error");
         const enlacePerfil = document.getElementById("enlace-perfil");
