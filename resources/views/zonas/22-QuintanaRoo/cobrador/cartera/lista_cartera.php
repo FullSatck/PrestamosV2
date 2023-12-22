@@ -41,8 +41,12 @@ if (!$fila || $fila['Nombre'] !== 'cobrador') {
 }
 
 // Consulta SQL para obtener las carteras
-$sql = "SELECT id, nombre, zona FROM carteras WHERE zona = 22";
+$sql = "SELECT carteras.id, carteras.nombre, carteras.zona, ciudades.nombre AS nombre_ciudad, carteras.asentamiento 
+        FROM carteras 
+        JOIN ciudades ON carteras.ciudad = ciudades.id 
+        WHERE carteras.zona = 22";
 $result = $conexion->query($sql);
+
 ?>
 
 <head>
@@ -89,132 +93,138 @@ $result = $conexion->query($sql);
     </style>
 </head>
 
-<body>
 
-    <body id="body">
 
-        <header>
-            <div class="icon__menu">
-                <i class="fas fa-bars" id="btn_open"></i>
-            </div>
-            <a href="agregar_cartera.php?" class="back-link1">
-                <span>Agregar Cobro</span>
+
+<body id="body">
+
+    <header>
+        <div class="icon__menu">
+            <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+        <a href="agregar_cartera.php?" class="back-link1">
+            <span>Agregar Cobro</span>
+        </a>
+
+        <div class="nombre-usuario">
+            <?php
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+            }
+            ?>
+        </div>
+    </header>
+
+
+    <div class="menu__side" id="menu_side">
+
+        <div class="name__page">
+            <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
+            <h4>Recaudo</h4>
+        </div>
+
+        <div class="options__menu">
+
+            <a href="/controllers/cerrar_sesion.php">
+                <div class="option">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+                    <h4>Cerrar Sesion</h4>
+                </div>
             </a>
 
-            <div class="nombre-usuario">
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php">
+                <div class="option">
+                    <i class="fa-solid fa-landmark" title="Inicio"></i>
+                    <h4>Inicio</h4>
+                </div>
+            </a>
+
+
+
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-people-group" title=""></i>
+                    <h4>Clientes</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-tag" title=""></i>
+                    <h4>Registrar Clientes</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/creditos/crudPrestamos.php">
+                <div class="option">
+                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
+                    <h4>Prestamos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/gastos/gastos.php">
+                <div class="option">
+                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <h4>Gastos</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/ruta/ruta.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Ruta</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/cartera/lista_cartera.php" class="selected">
+                <div class="option">
+                    <i class="fa-regular fa-address-book"></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+
+    <main>
+        <!-- Botón para volver a la página anterior -->
+        <h1 class="text-center">Cobros</h1>
+
+        <div class="container-fluid">
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Municipio</th>
+                    <th>Colonia</th>
+                </tr>
                 <?php
-                if (isset($_SESSION["nombre_usuario"])) {
-                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+                // Mostrar los resultados en la tabla
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . "REC-100" . $row["id"] . "</td>";
+                        echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'  class='back-link3'>" . $row["nombre"] . "</a></td>";
+                        echo "<td>" . $row["nombre_ciudad"] . "</td>";
+                        echo "<td>" . $row["asentamiento"] . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='3'>No se encontraron resultados</td></tr>";
                 }
                 ?>
-            </div>
-        </header>
+            </table>
 
-        <div class="menu__side" id="menu_side">
-
-            <div class="name__page">
-                <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-                <h4>Recaudo</h4>
-            </div>
-
-            <div class="options__menu">
-
-                <a href="/controllers/cerrar_sesion.php">
-                    <div class="option">
-                        <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                        <h4>Cerrar Sesion</h4>
-                    </div>
-                </a>
-
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php">
-                    <div class="option">
-                        <i class="fa-solid fa-landmark" title="Inicio"></i>
-                        <h4>Inicio</h4>
-                    </div>
-                </a>
-
-
-
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php">
-                    <div class="option">
-                        <i class="fa-solid fa-people-group" title=""></i>
-                        <h4>Clientes</h4>
-                    </div>
-                </a>
-
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php">
-                    <div class="option">
-                        <i class="fa-solid fa-user-tag" title=""></i>
-                        <h4>Registrar Clientes</h4>
-                    </div>
-                </a>
-
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/creditos/crudPrestamos.php">
-                    <div class="option">
-                        <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                        <h4>Prestamos</h4>
-                    </div>
-                </a>
-
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/gastos/gastos.php">
-                    <div class="option">
-                        <i class="fa-solid fa-sack-xmark" title=""></i>
-                        <h4>Gastos</h4>
-                    </div>
-                </a>
-
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/ruta/ruta.php">
-                    <div class="option">
-                        <i class="fa-solid fa-map" title=""></i>
-                        <h4>Ruta</h4>
-                    </div>
-                </a>
-
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/cartera/lista_cartera.php" class="selected">
-                    <div class="option">
-                        <i class="fa-regular fa-address-book"></i>
-                        <h4>Cobros</h4>
-                    </div>
-                </a>
-            </div>
         </div>
 
 
-        <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+    </main>
 
-        <main>
-            <!-- Botón para volver a la página anterior -->
-            <h1 class="text-center">Cobros</h1>
+    <script src="/public/assets/js/MenuLate.js"></script>
 
-            <div class="container-fluid">
+</body>
 
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                    </tr>
-                    <?php
-                    // Mostrar los resultados en la tabla
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . "REC-100" . $row["id"] . "</td>";
-                            echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'  class='back-link3'>" . $row["nombre"] . "</a></td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='3'>No se encontraron resultados</td></tr>";
-                    }
-                    ?>
-                </table>
-
-            </div>
-
-
-        </main>
-
-        <script src="/public/assets/js/MenuLate.js"></script>
-
-    </body>
-
-    </html>
+</html>

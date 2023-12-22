@@ -100,6 +100,18 @@ if (isset($_GET['id'])) {
         .back-link2:hover {
             background-color: rgb(160, 91, 91);
         }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+            /* Agrega desplazamiento horizontal en pantallas pequeñas */
+        }
+
+        .table-scroll-container {
+            overflow-x: auto;
+            /* Habilita el desplazamiento horizontal */
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -111,7 +123,7 @@ if (isset($_GET['id'])) {
             <div class="icon__menu">
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
-            <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php" class="back-link1">Volver </a>
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="back-link1">Volver </a>
 
             <a href="agregar_cliente.php?id=<?= $cartera_id ?>" class="back-link2">R Cliente</a>
 
@@ -140,7 +152,7 @@ if (isset($_GET['id'])) {
                     </div>
                 </a>
 
-                <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php" class="selected">
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
                     <div class="option">
                         <i class="fa-solid fa-landmark" title="Inicio"></i>
                         <h4>Inicio</h4>
@@ -149,42 +161,42 @@ if (isset($_GET['id'])) {
 
 
 
-                <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php">
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
                     <div class="option">
                         <i class="fa-solid fa-people-group" title=""></i>
                         <h4>Clientes</h4>
                     </div>
                 </a>
 
-                <a href="/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php">
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
                     <div class="option">
                         <i class="fa-solid fa-user-tag" title=""></i>
                         <h4>Registrar Clientes</h4>
                     </div>
                 </a>
 
-                <a href="/resources/views/zonas/20-Puebla/cobrador/creditos/crudPrestamos.php">
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
                     <div class="option">
                         <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                         <h4>Prestamos</h4>
                     </div>
                 </a>
 
-                <a href="/resources/views/zonas/20-Puebla/cobrador/gastos/gastos.php">
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
                     <div class="option">
                         <i class="fa-solid fa-sack-xmark" title=""></i>
                         <h4>Gastos</h4>
                     </div>
                 </a>
 
-                <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                     <div class="option">
                         <i class="fa-solid fa-map" title=""></i>
                         <h4>Ruta</h4>
                     </div>
                 </a>
 
-                <a href="/resources/views/zonas/20-Puebla/cobrador/cartera/lista_cartera.php" class="selected">
+                <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="selected">
                     <div class="option">
                         <i class="fa-regular fa-address-book"></i>
                         <h4>Cobros</h4>
@@ -201,28 +213,33 @@ if (isset($_GET['id'])) {
         <main>
             <h1>Clientes de este Cobro</h1>
 
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                </tr>
+            <div class="table-scroll-container">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Curp</th>
+                        <th>Telefono</th>
+                    </tr>
 
-                <!-- Mostrar los datos de los clientes en la tabla -->
-                <?php
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["ID"] . "</td>";
-                        echo "<td>" . $row["Nombre"] . "</td>";
-                        // Puedes mostrar más información de los clientes según sea necesario
-                        echo "</tr>";
+                    <!-- Mostrar los datos de los clientes en la tabla -->
+                    <?php
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . $row["ID"] . "</td>";
+                            echo "<td>" . $row["Nombre"] . " " . $row["Apellido"] . "</td>";
+                            echo "<td>" . $row["IdentificacionCURP"] . "</td>";
+                            echo "<td>" . $row["Telefono"] . "</td>";
+                            // Puedes mostrar más información de los clientes según sea necesario
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='2'>No se encontraron clientes para esta cartera</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='2'>No se encontraron clientes para esta cartera</td></tr>";
-                }
-                ?>
-            </table>
-
+                    ?>
+                </table>
+            </div>
         </main>
 
         <script src="/public/assets/js/MenuLate.js"></script>
