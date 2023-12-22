@@ -255,13 +255,14 @@ $stmt_prestamo->close();
                     $fila_total = $resultado_total->fetch_assoc();
                     $total_clientes = $fila_total['TotalClientes'];
 
-                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ?";
+                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ? AND ZonaAsignada = 'Quintana Roo'";
                     $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
                     $stmt_posicion->bind_param("i", $id_cliente);
                     $stmt_posicion->execute();
                     $stmt_posicion->bind_result($posicion_cliente);
                     $stmt_posicion->fetch();
                     $stmt_posicion->close();
+
                     ?>
                     <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
                 </div>

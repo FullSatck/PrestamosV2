@@ -46,8 +46,7 @@ $stmt->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/gastos/agregar_gasto.php" class="botonn">
-            <i class="fa-solid fa-plus-minus"></i>
+        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/gastos/agregar_gasto.php" class="back-link1"> 
             <span class="spann">Agregar Gasto</span>
         </a>
 
