@@ -99,7 +99,8 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                 // Limitar el número de cuotas al plazo del préstamo
                 $numCuotas = min($plazoPrestamo, floor(($fechaActual - strtotime('+1 day', $fechaInicio)) / (60 * 60 * 24)));
 
-                echo '<form action="procesar_pagos.php" method="post" class="card card-body">';
+                echo '<form action="procesar_pagos.php" method="post" class="card card-body" data-monto-a-pagar="' . $row_prestamo['MontoAPagar'] . '">';
+
                 echo '<input type="hidden" name="prestamo_id" value="' . $row_prestamo['ID'] . '">';
                 echo '<input type="hidden" name="cliente_id" value="' . $id_cliente_url . '">';
                 echo '<div class="form-group">';
@@ -140,7 +141,8 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 
                 echo '<div class="total-cuotas">Total a pagar de las cuotas mostradas: <span id="total_cuotas" class="font-weight-bold h4 text-success">' . number_format($totalCuotas, 0, ',', '') . '</span></div>';
 
-                echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="mostrarDetalles()">Registrar Pagos</button>';
+                echo '<button type="button" id="botonRegistrarPagos" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="mostrarDetalles()">Registrar Pagos</button>';
+
                 echo '</form>';
             }
         }
@@ -256,7 +258,24 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                     }
                 });
                 $('#total_cuotas').text(total.toLocaleString());
+                verificarMontoTotal();
             }
+
+            function verificarMontoTotal() {
+                var montoAPagar = parseFloat($('form').data('monto-a-pagar')) || 0;
+                var totalCuotas = 0;
+                $('.cuota-monto').each(function() {
+                    totalCuotas += parseFloat($(this).val().replace(/,/g, '')) || 0;
+                });
+
+                if (totalCuotas > montoAPagar) {
+                    $('#botonRegistrarPagos').prop('disabled', true);
+                    alert('El monto total de las cuotas excede el monto a pagar del préstamo.');
+                } else {
+                    $('#botonRegistrarPagos').prop('disabled', false);
+                }
+            }
+
 
             function mostrarDetalles() {
                 let cliente = $("#cliente_nombre").val();

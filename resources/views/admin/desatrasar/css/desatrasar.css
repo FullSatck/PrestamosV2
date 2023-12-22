@@ -131,6 +131,10 @@ button.btn-primary:hover {
     color: #333;
     margin-bottom: 10px;
 }
+.modal {
+    z-index: 1050; /* Bootstrap normalmente usa este valor, pero puedes intentar con un número más alto si es necesario */
+}
+
 /* Estilo para el fondo oscuro detrás del modal */
 .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.5) !important;
