@@ -5,6 +5,27 @@ include '../../../../controllers/conexion.php';
 
 // Recuperar los datos del formulario
 $id_cliente = $_POST['id_cliente'];
+
+// Verificar si el cliente ya tiene un préstamo en los últimos 5 minutos
+$sql_verificar_prestamo = "SELECT COUNT(*) as count FROM prestamos WHERE IDCliente = ? AND FechaCreacion >= NOW() - INTERVAL 30 MINUTE";
+$stmt = $conexion->prepare($sql_verificar_prestamo);
+$stmt->bind_param("i", $id_cliente);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $cantidad_prestamos_recientes = $fila['count'];
+    if ($cantidad_prestamos_recientes > 0) {
+        // El cliente ya tiene un préstamo reciente, puedes tomar una acción aquí
+        // Por ejemplo, mostrar un mensaje de error o redireccionar a otra página con el id_cliente
+        $id_cliente = urlencode($id_cliente); // Codificar el id_cliente para asegurarte de que sea seguro en la URL
+        $mensaje_error = urlencode('Acabastes de hacer un prestamo a este cliente !TEN CUIDADO!.
+        SI TE EQUIVOCASTES VE A PRESTAMOS Y EDITALO Y DESATRASALO DES DE  ALLÁ');
+        header("Location: /resources/views/admin/desatrasar/hacerPrestamo.php?mensaje=$mensaje_error&clienteId=$id_cliente");
+        exit();
+    }
+}
+$stmt->close();
+
 $monto = $_POST['monto'];
 $tasa_interes = isset($_POST['TasaInteres']) ? floatval($_POST['TasaInteres']) : 0; // Validar tasa_interes
 $plazo = $_POST['plazo'];
@@ -64,7 +85,8 @@ if ($conexion->query($sql) === TRUE) {
 }
 
 // Función para calcular la fecha de vencimiento en función del plazo y la frecuencia de pago
-function calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago) {
+function calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago)
+{
     $fecha = new DateTime($fecha_inicio);
 
     switch ($frecuencia_pago) {
@@ -90,13 +112,14 @@ function calcularFechaVencimiento($fecha_inicio, $plazo, $frecuencia_pago) {
 }
 
 // Función para calcular las fechas de pago
-function calcularFechasPago($fecha_inicio, $frecuencia_pago, $plazo, $id_prestamo, $zona) {
+function calcularFechasPago($fecha_inicio, $frecuencia_pago, $plazo, $id_prestamo, $zona)
+{
     $fechasPago = array();
-    $fecha = new DateTime($fecha_inicio); 
+    $fecha = new DateTime($fecha_inicio);
 
     for ($i = 0; $i < $plazo; $i++) {
         $fechasPago[] = clone $fecha;
-        
+
         switch ($frecuencia_pago) {
             case 'diario':
                 $fecha->modify('+1 day');
@@ -117,7 +140,8 @@ function calcularFechasPago($fecha_inicio, $frecuencia_pago, $plazo, $id_prestam
 }
 
 // Función para obtener el primer ID de préstamo de la base de datos
-function obtenerPrimerID($conexion) {
+function obtenerPrimerID($conexion)
+{
     $primer_id = 0;
 
     // Consulta para obtener el primer ID de préstamo
@@ -131,4 +155,3 @@ function obtenerPrimerID($conexion) {
 
     return $primer_id;
 }
-?>

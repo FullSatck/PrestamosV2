@@ -215,14 +215,15 @@ $resultado = $conexion->query($sql);
                         <th>Apellido</th>
                         <th>Domicilio</th>
                         <th>Teléfono</th>
-                        <th>Moneda Preferida</th>
+                        <!-- <th>Moneda Preferida</th> -->
                         <th>Zona Asignada</th>
                         <th>Estado</th>
-                        <th>Des/Act</th>
+                        <th>Prestamo Atrasado </th>
                         <th>Editar</th>
                         <th>Perfil</th>
                         <th>Pagos</th>
-                        <th>Prestamo Atrasado </th>
+                        <th>Des/Act</th>
+                       
 
                     </tr>
                     <?php while ($fila = $resultado->fetch_assoc()) { ?>
@@ -232,26 +233,28 @@ $resultado = $conexion->query($sql);
                             <td><?= $fila["Apellido"] ?></td>
                             <td><?= $fila["Domicilio"] ?></td>
                             <td><?= $fila["Telefono"] ?></td>
-                            <td><?= $fila["Moneda"] ?></td>
+                            <!-- <td><?= $fila["Moneda"] ?></td> -->
                             <td><?= $fila["ZonaAsignada"] ?></td>
                             <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td>
+                            <td>
+                                <a href="/resources/views/admin/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    <span>Prest Atrasado</span>
+                                </a>
+
+
+                            </td>
+                           
+                            <td><a href="editar_cliente.php?id=<?= $fila["ID"] ?>">Editar</a></td>
+                            <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
+                            <td><a href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                            </td>
+                            
                             <td>
                                 <a href="cambiarEstadoCliente.php?id=<?= $fila["ID"] ?>&estado=<?= $fila["Estado"] ?>">
                                     <i class="fas <?= $fila["Estado"] == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
                                     <?= $fila["Estado"] == 1 ? 'Desactivar' : 'Activar' ?>
                                 </a>
-                            </td>
-                            <td><a href="editar_cliente.php?id=<?= $fila["ID"] ?>">Editar</a></td>
-                            <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                            <td><a href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                            </td>
-                            <td>
-                                <a href="/resources/views/admin/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <span>Hacer Préstamo</span>
-                                </a>
-
-
                             </td>
 
                         <?php } ?>
