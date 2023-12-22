@@ -122,10 +122,10 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
 
@@ -234,7 +234,7 @@ date_default_timezone_set('America/Bogota');
             </div>
 
             <div class="btn-container">
-                <input class="btn-container" type="submit" value="Registrar">
+                <input id="boton-registrar" class="btn-container" type="submit" value="Registrar">
             </div>
         </form>
 
@@ -242,51 +242,47 @@ date_default_timezone_set('America/Bogota');
     </main>
 
     <script>
-        document.getElementById("curp").addEventListener("input", function() {
-            const curp = this.value;
-            const mensajeEmergente = document.getElementById("mensaje-emergente");
-            const mensajeError = document.getElementById("mensaje-error");
-            const enlacePerfil = document.getElementById("enlace-perfil");
+    function verificarCliente() {
+        const curp = document.getElementById("curp").value;
+        const telefono = document.getElementById("telefono").value;
+        const mensajeEmergente = document.getElementById("mensaje-emergente");
+        const mensajeError = document.getElementById("mensaje-error");
+        const enlacePerfil = document.getElementById("enlace-perfil");
+        const botonRegistrar = document.getElementById("boton-registrar");
 
-            if (curp) {
-                // Crear una nueva solicitud AJAX
-                const xhr = new XMLHttpRequest();
+        if (curp || telefono) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/controllers/verificar_cliente.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-                // Definir el método y la URL del archivo PHP
-                xhr.open("POST", "/controllers/verificar_cliente.php", true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const respuesta = JSON.parse(xhr.responseText);
 
-                // Establecer el encabezado necesario para el envío de datos POST
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-                // Definir la función de respuesta
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        const respuesta = JSON.parse(xhr.responseText);
-
-                        if (respuesta.existe) {
-                            // Si el cliente ya existe, muestra un mensaje de error
-                            mensajeEmergente.style.display = "block";
-                            mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
-                            // Configura el enlace para ir al perfil con el ID
-                            enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta
-                                .cliente_id;
-                        } else {
-                            // Si el cliente no existe, oculta el mensaje de error y restablece el enlace
-                            mensajeEmergente.style.display = "none";
-                            enlacePerfil.href = "";
-                        }
+                    if (respuesta.existe) {
+                        mensajeEmergente.style.display = "block";
+                        mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
+                        enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta.cliente_id;
+                        botonRegistrar.style.display = "none"; // Ocultar el botón
+                    } else {
+                        mensajeEmergente.style.display = "none";
+                        enlacePerfil.href = "";
+                        botonRegistrar.style.display = "block"; // Mostrar el botón
                     }
-                };
+                }
+            };
 
-                // Enviar la solicitud con el CURP como datos POST
-                xhr.send("curp=" + curp);
-            } else {
-                // Si el campo CURP está vacío, oculta el mensaje de error y restablece el enlace
-                mensajeEmergente.style.display = "none";
-                enlacePerfil.href = "";
-            }
-        });
-    </script>
+            xhr.send("curp=" + encodeURIComponent(curp) + "&telefono=" + encodeURIComponent(telefono));
+        } else {
+            mensajeEmergente.style.display = "none";
+            enlacePerfil.href = "";
+            botonRegistrar.style.display = "block"; // Mostrar el botón si ambos campos están vacíos
+        }
+    }
+
+    document.getElementById("curp").addEventListener("input", verificarCliente);
+    document.getElementById("telefono").addEventListener("input", verificarCliente);
+</script>
 
     <script src="/public/assets/js/MenuLate.js"></script>
     <script src="/public/assets/js/mensaje.js"></script>

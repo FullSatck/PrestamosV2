@@ -46,8 +46,7 @@ $stmt->close();
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/agregar_gasto.php" class="botonn">
-            <i class="fa-solid fa-plus-minus"></i>
+        <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/agregar_gasto.php" class="back-link1"> 
             <span class="spann">Agregar Gasto</span>
         </a>
 
@@ -125,10 +124,10 @@ $stmt->close();
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/lista_super.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/ruta.php">
                 <div class="option">
                     <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
         </div>

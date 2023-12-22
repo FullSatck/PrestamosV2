@@ -77,40 +77,20 @@ if ($_SESSION["rol"] == 1) {
     $ruta_volver = "/resources/views/admin/inicio/inicio.php";
     $ruta_filtro = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
     $ruta_cliente = "/resources/views/admin/clientes/agregar_clientes.php";
-} elseif ($_SESSION["rol"] == 3) {
+} elseif ($_SESSION["rol"] == 2) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php";
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php";
     } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php";
+        $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php";
     } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php";
-    } elseif ($_SESSION["rol"] == 2) {
-        // Ruta para el rol 3 (cobrador) en base a la zona
-        if ($_SESSION['user_zone'] === '6') {
-            $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
-            $ruta_filtro = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php";
-            $ruta_cliente = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php";
-        } elseif ($_SESSION['user_zone'] === '20') {
-            $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
-            $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
-            $ruta_cliente = "/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php";
-        } elseif ($_SESSION['user_zone'] === '22') {
-            $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
-            $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php";
-            $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php";
-        } else {
-            // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
-            $ruta_volver = "index.php";
-            $ruta_filtro = "index.php";
-            $ruta_cliente = "index.php";
-        }
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "index.php";
@@ -155,7 +135,7 @@ if ($resultado_prestamo->num_rows > 0) {
 
 if ($mostrarMensajeAgregarPrestamo) {
     echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos activos o están completamente pagados.</p>";
-    echo "<a href='../resources/views/admin/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
+    echo "<a href='../../creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
 } else {
     // Procesamiento normal si el cliente tiene un préstamo activo
 }
@@ -255,7 +235,7 @@ $stmt_prestamo->close();
                     $fila_total = $resultado_total->fetch_assoc();
                     $total_clientes = $fila_total['TotalClientes'];
 
-                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ?";
+                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ? AND ZonaAsignada = 'Chihuahua'";
                     $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
                     $stmt_posicion->bind_param("i", $id_cliente);
                     $stmt_posicion->execute();

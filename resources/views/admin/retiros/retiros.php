@@ -59,8 +59,7 @@ if ($result->num_rows > 0) {
 
 
         </div>
-        <a href="/resources/views/admin/retiros/agregar_retiros.php" class="botonn">
-            <i class="fa-solid fa-plus"></i>
+        <a href="/resources/views/admin/retiros/agregar_retiros.php" class="back-link1"> 
             <span class="spann">Agregar retiro</span>
         </a>
         <div class="nombre-usuario">
