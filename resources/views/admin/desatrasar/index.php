@@ -40,16 +40,6 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     header("Location: /ruta_a_pagina_de_error_o_inicio.php");
     exit();
 }
-// Evitar recarga manual de la página
-if ($_SERVER["REQUEST_METHOD"] === "POST" || isset($_SESSION['reloaded'])) {
-    // El usuario intentó recargar la página después de enviar un formulario u otra acción.
-    // Redirigirlo a la página actual para evitar recargas accidentales.
-    $_SESSION['reloaded'] = true; // Establece una bandera de sesión para evitar múltiples redirecciones en caso de recarga continua.
-    header("Location: " . $_SERVER["REQUEST_URI"]);
-    exit();
-}
-
-// Resto de tu código PHP
 
 ?>
 
