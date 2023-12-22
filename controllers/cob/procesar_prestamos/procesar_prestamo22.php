@@ -18,7 +18,7 @@ $valor_comision = isset($_POST['valor_comision']) ? floatval($_POST['valor_comis
 
 // Validar que la tasa de interés sea un número válido
 if (!is_numeric($tasa_interes)) {
-    header('Location: ../../../resources/views/zonas/22-QuintanaRoo/supervisor/creditos/prestamos.php?mensaje=La tasa de interés no es válida.');
+    header('Location: ../../../resources/views/zonas/22-QuintanaRoo/cobrador/creditos/prestamos.php?mensaje=La tasa de interés no es válida.');
     exit; // Detener la ejecución
 }
 
