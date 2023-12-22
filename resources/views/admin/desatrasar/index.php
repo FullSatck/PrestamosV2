@@ -51,22 +51,16 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-  // Evitar que el usuario utilice el botón Atrás del navegador
-window.history.forward();
 
-// Bloquear la navegación hacia atrás
-window.onbeforeunload = function () {
-    return "La navegación hacia atrás está desactivada en esta página.";
-};
 
-</script>
+    </script>
 
     <title>Registrar Pagos Retroactivos</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/resources/views/admin/desatrasar/css/desatrasar.css">
- 
+
 
 </head>
 
@@ -115,6 +109,9 @@ window.onbeforeunload = function () {
 
                 // Limitar el número de cuotas al plazo del préstamo
                 $numCuotas = min($plazoPrestamo, floor(($fechaActual - strtotime('+1 day', $fechaInicio)) / (60 * 60 * 24)));
+                echo '<div class="boton-contenedor">';
+                echo '<a href="editar_prestamo.php?prestamo_id=' . $row_prestamo['ID'] . '" class="btn btn-editar-prestamo">Editar Préstamo</a>';
+                echo '</div>';
 
                 echo '<form action="procesar_pagos.php" method="post" class="card card-body" data-monto-a-pagar="' . $row_prestamo['MontoAPagar'] . '">';
 
@@ -197,15 +194,13 @@ window.onbeforeunload = function () {
         </div>
         <!-- Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-        
+
 
 
 
 
         <script>
-
-
-      $(document).ready(function() {
+            $(document).ready(function() {
                 // Listener para cambios en el número de cuotas
                 $('#num_cuotas').change(function() {
                     ajustarFormularioCuotas();

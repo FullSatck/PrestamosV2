@@ -116,14 +116,12 @@ if (!isset($_SESSION["usuario_id"])) {
         <br>
         <h1>Solicitud de Préstamo Atrasados</h1><br>
         <?php
-        // Verificar si hay un mensaje de error en la URL y mostrarlo
-        if (isset($_GET['mensaje'])) {
-            $mensaje_error = htmlspecialchars($_GET['mensaje']);
-            echo '<div class="alert alert-danger" role="alert">' . $mensaje_error . '</div>';
+        // Verificar si se pasó un mensaje de error y el ID del cliente
+        if (isset($_GET['error']) && $_GET['error'] == 'prestamo_reciente' && isset($_GET['clienteId'])) {
+            $clienteId = htmlspecialchars($_GET['clienteId']);
+            echo '<div class="alert alert-danger" role="alert">Este cliente ya tiene un préstamo realizado. Editalo en desatrasar</div>';
+            echo '<a href="index.php?id_cliente=' . $clienteId . '" class="btn btn-primary">Ir a desatrasar</a>';
         }
-
-        // Recuperar el id_cliente de la URL si está presente
-        $id_cliente = isset($_GET['id_cliente']) ? htmlspecialchars($_GET['id_cliente']) : '';
         ?>
         <!-- Formulario de solicitud de préstamo (prestamo.html) -->
         <form action="procesar_prestamo.php" method="POST" class="form-container">
