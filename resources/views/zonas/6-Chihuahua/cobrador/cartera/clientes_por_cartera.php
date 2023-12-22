@@ -100,6 +100,18 @@ if (isset($_GET['id'])) {
         .back-link2:hover {
             background-color: rgb(160, 91, 91);
         }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+            /* Agrega desplazamiento horizontal en pantallas pequeñas */
+        }
+
+        .table-scroll-container {
+            overflow-x: auto;
+            /* Habilita el desplazamiento horizontal */
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -201,28 +213,33 @@ if (isset($_GET['id'])) {
         <main>
             <h1>Clientes de este Cobro</h1>
 
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                </tr>
+            <div class="table-scroll-container">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Curp</th>
+                        <th>Telefono</th>
+                    </tr>
 
-                <!-- Mostrar los datos de los clientes en la tabla -->
-                <?php
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["ID"] . "</td>";
-                        echo "<td>" . $row["Nombre"] . "</td>";
-                        // Puedes mostrar más información de los clientes según sea necesario
-                        echo "</tr>";
+                    <!-- Mostrar los datos de los clientes en la tabla -->
+                    <?php
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . $row["ID"] . "</td>";
+                            echo "<td>" . $row["Nombre"] . " " . $row["Apellido"] . "</td>";
+                            echo "<td>" . $row["IdentificacionCURP"] . "</td>";
+                            echo "<td>" . $row["Telefono"] . "</td>";
+                            // Puedes mostrar más información de los clientes según sea necesario
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='2'>No se encontraron clientes para esta cartera</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='2'>No se encontraron clientes para esta cartera</td></tr>";
-                }
-                ?>
-            </table>
-
+                    ?>
+                </table>
+            </div>
         </main>
 
         <script src="/public/assets/js/MenuLate.js"></script>

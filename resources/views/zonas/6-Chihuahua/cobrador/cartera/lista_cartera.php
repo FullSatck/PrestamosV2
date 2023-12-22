@@ -41,8 +41,12 @@ if (!$fila || $fila['Nombre'] !== 'cobrador') {
 }
 
 // Consulta SQL para obtener las carteras
-$sql = "SELECT id, nombre, zona FROM carteras WHERE zona = 6";
+$sql = "SELECT carteras.id, carteras.nombre, carteras.zona, ciudades.nombre AS nombre_ciudad, carteras.asentamiento 
+        FROM carteras 
+        JOIN ciudades ON carteras.ciudad = ciudades.id 
+        WHERE carteras.zona = 6";
 $result = $conexion->query($sql);
+
 ?>
 
 <head>
@@ -191,7 +195,9 @@ $result = $conexion->query($sql);
                 <table>
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
+                        <th>Nombre</th> 
+                        <th>Municipio</th>
+                        <th>Colonia</th>
                     </tr>
                     <?php
                     // Mostrar los resultados en la tabla
@@ -200,6 +206,8 @@ $result = $conexion->query($sql);
                             echo "<tr>";
                             echo "<td>" . "REC-100" . $row["id"] . "</td>";
                             echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'  class='back-link3'>" . $row["nombre"] . "</a></td>";
+                            echo "<td>" . $row["nombre_ciudad"] . "</td>";
+                            echo "<td>" . $row["asentamiento"] . "</td>";
                             echo "</tr>";
                         }
                     } else {
