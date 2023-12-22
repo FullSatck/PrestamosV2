@@ -60,92 +60,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <body id="body">
 
         <header>
-            <div class="icon__menu">
-                <i class="fas fa-bars" id="btn_open"></i>
-            </div>
-            <a href="javascript:history.back()" class="back-link">Volver Atrás</a>
             <div class="nombre-usuario">
-            <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
-        </div>
+                <?php
+                if (isset($_SESSION["nombre_usuario"])) {
+                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+                }
+                ?>
+            </div>
         </header>
 
-        <div class="menu__side" id="menu_side">
-
-            <div class="name__page">
-                <img src="/public/assets/img/logo.png" class="img logo-image" alt="">
-                <h4>Recaudo</h4>
-            </div>
-
-            <div class="options__menu">
-
-            <a href="/controllers/cerrar_sesion.php">
-                <div class="option">
-                    <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-                    <h4>Cerrar Sesion</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
-                <div class="option">
-                    <i class="fa-solid fa-landmark" title="Inicio"></i>
-                    <h4>Inicio</h4>
-                </div>
-            </a>
-
-         
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-people-group" title=""></i>
-                    <h4>Clientes</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
-                <div class="option">
-                    <i class="fa-solid fa-user-tag" title=""></i>
-                    <h4>Registrar Clientes</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
-                <div class="option">
-                    <i class="fa-solid fa-hand-holding-dollar" title=""></i>
-                    <h4>Prestamos</h4>
-                </div>
-            </a> 
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
-                    <h4>Gastos</h4>
-                </div>
-            </a> 
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutada</h4>
-                </div>
-            </a>
-
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/cartera/lista_cartera.php" class="selected">
-                <div class="option">
-                    <i class="fa-regular fa-address-book"></i>
-                    <h4>Cobros</h4>
-                </div>
-            </a>
-
-           
-
-            </div>
-        </div>
-
- 
         <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
         <main class="main2">
@@ -158,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="zona">Estado:</label>
                 <select id="zona" name="zona" placeholder="Por favor ingrese la zona" required>
                     <?php
-                     require_once '../../../../../../controllers/conexion.php';
+                    require_once '../../../../../../controllers/conexion.php';
                     // Consulta SQL para obtener las zonas
                     $consultaZonas = "SELECT iD, nombre FROM zonas WHERE iD = 6";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
@@ -171,9 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <label for="ciudad">Ciudad:</label>
                 <select id="ciudad" name="ciudad" required>
-                
+
                     <?php
-                     require_once '../../../../../../controllers/conexion.php';
+                    require_once '../../../../../../controllers/conexion.php';
                     // Consulta SQL para obtener las ciudades de la zona 20
                     $consultaCiudades = "SELECT ID, Nombre FROM ciudades WHERE IDZona = 6";
                     $resultCiudades = mysqli_query($conexion, $consultaCiudades);
@@ -187,7 +110,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="asentamiento">Asentamiento:</label>
                 <input type="text" id="asentamiento" name="asentamiento"><br><br>
 
-                <input type="submit" value="Agregar">
+                <div class="form-actions">
+                    <input type="submit" value="Agregar">
+                    <a href="javascript:history.back()" class="back-link1">Cancelar</a>
+                </div>
+
             </form>
         </main>
 
