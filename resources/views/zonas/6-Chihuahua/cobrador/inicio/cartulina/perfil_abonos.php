@@ -155,7 +155,7 @@ if ($resultado_prestamo->num_rows > 0) {
 
 if ($mostrarMensajeAgregarPrestamo) {
     echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos activos o están completamente pagados.</p>";
-    echo "<a href='../resources/views/admin/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
+    echo "<a href='../../creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
 } else {
     // Procesamiento normal si el cliente tiene un préstamo activo
 }
@@ -255,13 +255,14 @@ $stmt_prestamo->close();
                     $fila_total = $resultado_total->fetch_assoc();
                     $total_clientes = $fila_total['TotalClientes'];
 
-                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ?";
+                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ? AND ZonaAsignada = 'Chihuahua'";
                     $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
                     $stmt_posicion->bind_param("i", $id_cliente);
                     $stmt_posicion->execute();
                     $stmt_posicion->bind_result($posicion_cliente);
                     $stmt_posicion->fetch();
                     $stmt_posicion->close();
+
                     ?>
                     <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
                 </div>
