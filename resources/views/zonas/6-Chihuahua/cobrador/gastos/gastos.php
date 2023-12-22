@@ -46,8 +46,7 @@ date_default_timezone_set('America/Bogota');
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
-        <a href="agregar_gasto.php" class="back-link1">
-            <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
+        <a href="agregar_gasto.php" class="back-link1"> 
             <span class="spann">Agregar Gasto</span>
         </a>
         <div class="nombre-usuario">

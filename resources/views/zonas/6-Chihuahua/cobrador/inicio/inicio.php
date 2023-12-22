@@ -134,7 +134,7 @@ date_default_timezone_set('America/Bogota');
     </div>
 
     <main>
-        <h1>Inicio cobrador de Puebla</h1>
+        <h1>Inicio cobrador de Chihuahua</h1>
         <div class="cuadros-container">
             
 
