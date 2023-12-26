@@ -81,7 +81,7 @@ if (isset($_GET['clienteId'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
@@ -90,35 +90,35 @@ if (isset($_GET['clienteId'])) {
 
 
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php" class="selected">
+            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/clientes/lista_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Cobros</h4>

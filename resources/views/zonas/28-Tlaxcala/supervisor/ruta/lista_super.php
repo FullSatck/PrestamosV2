@@ -74,49 +74,49 @@ if (isset($_GET['mensaje'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/usuarios/crudusuarios.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/usuarios/registrar.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/usuarios/registrar.php">
                 <div class="option">
                     <i class="fa-solid fa-user-plus" title=""></i>
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/lista_clientes.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/gastos/gastos.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
