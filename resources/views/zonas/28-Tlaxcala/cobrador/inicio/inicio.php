@@ -140,7 +140,7 @@ date_default_timezone_set('America/Bogota');
             {
                 $primer_id = 0;
 
-                // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
+                // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Tlaxcala'
                 $sql_primer_id = "SELECT ID
                       FROM clientes
                       WHERE ZonaAsignada = 'Tlaxcala'

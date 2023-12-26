@@ -274,6 +274,13 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                                     <?= $datos->EstadoP == 1 ? ' Desactivar' : ' Activar' ?>
                                                 </a>
                                             </td>
+                                            <td class="icon-td">
+                                                <a href="/resources/views/admin/desatrasar/index.php?id=<?= $datos->ID ?>&cliente_id=<?= $datos->IDCliente ?>">
+                                                    <i class="fas fa-unlock"></i>
+                                                    Desactrasar
+                                                </a>
+                                            </td>
+
 
                                             <td class="icon-td">
                                                 <a href="editar_prestamo.php?prestamo_id=<?= $datos->ID ?>" class="edit-btn">
