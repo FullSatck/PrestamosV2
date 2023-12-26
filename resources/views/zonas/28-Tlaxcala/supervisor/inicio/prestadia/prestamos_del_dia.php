@@ -56,10 +56,10 @@ require 'filtrarPrestamos.php'; // Asegúrate de que este archivo contiene la fu
 $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'pendiente';
 
 // Obtener las cuotas del día con el filtro aplicado
-$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Quintana Roo');
+$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Tlaxcala');
 
 // Obtener conteos de préstamos
-$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Quintana Roo');
+$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Tlaxcala');
 date_default_timezone_set('America/Bogota');
 ?>
 <!DOCTYPE html>
