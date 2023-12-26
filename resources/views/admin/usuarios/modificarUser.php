@@ -72,9 +72,10 @@ if (isset($_GET['id'])) {
             die("Error en la consulta SQL: " . $conexion->error);
         }
 
-        if (!$stmt->bind_param("sssssii", $nombre, $apellido, $email, $zona, $rolID, $contrasena, $usuario_id_modificar)) {
+        if (!$stmt->bind_param("ssssisi", $nombre, $apellido, $email, $zona, $rolID, $contrasena, $usuario_id_modificar)) {
             die("Error en la vinculación de parámetros: " . $stmt->error);
         }
+        
 
         if ($stmt->execute()) {
             header("location: crudusuarios.php?mensaje=Usuario modificado con éxito");
