@@ -239,6 +239,7 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                         <th scope="col">Frecuencia</th>
                                         <th scope="col">Cuota</th>
                                         <th scope="col">Estado</th>
+                                        <th scope="col">Desactrasar</th>
                                         <th scope="col">Dec/Act</th>
                                         <th scope="col">Editar</th>
                                         <th scope="col">Borrar</th>
