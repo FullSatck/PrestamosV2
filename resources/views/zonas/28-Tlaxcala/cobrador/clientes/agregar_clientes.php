@@ -130,7 +130,7 @@ $stmt->close();
     <main>
 
         <h1>Registro de Clientes</h1>
-        <form action="/controllers/cob/validar_clientes/validar_clientes22.php" method="POST" enctype="multipart/form-data">
+        <form action="/controllers/cob/validar_clientes/validar_clientes28.php" method="POST" enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
