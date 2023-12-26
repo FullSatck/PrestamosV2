@@ -236,7 +236,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="" <?php echo (!empty($id_zona_err)) ? 'selected' : ''; ?>>Seleccionar Estado</option>
                     <!-- Aquí deberías cargar las opciones de zona desde tu base de datos -->
                     <?php
-                $sql_zonas = "SELECT * FROM zonas WHERE nombre = 'Quintana Roo'";
+                $sql_zonas = "SELECT * FROM zonas WHERE nombre = 'Tlaxcala'";
                 $result_zonas = $conexion->query($sql_zonas);
 
                 if ($result_zonas->num_rows > 0) {
@@ -255,7 +255,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select id="ciudad" name="ciudad" class="zona" required>
                     <option value="">Seleccionar Municipio</option>
                     <?php
-    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 22";
+    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 28";
     $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
     while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
         echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';

@@ -91,6 +91,10 @@ if ($_SESSION["rol"] == 1) {
         $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
         $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php";
         $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '28') {
+        $ruta_volver = "/resources/views/zonas/28-Tlaxcala/supervisor/inicio/inicio.php";
+        $ruta_filtro = "/resources/views/zonas/28-Tlaxcala/supervisor/inicio/prestadia/prestamos_del_dia.php";
+        $ruta_cliente = "/resources/views/zonas/28-Tlaxcala/supervisor/clientes/agregar_clientes.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "index.php";
