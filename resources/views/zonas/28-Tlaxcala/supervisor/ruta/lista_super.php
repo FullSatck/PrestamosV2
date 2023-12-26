@@ -149,7 +149,7 @@ if (isset($_GET['mensaje'])) {
                 <tbody>
                     <?php
                 include("../../../../../../controllers/conexion.php");
-                $sql = $conexion->prepare("SELECT usuarios.ID, usuarios.Nombre, usuarios.Apellido, usuarios.Email, zonas.Nombre AS zona, roles.Nombre AS rol FROM usuarios JOIN zonas ON usuarios.Zona = zonas.ID JOIN roles ON usuarios.RolID = roles.ID WHERE roles.ID = 3 AND zonas.ID = 22"); // Filtra por el ID del rol de supervisor (2)
+                $sql = $conexion->prepare("SELECT usuarios.ID, usuarios.Nombre, usuarios.Apellido, usuarios.Email, zonas.Nombre AS zona, roles.Nombre AS rol FROM usuarios JOIN zonas ON usuarios.Zona = zonas.ID JOIN roles ON usuarios.RolID = roles.ID WHERE roles.ID = 3 AND zonas.ID = 28"); // Filtra por el ID del rol de supervisor (2)
                 
                 // Verificar si la preparación de la consulta fue exitosa
                 if ($sql === false) {

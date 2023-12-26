@@ -143,9 +143,9 @@ $stmt->close();
             include("../../../../../../controllers/conexion.php");
 
             // Obtener la lista de clientes, monedas y zonas desde la base de datos
-            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Quintana Roo' ORDER BY ID DESC LIMIT 1";
+            $query_clientes = "SELECT iD, nombre FROM clientes WHERE zonaAsignada = 'Tlaxcala' ORDER BY ID DESC LIMIT 1";
             $query_monedas = "SELECT iD, nombre, simbolo FROM monedas";
-            $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Quintana Roo'";
+            $query_zonas = "SELECT nombre FROM zonas WHERE nombre = 'Tlaxcala'";
 
             $result_clientes = $conexion->query($query_clientes);
             $result_monedas = $conexion->query($query_monedas);
