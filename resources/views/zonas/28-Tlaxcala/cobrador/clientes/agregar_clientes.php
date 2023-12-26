@@ -181,7 +181,7 @@ $stmt->close();
                     // Incluye el archivo de conexión a la base de datos
                     include("../../../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
-                    $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Quintana Roo'";
+                    $consultaZonas = "SELECT iD, nombre FROM zonas WHERE nombre = 'Tlaxcala'";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
                     // Genera las opciones del menú desplegable para Zona
                     while ($row = mysqli_fetch_assoc($resultZonas)) {

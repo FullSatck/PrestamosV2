@@ -56,10 +56,10 @@ require 'filtrarPrestamos.php'; // Asegúrate de que este archivo contiene la fu
 $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'pendiente';
 
 // Obtener las cuotas del día con el filtro aplicado
-$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Quintana Roo');
+$cuotasHoy = obtenerCuotas($conexion, $filtro, 'Tlaxcala');
 
 // Obtener conteos de préstamos
-$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Quintana Roo');
+$conteosPrestamos = contarPrestamosPorEstado($conexion, 'Tlaxcala');
 date_default_timezone_set('America/Bogota');
 ?>
 <!DOCTYPE html>
@@ -83,7 +83,7 @@ date_default_timezone_set('America/Bogota');
 <body>
 
     <header>
-        <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/28-Tlaxcala/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -132,7 +132,7 @@ date_default_timezone_set('America/Bogota');
 
                 <input type="text" name="busqueda" placeholder="Buscar...">
 
-                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
+                <a href="/resources/views/zonas/28-Tlaxcala/cobrador/clientes/agregar_clientes.php" class="btn btn-success" style="margin-left: 10px;">Registrar Cliente</a>
             </div>
 
         </form>
@@ -167,7 +167,7 @@ date_default_timezone_set('America/Bogota');
                                 <td><?php echo htmlspecialchars($cuota['IdentificacionCURP']); ?></td>
                                 <td><?php echo htmlspecialchars($cuota['TelefonoCliente']); ?></td>
                                 <td>
-                                <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/cartulina/perfil_abonos.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
+                                <a href="/resources/views/zonas/28-Tlaxcala/cobrador/inicio/cartulina/perfil_abonos.php?id=<?php echo $cuota['IDCliente']; ?>" class="btn btn-info">Perfil </a>
                                     <?php if ($filtro != 'pagado') : ?>
                                 </td>
 
