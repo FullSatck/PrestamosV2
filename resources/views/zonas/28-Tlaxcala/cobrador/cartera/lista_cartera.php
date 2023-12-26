@@ -44,7 +44,7 @@ if (!$fila || $fila['Nombre'] !== 'cobrador') {
 $sql = "SELECT carteras.id, carteras.nombre, carteras.zona, ciudades.nombre AS nombre_ciudad, carteras.asentamiento 
         FROM carteras 
         JOIN ciudades ON carteras.ciudad = ciudades.id 
-        WHERE carteras.zona = 22";
+        WHERE carteras.zona = 28";
 $result = $conexion->query($sql);
 
 ?>

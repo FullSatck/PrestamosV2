@@ -262,7 +262,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select id="ciudad" name="ciudad" class="zona" required>
                     <option value="">Seleccionar Municipio</option>
                     <?php
-    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 22";
+    $consultaCiudades = "SELECT Nombre FROM ciudades WHERE IDZona = 28";
     $resultadoCiudades = mysqli_query($conexion, $consultaCiudades);
     while ($fila = mysqli_fetch_assoc($resultadoCiudades)) {
         echo '<option value="' . $fila['Nombre'] . '">' . $fila['Nombre'] . '</option>';
