@@ -130,7 +130,7 @@ date_default_timezone_set('America/Bogota');
     </div>
 
     <main>
-        <h1>Inicio cobrador de Quintana Roo</h1>
+        <h1>Inicio cobrador de Tlaxcala</h1>
         <div class="cuadros-container">
 
             <!-- TRAER EL PRIMER ID -->
@@ -143,7 +143,7 @@ date_default_timezone_set('America/Bogota');
                 // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
                 $sql_primer_id = "SELECT ID
                       FROM clientes
-                      WHERE ZonaAsignada = 'Quintana Roo'
+                      WHERE ZonaAsignada = 'Tlaxcala'
                       ORDER BY ID ASC
                       LIMIT 1";
 
