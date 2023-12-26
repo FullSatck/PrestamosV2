@@ -136,7 +136,7 @@ $stmt->close();
 
     <main>
         <h1>Solicitud de Préstamo</h1><br><br>
-        <form action="/controllers/super/procesar_prestamos/procesar_prestamo22.php" method="POST"
+        <form action="/controllers/super/procesar_prestamos/procesar_prestamo28.php" method="POST"
             class="form-container">
             <?php
             // Incluir el archivo de conexión a la base de datos

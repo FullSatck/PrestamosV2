@@ -145,7 +145,7 @@ $stmt->close();
                 // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
                 $sql_primer_id = "SELECT ID
                       FROM clientes
-                      WHERE ZonaAsignada = 'Quintana Roo'
+                      WHERE ZonaAsignada = 'Tlaxcala'
                       ORDER BY ID ASC
                       LIMIT 1";
 
