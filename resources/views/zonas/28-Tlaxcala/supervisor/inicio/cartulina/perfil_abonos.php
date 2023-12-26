@@ -234,12 +234,12 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <?php
-                    $sql_total_clientes = "SELECT COUNT(*) AS TotalClientes FROM clientes WHERE ZonaAsignada = 'Quintana Roo'";
+                    $sql_total_clientes = "SELECT COUNT(*) AS TotalClientes FROM clientes WHERE ZonaAsignada = 'Tlaxcala'";
                     $resultado_total = $conexion->query($sql_total_clientes);
                     $fila_total = $resultado_total->fetch_assoc();
                     $total_clientes = $fila_total['TotalClientes'];
 
-                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ? AND ZonaAsignada = 'Quintana Roo'";
+                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ? AND ZonaAsignada = 'Tlaxcala'";
                     $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
                     $stmt_posicion->bind_param("i", $id_cliente);
                     $stmt_posicion->execute();
