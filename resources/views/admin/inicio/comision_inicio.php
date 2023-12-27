@@ -4,7 +4,7 @@ date_default_timezone_set('America/Bogota');
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -16,19 +16,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -43,15 +43,13 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 // Conectar a la base de datos
 include("../../../../controllers/conexion.php");
@@ -78,17 +76,17 @@ $result = $conexion->query($sql);
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -155,7 +153,7 @@ $result = $conexion->query($sql);
                     <h4>Prestamos</h4>
                 </div>
             </a>
-            
+
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -168,91 +166,99 @@ $result = $conexion->query($sql);
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/ruta/ruta.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Enrutar</h4>
-            </div>
-        </a>
- 
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
+
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
+
         </div>
     </div>
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
     <main>
-    <main>
+        <main>
 
-        <h1>Comisiones totales</h1>
+            <h1>Comisiones totales</h1>
 
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-        </div>
- 
-        
-        <table id="prestamos-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre del Cliente</th>
-                <th>Monto a Pagar</th>
-                <th>Comisión</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($result->num_rows > 0): ?>
-                <?php while($row = $result->fetch_assoc()): ?>
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+            </div>
+
+
+            <table id="prestamos-table">
+                <thead>
                     <tr>
-                        <td><?php echo $row['ID']; ?></td>
-                        <td><?php echo $row['NombreCliente']; ?></td>
-                        <td><?php echo number_format($row['MontoAPagar'], 0, '.', '.'); ?></td>
-                        <td><?php echo number_format($row['Comision'], 0, '.', '.'); ?></td>
+                        <th>ID</th>
+                        <th>Nombre del Cliente</th>
+                        <th>Monto a Pagar</th>
+                        <th>Comisión</th>
                     </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="4">No hay préstamos registrados.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody> 
-    </table>
+                </thead>
+                <tbody>
+                    <?php if ($result->num_rows > 0) : ?>
+                        <?php while ($row = $result->fetch_assoc()) : ?>
+                            <tr>
+                                <td><?php echo $row['ID']; ?></td>
+                                <td><?php echo $row['NombreCliente']; ?></td>
+                                <td><?php echo number_format($row['MontoAPagar'], 0, '.', '.'); ?></td>
+                                <td><?php echo number_format($row['Comision'], 0, '.', '.'); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="4">No hay préstamos registrados.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
 
 
-        
-         
-    </main>
 
 
-    <script>
-// Función para filtrar las filas de la tabla
-function filterTable(event) {
-    var filter = event.target.value.toUpperCase();
-    var rows = document.querySelector("#prestamos-table tbody").rows;
-    
-    for (var i = 0; i < rows.length; i++) {
-        var firstCol = rows[i].cells[0].textContent.toUpperCase();
-        var secondCol = rows[i].cells[1].textContent.toUpperCase();
-        var thirdCol = rows[i].cells[2].textContent.toUpperCase();
-        var fourthCol = rows[i].cells[3].textContent.toUpperCase();
-        if (firstCol.indexOf(filter) > -1 || secondCol.indexOf(filter) > -1 || thirdCol.indexOf(filter) > -1 || fourthCol.indexOf(filter) > -1) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
-        }      
-    }
-}
+        </main>
 
-document.querySelector('#search-input').addEventListener('keyup', filterTable, false);
-</script>
-    
-    <script src="/public/assets/js/MenuLate.js"></script>
+
+        <script>
+            // Función para filtrar las filas de la tabla
+            function filterTable(event) {
+                var filter = event.target.value.toUpperCase();
+                var rows = document.querySelector("#prestamos-table tbody").rows;
+
+                for (var i = 0; i < rows.length; i++) {
+                    var firstCol = rows[i].cells[0].textContent.toUpperCase();
+                    var secondCol = rows[i].cells[1].textContent.toUpperCase();
+                    var thirdCol = rows[i].cells[2].textContent.toUpperCase();
+                    var fourthCol = rows[i].cells[3].textContent.toUpperCase();
+                    if (firstCol.indexOf(filter) > -1 || secondCol.indexOf(filter) > -1 || thirdCol.indexOf(filter) > -1 || fourthCol.indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+
+            document.querySelector('#search-input').addEventListener('keyup', filterTable, false);
+        </script>
+
+        <script src="/public/assets/js/MenuLate.js"></script>
 </body>
 
 </html>

@@ -1,20 +1,16 @@
 <?php
 session_start();
-
-
+date_default_timezone_set('America/Bogota');
 // Verifica si el usuario está autenticado
-if (isset($_SESSION["usuario_id"])) {
-    // El usuario está autenticado, puede acceder a esta página
-} else {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+if (!isset($_SESSION["usuario_id"])) {
+    header("Location: ../../../../index.php");
     exit();
 }
 
+// Incluye la configuración de conexión a la base de datos
+require_once '../../../../controllers/conexion.php';
 
-// Incluye el archivo de conexión
-include("../../../../controllers/conexion.php");
-
+// El usuario está autenticado, obtén el ID del usuario de la sesión
 $usuario_id = $_SESSION["usuario_id"];
 
 $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
@@ -27,29 +23,71 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
+// Preparar la consulta para obtener el rol del usuario
+$stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+$stmt->bind_param("i", $usuario_id);
 
+// Ejecutar la consulta
+$stmt->execute();
+$resultado = $stmt->get_result();
+$fila = $resultado->fetch_assoc();
 
+$stmt->close();
 
-// Cierra la conexión a la base de datos
-mysqli_close($conexion);
+// Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
+if (!$fila || $fila['Nombre'] !== 'admin') {
+    header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+    exit();
+}
+
+// Consulta SQL para obtener las carteras
+$sql = "SELECT carteras.id, carteras.nombre, carteras.zona, ciudades.nombre AS nombre_ciudad, carteras.asentamiento 
+        FROM carteras 
+        JOIN ciudades ON carteras.ciudad = ciudades.id";
+$result = $conexion->query($sql);
+
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<html>
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Fechas de Pago</title>
-    <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
+    <link rel="stylesheet" href="/public/assets/css/lista_super.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <title>Lista de Carteras</title>
     <style>
-        /* Agrega estilos específicos si es necesario */
-        #lista-pagos tbody tr {
-            cursor: move;
+        .back-link1 {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border: 1px solid #74d8d8;
+            background-color: #a9f0f0;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .back-link1:hover {
+            background-color: #2cc0c0;
+        }
+
+        .back-link3 {
+            display: inline-block;
+            padding: 10px 11px;
+            margin: 10px 5px;
+            border: 1px solid #73e773;
+            background-color: #a3e4a3;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .back-link3:hover {
+            background-color: #93cc93;
         }
     </style>
 </head>
@@ -62,11 +100,14 @@ mysqli_close($conexion);
             <div class="icon__menu">
                 <i class="fas fa-bars" id="btn_open"></i>
             </div>
+            <a href="agregar_cartera.php?" class="back-link1">
+                <span>Agregar Cobro</span>
+            </a>
 
             <div class="nombre-usuario">
                 <?php
                 if (isset($_SESSION["nombre_usuario"])) {
-                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
                 }
                 ?>
             </div>
@@ -123,7 +164,7 @@ mysqli_close($conexion);
                     </div>
                 </a>
 
-                <a href="/resources/views/admin/clientes/agregar_clientes.php">
+                <a href="/resources/views/admin/clientes/agregar_clientes.php" class="selected">
                     <div class="option">
                         <i class="fa-solid fa-user-tag" title=""></i>
                         <h4>Registrar Clientes</h4>
@@ -149,7 +190,7 @@ mysqli_close($conexion);
                     </div>
                 </a>
 
-                <a href="/resources/views/admin/ruta/ruta.php" class="selected">
+                <a href="/resources/views/admin/ruta/ruta.php">
                     <div class="option">
                         <i class="fa-solid fa-map" title=""></i>
                         <h4>Enrutar</h4>
@@ -169,110 +210,49 @@ mysqli_close($conexion);
                         <h4>Cobros</h4>
                     </div>
                 </a>
-
             </div>
         </div>
-        <script src="/public/assets/js/MenuLate.js"></script>
+
 
         <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
 
         <main>
-            <h2>Orden de pagos</h2>
+            <!-- Botón para volver a la página anterior -->
+            <h1 class="text-center">Cobros</h1>
 
-            <!-- <button onclick="guardarCambios()">Guardar Cambios</button> -->
+            <div class="container-fluid">
 
-            <div id="aviso-guardado" class="aviso">
-                Nuevo orden guardado.
-            </div><br>
-
-            <div class="table-scroll-container">
-                <table id="lista-pagos">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Fecha de Pago</th>
-                            <th>Enrutar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        include "../../../../controllers/conexion.php";
-
-                        $fecha_actual = date("Y-m-d");
-
-                        $sql = "SELECT fechas_pago.ID, fechas_pago.FechaPago, clientes.Nombre, clientes.Apellido
-        FROM fechas_pago 
-        INNER JOIN prestamos ON fechas_pago.IDPrestamo = prestamos.ID 
-        INNER JOIN clientes ON prestamos.IDCliente = clientes.ID 
-        WHERE fechas_pago.FechaPago = ? AND prestamos.Estado = 'pendiente'";
-
-
-                        $stmt = $conexion->prepare($sql);
-                        $stmt->bind_param("s", $fecha_actual);
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>" . $row["ID"] . "</td>";
-                                echo "<td>" . $row["Nombre"] . "</td>";
-                                echo "<td>" . $row["Apellido"] . "</td>";
-                                echo "<td>" . $row["FechaPago"] . "</td>";
-                                echo "<td class='drag-handle'>|||</td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='5'>No hay pagos pendientes para hoy.</td></tr>";
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Municipio</th>
+                        <th>Colonia</th>
+                    </tr>
+                    <?php
+                    // Mostrar los resultados en la tabla
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . "REC-100" . $row["id"] . "</td>";
+                            echo "<td><a href='clientes_por_cartera.php?id=" . $row["id"] . "'  class='back-link3'>" . $row["nombre"] . "</a></td>";
+                            echo "<td>" . $row["nombre_ciudad"] . "</td>";
+                            echo "<td>" . $row["asentamiento"] . "</td>";
+                            echo "</tr>";
                         }
-
-                        $stmt->close();
-                        $conexion->close();
-                        ?>
-                    </tbody>
+                    } else {
+                        echo "<tr><td colspan='3'>No se encontraron resultados</td></tr>";
+                    }
+                    ?>
                 </table>
+
             </div>
+
 
         </main>
 
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js">
-        </script>
-
-        <script>
-            $(document).ready(function() {
-                const listaPagos = $("#lista-pagos tbody");
-
-                // Recuperar el orden almacenado en el localStorage, si existe
-                const savedOrder = localStorage.getItem('sortableTableOrder');
-                if (savedOrder) {
-                    listaPagos.html(savedOrder);
-                }
-
-                // Habilitar la función de arrastrar en la tabla
-                listaPagos.sortable({
-                    helper: 'clone',
-                    axis: 'y',
-                    opacity: 0.5,
-                    update: function(event, ui) {
-                        guardarCambios();
-                    }
-                });
-            });
-
-            function guardarCambios() {
-                const currentOrder = $('#lista-pagos tbody').html();
-                localStorage.setItem('sortableTableOrder', currentOrder);
-
-                // Mostrar el mensaje de confirmación
-                $('#aviso-guardado').fadeIn().delay(3000).fadeOut(); // Mostrar por 2 segundos y luego ocultar
-            }
-        </script>
+        <script src="/public/assets/js/MenuLate.js"></script>
 
     </body>
 
-</html>
+    </html>
