@@ -236,7 +236,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     // Incluye el archivo de conexión a la base de datos
                     include("../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
-                    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Puebla', 'Chihuahua', 'Quintana Roo')";
+                    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Puebla', 'Chihuahua', 'Quintana Roo','Tlaxcala')";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
 
                     // Inicializa un arreglo para almacenar las opciones

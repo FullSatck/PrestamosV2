@@ -232,7 +232,7 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                         <th scope="col">Monto</th>
                                         <th scope="col">Interés</th>
                                         <th scope="col">Plazo</th>
-                                        <th scope="col">Moneda</th>
+                                        <!-- <th scope="col">Moneda</th> -->
                                         <th scope="col">Estado</th>
                                         <th scope="col">Zona</th>
                                         <th scope="col">Deuda</th>
@@ -251,7 +251,7 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                     <?php
                                     include("../../../../controllers/conexion.php");
                                     // Modificar la consulta para ordenar los resultados en orden descendente por ID
-                                    $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 1 ORDER BY prestamos.ID DESC");
+                                    $sql = $conexion->query("SELECT prestamos.ID, clientes.ID AS IDCliente, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 1 ORDER BY prestamos.ID DESC");
 
                                     while ($datos = $sql->fetch_object()) { ?>
                                         <tr>
@@ -260,7 +260,7 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                             <td><?= number_format($datos->Monto, 0, '.', '.') ?></td>
                                             <td><?= number_format($datos->TasaInteres, 0, '.', '.') . "%" ?></td>
                                             <td><?= $datos->Plazo ?></td>
-                                            <td><?= $datos->MonedaID ?></td>
+                                            <!-- <td><?= $datos->MonedaID ?></td> -->
                                             <td class="estado"><?= $datos->Estado ?></td>
                                             <td><?= $datos->Zona ?></td>
                                             <td><?= number_format($datos->MontoAPagar, 0, '.', '.') ?></td>
@@ -275,11 +275,13 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                                 </a>
                                             </td>
                                             <td class="icon-td">
-                                                <a href="/resources/views/admin/desatrasar/index.php?id=<?= $datos->ID ?>&cliente_id=<?= $datos->IDCliente ?>">
-                                                    <i class="fas fa-unlock"></i>
-                                                    Desactrasar
+                                                <a href="/resources/views/admin/desatrasar/index.php?id_cliente=<?= $datos->IDCliente ?>">
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    Desatrasar
                                                 </a>
+
                                             </td>
+
 
 
                                             <td class="icon-td">
