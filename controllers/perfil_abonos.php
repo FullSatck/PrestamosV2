@@ -50,7 +50,7 @@ $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
         WHERE c.ID = $id_cliente";
 
 $resultado = $conexion->query($sql);
- 
+
 
 if ($resultado->num_rows === 1) {
     // Mostrar los detalles del cliente aquí
@@ -456,7 +456,7 @@ $stmt_prestamo->close();
 
             <!-- BOTONES DE PAGO -->
 
-            <?php 
+            <?php
             $sql_monto_pagar = "SELECT MontoAPagar FROM prestamos WHERE IDCliente = ? AND estado = 'pendiente' ORDER BY FechaInicio ASC LIMIT 1";
             $stmt_monto_pagar = $conexion->prepare($sql_monto_pagar);
             $stmt_monto_pagar->bind_param("i", $id_cliente);
@@ -493,12 +493,7 @@ $stmt_prestamo->close();
 
             </form>
 
-            <form method="post" action="process_payment.php" id="formPago">
-                <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
-            </form>
-
             <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
-
 
             <script>
                 var cuotaEsperada = <?= json_encode($info_prestamo['Cuota']); ?>;
@@ -550,7 +545,44 @@ $stmt_prestamo->close();
                 };
             </script>
 
+            <?php
+            // Consulta SQL para obtener los préstamos del cliente
+            $sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
+            $resultado_prestamos = $conexion->query($sql_prestamos);
 
+            ?>
+
+            <div class="profile-loans">
+                <h2>Préstamos del Cliente</h2>
+                <div class="table-scroll-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID del Préstamo</th>
+                                <th>Deuda</th>
+                                <th>Plazo</th>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Vencimiento</th>
+                                <th>Estado</th>
+                                <th>Pagos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
+                                <tr>
+                                    <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
+                                    <td><?= $fila_prestamo["MontoAPagar"] ?></td>
+                                    <td><?= $fila_prestamo["Plazo"] ?></td>
+                                    <td><?= $fila_prestamo["FechaInicio"] ?></td>
+                                    <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
+                                    <td><?= $fila_prestamo["Estado"] ?></td>
+                                    <td><a href="dias_pago.php?id=<?= $fila_prestamo["ID"] ?>">Pagos</a></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
 
         </main>
