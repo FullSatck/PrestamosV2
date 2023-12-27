@@ -234,19 +234,16 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                     <tr>
                                         <th scope="col">ID</th>
                                         <th scope="col">Nombre</th>
-                                        <th scope="col">Monto</th>
+                                        <th scope="col">CURP</th>
                                         <th scope="col">Interés</th>
                                         <th scope="col">Plazo</th>
-                                        <!-- <th scope="col">Moneda</th> -->
-                                        <th scope="col">Estado</th>
                                         <th scope="col">Zona</th>
                                         <th scope="col">Deuda</th>
-                                        <th scope="col">Frecuencia</th>
+                                      
                                         <th scope="col">Cuota</th>
-                                        <th scope="col">Estado</th>
-                                        <th scope="col">Desactrasar</th>
                                         <th scope="col">Dec/Act</th>
-                                        <th scope="col">Editar</th>
+                                        <th scope="col">Desactrasar</th>
+                                       
                                         <th scope="col">Borrar</th>
 
 
@@ -256,22 +253,24 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                     <?php
                                     include("../../../../controllers/conexion.php");
                                     // Modificar la consulta para ordenar los resultados en orden descendente por ID
-                                    $sql = $conexion->query("SELECT prestamos.ID, clientes.ID AS IDCliente, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 1 ORDER BY prestamos.ID DESC");
+                                    $sql = $conexion->query("SELECT prestamos.ID, clientes.ID AS IDCliente, clientes.Nombre AS NombreCliente, clientes.Apellido AS ApellidoCliente, clientes.IdentificacionCURP, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 1 ORDER BY prestamos.ID DESC");
 
                                     while ($datos = $sql->fetch_object()) { ?>
                                         <tr>
                                             <td><?= "10" . $datos->ID ?></td>
-                                            <td><?= $datos->NombreCliente ?></td>
-                                            <td><?= number_format($datos->Monto, 0, '.', '.') ?></td>
+                                            <td><?= $datos->NombreCliente . " " . $datos->ApellidoCliente ?></td>
+                                            <td><?= $datos->IdentificacionCURP ?></td>
+
                                             <td><?= number_format($datos->TasaInteres, 0, '.', '.') . "%" ?></td>
                                             <td><?= $datos->Plazo ?></td>
-                                            <!-- <td><?= $datos->MonedaID ?></td> -->
-                                            <td class="estado"><?= $datos->Estado ?></td>
+
+
                                             <td><?= $datos->Zona ?></td>
                                             <td><?= number_format($datos->MontoAPagar, 0, '.', '.') ?></td>
-                                            <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
                                             <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
-                                            <td class="estado"><?= $datos->EstadoP == 1 ? 'Activado' : 'Desactivado' ?></td>
+                                            
+
+                                          
 
                                             <td class="icon-td">
                                                 <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->EstadoP ?>">
@@ -289,11 +288,7 @@ if (isset($_SESSION["mensaje_borrado"])) {
 
 
 
-                                            <td class="icon-td">
-                                                <a href="editar_prestamo.php?prestamo_id=<?= $datos->ID ?>" class="edit-btn">
-                                                    <i class="fas fa-edit"></i> Editar
-                                                </a>
-                                            </td>
+
                                             <td class="icon-td">
                                                 <a href="#" class="delete-btn" data-id="<?= $datos->ID ?>">
                                                     <i class="fa-solid fa-trash-can"></i>

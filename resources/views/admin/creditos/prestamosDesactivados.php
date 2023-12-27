@@ -203,7 +203,6 @@ if (!isset($_SESSION["usuario_id"])) {
                         <button><a href="crudPrestamos.php" class="btn btn-primary">Activados</a></button>
                     </div>
 
-
                     <!-- Tabla de préstamos en un contenedor con scroll horizontal -->
                     <div class="table-container">
                         <div class="table-scroll">
@@ -213,61 +212,148 @@ if (!isset($_SESSION["usuario_id"])) {
                                     <tr>
                                         <th scope="col">ID</th>
                                         <th scope="col">Nombre</th>
-                                        <th scope="col">Monto</th>
+                                        <th scope="col">CURP</th>
                                         <th scope="col">Interés</th>
                                         <th scope="col">Plazo</th>
-                                        <th scope="col">Moneda</th>
-                                        <th scope="col">Estado</th>
                                         <th scope="col">Zona</th>
                                         <th scope="col">Deuda</th>
-                                        <th scope="col">Frecuencia</th>
+
                                         <th scope="col">Cuota</th>
-                                        <th scope="col">Estado</th>
                                         <th scope="col">Dec/Act</th>
+                                        <th scope="col">Desactrasar</th>
+
+                                        <th scope="col">Borrar</th>
+
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     include("../../../../controllers/conexion.php");
-                                    $sql = $conexion->query("SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 0");
+                                    // Modificar la consulta para ordenar los resultados en orden descendente por ID
+                                    $sql = $conexion->query("SELECT prestamos.ID, clientes.ID AS IDCliente, clientes.Nombre AS NombreCliente, clientes.Apellido AS ApellidoCliente, clientes.IdentificacionCURP, prestamos.Monto, prestamos.TasaInteres, prestamos.Plazo, prestamos.MonedaID, prestamos.FechaInicio, prestamos.FechaVencimiento, prestamos.Estado, prestamos.CobradorAsignado, prestamos.Zona, prestamos.MontoAPagar, prestamos.FrecuenciaPago, prestamos.MontoCuota, prestamos.Cuota, prestamos.EstadoP FROM prestamos JOIN clientes ON prestamos.IDCliente = clientes.ID WHERE clientes.Estado = 1 AND prestamos.EstadoP = 0 ORDER BY prestamos.ID DESC");
+
                                     while ($datos = $sql->fetch_object()) { ?>
                                         <tr>
                                             <td><?= "10" . $datos->ID ?></td>
-                                            <td><?= $datos->NombreCliente ?></td>
-                                            <td><?= number_format($datos->Monto, 0, '.', '.') ?></td>
+                                            <td><?= $datos->NombreCliente . " " . $datos->ApellidoCliente ?></td>
+                                            <td><?= $datos->IdentificacionCURP ?></td>
+
                                             <td><?= number_format($datos->TasaInteres, 0, '.', '.') . "%" ?></td>
                                             <td><?= $datos->Plazo ?></td>
-                                            <td><?= $datos->MonedaID ?></td>
-                                            <td class="estado"><?= $datos->Estado ?></td>
+
+
                                             <td><?= $datos->Zona ?></td>
                                             <td><?= number_format($datos->MontoAPagar, 0, '.', '.') ?></td>
-                                            <td class="frecuencia-pago"><?= $datos->FrecuenciaPago ?></td>
                                             <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
-                                            <td class="estado"><?= $datos->EstadoP == 1 ? 'Activado' : 'Desactivado' ?></td>
 
-                                            <td>
+
+                                           
+
+                                            <td class="icon-td">
                                                 <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->EstadoP ?>">
                                                     <i class="fas <?= $datos->EstadoP == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
                                                     <?= $datos->EstadoP == 1 ? ' Desactivar' : ' Activar' ?>
                                                 </a>
                                             </td>
+                                            <td class="icon-td">
+                                                <a href="/resources/views/admin/desatrasar/index.php?id_cliente=<?= $datos->IDCliente ?>">
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    Desatrasar
+                                                </a>
 
-                                            <td><a href="/ruta_para_mostar_inf_de_prestamo?id=<?= $datos->ID ?>">
-                                                    <ion-icon name="help-circle-outline"></ion-icon>
-                                                </a></td>
-                                        </tr>
-                                    <?php } ?>
+                                            </td>
+
+
+
+
+                                            <td class="icon-td">
+                                                <a href="#" class="delete-btn" data-id="<?= $datos->ID ?>">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </a>
+
+
+                                            </td>
+
+
+                                        <?php } ?>
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Modal de Confirmación -->
+        <div id="confirmModal" class="modal-custom">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Confirmar Borrado</h2>
+                <p>¿Estás seguro de que quieres borrar este préstamo?</p>
+                <button id="confirmDelete">Borrar</button>
+                <button id="cancelDelete">Cancelar</button>
+            </div>
+        </div>
+
+
     </main>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/public/assets/js/MenuLate.js"></script>
+
     <script>
+        //MODAL 
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtener el modal
+            var modal = document.getElementById("confirmModal");
+
+            // Obtener todos los botones que abren el modal
+            var deleteButtons = document.querySelectorAll(".delete-btn");
+
+            // Obtener el elemento <span> que cierra el modal
+            var span = document.querySelector(".close-button");
+
+            // Obtener el botón de confirmar borrado
+            var confirmDelete = document.getElementById("confirmDelete");
+
+            // Obtener el botón de cancelar borrado
+            var cancelDelete = document.getElementById("cancelDelete");
+
+            // Variable para almacenar el ID del préstamo a borrar
+            var prestamoId;
+
+            // Agregar evento click a cada botón de borrar
+            deleteButtons.forEach(function(button) {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    modal.classList.add("modal-visible"); // Hace visible el modal
+                    prestamoId = this.getAttribute("data-id");
+                });
+            });
+
+            // Función para cerrar el modal
+            function closeModal() {
+                modal.classList.remove("modal-visible");
+            }
+
+            // Evento para cerrar el modal al hacer clic en <span> (x)
+            span.addEventListener('click', closeModal);
+
+            // Evento para cerrar el modal al hacer clic en el botón de cancelar
+            cancelDelete.addEventListener('click', closeModal);
+
+            // Evento para realizar la acción de borrado y cerrar el modal
+            confirmDelete.addEventListener('click', function() {
+                window.location.href = 'borrar_prestamo.php?id=' + prestamoId;
+            });
+
+            // Evento para cerrar el modal al hacer clic fuera de él
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    closeModal();
+                }
+            });
+        });
         $(document).ready(function() {
             $('#search-input').on('input', function() {
                 var searchTerm = $(this).val().toLowerCase();
