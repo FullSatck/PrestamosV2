@@ -12,7 +12,7 @@ include("../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
-    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
@@ -27,7 +27,7 @@ $sql = "SELECT * FROM saldo_admin";
 $result = $conexion->query($sql);
 
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         $monto = $row["Monto"];
         $monto_neto = $row["Monto_Neto"]; // Este será el valor actualizado
     }
@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
 
 
 
- 
+
 ?>
 
 
@@ -59,15 +59,15 @@ if ($result->num_rows > 0) {
 
 
         </div>
-        <a href="/resources/views/admin/retiros/agregar_retiros.php" class="back-link1"> 
+        <a href="/resources/views/admin/retiros/agregar_retiros.php" class="back-link1">
             <span class="spann">Agregar retiro</span>
         </a>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -135,7 +135,7 @@ if ($result->num_rows > 0) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -148,21 +148,29 @@ if ($result->num_rows > 0) {
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/ruta/ruta.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Enrutar</h4>
-            </div>
-        </a>
- 
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/admin/retiros/retiros.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
+
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
+
         </div>
     </div>
 
@@ -180,48 +188,48 @@ if ($result->num_rows > 0) {
             </div>
         </div>
 
-        <?php 
+        <?php
 
-// Consulta SQL para obtener los datos de la tabla 'retiros'
-$sql = "SELECT ID, IDUsuario, Fecha, Monto, descripcion FROM retiros";
-$result = $conexion->query($sql);
+        // Consulta SQL para obtener los datos de la tabla 'retiros'
+        $sql = "SELECT ID, IDUsuario, Fecha, Monto, descripcion FROM retiros";
+        $result = $conexion->query($sql);
 
-if ($result->num_rows > 0) {
-    // Iniciar la tabla HTML con estilos
-    echo "<div class='table-scroll-container'>";
-    echo "<div class='table-container'>";
-    echo "<table class='styled-table'>";
-    echo "<thead>";
-    echo "<tr><th>ID</th><th>ID Usuario</th><th>Fecha</th><th>Monto</th><th>Descripción</th><th>Editar</th></tr>";
-    echo "</thead>";
-    echo "<tbody>";
+        if ($result->num_rows > 0) {
+            // Iniciar la tabla HTML con estilos
+            echo "<div class='table-scroll-container'>";
+            echo "<div class='table-container'>";
+            echo "<table class='styled-table'>";
+            echo "<thead>";
+            echo "<tr><th>ID</th><th>ID Usuario</th><th>Fecha</th><th>Monto</th><th>Descripción</th><th>Editar</th></tr>";
+            echo "</thead>";
+            echo "<tbody>";
 
-    // Recorrer los resultados y mostrar cada fila en la tabla
-while($row = $result->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . htmlspecialchars($row["ID"]) . "</td>";
-    echo "<td>" . htmlspecialchars($row["IDUsuario"]) . "</td>";
-    echo "<td>" . htmlspecialchars($row["Fecha"]) . "</td>";
-    echo "<td>" . htmlspecialchars($row["Monto"]) . "</td>";
-    // Imprimir la descripción
-    $descripcion = !is_null($row['descripcion']) ? htmlspecialchars($row['descripcion']) : 'Sin descripción';
-    echo "<td>" . $descripcion . "</td>"; // Asegúrate de imprimir la variable aquí
-    // Agregar un enlace o botón para editar
-    echo "<td><a href='editar_retiros.php?id=" . $row["ID"] . "'>Editar</a></td>"; // Reemplaza 'editar_retiro.php' con tu archivo de edición y asegúrate de pasar el ID del retiro
-    echo "</tr>";
-}
-    // Finalizar la tabla
-    echo "</tbody>";
-    echo "</table>";
-    echo "</div>";
-    echo "</div>";
-} else {
-    echo "<p>No se encontraron resultados.</p>";
-}
+            // Recorrer los resultados y mostrar cada fila en la tabla
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($row["ID"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["IDUsuario"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["Fecha"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["Monto"]) . "</td>";
+                // Imprimir la descripción
+                $descripcion = !is_null($row['descripcion']) ? htmlspecialchars($row['descripcion']) : 'Sin descripción';
+                echo "<td>" . $descripcion . "</td>"; // Asegúrate de imprimir la variable aquí
+                // Agregar un enlace o botón para editar
+                echo "<td><a href='editar_retiros.php?id=" . $row["ID"] . "'>Editar</a></td>"; // Reemplaza 'editar_retiro.php' con tu archivo de edición y asegúrate de pasar el ID del retiro
+                echo "</tr>";
+            }
+            // Finalizar la tabla
+            echo "</tbody>";
+            echo "</table>";
+            echo "</div>";
+            echo "</div>";
+        } else {
+            echo "<p>No se encontraron resultados.</p>";
+        }
 
-// Cerrar la conexión a la base de datos
-$conexion->close();
-?>
+        // Cerrar la conexión a la base de datos
+        $conexion->close();
+        ?>
 
     </main>
     <script src="/public/assets/js/MenuLate.js"></script>

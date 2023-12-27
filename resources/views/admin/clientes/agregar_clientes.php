@@ -164,11 +164,11 @@ if (!isset($_SESSION["usuario_id"])) {
             </a>
 
             <a href="/resources/views/admin/ruta/ruta.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Enrutar</h4>
-            </div>
-        </a>
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -177,7 +177,12 @@ if (!isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
 
         </div>
 
@@ -338,48 +343,48 @@ if (!isset($_SESSION["usuario_id"])) {
     </script>
 
 
-<script>
-    function verificarCliente() {
-        const curp = document.getElementById("curp").value;
-        const telefono = document.getElementById("telefono").value;
-        const mensajeEmergente = document.getElementById("mensaje-emergente");
-        const mensajeError = document.getElementById("mensaje-error");
-        const enlacePerfil = document.getElementById("enlace-perfil");
-        const botonRegistrar = document.getElementById("boton-registrar");
+    <script>
+        function verificarCliente() {
+            const curp = document.getElementById("curp").value;
+            const telefono = document.getElementById("telefono").value;
+            const mensajeEmergente = document.getElementById("mensaje-emergente");
+            const mensajeError = document.getElementById("mensaje-error");
+            const enlacePerfil = document.getElementById("enlace-perfil");
+            const botonRegistrar = document.getElementById("boton-registrar");
 
-        if (curp || telefono) {
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "/controllers/verificar_cliente.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            if (curp || telefono) {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/controllers/verificar_cliente.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const respuesta = JSON.parse(xhr.responseText);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const respuesta = JSON.parse(xhr.responseText);
 
-                    if (respuesta.existe) {
-                        mensajeEmergente.style.display = "block";
-                        mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
-                        enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta.cliente_id;
-                        botonRegistrar.style.display = "none"; // Ocultar el botón
-                    } else {
-                        mensajeEmergente.style.display = "none";
-                        enlacePerfil.href = "";
-                        botonRegistrar.style.display = "block"; // Mostrar el botón
+                        if (respuesta.existe) {
+                            mensajeEmergente.style.display = "block";
+                            mensajeError.textContent = "Este cliente ya existe. No se puede registrar.";
+                            enlacePerfil.href = "../../../../controllers/perfil_cliente.php?id=" + respuesta.cliente_id;
+                            botonRegistrar.style.display = "none"; // Ocultar el botón
+                        } else {
+                            mensajeEmergente.style.display = "none";
+                            enlacePerfil.href = "";
+                            botonRegistrar.style.display = "block"; // Mostrar el botón
+                        }
                     }
-                }
-            };
+                };
 
-            xhr.send("curp=" + encodeURIComponent(curp) + "&telefono=" + encodeURIComponent(telefono));
-        } else {
-            mensajeEmergente.style.display = "none";
-            enlacePerfil.href = "";
-            botonRegistrar.style.display = "block"; // Mostrar el botón si ambos campos están vacíos
+                xhr.send("curp=" + encodeURIComponent(curp) + "&telefono=" + encodeURIComponent(telefono));
+            } else {
+                mensajeEmergente.style.display = "none";
+                enlacePerfil.href = "";
+                botonRegistrar.style.display = "block"; // Mostrar el botón si ambos campos están vacíos
+            }
         }
-    }
 
-    document.getElementById("curp").addEventListener("input", verificarCliente);
-    document.getElementById("telefono").addEventListener("input", verificarCliente);
-</script>
+        document.getElementById("curp").addEventListener("input", verificarCliente);
+        document.getElementById("telefono").addEventListener("input", verificarCliente);
+    </script>
 
 
     <script src="/public/assets/js/MenuLate.js"></script>

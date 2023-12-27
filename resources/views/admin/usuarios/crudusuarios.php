@@ -4,7 +4,7 @@ session_start();
 
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -16,19 +16,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -43,17 +43,15 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
- 
+
 // Consulta para obtener la lista de usuarios
 $usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE estado = 'activo'");
 
@@ -85,10 +83,10 @@ if ($usuariosSQL === false) {
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -154,7 +152,7 @@ if ($usuariosSQL === false) {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -167,15 +165,15 @@ if ($usuariosSQL === false) {
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/ruta/ruta.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Enrutar</h4>
-            </div>
-        </a>
- 
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
@@ -183,7 +181,12 @@ if ($usuariosSQL === false) {
                 </div>
             </a>
 
-
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
 
         </div>
 
@@ -216,70 +219,69 @@ if ($usuariosSQL === false) {
                     <th>Des/Act</th>
                 </tr>
                 <?php
-            if ($usuariosSQL->num_rows > 0) {
-                while ($datos = $usuariosSQL->fetch_object()) {
-                    ?>
-                <tr>
-                    <td><?= "REC 100" . $datos->ID ?></td>
-                    <td><?= $datos->Nombre ?></td>
-                    <td><?= $datos->Apellido ?></td>
-                    <td><?= $datos->Email ?></td>
-                    <td><?= $datos->Zona ?></td>
-                    <td><?= $datos->RolID ?></td>
-                    <td><?= $datos->Estado ?></td>
+                if ($usuariosSQL->num_rows > 0) {
+                    while ($datos = $usuariosSQL->fetch_object()) {
+                ?>
+                        <tr>
+                            <td><?= "REC 100" . $datos->ID ?></td>
+                            <td><?= $datos->Nombre ?></td>
+                            <td><?= $datos->Apellido ?></td>
+                            <td><?= $datos->Email ?></td>
+                            <td><?= $datos->Zona ?></td>
+                            <td><?= $datos->RolID ?></td>
+                            <td><?= $datos->Estado ?></td>
 
-                    <td>
+                            <td>
 
-                    <td>
-                        <a href="modificarUser.php?id=<?= $datos->ID ?>">
-                            <i class="fas fa-pencil-alt"></i> Modificar
-                        </a>
+                            <td>
+                                <a href="modificarUser.php?id=<?= $datos->ID ?>">
+                                    <i class="fas fa-pencil-alt"></i> Modificar
+                                </a>
 
-                    </td>
-                    <td>
-                        <!-- Enlace para cambiar el estado -->
-                        <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>&vista=activos">
-                            <i class="fas <?= $datos->Estado == 'activo' ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
-                            <?= $datos->Estado == 'activo' ? 'Desactivar' : 'Activar' ?>
-                        </a>
-                    <td>
+                            </td>
+                            <td>
+                                <!-- Enlace para cambiar el estado -->
+                                <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>&vista=activos">
+                                    <i class="fas <?= $datos->Estado == 'activo' ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
+                                    <?= $datos->Estado == 'activo' ? 'Desactivar' : 'Activar' ?>
+                                </a>
+                            <td>
 
-                </tr>
+                        </tr>
                 <?php
+                    }
+                } else {
+                    echo "No se encontraron resultados.";
                 }
-            } else {
-                echo "No se encontraron resultados.";
-            }
-            ?>
+                ?>
             </table>
         </div>
     </main>
 
     <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
+        // JavaScript para la búsqueda en tiempo real
+        const searchInput = document.getElementById('search-input');
+        const table = document.querySelector('table');
+        const rows = table.querySelectorAll('tbody tr');
 
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.toLowerCase();
 
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
+            rows.forEach((row) => {
+                const rowData = Array.from(row.children)
+                    .map((cell) => cell.textContent.toLowerCase())
+                    .join('');
 
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+                if (rowData.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
-    });
     </script>
     <script src="/public/assets/js/MenuLate.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
 
 </body>

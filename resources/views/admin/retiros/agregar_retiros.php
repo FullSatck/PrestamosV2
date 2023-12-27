@@ -13,7 +13,7 @@ include "../../../../controllers/conexion.php";
 
 $usuario_id = $_SESSION["usuario_id"];
 
-    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
@@ -107,17 +107,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body id="body">
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -183,7 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -196,21 +196,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/ruta/ruta.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Enrutar</h4>
-            </div>
-        </a>
- 
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
+
             <a href="/resources/views/admin/retiros/retiros.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
+
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
+
         </div>
     </div>
 
@@ -238,8 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <textarea name="descripcion" id="descripcion"
-                    class="form-control"><?php echo $descripcion; ?></textarea>
+                <textarea name="descripcion" id="descripcion" class="form-control"><?php echo $descripcion; ?></textarea>
                 <span class="help-block"><?php echo $descripcion_err; ?></span>
             </div>
             <div class="form-group">

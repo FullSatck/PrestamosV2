@@ -3,7 +3,7 @@ date_default_timezone_set('America/Bogota');
 session_start();
 
 // Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php'; 
+require_once '../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
@@ -15,19 +15,19 @@ if (!isset($_SESSION["usuario_id"])) {
     $usuario_id = $_SESSION["usuario_id"];
 
     $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
-    
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
     // Preparar la consulta para obtener el rol del usuario
     $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
     $stmt->bind_param("i", $usuario_id);
-    
+
     // Ejecutar la consulta
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -42,15 +42,13 @@ $stmt->close();
 
     // Extrae el nombre del rol del resultado
     $rol_usuario = $fila['Nombre'];
-    
+
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'admin') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
         header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
-    
-   
 }
 date_default_timezone_set('America/Bogota');
 ?>
@@ -71,17 +69,17 @@ date_default_timezone_set('America/Bogota');
 
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Administrator<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -147,7 +145,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -163,17 +161,24 @@ date_default_timezone_set('America/Bogota');
             </a>
 
             <a href="/resources/views/admin/ruta/ruta.php">
-            <div class="option">
-                <i class="fa-solid fa-map" title=""></i>
-                <h4>Enrutar</h4>
-            </div>
-        </a>
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
 
-  
+
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
+                </div>
+            </a>
+
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Cobros</h4>
                 </div>
             </a>
 
@@ -194,8 +199,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
                 <div class="input-container">
                     <label for "apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido"
-                        required>
+                    <input type="text" id="apellido" name="apellido" placeholder="Por favor ingrese su apellido" required>
                 </div>
                 <div class="input-container">
                     <label for="email">Correo Electrónico:</label>
@@ -203,8 +207,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
                 <div class="input-container">
                     <label for="contrasena">Contraseña:</label>
-                    <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave"
-                        required>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
                 </div>
                 <div class="input-container">
                     <label for="zona">Zona:</label>
@@ -236,7 +239,7 @@ date_default_timezone_set('America/Bogota');
                         }
                         ?>
                     </select>
-                </div> 
+                </div>
 
                 <div class="btn-container">
                     <button type="submit" name="registrar_usuario">Registrar</button>
@@ -247,17 +250,17 @@ date_default_timezone_set('America/Bogota');
     </main>
 
     <script>
-    $(document).ready(function() {
-        $("#RolID").on("change", function() {
-            var selectedRole = $(this).val();
-            var saldoInicialContainer = $("#saldo-inicial-container");
-            if (selectedRole === "2") {
-                saldoInicialContainer.show();
-            } else {
-                saldoInicialContainer.hide();
-            }
+        $(document).ready(function() {
+            $("#RolID").on("change", function() {
+                var selectedRole = $(this).val();
+                var saldoInicialContainer = $("#saldo-inicial-container");
+                if (selectedRole === "2") {
+                    saldoInicialContainer.show();
+                } else {
+                    saldoInicialContainer.hide();
+                }
+            });
         });
-    });
     </script>
 
 </body>

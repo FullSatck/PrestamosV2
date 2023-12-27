@@ -1,94 +1,105 @@
 <?php
-date_default_timezone_set('America/Bogota');
 session_start();
-include("../../../../controllers/conexion.php");
-
-
-
-// Validacion de rol para ingresar a la pagina 
-require_once '../../../../controllers/conexion.php';
+require_once("../../../../controllers/conexion.php");
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../../../../index.php");
     exit();
-} else {
-    // El usuario está autenticado, obtén el ID del usuario de la sesión
-    $usuario_id = $_SESSION["usuario_id"];
-
-    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-    $stmt = $conexion->prepare($sql_nombre);
-    $stmt->bind_param("i", $usuario_id);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    if ($fila = $resultado->fetch_assoc()) {
-        $_SESSION["nombre_usuario"] = $fila["nombre"];
-    }
-    $stmt->close();
-
-    // Preparar la consulta para obtener el rol del usuario
-    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
-    $stmt->bind_param("i", $usuario_id);
-
-    // Ejecutar la consulta
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
-    if (!$fila) {
-        // Redirige al usuario a una página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-
-    // Extrae el nombre del rol del resultado
-    $rol_usuario = $fila['Nombre'];
-
-    // Verifica si el rol del usuario corresponde al necesario para esta página
-    if ($rol_usuario !== 'admin') {
-        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
-        exit();
-    }
-}
-// Consulta para obtener la lista de usuarios
-$usuariosSQL = $conexion->query("SELECT * FROM usuarios WHERE estado = 'inactivo'");
-
-if ($usuariosSQL === false) {
-    die("Error en la consulta SQL: " . $conexion->error);
 }
 
+$usuario_id = $_SESSION["usuario_id"];
+
+// Obtener el nombre del usuario
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
+// Obtener el cartera_id de la URL
+$cartera_id_actual = isset($_GET['id']) ? $_GET['id'] : null;
+
+// Consulta SQL para obtener todos los clientes sin cartera en una zona específica
+$sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialCrediticio, c.ReferenciasPersonales, m.Nombre AS Moneda, c.ZonaAsignada 
+        FROM clientes c
+        LEFT JOIN monedas m ON c.MonedaPreferida = m.ID
+        WHERE c.cartera_id IS NULL";
+
+$resultado = $conexion->query($sql);
+
+date_default_timezone_set('America/Bogota');
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista Usuarios</title>
-    <link rel="stylesheet" href="/public/assets/css/lista_usuarios.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/assets/css/lista_clientes.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <title>Listado de Clientes</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .buttom {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .buttom:hover {
+            background-color: #45a049;
+        }
+
+        .back-link1 {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border: 1px solid #74d8d8;
+            background-color: #a9f0f0;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .back-link1:hover {
+            background-color: #2cc0c0;
+        }
+    </style>
 </head>
 
 <body id="body">
-
     <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
+        <a href="/resources/views/admin/cartera/clientes_por_cartera.php?id=<?= $cartera_id_actual ?>" class="back-link1">
+            Volver
+        </a>
+
         <div class="nombre-usuario">
             <?php
             if (isset($_SESSION["nombre_usuario"])) {
-                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
             }
             ?>
         </div>
+
     </header>
 
     <div class="menu__side" id="menu_side">
@@ -100,7 +111,7 @@ if ($usuariosSQL === false) {
 
         <div class="options__menu">
 
-            <a href="/controllers/cerrar_sesion.php">
+        <a href="/controllers/cerrar_sesion.php">
                 <div class="option">
                     <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
                     <h4>Cerrar Sesion</h4>
@@ -121,7 +132,7 @@ if ($usuariosSQL === false) {
                 </div>
             </a>
 
-            <a href="/resources/views/admin/usuarios/crudusuarios.php" class="selected">
+            <a href="/resources/views/admin/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
                     <h4>Usuarios</h4>
@@ -182,81 +193,54 @@ if ($usuariosSQL === false) {
                 </div>
             </a>
 
-            <a href="/resources/views/admin/cartera/lista_cartera.php">
+
+            <a href="/resources/views/admin/cartera/lista_cartera.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
-
         </div>
-
     </div>
 
-    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
-
     <main>
-        <h1>Usuarios Desactivados</h1>
-
-
-
-
-
+        <h1>Agregar cliente a cobro</h1>
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
-            <button><a href="crudusuarios.php" class="btn btn-primary">Activados</a></button>
         </div>
         <div class="table-scroll-container">
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Email</th>
-                    <th>Zona</th>
-                    <th>Rol</th>
-                    <th>Estado</th>
-                    <th></th>
-                    <th>Modificar</th>
-                    <th>Des/Act</th>
-                </tr>
-                <?php
-                if ($usuariosSQL->num_rows > 0) {
-                    while ($datos = $usuariosSQL->fetch_object()) {
-                ?>
+            <?php if ($resultado->num_rows > 0) { ?>
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Domicilio</th>
+                        <th>Teléfono</th>
+                        <th>Zona Asignada</th>
+                        <th>Agregar</th>
+                    </tr>
+                    <?php while ($fila = $resultado->fetch_assoc()) { ?>
                         <tr>
-                            <td><?= "REC 100" . $datos->ID ?></td>
-                            <td><?= $datos->Nombre ?></td>
-                            <td><?= $datos->Apellido ?></td>
-                            <td><?= $datos->Email ?></td>
-                            <td><?= $datos->Zona ?></td>
-                            <td><?= $datos->RolID ?></td>
-                            <td><?= $datos->Estado ?></td>
-
+                            <td><?= "REC 100" . $fila["ID"] ?></td>
+                            <td><?= $fila["Nombre"] ?></td>
+                            <td><?= $fila["Apellido"] ?></td>
+                            <td><?= $fila["Domicilio"] ?></td>
+                            <td><?= $fila["Telefono"] ?></td>
+                            <td><?= $fila["ZonaAsignada"] ?></td>
                             <td>
-
-                            <td>
-                                <a href="modificarUser.php?id=<?= $datos->ID ?>">
-                                    <i class="fas fa-pencil-alt"></i> Modificar
-                                </a>
-
+                                <form action="opciones/asignar_cartera.php" method="GET">
+                                    <input type="hidden" name="cliente_id" value="<?= $fila['ID'] ?>">
+                                    <input type="hidden" name="cartera_id" value="<?= $cartera_id_actual ?>">
+                                    <input type="submit" value="Asignar a Cobro" class="buttom">
+                                </form>
                             </td>
-                            <td>
-                                <!-- Enlace para cambiar el estado -->
-                                <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->Estado ?>&vista=inactivos">
-                                    <i class="fas <?= $datos->Estado == 'activo' ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>
-                                    <?= $datos->Estado == 'activo' ? 'Desactivar' : 'Activar' ?>
-                                </a>
-                            <td>
-
                         </tr>
-                <?php
-                    }
-                } else {
-                    echo "No se encontraron resultados.";
-                }
-                ?>
-            </table>
+                    <?php } ?>
+                </table>
+            <?php } else { ?>
+                <p>No se encontraron clientes en la base de datos.</p>
+            <?php } ?>
         </div>
     </main>
 
@@ -282,10 +266,8 @@ if ($usuariosSQL === false) {
             });
         });
     </script>
-    <script src="/public/assets/js/MenuLate.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
 
+    <script src="/public/assets/js/MenuLate.js"></script>
 </body>
 
 </html>

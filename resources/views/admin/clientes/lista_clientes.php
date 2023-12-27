@@ -186,7 +186,12 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
+                <div class="option">
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <h4>Cobros</h4>
+                </div>
+            </a>
 
         </div>
 
@@ -223,7 +228,7 @@ $resultado = $conexion->query($sql);
                         <th>Perfil</th>
                         <th>Pagos</th>
                         <th>Des/Act</th>
-                       
+
 
                     </tr>
                     <?php while ($fila = $resultado->fetch_assoc()) { ?>
@@ -244,12 +249,12 @@ $resultado = $conexion->query($sql);
 
 
                             </td>
-                           
+
                             <td><a href="editar_cliente.php?id=<?= $fila["ID"] ?>">Editar</a></td>
                             <td><a href="../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                             <td><a href="/resources/views/admin/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
                             </td>
-                            
+
                             <td>
                                 <a href="cambiarEstadoCliente.php?id=<?= $fila["ID"] ?>&estado=<?= $fila["Estado"] ?>">
                                     <i class="fas <?= $fila["Estado"] == 1 ? 'fa-toggle-on' : 'fa-toggle-off' ?>"></i>

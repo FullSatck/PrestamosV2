@@ -203,7 +203,12 @@ if (isset($_SESSION["mensaje_borrado"])) {
                     </div>
                 </a>
 
-
+                <a href="/resources/views/admin/cartera/lista_cartera.php">
+                    <div class="option">
+                        <i class="fa-solid fa-scale-balanced" title=""></i>
+                        <h4>Cobros</h4>
+                    </div>
+                </a>
 
             </div>
 
