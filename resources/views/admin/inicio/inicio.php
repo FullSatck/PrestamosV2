@@ -245,28 +245,52 @@ date_default_timezone_set('America/Bogota');
             <!-- TRAER EL PRIMER ID -->
 
             <?php
+            function obtenerOrdenClientes()
+            {
+                $rutaArchivo = 'cartulina/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                if (file_exists($rutaArchivo)) {
+                    $contenido = file_get_contents($rutaArchivo);
+                    return explode(',', $contenido);
+                }
+                return [];
+            }
+
             function obtenerPrimerID($conexion)
             {
-                $primer_id = 0;
+                $fecha_actual = date("Y-m-d");
+                $ordenClientes = obtenerOrdenClientes();
+                $primer_id = 0; 
 
-                // Consulta para obtener el primer ID de préstamo
-                $sql_primer_id = "SELECT ID
-                                  FROM clientes
-                                  ORDER BY ID ASC
-                                  LIMIT 1";
+                $idEncontrado = 0;
 
-                $stmt_primer_id = $conexion->prepare($sql_primer_id);
-                $stmt_primer_id->execute();
-                $stmt_primer_id->bind_result($primer_id);
-                $stmt_primer_id->fetch();
-                $stmt_primer_id->close();
+                foreach ($ordenClientes as $idCliente) {
+                    // Consulta para verificar si este cliente ha pagado hoy
+                    $sql = "SELECT c.ID
+                            FROM clientes c
+                            LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
+                            WHERE c.ID = ? AND hp.ID IS NULL
+                            LIMIT 1";
+
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bind_param("si", $fecha_actual, $idCliente);
+                    $stmt->execute();
+                    $stmt->bind_result($idEncontrado);
+                    if ($stmt->fetch()) {
+                        $primer_id = $idEncontrado;
+                        $stmt->close();
+                        break;
+                    }
+                    $stmt->close();
+                }
 
                 return $primer_id;
             }
 
-            // Obtener el primer ID de préstamo de la base de datos
+            // Obtener el primer ID de cliente que no ha pagado hoy y está primero en el orden personalizado
             $primer_id = obtenerPrimerID($conexion);
+
             ?>
+
 
 
 
