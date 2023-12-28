@@ -5,6 +5,7 @@ require_once("../../../../controllers/conexion.php");
 $clienteId = 0;
 $cliente = null;
 $zonaSeleccionada = '';
+$clienteCiudadID = null;
 
 // Verifica si el ID del cliente está en la URL y es numérico
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -22,6 +23,18 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     }
 } else {
     die("ID de cliente no válido.");
+}
+
+// Consulta para obtener la ciudad del cliente
+$consultaCiudadCliente = "SELECT Ciudad FROM clientes WHERE ID = $clienteId";
+$resultCiudadCliente = mysqli_query($conexion, $consultaCiudadCliente);
+
+if ($resultCiudadCliente && mysqli_num_rows($resultCiudadCliente) > 0) {
+    $rowCiudadCliente = mysqli_fetch_assoc($resultCiudadCliente);
+    $clienteCiudadID = $rowCiudadCliente['Ciudad'];
+} else {
+    // Manejar el error si no se puede obtener la ciudad del cliente
+    die("Error al obtener la ciudad del cliente.");
 }
 
 // Verifica si se ha enviado el formulario
@@ -52,13 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $consultaZonas = "SELECT ID, Nombre FROM zonas";
 $resultZonas = mysqli_query($conexion, $consultaZonas);
 
-// Consulta para obtener las ciudades basadas en la zona seleccionada
-$consultaCiudades = "SELECT * FROM ciudades WHERE IDZona = (SELECT ID FROM zonas WHERE Nombre = '$zonaSeleccionada')";
-$resultCiudades = mysqli_query($conexion, $consultaCiudades);
 // Consulta para obtener todas las ciudades
-$consultaCiudades = "SELECT * FROM ciudades";
-$resultCiudades = mysqli_query($conexion, $consultaCiudades);
-
+$consultaTodasLasCiudades = "SELECT * FROM ciudades";
+$resultTodasLasCiudades = mysqli_query($conexion, $consultaTodasLasCiudades);
 ?>
 
 <!DOCTYPE html>
@@ -68,15 +77,11 @@ $resultCiudades = mysqli_query($conexion, $consultaCiudades);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z" crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <title>Editar Cliente</title>
     <link rel="stylesheet" href="/public/assets/css/editar_clientes.css">
@@ -145,15 +150,9 @@ $resultCiudades = mysqli_query($conexion, $consultaCiudades);
             <label for="ciudad">Ciudad:</label>
             <select id="ciudad" name="ciudad">
                 <?php
-                // Verifica si $zonaSeleccionada no está vacío
-                if (!empty($zonaSeleccionada)) {
-                    $consultaCiudades = "SELECT * FROM ciudades WHERE IDZona = (SELECT ID FROM zonas WHERE Nombre = '$zonaSeleccionada')";
-                    $resultCiudades = mysqli_query($conexion, $consultaCiudades);
-
-                    while ($row = mysqli_fetch_assoc($resultCiudades)) {
-                        $selected = ($row['ID'] == $cliente['Ciudad']) ? 'selected' : '';
-                        echo '<option value="' . $row['ID'] . '" ' . $selected . '>' . $row['Nombre'] . '</option>';
-                    }
+                while ($row = mysqli_fetch_assoc($resultTodasLasCiudades)) {
+                    $selected = ($row['ID'] == $clienteCiudadID) ? 'selected' : '';
+                    echo '<option value="' . $row['ID'] . '" ' . $selected . '>' . $row['Nombre'] . '</option>';
                 }
                 ?>
             </select>

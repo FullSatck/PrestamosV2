@@ -115,7 +115,7 @@ if ($resultado_prestamo->num_rows > 0) {
 
 if ($mostrarMensajeAgregarPrestamo) {
     echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos activos o están completamente pagados.</p>";
-    echo "<a href='../resources/views/admin/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
+    echo "<a href='../../creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
 } else {
     // Procesamiento normal si el cliente tiene un préstamo activo
 }
@@ -207,11 +207,12 @@ $stmt_prestamo->close();
                     <?php
                     $fecha_actual = date("Y-m-d");
 
-                    // Consulta para contar el total de clientes que no han pagado hoy
+                    // Consulta para contar el total de clientes con préstamos pendientes que no han pagado hoy
                     $sql_total_clientes = "SELECT COUNT(DISTINCT c.ID) AS TotalClientes
                            FROM clientes c
-                           LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
-                           WHERE hp.ID IS NULL";
+                           INNER JOIN prestamos p ON c.ID = p.IDCliente
+                           LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
+                           WHERE p.Estado = 'pendiente' AND hp.ID IS NULL";
                     $stmt_total = $conexion->prepare($sql_total_clientes);
                     $stmt_total->bind_param("s", $fecha_actual);
                     $stmt_total->execute();
@@ -220,11 +221,12 @@ $stmt_prestamo->close();
                     $total_clientes = $fila_total['TotalClientes'];
                     $stmt_total->close();
 
-                    // Consulta para determinar la posición del cliente actual en la lista de clientes que no han pagado hoy
+                    // Consulta para determinar la posición del cliente actual en la lista de clientes con préstamos pendientes que no han pagado hoy
                     $sql_posicion_cliente = "SELECT COUNT(DISTINCT c.ID) AS Posicion
                              FROM clientes c
-                             LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
-                             WHERE hp.ID IS NULL AND c.ID <= ?";
+                             INNER JOIN prestamos p ON c.ID = p.IDCliente
+                             LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
+                             WHERE p.Estado = 'pendiente' AND hp.ID IS NULL AND c.ID <= ?";
                     $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
                     $stmt_posicion->bind_param("si", $fecha_actual, $id_cliente);
                     $stmt_posicion->execute();
@@ -234,6 +236,7 @@ $stmt_prestamo->close();
                     ?>
                     <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
                 </div>
+
 
             </div>
 
@@ -468,67 +471,66 @@ $stmt_prestamo->close();
             <!-- Incluir el archivo JavaScript -->
             <script>
                 window.onload = function() {
-    var formPago = document.getElementById('formPago');
-    var campoCuota = document.getElementById('cuota');
-    var campoResta = document.getElementById('campo2');
-    var campoDeuda = document.getElementById('variable');
-    var botonPagar = formPago.querySelector('input[name="action"][value="Pagar"]');
-    var montoAPagar = parseFloat(document.getElementById('montoAPagar').value);
+                    var formPago = document.getElementById('formPago');
+                    var campoCuota = document.getElementById('cuota');
+                    var campoResta = document.getElementById('campo2');
+                    var campoDeuda = document.getElementById('variable');
+                    var botonPagar = formPago.querySelector('input[name="action"][value="Pagar"]');
+                    var montoAPagar = parseFloat(document.getElementById('montoAPagar').value);
 
-    campoCuota.addEventListener('input', function() {
-        actualizarDeudaYResta();
-        validarCuota();
-        actualizarVisibilidadBotonPagar();
-    });
+                    campoCuota.addEventListener('input', function() {
+                        actualizarDeudaYResta();
+                        validarCuota();
+                        actualizarVisibilidadBotonPagar();
+                    });
 
-    campoResta.addEventListener('input', function() {
-        validarResta();
-        actualizarVisibilidadBotonPagar();
-    });
+                    campoResta.addEventListener('input', function() {
+                        validarResta();
+                        actualizarVisibilidadBotonPagar();
+                    });
 
-    function actualizarDeudaYResta() {
-        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
-        var nuevaDeuda = montoAPagar - cuotaIngresada;
-        campoDeuda.value = nuevaDeuda.toFixed(2);
-        campoResta.value = nuevaDeuda.toFixed(2);
-        validarResta();
-    }
+                    function actualizarDeudaYResta() {
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        var nuevaDeuda = montoAPagar - cuotaIngresada;
+                        campoDeuda.value = nuevaDeuda.toFixed(2);
+                        campoResta.value = nuevaDeuda.toFixed(2);
+                        validarResta();
+                    }
 
-    function validarResta() {
-        var valorResta = parseFloat(campoResta.value) || 0;
-        var deudaActual = parseFloat(campoDeuda.value) || 0;
-        campoResta.style.backgroundColor = (valorResta === deudaActual) ? 'green' : 'red';
-    }
+                    function validarResta() {
+                        var valorResta = parseFloat(campoResta.value) || 0;
+                        var deudaActual = parseFloat(campoDeuda.value) || 0;
+                        campoResta.style.backgroundColor = (valorResta === deudaActual) ? 'green' : 'red';
+                    }
 
-    function validarCuota() {
-        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
-        campoCuota.style.backgroundColor = (cuotaIngresada <= montoAPagar) ? '' : 'red';
-    }
+                    function validarCuota() {
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        campoCuota.style.backgroundColor = (cuotaIngresada <= montoAPagar) ? '' : 'red';
+                    }
 
-    function actualizarVisibilidadBotonPagar() {
-        var esCuotaInvalida = campoCuota.style.backgroundColor === 'red';
-        var esRestaInvalida = campoResta.style.backgroundColor === 'red';
-        botonPagar.style.display = (esCuotaInvalida || esRestaInvalida) ? 'none' : '';
-    }
+                    function actualizarVisibilidadBotonPagar() {
+                        var esCuotaInvalida = campoCuota.style.backgroundColor === 'red';
+                        var esRestaInvalida = campoResta.style.backgroundColor === 'red';
+                        botonPagar.style.display = (esCuotaInvalida || esRestaInvalida) ? 'none' : '';
+                    }
 
-    formPago.addEventListener('submit', function(event) {
-        var accion = formPago.querySelector('input[name="action"]:checked').value;
-        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
-        var valorResta = parseFloat(campoResta.value) || 0;
-        var deudaActual = parseFloat(campoDeuda.value) || 0;
+                    formPago.addEventListener('submit', function(event) {
+                        var accion = formPago.querySelector('input[name="action"]:checked').value;
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        var valorResta = parseFloat(campoResta.value) || 0;
+                        var deudaActual = parseFloat(campoDeuda.value) || 0;
 
-        // Verificar si el campo de cuota está en rojo
-        var esCuotaInvalida = campoCuota.style.backgroundColor === 'red';
+                        // Verificar si el campo de cuota está en rojo
+                        var esCuotaInvalida = campoCuota.style.backgroundColor === 'red';
 
-        if (accion === 'Pagar') {
-            if (esCuotaInvalida || cuotaIngresada > montoAPagar || valorResta !== deudaActual) {
-                event.preventDefault();
-                alert('Revisa los valores ingresados. La cuota no puede ser mayor al monto a pagar, no debe estar en rojo, y el valor en "Resta" debe ser igual al valor en "Deuda".');
-            }
-        }
-    });
-};
-
+                        if (accion === 'Pagar') {
+                            if (esCuotaInvalida || cuotaIngresada > montoAPagar || valorResta !== deudaActual) {
+                                event.preventDefault();
+                                alert('Revisa los valores ingresados. La cuota no puede ser mayor al monto a pagar, no debe estar en rojo, y el valor en "Resta" debe ser igual al valor en "Deuda".');
+                            }
+                        }
+                    });
+                };
             </script>
 
             <?php

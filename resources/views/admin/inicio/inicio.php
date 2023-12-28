@@ -327,11 +327,11 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </div>
 
-            <!-- <div class="cuadro cuadro-2">
+            <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
                 </div>
-            </div> -->
+            </div>
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
