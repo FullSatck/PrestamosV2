@@ -210,7 +210,7 @@ if (!isset($_SESSION["usuario_id"])) {
                                 <!-- Clase 'table-responsive' para hacerla responsive -->
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID</th>
+                                        <!-- <th scope="col">ID</th> -->
                                         <th scope="col">Nombre</th>
                                         <th scope="col">CURP</th>
                                         <th scope="col">Interés</th>
@@ -235,7 +235,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
                                     while ($datos = $sql->fetch_object()) { ?>
                                         <tr>
-                                            <td><?= "10" . $datos->ID ?></td>
+                                            <!-- <td><?= "10" . $datos->ID ?></td> -->
                                             <td><?= $datos->NombreCliente . " " . $datos->ApellidoCliente ?></td>
                                             <td><?= $datos->IdentificacionCURP ?></td>
 

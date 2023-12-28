@@ -61,6 +61,20 @@ function obtenerSuma($conexion, $tabla, $columna)
 $totalMonto = obtenerSuma($conexion, "prestamos", "MontoAPagar");
 $totalIngresos = obtenerSuma($conexion, "historial_pagos", "MontoPagado");
 $totalComisiones = obtenerSuma($conexion, "prestamos", "Comision");
+
+// OBTENER EL TOTAL DE PRESTAMOS 
+$sql_total_prestamos = "SELECT COUNT(*) AS total FROM prestamos";
+$resultado = $conexion->query($sql_total_prestamos);
+$fila = $resultado->fetch_assoc();
+$total_prestamos = $fila['total'];
+
+//OBTENER EL TOTAL CLIENTES 
+$sql_total_clientes = "SELECT COUNT(*) AS total FROM clientes";
+$resultado = $conexion->query($sql_total_clientes);
+$fila = $resultado->fetch_assoc();
+$total_clientes = $fila['total'];
+
+
 date_default_timezone_set('America/Bogota');
 
 ?>
@@ -208,6 +222,8 @@ date_default_timezone_set('America/Bogota');
 
 
 
+
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
@@ -260,13 +276,34 @@ date_default_timezone_set('America/Bogota');
                     <p>Version beta</p>
                 </div>
             </div>
-            <div class="cuadro cuadro-1">
+
+
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/creditos/crudPrestamos.php" class="titulo">List De Prestamos</a>
+
+                    <p>Total de Préstamos: <?= $total_prestamos ?></p>
+                </div>
+            </div>
+
+
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="titulo">List De Clientes</a>
+
+                    <p>Total de Clientes: <?= $total_clientes ?></p>
+                </div>
+            </div>
+
+
+
+            <!-- <div class="cuadro cuadro-1">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
                     <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
                     </p>
                 </div>
-            </div>
+            </div> -->
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>

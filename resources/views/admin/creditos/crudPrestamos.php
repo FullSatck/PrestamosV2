@@ -232,18 +232,18 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                 <!-- Clase 'table-responsive' para hacerla responsive -->
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID</th>
+                                        <!-- <th scope="col">ID</th> -->
                                         <th scope="col">Nombre</th>
                                         <th scope="col">CURP</th>
                                         <th scope="col">Interés</th>
                                         <th scope="col">Plazo</th>
                                         <th scope="col">Zona</th>
                                         <th scope="col">Deuda</th>
-                                      
+
                                         <th scope="col">Cuota</th>
                                         <th scope="col">Dec/Act</th>
                                         <th scope="col">Desactrasar</th>
-                                       
+
                                         <th scope="col">Borrar</th>
 
 
@@ -257,7 +257,7 @@ if (isset($_SESSION["mensaje_borrado"])) {
 
                                     while ($datos = $sql->fetch_object()) { ?>
                                         <tr>
-                                            <td><?= "10" . $datos->ID ?></td>
+                                            <!-- <td><?= "10" . $datos->ID ?></td> -->
                                             <td><?= $datos->NombreCliente . " " . $datos->ApellidoCliente ?></td>
                                             <td><?= $datos->IdentificacionCURP ?></td>
 
@@ -268,9 +268,9 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                             <td><?= $datos->Zona ?></td>
                                             <td><?= number_format($datos->MontoAPagar, 0, '.', '.') ?></td>
                                             <td><?= number_format($datos->MontoCuota, 0, '.', '.') ?></td>
-                                            
 
-                                          
+
+
 
                                             <td class="icon-td">
                                                 <a href="cambiarEstado.php?id=<?= $datos->ID ?>&estado=<?= $datos->EstadoP ?>">
@@ -278,13 +278,14 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                                     <?= $datos->EstadoP == 1 ? ' Desactivar' : ' Activar' ?>
                                                 </a>
                                             </td>
+
                                             <td class="icon-td">
-                                                <a href="/resources/views/admin/desatrasar/index.php?id_cliente=<?= $datos->IDCliente ?>">
+                                                <a href="#" class="desatrasar-btn" data-id="<?= $datos->IDCliente ?>">
                                                     <i class="fa-solid fa-clock-rotate-left"></i>
                                                     Desatrasar
                                                 </a>
-
                                             </td>
+
 
 
 
@@ -317,6 +318,15 @@ if (isset($_SESSION["mensaje_borrado"])) {
                 <button id="cancelDelete">Cancelar</button>
             </div>
         </div>
+        <!-- Modal de Advertencia para Desatrasar -->
+        <div id="warningModal" class="modal-custom">
+            <div class="modal-content">
+                <span class="close-button-warning">&times;</span>
+                <h2>Advertencia</h2>
+                <p>TENGA CUIDADO AL DESATRASAR CLIENTE. YA QUE SI HIZO PAGOS DE ESTE CLIENTE LE SALDRA ERROR Y DAÑARA LA LOGICA.</p>
+                <button id="confirmWarning">Entendido</button>
+            </div>
+        </div>
 
 
     </main>
@@ -324,6 +334,50 @@ if (isset($_SESSION["mensaje_borrado"])) {
     <script src="/public/assets/js/MenuLate.js"></script>
 
     <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Obtener el modal de advertencia para desatrasar
+        var warningModal = document.getElementById("warningModal");
+
+        // Obtener todos los botones que abren el modal de advertencia
+        var desatrasarButtons = document.querySelectorAll(".desatrasar-btn");
+
+        // Obtener el elemento <span> que cierra el modal de advertencia
+        var spanWarning = document.querySelector(".close-button-warning");
+
+        // Variable para almacenar el ID del cliente
+        var clienteId;
+
+        // Agregar evento click a cada botón de desatrasar
+        desatrasarButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                warningModal.classList.add("modal-visible"); // Hace visible el modal
+                clienteId = this.getAttribute("data-id"); // Almacenar el ID del cliente
+            });
+        });
+
+        // Función para cerrar el modal de advertencia
+        function closeWarningModal() {
+            warningModal.classList.remove("modal-visible");
+        }
+
+        // Evento para cerrar el modal de advertencia al hacer clic en <span> (x)
+        spanWarning.addEventListener('click', closeWarningModal);
+
+        // Evento para redirigir al usuario al hacer clic en el botón de entendido
+        document.getElementById('confirmWarning').addEventListener('click', function() {
+            closeWarningModal();
+            window.location.href = '/resources/views/admin/desatrasar/index.php?id_cliente=' + clienteId; // Redirigir con el ID del cliente
+        });
+
+        // Evento para cerrar el modal de advertencia al hacer clic fuera de él
+        window.addEventListener('click', function(event) {
+            if (event.target == warningModal) {
+                closeWarningModal();
+            }
+        });
+    });
+    
         //MODAL 
         document.addEventListener("DOMContentLoaded", function() {
             // Obtener el modal
