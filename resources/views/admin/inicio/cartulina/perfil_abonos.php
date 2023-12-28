@@ -155,13 +155,8 @@ $stmt_prestamo->close();
 
             <a href="<?= $ruta_cliente ?>" class="back-link3">R Clientes</a>
 
-            <div class="nombre-usuario">
-                <?php
-                if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
-                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
-                }
-                ?>
-            </div>
+            <a href="orden_abonos.php" class="back-link1">Ruta</a>
+
         </header>
 
         <main>
@@ -210,14 +205,28 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <?php
-                    $sql_total_clientes = "SELECT COUNT(*) AS TotalClientes FROM clientes";
-                    $resultado_total = $conexion->query($sql_total_clientes);
+                    $fecha_actual = date("Y-m-d");
+
+                    // Consulta para contar el total de clientes que no han pagado hoy
+                    $sql_total_clientes = "SELECT COUNT(DISTINCT c.ID) AS TotalClientes
+                           FROM clientes c
+                           LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
+                           WHERE hp.ID IS NULL";
+                    $stmt_total = $conexion->prepare($sql_total_clientes);
+                    $stmt_total->bind_param("s", $fecha_actual);
+                    $stmt_total->execute();
+                    $resultado_total = $stmt_total->get_result();
                     $fila_total = $resultado_total->fetch_assoc();
                     $total_clientes = $fila_total['TotalClientes'];
+                    $stmt_total->close();
 
-                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ?";
+                    // Consulta para determinar la posición del cliente actual en la lista de clientes que no han pagado hoy
+                    $sql_posicion_cliente = "SELECT COUNT(DISTINCT c.ID) AS Posicion
+                             FROM clientes c
+                             LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
+                             WHERE hp.ID IS NULL AND c.ID <= ?";
                     $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
-                    $stmt_posicion->bind_param("i", $id_cliente);
+                    $stmt_posicion->bind_param("si", $fecha_actual, $id_cliente);
                     $stmt_posicion->execute();
                     $stmt_posicion->bind_result($posicion_cliente);
                     $stmt_posicion->fetch();
@@ -225,6 +234,7 @@ $stmt_prestamo->close();
                     ?>
                     <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
                 </div>
+
             </div>
 
             <!-- CARTULINA DE FACTURAS -->
@@ -443,7 +453,7 @@ $stmt_prestamo->close();
                 <!-- Campos para el pago -->
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota">
                 <input type="text" id="campo2" name="campo2" placeholder="Resta">
-                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars(($montoAPagar - ($info_prestamo['Cuota'] ?? 0) < 0) ? 0 : $montoAPagar - ($info_prestamo['Cuota'] ?? 0)); ?>" readonly>
+                <input type="text" id="variable" placeholder="Deuda" readonly>
 
                 <!-- Botones para las acciones -->
                 <input type="submit" name="action" value="Pagar" class="boton1">
@@ -451,17 +461,62 @@ $stmt_prestamo->close();
                 <input type="submit" name="action" value="Mas tarde" class="boton3" id="masTarde">
 
                 <!-- Campos ocultos para pasar valores a JavaScript -->
-                <input type="hidden" id="cuotaEsperada" value="<?= htmlspecialchars($info_prestamo['Cuota'] ?? '0'); ?>">
                 <input type="hidden" id="montoAPagar" value="<?= htmlspecialchars($montoAPagar ?? '0'); ?>">
             </form>
 
+
             <!-- Incluir el archivo JavaScript -->
-            <script src="paymentFormHandler.js"></script>
+            <script>
+                window.onload = function() {
+                    var formPago = document.getElementById('formPago');
+                    var campoCuota = document.getElementById('cuota');
+                    var campoResta = document.getElementById('campo2');
+                    var campoDeuda = document.getElementById('variable');
+                    var montoAPagar = parseFloat(document.getElementById('montoAPagar').value);
 
+                    campoCuota.addEventListener('input', function() {
+                        actualizarDeudaYResta();
+                        validarCuota();
+                    });
 
-            <div class="orden">
-                <a href="orden_abonos.php">Orden</a>
-            </div>
+                    campoResta.addEventListener('input', function() {
+                        validarResta();
+                    });
+
+                    function actualizarDeudaYResta() {
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        var nuevaDeuda = montoAPagar - cuotaIngresada;
+                        campoDeuda.value = nuevaDeuda.toFixed(2);
+                        campoResta.value = nuevaDeuda.toFixed(2);
+                        validarResta();
+                    }
+
+                    function validarResta() {
+                        var valorResta = parseFloat(campoResta.value) || 0;
+                        var deudaActual = parseFloat(campoDeuda.value) || 0;
+                        campoResta.style.backgroundColor = (valorResta === deudaActual) ? 'green' : 'red';
+                    }
+
+                    function validarCuota() {
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        campoCuota.style.backgroundColor = (cuotaIngresada <= montoAPagar) ? '' : 'red';
+                    }
+
+                    formPago.addEventListener('submit', function(event) {
+                        var accion = formPago.querySelector('input[name="action"]:checked').value;
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        var valorResta = parseFloat(campoResta.value) || 0;
+                        var deudaActual = parseFloat(campoDeuda.value) || 0;
+
+                        if (accion === 'Pagar') {
+                            if (cuotaIngresada > montoAPagar || valorResta !== deudaActual) {
+                                event.preventDefault();
+                                alert('Revisa los valores ingresados. La cuota no puede ser mayor al monto a pagar y el valor en "Resta" debe ser igual al valor en "Deuda".');
+                            }
+                        }
+                    });
+                };
+            </script>
 
             <?php
             // Consulta SQL para obtener los préstamos del cliente
