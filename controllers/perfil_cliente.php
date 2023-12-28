@@ -36,6 +36,8 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
+
+
 // Obtener el ID del cliente desde el parámetro GET
 $id_cliente = $_GET['id'];
 
@@ -65,34 +67,47 @@ if ($resultado->num_rows === 1) {
     exit();
 }
 
+// Obtener la zona y rol del usuario desde la sesión
+$user_zone = $_SESSION['user_zone'];
+$user_role = $_SESSION['rol'];
+
+// Si el rol es 1 (administrador)
+if ($_SESSION["rol"] == 1) {
+    $ruta_volver = "/resources/views/admin/clientes/lista_clientes.php";
+} elseif ($_SESSION["rol"] == 2) {
+    // Ruta para el rol 2 (supervisor) en base a la zona
+    if ($_SESSION['user_zone'] === '6') {
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '20') {
+        $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '22') {
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/lista_clientes.php";
+    } else {
+        // Si no coincide con ninguna zona válida para supervisor, redirigir a un dashboard predeterminado
+        $ruta_volver = "/default_dashboard.php";
+    }
+} elseif ($_SESSION["rol"] == 3) {
+    // Ruta para el rol 3 (cobrador) en base a la zona
+    if ($_SESSION['user_zone'] === '6') {
+        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '20') {
+        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '22') {
+        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php";
+    } else {
+        // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
+        $ruta_volver = "/default_dashboard.php";
+    }
+} else {
+    // Si no hay un rol válido, redirigir a una página predeterminada
+    $ruta_volver = "/default_dashboard.php";
+}
+
+
+
 // Consulta SQL para obtener los préstamos del cliente
 $sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
 $resultado_prestamos = $conexion->query($sql_prestamos);
-
-// Obtener clientes que han pasado ciertos días hábiles sin pagar una cuota
-$diasHabilesSinPagar = 15;
-$fechaLimite = date('Y-m-d', strtotime("-$diasHabilesSinPagar weekdays"));
-
-while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) {
-    // Calcular la fecha límite para la última cuota
-    $fechaInicio = isset($fila_prestamo['FechaInicio']) ? $fila_prestamo['FechaInicio'] : date('Y-m-d');
-    $fechaLimiteCuota = date('Y-m-d', strtotime("+10 weekdays", strtotime($fechaInicio)));
-
-    // Verificar si ha pasado el plazo establecido desde la fecha de vencimiento
-    if ($fila_prestamo['Estado'] == 'pendiente' && $fechaLimiteCuota <= $fechaLimite) {
-        // Mover cliente a la tabla de clientes clavos
-        $clienteID = $id_cliente;
-        $updateQuery = "UPDATE clientes SET EstadoID = 2 WHERE ID = $clienteID";
-        $conexion->query($updateQuery);
-
-        // Actualizar información en la tabla prestamos
-        $prestamoID = $fila_prestamo['ID'];
-        $updatePrestamoQuery = "UPDATE prestamos SET CuotasVencidas = CuotasVencidas + 1, Estado = 'clavo' WHERE ID = $prestamoID";
-        $conexion->query($updatePrestamoQuery);
-    }
-}
-
-// ... (Código previo)
 
 ?>
 
@@ -151,9 +166,6 @@ while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) {
                     <p>Estado: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
                     <p>Municipio: <strong><?= $fila["CiudadNombre"] ?></strong></p>
                     <p>Colonia: <strong><?= $fila["asentamiento"] ?></strong></p>
-                    <!-- Nuevo campo "Clavo" -->
-    <p>Clavo: <strong><?= ($fila["EstadoID"] == 2) ? 'Sí' : 'No' ?></strong></p>
-</div>
                     
                 </div>
             </div>
