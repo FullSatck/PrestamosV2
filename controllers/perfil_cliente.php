@@ -114,7 +114,7 @@ while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) {
 
 <body>
 
-    <body id="body">  
+    <body id="body">
 
         <header>
 
