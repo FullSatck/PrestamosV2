@@ -29,7 +29,7 @@ $stmtAdmin->execute();
 $resultAdmin = $stmtAdmin->get_result();
 
 if ($rowAdmin = $resultAdmin->fetch_assoc()) {
-    if ($filaEstado['Estado'] == 'inactivo' && $rowAdmin["RolID"] != 1) {
+    if ($filaEstado['Estado'] == 'inactivo' && $rowAdmin["RolID"] != 4) {
         $_SESSION['error_message'] = "El sistema está actualmente deshabilitado. Por favor, inténtalo más tarde.";
         header("Location: /index.php");
         exit();
@@ -57,6 +57,10 @@ if ($row = $result->fetch_assoc()) {
     // Redirige a la página correspondiente según el rol y la zona del usuario
     if ($_SESSION["rol"] == 1) { // admin
         header("Location: /resources/views/admin/inicio/inicio.php");
+
+        // SUPERVISOR 
+    } elseif ($_SESSION["rol"] == 4) { // SUPER ADMIN
+        header("Location: /resources/views/superadmin/inicio/inicio.php");
 
         // SUPERVISOR 
     } else if ($_SESSION["rol"] == 2) { // supervisor

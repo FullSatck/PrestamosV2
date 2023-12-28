@@ -36,7 +36,7 @@ $fila = $resultado->fetch_assoc();
 $stmt->close();
 
 // Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
-if (!$fila || $fila['Nombre'] !== 'Superadmin') {
+if (!$fila || $fila['Nombre'] !== 'super') {
     header("Location: /ruta_a_pagina_de_error_o_inicio.php");
     exit();
 }
@@ -72,55 +72,30 @@ date_default_timezone_set('America/Bogota');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio Admin</title>
-
+    <title>Inicio Super Admin</title>
     <link rel="stylesheet" href="/public/assets/css/inicio.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
-
 </head>
 
-
-
-
-
 <main>
-    <h1>Inicio Administrador</h1>
+    <header>
+        <a href="/controllers/cerrar_sesion.php">
+            <div class="option"> 
+                <h4>Cerrar Sesion</h4>
+            </div>
+        </a>
+    </header>
+    <h1>Inicio Super Administrador</h1>
     <div class="cuadros-container">
-
-
-
-
-
-
-
-
-
-
 
         <div class="cuadro cuadro-2">
             <div class="cuadro-1-1">
-                <a href="/resources/views/admin/superadmin/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
+                <a href="/resources/views/superadmin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
             </div>
         </div>
 
-
-
-
-
-
     </div>
-
-
-    </div>
-    </div>
-
-
 </main>
-
-
-
-
-
 
 </body>
 
