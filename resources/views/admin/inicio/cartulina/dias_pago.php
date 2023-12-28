@@ -12,7 +12,7 @@ if (isset($_SESSION["usuario_id"])) {
 }
 
 // Incluir el archivo de conexión a la base de datos
-require_once("conexion.php");
+require_once("../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 

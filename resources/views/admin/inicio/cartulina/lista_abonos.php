@@ -12,7 +12,7 @@ date_default_timezone_set('America/Bogota');
 <body>
 
 <?php
-require_once("conexion.php");
+require_once("../../../../../controllers/conexion.php");
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $idPrestamo = $_GET['id'];

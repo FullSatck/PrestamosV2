@@ -1,5 +1,5 @@
 <?php
-include 'conexion.php';
+include '../../../../../controllers/conexion.php';
 
 function obtenerClientes($conexion) {
     $query = "SELECT id, Nombre, Apellido FROM clientes";

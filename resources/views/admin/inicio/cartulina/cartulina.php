@@ -10,7 +10,7 @@ if (!isset($_SESSION["usuario_id"])) {
 }
 
 // Incluir el archivo de conexión a la base de datos
-require_once("conexion.php");
+require_once("../../../../../controllers/conexion.php");
 
 // Obtén el ID del cliente de la URL
 $id_cliente = isset($_GET['id']) ? intval($_GET['id']) : 0;

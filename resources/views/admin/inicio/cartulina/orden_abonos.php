@@ -7,13 +7,13 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+    header("Location: ../index.php");
     exit();
 }
 
 
 // Incluye el archivo de conexión
-include("../../../../controllers/conexion.php");
+include("../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
@@ -97,7 +97,7 @@ mysqli_close($conexion);
                     </thead>
                     <tbody>
                         <?php
-                        include "../../../../controllers/conexion.php";
+                        include "../../../../../controllers/conexion.php";
 
                         $fecha_actual = date("Y-m-d");
 

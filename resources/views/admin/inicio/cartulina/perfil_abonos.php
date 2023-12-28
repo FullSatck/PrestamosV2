@@ -7,20 +7,20 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../index.php");
+    header("Location: ../../../../../index.php");
     exit();
 }
 
 // Verificar si se ha pasado un ID válido como parámetro GET
 if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
     // Redirigir a una página de error o a una página predeterminada
-    header("location: ../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    header("location: ../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
     exit();
 }
 
 
 // Incluir el archivo de conexión a la base de datos
-include("conexion.php");
+include("../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
@@ -478,72 +478,31 @@ $stmt_prestamo->close();
 
             <!-- Formulario de Pago -->
             <form method="post" action="process_payment.php" id="formPago">
-                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                <input type="hidden" name="id_prestamo" value="<?= $idPrestamo; ?>">
+                <input type="hidden" name="id_cliente" value="<?= htmlspecialchars($id_cliente ?? ''); ?>">
+                <input type="hidden" name="id_prestamo" value="<?= htmlspecialchars($info_prestamo['idPrestamo'] ?? ''); ?>">
 
                 <!-- Campos para el pago -->
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota">
                 <input type="text" id="campo2" name="campo2" placeholder="Resta">
-                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars(($montoAPagar - $info_prestamo['Cuota'] < 0) ? 0 : $montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
+                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars(($montoAPagar - ($info_prestamo['Cuota'] ?? 0) < 0) ? 0 : $montoAPagar - ($info_prestamo['Cuota'] ?? 0)); ?>" readonly>
 
                 <!-- Botones para las acciones -->
                 <input type="submit" name="action" value="Pagar" class="boton1">
                 <input type="submit" name="action" value="No pago" class="boton2" id="noPago">
                 <input type="submit" name="action" value="Mas tarde" class="boton3" id="masTarde">
 
+                <!-- Campos ocultos para pasar valores a JavaScript -->
+                <input type="hidden" id="cuotaEsperada" value="<?= htmlspecialchars($info_prestamo['Cuota'] ?? '0'); ?>">
+                <input type="hidden" id="montoAPagar" value="<?= htmlspecialchars($montoAPagar ?? '0'); ?>">
             </form>
 
-            <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
+            <!-- Incluir el archivo JavaScript -->
+            <script src="paymentFormHandler.js"></script>
 
-            <script>
-                var cuotaEsperada = <?= json_encode($info_prestamo['Cuota']); ?>;
-                var montoAPagar = <?= json_encode($montoAPagar); ?>;
-                console.log("Cuota esperada:", cuotaEsperada); // Para depuración
-                console.log("Monto a pagar:", montoAPagar); // Para depuración
 
-                window.onload = function() {
-                    var formPago = document.getElementById('formPago');
-                    var campoCuota = document.getElementById('cuota');
-                    var campoResta = document.getElementById('campo2');
-                    var campoDeuda = document.getElementById('variable');
-
-                    campoResta.addEventListener('input', function() {
-                        var valorResta = parseFloat(campoResta.value.replace(',', '.'));
-                        var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
-                        campoResta.style.backgroundColor = valorResta === deudaActual ? 'green' : 'red';
-                    });
-
-                    formPago.addEventListener('submit', function(event) {
-                        // Verificar si la acción es "Pagar"
-                        var accion = formPago.querySelector('input[name="action"]:checked').value;
-                        if (accion === 'Pagar') {
-                            var cuotaIngresada = parseFloat(campoCuota.value.replace(',', '.'));
-                            var valorResta = parseFloat(campoResta.value.replace(',', '.'));
-                            var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
-                            var tolerancia = 0.01;
-
-                            if (deudaActual === 0 && valorResta === 0) {
-                                if (Math.abs(cuotaIngresada - montoAPagar) > tolerancia) {
-                                    event.preventDefault();
-                                    alert('La cuota ingresada debe ser igual al monto total a pagar.');
-                                    return;
-                                }
-                            } else {
-                                if (Math.abs(cuotaIngresada - cuotaEsperada) > tolerancia) {
-                                    event.preventDefault();
-                                    alert('La cuota ingresada no es correcta.');
-                                    return;
-                                }
-                                if (valorResta !== deudaActual) {
-                                    event.preventDefault();
-                                    alert('El saldo que resta que se ingresó no es correcto.');
-                                    return;
-                                }
-                            }
-                        }
-                    });
-                };
-            </script>
+            <div class="orden">
+                <a href="orden_abonos.php">Orden</a>
+            </div>
 
             <?php
             // Consulta SQL para obtener los préstamos del cliente
