@@ -1,5 +1,5 @@
 <?php
-include 'conexion.php';
+include '../../../../../controllers/conexion.php';
 include 'load_clients.php'; // Asegúrate de que este archivo incluya la conexión a la base de datos
 
 $busqueda = $_GET['busqueda'] ?? '';
