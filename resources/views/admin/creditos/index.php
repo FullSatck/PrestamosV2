@@ -125,9 +125,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 
                 // Limitar el número de cuotas al plazo del préstamo
                 $numCuotas = min($plazoPrestamo, floor(($fechaActual - strtotime('+1 day', $fechaInicio)) / (60 * 60 * 24)));
-                echo '<div class="boton-contenedor">';
-                echo '<a href="editar_prestamo.php?prestamo_id=' . $row_prestamo['ID'] . '" class="btn btn-editar-prestamo">Editar Préstamo</a>';
-                echo '</div>';
+               
 
                 echo '<form action="procesar_pagos.php" method="post" class="card card-body" data-monto-a-pagar="' . $row_prestamo['MontoAPagar'] . '">';
 
@@ -345,7 +343,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                     success: function(response) {
                         alert("Pagos procesados correctamente");
                         $('#myModal').modal('hide');
-                        window.location.href = "agregar_clientes.php";
+                        window.location.href = "crudPrestamos.php";
                     },
                     error: function() {
                         alert("Error al procesar el pago");

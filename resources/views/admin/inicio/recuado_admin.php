@@ -56,6 +56,43 @@ if (!isset($_SESSION["usuario_id"])) {
 // Conectar a la base de datos
 include("../../../../controllers/conexion.php");
 
+  // Inicializar el total en 0
+  $totalRecaudado = 0;
+  $startDate = ""; // Inicializa las variables
+  $endDate = "";
+
+  // Procesar la solicitud POST cuando se envía el formulario
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtén las fechas seleccionadas por el usuario desde los campos de entrada
+    $startDate = $_POST["start-date"]; // Asegúrate de validar y limpiar los datos del usuario
+    $endDate = $_POST["end-date"]; // Asegúrate de validar y limpiar los datos del usuario
+
+    // Verificar si las fechas son válidas
+    if ($startDate && $endDate) {
+        // Consulta SQL con filtro de fechas
+        $sql = "SELECT * FROM historial_pagos WHERE FechaPago >= ? AND FechaPago <= ? ORDER BY ID DESC";
+
+        // Preparar la consulta
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("ss", $startDate, $endDate);
+
+        // Ejecutar la consulta
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Calcular el total recaudado para el rango de fechas seleccionado
+        $totalRecaudado = 0; // Inicializa el total nuevamente
+        while ($row = mysqli_fetch_assoc($result)) {
+            $totalRecaudado += $row['MontoPagado'];
+        }
+    } else {
+        // Las fechas no son válidas, muestra un mensaje de error o maneja la situación de acuerdo a tus necesidades
+        echo "Por favor, seleccione fechas válidas.";
+    }
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +104,8 @@ include("../../../../controllers/conexion.php");
     <title>Recaudo</title>
     <link rel="stylesheet" href="/public/assets/css/recaudo_admin.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 </head>
 
 <body id="body">
@@ -168,12 +207,7 @@ include("../../../../controllers/conexion.php");
                 </div>
             </a>
 
-            <a href="/resources/views/admin/ruta/ruta.php">
-                <div class="option">
-                    <i class="fa-solid fa-map" title=""></i>
-                    <h4>Enrutar</h4>
-                </div>
-            </a>
+           
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -198,10 +232,38 @@ include("../../../../controllers/conexion.php");
 
     <main>
         <h1>Recaudos totales</h1>
+        <?php
+        $totalRecaudado = 0; // Inicializa la variable para almacenar el total recaudado
+
+        // Consulta SQL para obtener la suma de MontoPagado en la tabla historial_pagos
+        $sqlTotalRecaudado = "SELECT SUM(MontoPagado) AS TotalRecaudado FROM historial_pagos";
+        $resultTotalRecaudado = mysqli_query($conexion, $sqlTotalRecaudado);
+
+        if ($resultTotalRecaudado && $rowTotalRecaudado = mysqli_fetch_assoc($resultTotalRecaudado)) {
+            $totalRecaudado = $rowTotalRecaudado['TotalRecaudado'];
+        }
+        ?>
+
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
         </div>
+
+        <div class="date-filter">
+            <label for="start-date">Fecha de inicio:</label>
+            <input type="date" id="start-date" name="start-date">
+
+            <label for="end-date">Fecha de fin:</label>
+            <input type="date" id="end-date" name="end-date">
+
+            <button id="filter-button">Filtrar</button>
+        </div>
+
+        <div class="total-recaudado">
+    <p>Total Recaudado <?php echo $startDate; ?>  <?php echo $endDate; ?>: $<?php echo number_format($totalRecaudado, 0, ',', '.'); ?></p>
+</div>
+
+
 
         <?php
         // Incluye el archivo de conexión a la base de datos
@@ -260,6 +322,40 @@ include("../../../../controllers/conexion.php");
 
 
     </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById("search-input");
+            const rows = document.querySelectorAll("table tr");
+            const filterButton = document.getElementById("filter-button");
+            const startDateInput = document.getElementById("start-date");
+            const endDateInput = document.getElementById("end-date");
+
+            filterButton.addEventListener("click", function() {
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+
+                rows.forEach(function(row, index) {
+                    if (index === 0) {
+                        // Salta la primera fila que contiene encabezados de la tabla
+                        return;
+                    }
+
+                    const dateColumn = row.querySelector("td:nth-child(3)").textContent; // Suponiendo que la fecha está en la tercera columna (ajusta según tu estructura)
+
+                    if (startDate && endDate) {
+                        if (dateColumn >= startDate && dateColumn <= endDate) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    } else {
+                        row.style.display = "";
+                    }
+                });
+            });
+        });
+    </script>
+
 
     <script>
         // Agregar un evento clic al botón

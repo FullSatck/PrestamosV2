@@ -55,19 +55,35 @@ $resultZonas = mysqli_query($conexion, $consultaZonas);
 // Consulta para obtener las ciudades basadas en la zona seleccionada
 $consultaCiudades = "SELECT * FROM ciudades WHERE IDZona = (SELECT ID FROM zonas WHERE Nombre = '$zonaSeleccionada')";
 $resultCiudades = mysqli_query($conexion, $consultaCiudades);
+// Consulta para obtener todas las ciudades
+$consultaCiudades = "SELECT * FROM ciudades";
+$resultCiudades = mysqli_query($conexion, $consultaCiudades);
 
- 
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J/T4Aj4Or5M5L6f4dOMu1zC5z5OIn5S/4ro5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z5D02F5z" crossorigin="anonymous"></script>
+
+    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
     <title>Editar Cliente</title>
     <link rel="stylesheet" href="/public/assets/css/editar_clientes.css">
 </head>
+
 <body>
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . '?id=' . $clienteId); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . '?id=' . $clienteId); ?>" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="cliente_id" value="<?php echo $cliente['ID']; ?>">
 
         <div class="input-container">
@@ -118,7 +134,7 @@ $resultCiudades = mysqli_query($conexion, $consultaCiudades);
                 $resultZonas = mysqli_query($conexion, $consultaZonas);
 
                 while ($row = mysqli_fetch_assoc($resultZonas)) {
-                    $selected = ($row['ID'] == $cliente['Zona']) ? 'selected' : '';
+                    $selected = ($row['Nombre'] == $zonaSeleccionada) ? 'selected' : '';
                     echo '<option value="' . $row['ID'] . '" ' . $selected . '>' . $row['Nombre'] . '</option>';
                 }
                 ?>
@@ -129,12 +145,15 @@ $resultCiudades = mysqli_query($conexion, $consultaCiudades);
             <label for="ciudad">Ciudad:</label>
             <select id="ciudad" name="ciudad">
                 <?php
-                $consultaCiudades = "SELECT * FROM ciudades";
-                $resultCiudades = mysqli_query($conexion, $consultaCiudades);
+                // Verifica si $zonaSeleccionada no está vacío
+                if (!empty($zonaSeleccionada)) {
+                    $consultaCiudades = "SELECT * FROM ciudades WHERE IDZona = (SELECT ID FROM zonas WHERE Nombre = '$zonaSeleccionada')";
+                    $resultCiudades = mysqli_query($conexion, $consultaCiudades);
 
-                while ($row = mysqli_fetch_assoc($resultCiudades)) {
-                    $selected = ($row['ID'] == $cliente['Ciudad']) ? 'selected' : '';
-                    echo '<option value="' . $row['ID'] . '" ' . $selected . '>' . $row['Nombre'] . '</option>';
+                    while ($row = mysqli_fetch_assoc($resultCiudades)) {
+                        $selected = ($row['ID'] == $cliente['Ciudad']) ? 'selected' : '';
+                        echo '<option value="' . $row['ID'] . '" ' . $selected . '>' . $row['Nombre'] . '</option>';
+                    }
                 }
                 ?>
             </select>
@@ -151,4 +170,5 @@ $resultCiudades = mysqli_query($conexion, $consultaCiudades);
         </div>
     </form>
 </body>
+
 </html>

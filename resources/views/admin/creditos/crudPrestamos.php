@@ -280,7 +280,8 @@ if (isset($_SESSION["mensaje_borrado"])) {
                                             </td>
 
                                             <td class="icon-td">
-                                                <a href="#" class="desatrasar-btn" data-id="<?= $datos->IDCliente ?>">
+                                                <a href="#" class="desatrasar-btn" data-id="<?= $datos->ID ?>">
+
                                                     <i class="fa-solid fa-clock-rotate-left"></i>
                                                     Desatrasar
                                                 </a>
@@ -323,7 +324,7 @@ if (isset($_SESSION["mensaje_borrado"])) {
             <div class="modal-content">
                 <span class="close-button-warning">&times;</span>
                 <h2>Advertencia</h2>
-                <p>TENGA CUIDADO AL DESATRASAR CLIENTE. YA QUE SI HIZO PAGOS DE ESTE CLIENTE LE SALDRA ERROR Y DAÑARA LA LOGICA.</p>
+                <p>TENGA CUIDADO AL DESATRASAR CLIENTE. YA QUE SI HIZO PAGOS DE ESTE CLIENTE LE SALDRA ERROR Y DAÑARA LA LOGICA.</p><br>
                 <button id="confirmWarning">Entendido</button>
             </div>
         </div>
@@ -334,50 +335,51 @@ if (isset($_SESSION["mensaje_borrado"])) {
     <script src="/public/assets/js/MenuLate.js"></script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        // Obtener el modal de advertencia para desatrasar
-        var warningModal = document.getElementById("warningModal");
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtener el modal de advertencia para desatrasar
+            var warningModal = document.getElementById("warningModal");
 
-        // Obtener todos los botones que abren el modal de advertencia
-        var desatrasarButtons = document.querySelectorAll(".desatrasar-btn");
+            // Obtener todos los botones que abren el modal de advertencia
+            var desatrasarButtons = document.querySelectorAll(".desatrasar-btn");
 
-        // Obtener el elemento <span> que cierra el modal de advertencia
-        var spanWarning = document.querySelector(".close-button-warning");
+            // Obtener el elemento <span> que cierra el modal de advertencia
+            var spanWarning = document.querySelector(".close-button-warning");
 
-        // Variable para almacenar el ID del cliente
-        var clienteId;
+            // Variable para almacenar el ID del préstamo
+            var prestamoId;
 
-        // Agregar evento click a cada botón de desatrasar
-        desatrasarButtons.forEach(function(button) {
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-                warningModal.classList.add("modal-visible"); // Hace visible el modal
-                clienteId = this.getAttribute("data-id"); // Almacenar el ID del cliente
+            // Agregar evento click a cada botón de desatrasar
+            desatrasarButtons.forEach(function(button) {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    warningModal.classList.add("modal-visible"); // Hace visible el modal
+                    prestamoId = this.getAttribute("data-id"); // Almacenar el ID del préstamo
+                });
+            });
+
+            // Función para cerrar el modal de advertencia
+            function closeWarningModal() {
+                warningModal.classList.remove("modal-visible");
+            }
+
+            // Evento para cerrar el modal de advertencia al hacer clic en <span> (x)
+            spanWarning.addEventListener('click', closeWarningModal);
+
+            // Evento para redirigir al usuario al hacer clic en el botón de entendido
+            document.getElementById('confirmWarning').addEventListener('click', function() {
+                closeWarningModal();
+                window.location.href = 'index.php?id_prestamo=' + prestamoId; // Redirigir con el ID del préstamo
+            });
+
+            // Evento para cerrar el modal de advertencia al hacer clic fuera de él
+            window.addEventListener('click', function(event) {
+                if (event.target == warningModal) {
+                    closeWarningModal();
+                }
             });
         });
 
-        // Función para cerrar el modal de advertencia
-        function closeWarningModal() {
-            warningModal.classList.remove("modal-visible");
-        }
 
-        // Evento para cerrar el modal de advertencia al hacer clic en <span> (x)
-        spanWarning.addEventListener('click', closeWarningModal);
-
-        // Evento para redirigir al usuario al hacer clic en el botón de entendido
-        document.getElementById('confirmWarning').addEventListener('click', function() {
-            closeWarningModal();
-            window.location.href = '/resources/views/admin/desatrasar/index.php?id_cliente=' + clienteId; // Redirigir con el ID del cliente
-        });
-
-        // Evento para cerrar el modal de advertencia al hacer clic fuera de él
-        window.addEventListener('click', function(event) {
-            if (event.target == warningModal) {
-                closeWarningModal();
-            }
-        });
-    });
-    
         //MODAL 
         document.addEventListener("DOMContentLoaded", function() {
             // Obtener el modal

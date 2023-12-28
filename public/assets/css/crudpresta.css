@@ -522,7 +522,26 @@ h1 {
 #cancelDelete:hover {
     background-color: #e0e0e0;
 }
+  /* Estilo para el modal warningModal */
+  #warningModal .modal-content {
+    color: red; /* Color del texto en rojo */
+    font-weight: bold; /* Texto en negrita */
+}
 
+/* Estilo para el botón dentro de warningModal */
+#warningModal .modal-content button {
+    background-color: red; /* Fondo del botón en rojo */
+    color: white; /* Color del texto del botón en blanco */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Relleno alrededor del texto */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor en forma de mano al pasar por encima */
+}
+
+/* Estilo para el botón al pasar el mouse por encima */
+#warningModal .modal-content button:hover {
+    background-color: darkred; /* Color más oscuro al pasar el mouse */
+}
 /* Pequeña animación al abrir */
 @keyframes modalOpen {
     from {
