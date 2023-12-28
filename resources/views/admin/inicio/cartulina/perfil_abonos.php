@@ -115,7 +115,7 @@ if ($resultado_prestamo->num_rows > 0) {
 
 if ($mostrarMensajeAgregarPrestamo) {
     echo "<p class='no-prestamo-mensaje'>Este cliente no tiene préstamos activos o están completamente pagados.</p>";
-    echo "<a href='../resources/views/admin/creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
+    echo "<a href='../../creditos/prestamos.php?cliente_id=" . $id_cliente . "' class='back-link3'>Agregar Préstamo</a>";
 } else {
     // Procesamiento normal si el cliente tiene un préstamo activo
 }

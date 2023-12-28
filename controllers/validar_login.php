@@ -29,7 +29,7 @@ $stmtAdmin->execute();
 $resultAdmin = $stmtAdmin->get_result();
 
 if ($rowAdmin = $resultAdmin->fetch_assoc()) {
-    if ($filaEstado['Estado'] == 'inactivo' && $rowAdmin["RolID"] != 4) {
+    if ($filaEstado['Estado'] == 'inactivo' && $rowAdmin["RolID"] != 1) {
         $_SESSION['error_message'] = "El sistema está actualmente deshabilitado. Por favor, inténtalo más tarde.";
         header("Location: /index.php");
         exit();
