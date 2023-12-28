@@ -55,7 +55,7 @@ if ($conexion->query($sql) === TRUE) {
 
     // Redirigir al usuario al perfil_abonos con el primer ID de préstamo
     $primer_id = obtenerPrimerID($conexion);
-    header("Location: /controllers/perfil_abonos.php?id=$primer_id");
+    header("Location:  ../resources/views/admin/creditos/crudPrestamos.php");
     exit;
 } else {
     // Redirigir al usuario a crudprestamo.php con un mensaje de error
