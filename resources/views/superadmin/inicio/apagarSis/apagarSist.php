@@ -45,20 +45,12 @@ if (isset($_SESSION['cambio_estado_mensaje'])) {
 </head>
 
 <body>
-     
-        <header>
-    <div class="nombre-usuario">
-              <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Administrator<span>";
-        }
-        ?>
-    </div>
-    <a href="/resources/views/admin/inicio//inicio.php" class="botonn">
-        <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
-        <span class="spann">Volver al Inicio</span>
-    </a>
-</header><br><br>
+
+    <header>
+        <a href="/resources/views/superadmin/inicio/inicio.php" class="botonn">
+            <span class="spann">Volver al Inicio</span>
+        </a>
+    </header><br><br>
 
 
     <div class="container">

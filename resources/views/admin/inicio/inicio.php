@@ -210,22 +210,12 @@ date_default_timezone_set('America/Bogota');
         <h1>Inicio Administrador</h1>
         <div class="cuadros-container">
 
-
-
-
-
-
-
-
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
                     <p>Mantenimiento</p>
-
                 </div>
-
             </div>
-
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
@@ -233,8 +223,7 @@ date_default_timezone_set('America/Bogota');
                     <p>Version beta v2</p>
                 </div>
             </div>
-
-
+ 
             <!-- TRAER EL PRIMER ID -->
 
             <?php
@@ -283,18 +272,14 @@ date_default_timezone_set('America/Bogota');
             $primer_id = obtenerPrimerID($conexion);
 
             ?>
-
-
-
-
+ 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>
-
-
+ 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/creditos/crudPrestamos.php" class="titulo">List De Prestamos</a>
@@ -341,11 +326,12 @@ date_default_timezone_set('America/Bogota');
                     </p>
                 </div>
             </div>
-            <div class="cuadro cuadro-2">
+
+            <!-- <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
                 </div>
-            </div>
+            </div> -->
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
