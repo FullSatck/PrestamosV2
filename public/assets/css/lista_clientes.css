@@ -361,6 +361,12 @@ button {
   button:hover {
     background-color: rgb(129, 118, 118);
   }
+  
+  .boton-rojo {
+    background-color: rgb(235, 73, 73); 
+    color: white; 
+    
+}
 
 @media screen and (max-width: 600px) {
     .cuadros-container {
