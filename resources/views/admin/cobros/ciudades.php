@@ -76,15 +76,7 @@ $idZona = isset($_GET['zona']) ? $_GET['zona'] : null;
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a>
-
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
-                </div>
-            </a>
-
+            </a> 
             <a href="/resources/views/admin/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
