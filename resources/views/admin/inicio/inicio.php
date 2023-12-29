@@ -308,7 +308,7 @@ date_default_timezone_set('America/Bogota');
             </div> -->
             <div class="cuadro cuadro-3">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
+                    <a href="/resources/views/admin/inicio/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
                     <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
                     </p>
                 </div>
