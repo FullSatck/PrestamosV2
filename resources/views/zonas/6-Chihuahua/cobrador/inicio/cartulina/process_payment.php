@@ -2,19 +2,46 @@
 session_start();
 include("../../../../../../../controllers/conexion.php"); // Incluye tu archivo de conexión a la base de datos.
 
-function obtenerSiguienteClienteId($conexion, $id_cliente_actual) {
-    $siguiente_cliente_id = 0;
-    $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
-    $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
-    $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
-    $stmt_siguiente_cliente->execute();
-    $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
-    $stmt_siguiente_cliente->fetch();
-    $stmt_siguiente_cliente->close();
-    return $siguiente_cliente_id;
+function obtenerOrdenClientes()
+{
+    $rutaArchivo = 'orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+    if (file_exists($rutaArchivo)) {
+        $contenido = file_get_contents($rutaArchivo);
+        return explode(',', $contenido);
+    }
+    return [];
 }
 
-function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
+function obtenerSiguienteClienteId($conexion, $id_cliente_actual)
+{
+    $idEncontrado = 0;
+    $ordenClientes = obtenerOrdenClientes();
+    $indiceActual = array_search($id_cliente_actual, $ordenClientes);
+
+    if ($indiceActual !== false && isset($ordenClientes[$indiceActual + 1])) {
+        $idSiguienteCliente = $ordenClientes[$indiceActual + 1];
+
+        // Verificar si el siguiente cliente tiene un préstamo pendiente
+        $sql = "SELECT c.ID
+                FROM clientes c
+                INNER JOIN prestamos p ON c.ID = p.IDCliente
+                WHERE c.ID = ? AND p.Estado = 'pendiente'";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $idSiguienteCliente);
+        $stmt->execute();
+        $stmt->bind_result($idEncontrado);
+        if ($stmt->fetch()) {
+            $stmt->close();
+            return $idEncontrado;
+        }
+        $stmt->close();
+    }
+    return null;
+}
+
+
+function procesarPago($conexion, $id_cliente, $cuota_ingresada)
+{
     // Obtén el MontoAPagar y el ID del préstamo.
     $montoAPagar = 0;
     $idPrestamo = 0;
@@ -55,7 +82,7 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
     $fecha_pago = date('Y-m-d');
     $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
     $stmt_insert_historial = $conexion->prepare($sql_insert_historial);
-    $stmt_insert_historial->bind_param("issi", $id_cliente, $fecha_pago, $cuota_ingresada, $idPrestamo); 
+    $stmt_insert_historial->bind_param("issi", $id_cliente, $fecha_pago, $cuota_ingresada, $idPrestamo);
     if (!$stmt_insert_historial->execute()) {
         echo "Error al insertar en historial de pagos.";
         return;
@@ -74,6 +101,29 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada) {
 
 
 function procesarNoPagoOMasTarde($conexion, $id_cliente, $accion) {
+    // Primero, verifica si alguna de las acciones ya se ha realizado.
+    $sql_verificar = "SELECT Pospuesto, mas_tarde FROM prestamos WHERE IDCliente = ?";
+    $stmt_verificar = $conexion->prepare($sql_verificar);
+    $stmt_verificar->bind_param("i", $id_cliente);
+    $stmt_verificar->execute();
+    $stmt_verificar->store_result();
+
+    if ($stmt_verificar->num_rows == 0) {
+        echo "<script>alert('No se encontró el cliente.');</script>";
+        return;
+    }
+
+    $pospuesto = $mas_tarde = 0;
+    $stmt_verificar->bind_result($pospuesto, $mas_tarde);
+    $stmt_verificar->fetch();
+    $stmt_verificar->close();
+
+    if ($pospuesto == 1 || $mas_tarde == 1) {
+        echo "<script>alert('Ya se ha realizado una acción de \"No pago\" o \"Más tarde\" anteriormente.');</script>";
+        return;
+    }
+
+    // Si ninguna acción se ha realizado, procede a actualizar el campo correspondiente.
     $campo_actualizar = $accion === 'No pago' ? 'Pospuesto' : 'mas_tarde';
     $sql_update = "UPDATE prestamos SET $campo_actualizar = 1 WHERE IDCliente = ?";
     $stmt_update = $conexion->prepare($sql_update);
@@ -84,6 +134,8 @@ function procesarNoPagoOMasTarde($conexion, $id_cliente, $accion) {
     }
     $stmt_update->close();
 }
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'], $_POST['id_cliente'])) {
     $id_cliente = $_POST['id_cliente'];
@@ -111,4 +163,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'], $_POST['id_c
 }
 
 ob_end_flush();
-?>
