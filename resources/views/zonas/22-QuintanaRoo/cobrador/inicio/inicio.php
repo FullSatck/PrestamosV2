@@ -167,7 +167,11 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </div>
 
-
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                </div>
+            </div>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>

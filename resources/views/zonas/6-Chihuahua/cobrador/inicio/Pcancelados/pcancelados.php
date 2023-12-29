@@ -9,7 +9,7 @@ if (!isset($_SESSION["usuario_id"])) {
 }
 
 // Incluye la configuración de conexión a la base de datos
-require_once '../../../../../controllers/conexion.php';
+require '../../../../../../../controllers/conexion.php';
 
 // El usuario está autenticado, obtén el ID del usuario de la sesión
 $usuario_id = $_SESSION["usuario_id"];
@@ -36,13 +36,14 @@ $fila = $resultado->fetch_assoc();
 $stmt->close();
 
 // Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
-if (!$fila || $fila['Nombre'] !== 'admin') {
+if (!$fila || $fila['Nombre'] !== 'cobrador') {
     header("Location: /ruta_a_pagina_de_error_o_inicio.php");
     exit();
 }
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,18 +54,19 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.10/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="Pcancelados.css">
 </head>
+
 <body>
 
-<header>
+    <header>
         <div class="container mt-3">
             <!-- Botón para ir al inicio en el encabezado -->
-            <a href="/resources/views/admin/inicio/inicio.php" class="btn btn-primary">Ir al Inicio</a>
+            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="btn btn-primary">Ir al Inicio</a>
         </div>
     </header>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Prestamos Cancelados</h1>
 
-       
+
         <!-- Barra de búsqueda en tiempo real -->
         <div class="mb-3">
             <input type="text" id="search" class="form-control" placeholder="Buscar ">
@@ -74,13 +76,14 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
         <div class="table-responsive">
             <?php
             // Incluir el archivo de conexión a la base de datos
-            require_once '../../../../../controllers/conexion.php';
+            require_once '../../../../../../../controllers/conexion.php';
 
             // Consulta SQL para seleccionar préstamos pagados con datos del cliente (incluyendo apellido)
             $sql = "SELECT p.*, CONCAT(c.Nombre, ' ', c.Apellido) AS NombreCompleto, c.IdentificacionCURP
-                    FROM prestamos AS p
-                    INNER JOIN clientes AS c ON p.IDCliente = c.ID
-                    WHERE p.Estado = 'pagado'";
+        FROM prestamos AS p
+        INNER JOIN clientes AS c ON p.IDCliente = c.ID
+        WHERE p.Estado = 'pagado' AND p.Zona = 'Chihuahua'";
+
             $result = $conexion->query($sql);
 
             if ($result->num_rows > 0) {
@@ -109,7 +112,7 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
                             <td>" . $row["Plazo"] . "</td>
                             <td>" . $row["FechaInicio"] . "</td>
                             <td>" . $row["FechaVencimiento"] . "</td>
-                            <td><a href='/resources/views/admin/creditos/prestamos.php?cliente_id=" . $row["IDCliente"] . "' class='btn btn-primary btn-sm'>Hacer Préstamo</a></td>
+                            <td><a href='/resources/views/zonas/6-Chihuahua/cobrador/creditos/prestamos.php?cliente_id=" . $row["IDCliente"] . "' class='btn btn-primary btn-sm'>Hacer Préstamo</a></td>
                         </tr>";
                 }
                 echo "</tbody></table>";
@@ -124,14 +127,14 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 
     </div>
 
-  
+
 
     <!-- Agrega JavaScript para la búsqueda en tiempo real y DataTables -->
     <script>
         $(document).ready(function() {
-            
-            
-             $('#search').on('keyup', function() {
+
+
+            $('#search').on('keyup', function() {
                 var searchText = $(this).val().toLowerCase();
                 $('table tbody tr').filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
@@ -143,4 +146,5 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
     <!-- Agrega Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>

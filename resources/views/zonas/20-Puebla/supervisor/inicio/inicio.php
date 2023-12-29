@@ -169,6 +169,11 @@ $stmt->close();
                     <p>Version beta</p>
                 </div>
             </div>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                </div>
+            </div>
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">

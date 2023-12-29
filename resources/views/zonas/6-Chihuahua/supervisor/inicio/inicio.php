@@ -167,7 +167,11 @@ $stmt->close();
                     <p>Version beta</p>
                 </div>
             </div>
-
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                </div>
+            </div>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a><br>
@@ -175,13 +179,7 @@ $stmt->close();
                 </div>
             </div>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
-
-                </div>
-
-            </div>
+            
     </main>
 
 
