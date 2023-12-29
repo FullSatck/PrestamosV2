@@ -17,24 +17,29 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("location: dias_pagos.php");
     exit();
 }
- 
+
 // Incluir el archivo de conexión a la base de datos
 include("conexion.php");
 
+// Asumiendo que la tabla de roles se llama 'roles' y tiene las columnas 'id' y 'nombre_rol'
 $usuario_id = $_SESSION["usuario_id"];
 
-// Asumiendo que la tabla de roles se llama 'roles' y tiene las columnas 'id' y 'nombre_rol'
-$sql_nombre = "SELECT usuarios.nombre, roles.nombre FROM usuarios INNER JOIN roles ON usuarios.rolID = roles.id WHERE usuarios.id = ?";
+// Utiliza alias para diferenciar los campos 'nombre' de las tablas 'usuarios' y 'roles'
+$sql_nombre = "SELECT usuarios.nombre AS nombre_usuario, roles.nombre AS nombre_rol 
+               FROM usuarios 
+               INNER JOIN roles ON usuarios.rolID = roles.id 
+               WHERE usuarios.id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
 $resultado = $stmt->get_result();
 
 if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-    $_SESSION["nombre"] = $fila["nombre"]; // Guarda el nombre del rol en la sesión
+    $_SESSION["nombre_usuario"] = $fila["nombre_usuario"];
+    $_SESSION["nombre_rol"] = $fila["nombre_rol"]; // Guarda el nombre del rol en la sesión
 }
 $stmt->close();
+
 
 
 
@@ -53,10 +58,10 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows === 1) {
     // Mostrar los detalles del cliente aquí
     $fila = $resultado->fetch_assoc();
-    
+
     // Obtener la ruta de la imagen del cliente desde la base de datos
     $imagen_cliente = $fila["ImagenCliente"];
-    
+
     // Si no hay imagen cargada, usar una imagen de reemplazo
     if (empty($imagen_cliente)) {
         $imagen_cliente = "../public/assets/img/perfil.png"; // Reemplaza con tu imagen por defecto
@@ -137,7 +142,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
     <!-- Asegúrate de incluir tu hoja de estilos CSS -->
     <title>Perfil del Cliente</title>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -146,17 +151,15 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
 
         <header>
 
-        <a href="<?= $ruta_volver ?>" class="back-link">Volver</a>
+            <a href="<?= $ruta_volver ?>" class="back-link">Volver</a>
 
             <div class="nombre-usuario">
                 <?php
-    if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
-        echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
-    }
-    ?>
+                if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre_rol"])) {
+                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre_rol"]) . "</span>";
+                }
+                ?>
             </div>
-
-
 
         </header>
 
@@ -179,10 +182,10 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <p>Estado: <strong><?= $fila["ZonaAsignada"] ?></strong></p>
                     <p>Municipio: <strong><?= $fila["CiudadNombre"] ?></strong></p>
                     <p>Colonia: <strong><?= $fila["asentamiento"] ?></strong></p>
-                    
+
                 </div>
             </div>
- 
+
             <!-- Agregar una sección para mostrar los préstamos del cliente -->
             <div class="profile-loans">
                 <h2>Préstamos del Cliente</h2>
@@ -190,8 +193,8 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     <thead>
                         <tr>
                             <th>ID del Préstamo</th>
-                            <th>Deuda</th> 
-                            <th>Plazo</th> 
+                            <th>Deuda</th>
+                            <th>Plazo</th>
                             <th>Fecha de Inicio</th>
                             <th>Fecha de Vencimiento</th>
                             <th>Estado</th>
@@ -200,15 +203,15 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                     </thead>
                     <tbody>
                         <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
-                        <tr>
-                            <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
-                            <td><?= $fila_prestamo["MontoAPagar"] ?></td> 
-                            <td><?= $fila_prestamo["Plazo"] ?></td> 
-                            <td><?= $fila_prestamo["FechaInicio"] ?></td>
-                            <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
-                            <td><?= $fila_prestamo["Estado"] ?></td>
-                            <td><a href="<?= $dias_pago ?>?id=<?= $id_cliente ?>">Pagos</a></td>
-                        </tr>
+                            <tr>
+                                <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
+                                <td><?= $fila_prestamo["MontoAPagar"] ?></td>
+                                <td><?= $fila_prestamo["Plazo"] ?></td>
+                                <td><?= $fila_prestamo["FechaInicio"] ?></td>
+                                <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
+                                <td><?= $fila_prestamo["Estado"] ?></td>
+                                <td><a href="<?= $dias_pago ?>?id=<?= $id_cliente ?>">Pagos</a></td>
+                            </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
@@ -216,23 +219,22 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
         </main>
 
         <script>
-        // Agregar un evento clic al botón
-        document.getElementById("volverAtras").addEventListener("click", function() {
-            window.history.back();
-        });
+            // Agregar un evento clic al botón
+            document.getElementById("volverAtras").addEventListener("click", function() {
+                window.history.back();
+            });
         </script>
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const profileImage = document.querySelector('.profile-image img');
+            document.addEventListener('DOMContentLoaded', function() {
+                const profileImage = document.querySelector('.profile-image img');
 
-            // Agrega un controlador de eventos para hacer clic en la imagen
-            profileImage.addEventListener('click', function() {
-                profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
+                // Agrega un controlador de eventos para hacer clic en la imagen
+                profileImage.addEventListener('click', function() {
+                    profileImage.classList.toggle('zoomed'); // Alterna la clase 'zoomed'
+                });
             });
-        });
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>
     </body>
 
