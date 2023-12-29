@@ -127,17 +127,10 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href="/resources/views/admin/inicio/inicio.php">
+            <a href="" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
-                </div>
-            </a>
-
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
                 </div>
             </a>
 
@@ -186,7 +179,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -196,7 +189,7 @@ date_default_timezone_set('America/Bogota');
             </a>
 
 
-            <a href="/resources/views/admin/cartera/lista_cartera.php" class="selected">
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
                 <div class="option">
                     <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Cobros</h4>
@@ -223,7 +216,7 @@ date_default_timezone_set('America/Bogota');
                     <p>Version beta v2</p>
                 </div>
             </div>
- 
+
             <!-- TRAER EL PRIMER ID -->
 
             <?php
@@ -241,7 +234,7 @@ date_default_timezone_set('America/Bogota');
             {
                 $fecha_actual = date("Y-m-d");
                 $ordenClientes = obtenerOrdenClientes();
-                $primer_id = 0; 
+                $primer_id = 0;
 
                 $idEncontrado = 0;
 
@@ -272,14 +265,14 @@ date_default_timezone_set('America/Bogota');
             $primer_id = obtenerPrimerID($conexion);
 
             ?>
- 
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>
- 
+
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/admin/creditos/crudPrestamos.php" class="titulo">List De Prestamos</a>
@@ -337,10 +330,35 @@ date_default_timezone_set('America/Bogota');
                 <div class="cuadro-1-1">
                     <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
                     <p>Mantenimiento</p>
-
                 </div>
-
             </div>
+
+            <?php
+            // Incluye tu archivo de conexión a la base de datos
+            include("../../../../controllers/conexion.php");
+
+            // Consulta para verificar si la tabla saldo_admin tiene datos
+            $sql = "SELECT COUNT(*) FROM saldo_admin";
+            $result = $conexion->query($sql);
+            $row = $result->fetch_row();
+            $count = $row[0];
+
+            // Si la tabla está vacía (count es 0), muestra el cuadro
+            if ($count == 0) {
+            ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/admin_saldo/saldo_admin.php" class="titulo">Saldo inicial</a>
+                    </div>
+                </div>
+            <?php
+            }
+
+            // Cierra la conexión a la base de datos
+            $conexion->close();
+            ?>
+
+
 
 
 
