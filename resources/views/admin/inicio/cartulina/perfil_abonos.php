@@ -205,38 +205,43 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <?php
+                    if (!function_exists('obtenerOrdenClientes')) {
+                        function obtenerOrdenClientes()
+                        {
+                            $rutaArchivo = __DIR__ . '/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                            if (file_exists($rutaArchivo)) {
+                                $contenido = file_get_contents($rutaArchivo);
+                                return explode(',', $contenido);
+                            }
+                            return [];
+                        }
+                    }
+
                     $fecha_actual = date("Y-m-d");
+                    $ordenClientes = obtenerOrdenClientes();
 
-                    // Consulta para contar el total de clientes con préstamos pendientes que no han pagado hoy
-                    $sql_total_clientes = "SELECT COUNT(DISTINCT c.ID) AS TotalClientes
-                           FROM clientes c
-                           INNER JOIN prestamos p ON c.ID = p.IDCliente
-                           LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
-                           WHERE p.Estado = 'pendiente' AND hp.ID IS NULL";
-                    $stmt_total = $conexion->prepare($sql_total_clientes);
-                    $stmt_total->bind_param("s", $fecha_actual);
-                    $stmt_total->execute();
-                    $resultado_total = $stmt_total->get_result();
-                    $fila_total = $resultado_total->fetch_assoc();
-                    $total_clientes = $fila_total['TotalClientes'];
-                    $stmt_total->close();
+                    // Filtrar solo los clientes con préstamos pendientes que no han pagado hoy
+                    $clientesPendientes = array_filter($ordenClientes, function ($idCliente) use ($conexion, $fecha_actual) {
+                        $sql = "SELECT c.ID
+                FROM clientes c
+                INNER JOIN prestamos p ON c.ID = p.IDCliente
+                LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
+                WHERE c.ID = ? AND p.Estado = 'pendiente' AND hp.ID IS NULL";
+                        $stmt = $conexion->prepare($sql);
+                        $stmt->bind_param("si", $fecha_actual, $idCliente);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        $existe = $stmt->num_rows > 0;
+                        $stmt->close();
+                        return $existe;
+                    });
 
-                    // Consulta para determinar la posición del cliente actual en la lista de clientes con préstamos pendientes que no han pagado hoy
-                    $sql_posicion_cliente = "SELECT COUNT(DISTINCT c.ID) AS Posicion
-                             FROM clientes c
-                             INNER JOIN prestamos p ON c.ID = p.IDCliente
-                             LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
-                             WHERE p.Estado = 'pendiente' AND hp.ID IS NULL AND c.ID <= ?";
-                    $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
-                    $stmt_posicion->bind_param("si", $fecha_actual, $id_cliente);
-                    $stmt_posicion->execute();
-                    $stmt_posicion->bind_result($posicion_cliente);
-                    $stmt_posicion->fetch();
-                    $stmt_posicion->close();
+                    // Contar el total de clientes pendientes y determinar la posición actual
+                    $total_clientes = count($clientesPendientes);
+                    $posicion_actual = array_search($id_cliente, $clientesPendientes) + 1; // +1 para ajustar el índice base 0
                     ?>
-                    <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
+                    <p><strong>Cliente: </strong><?= $posicion_actual . "/" . $total_clientes; ?></p>
                 </div>
-
 
             </div>
 

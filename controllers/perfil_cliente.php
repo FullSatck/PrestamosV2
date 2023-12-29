@@ -74,14 +74,21 @@ $user_role = $_SESSION['rol'];
 // Si el rol es 1 (administrador)
 if ($_SESSION["rol"] == 1) {
     $ruta_volver = "/resources/views/admin/clientes/lista_clientes.php";
+    $dias_pago = "/resources/views/admin/inicio/cartulina/dias_pago.php";
 } elseif ($_SESSION["rol"] == 2) {
     // Ruta para el rol 2 (supervisor) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
         $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php";
+        $dias_pago = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/cartulina/dias_pago.php";
     } elseif ($_SESSION['user_zone'] === '20') {
         $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php";
+        $dias_pago = "/resources/views/zonas/20-Puebla/supervisor/inicio/cartulina/dias_pago.php";
     } elseif ($_SESSION['user_zone'] === '22') {
         $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/lista_clientes.php";
+        $dias_pago = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/cartulina/dias_pago.php";
+    } elseif ($_SESSION['user_zone'] === '28') {
+        $ruta_volver = "/resources/views/zonas/28-Tlaxcala/supervisor/clientes/lista_clientes.php";
+        $dias_pago = "/resources/views/zonas/28-Tlaxcala/supervisor/inicio/cartulina/dias_pago.php";
     } else {
         // Si no coincide con ninguna zona válida para supervisor, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";
@@ -90,10 +97,16 @@ if ($_SESSION["rol"] == 1) {
     // Ruta para el rol 3 (cobrador) en base a la zona
     if ($_SESSION['user_zone'] === '6') {
         $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php";
+        $dias_pago = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/cartulina/dias_pago.php";
     } elseif ($_SESSION['user_zone'] === '20') {
         $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php";
+        $dias_pago = "/resources/views/zonas/20-Puebla/cobrador/inicio/cartulina/dias_pago.php";
     } elseif ($_SESSION['user_zone'] === '22') {
         $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php";
+        $dias_pago = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/cartulina/dias_pago.php";
+    } elseif ($_SESSION['user_zone'] === '28') {
+        $ruta_volver = "/resources/views/zonas/28-Tlaxcala/cobrador/clientes/lista_clientes.php";
+        $dias_pago = "/resources/views/zonas/28-Tlaxcala/cobrador/inicio/cartulina/dias_pago.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";
@@ -194,7 +207,7 @@ $resultado_prestamos = $conexion->query($sql_prestamos);
                             <td><?= $fila_prestamo["FechaInicio"] ?></td>
                             <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
                             <td><?= $fila_prestamo["Estado"] ?></td>
-                            <td><a href="dias_pago.php?id=<?= $id_cliente ?>">Pagos</a></td>
+                            <td><a href="<?= $dias_pago ?>?id=<?= $id_cliente ?>">Pagos</a></td>
                         </tr>
                         <?php endwhile; ?>
                     </tbody>
