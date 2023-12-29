@@ -186,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <a href="/resources/views/admin/gastos/gastos.php">
                 <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <i class="fa-regular fa-address-book"></i>
                     <h4>Gastos</h4>
                 </div>
             </a> 
