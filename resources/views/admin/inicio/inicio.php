@@ -319,6 +319,11 @@ date_default_timezone_set('America/Bogota');
                     </p>
                 </div>
             </div>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                </div>
+            </div>
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">

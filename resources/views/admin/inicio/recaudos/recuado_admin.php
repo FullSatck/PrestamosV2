@@ -13,6 +13,12 @@
 </head>
 
 <body>
+    <header>
+        <div class="container mt-3">
+            <a href="/resources/views/admin/inicio/inicio.php" class="btn btn-secondary">Volver al Inicio</a>
+        </div>
+    </header>
+
     <div class="container mt-5">
         <h1>Recaudos Totales</h1><br>
 
