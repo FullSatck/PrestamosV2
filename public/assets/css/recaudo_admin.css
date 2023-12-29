@@ -25,6 +25,24 @@ h1, h2 {
 .table {
     margin-top: 20px;
 }
+.mb-3 {
+    background-color: #f2f2f2; /* Fondo gris claro */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px; /* Margen inferior, ajusta según necesidad */
+}
+
+.mb-3 h3 {
+    color: #333; /* Color de texto oscuro */
+    margin-bottom: 5px; /* Espacio debajo del encabezado */
+}
+
+#totalPagado {
+    font-weight: bold; /* Hacer el total más prominente */
+    color: #60d842; /* Color azul, ajusta según tu esquema de colores */
+    font-size: 1.2em; /* Tamaño ligeramente más grande */
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {

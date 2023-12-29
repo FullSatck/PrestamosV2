@@ -14,7 +14,7 @@
 
 <body>
     <div class="container mt-5">
-        <h1>Historial de Pagos</h1>
+        <h1>Recaudos Totales</h1><br>
 
         <!-- Formulario para filtrar por fechas y/o usuario -->
         <form id="filter-form" class="mb-4">
@@ -39,7 +39,7 @@
             <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
         </form>
         <div class="mb-3">
-            <h3>Total Pagado: <span id="totalPagado">0</span></h3>
+            <h3>Total Recaudado: <span id="totalPagado">0</span></h3>
         </div>
         <!-- Tabla para mostrar pagos -->
         <h2>Lista de Pagos</h2>
