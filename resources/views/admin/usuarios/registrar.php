@@ -202,13 +202,13 @@ date_default_timezone_set('America/Bogota');
                     <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
                 </div>
                 <div class="input-container">
-                    <label for="zona">Zona:</label>
+                    <label for="zona">Estado:</label>
                     <select id="zona" name="zona" required>
                         <?php
                         // Incluye el archivo de conexión a la base de datos
                         include("../../../../controllers/conexion.php");
                         // Consulta SQL para obtener las zonas
-                        $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Chihuahua', 'Puebla', 'Quintana Roo')";
+                        $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Chihuahua', 'Puebla', 'Quintana Roo', 'Tlaxcala')";
                         $resultZonas = mysqli_query($conexion, $consultaZonas);
                         // Genera las opciones del menú desplegable para Zona
                         while ($row = mysqli_fetch_assoc($resultZonas)) {
@@ -223,7 +223,7 @@ date_default_timezone_set('America/Bogota');
                     <select id="RolID" name="RolID" required>
                         <?php
                         // Consulta SQL para obtener las opciones de roles
-                        $consultaRoles = "SELECT ID, Nombre FROM roles";
+                        $consultaRoles = "SELECT ID, Nombre FROM roles WHERE Nombre IN ('admin', 'supervisor', 'cobrador')";
                         $resultRoles = mysqli_query($conexion, $consultaRoles);
                         // Genera las opciones del menú desplegable para Rol
                         while ($row = mysqli_fetch_assoc($resultRoles)) {
