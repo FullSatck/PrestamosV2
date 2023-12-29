@@ -200,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <a href="/resources/views/admin/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                <i class="fa-solid fa-basket-shopping"></i> 
                     <h4>Cobros</h4>
                 </div>
             </a>

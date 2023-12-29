@@ -112,7 +112,7 @@ if ($usuariosSQL === false) {
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/usuarios/crudusuarios.php" class="selected">
                 <div class="option">
@@ -159,7 +159,7 @@ if ($usuariosSQL === false) {
                     <i class="fa-regular fa-address-book"></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -170,7 +170,7 @@ if ($usuariosSQL === false) {
 
             <a href="/resources/views/admin/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                <i class="fa-solid fa-basket-shopping"></i> 
                     <h4>Cobros</h4>
                 </div>
             </a>
