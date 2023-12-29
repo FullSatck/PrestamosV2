@@ -1,117 +1,54 @@
-<?php
-require_once '../../../../controllers/conexion.php';
-
-// Función para calcular el total de los pagos
-function calcularTotalPagos($conexion)
-{
-    $sql = "SELECT SUM(MontoPagado) AS total FROM historial_pagos";
-    $result = $conexion->query($sql);
-    $row = $result->fetch_assoc();
-    return $row['total'];
-}
-
-// Función para filtrar pagos por fecha
-function filtrarPagosPorFecha($conexion, $fechaInicio, $fechaFin)
-{
-    $sql = "SELECT * FROM historial_pagos WHERE FechaPago BETWEEN '$fechaInicio' AND '$fechaFin'";
-    $result = $conexion->query($sql);
-    return $result;
-}
-
-// Obtener la fecha seleccionada (si se proporciona)
-$fechaInicio = isset($_GET["fecha_inicio"]) ? $_GET["fecha_inicio"] : '';
-$fechaFin = isset($_GET["fecha_fin"]) ? $_GET["fecha_fin"] : '';
-
-// Filtrar pagos por fechas si se proporcionan
-if (!empty($fechaInicio) && !empty($fechaFin)) {
-    $result = filtrarPagosPorFecha($conexion, $fechaInicio, $fechaFin);
-} else {
-    // Obtener todos los pagos si no se proporcionan fechas
-    $result = $conexion->query("SELECT * FROM historial_pagos");
-}
-
-// Calcular el total de pagos
-$totalPagos = calcularTotalPagos($conexion);
-
-// Cerrar la conexión a la base de datos
-$conexion->close();
-?>
-
 <!DOCTYPE html>
-<html>
-
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Pagos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#fecha_inicio, #fecha_fin').change(function() {
-                actualizarTotalPagos();
-            });
-
-            function actualizarTotalPagos() {
-                var fechaInicio = $('#fecha_inicio').val();
-                var fechaFin = $('#fecha_fin').val();
-                $.ajax({
-                    type: 'GET',
-                    url: 'actualizar_total.php',
-                    data: {
-                        fecha_inicio: fechaInicio,
-                        fecha_fin: fechaFin
-                    },
-                    success: function(data) {
-                        $('#totalPagos').html(data);
-                    }
-                });
-            }
-
-            // Llamar a la función inicialmente para mostrar el total en la carga inicial
-            actualizarTotalPagos();
-        });
-    </script>
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
-    <h1>Historial de Pagos</h1>
+    <div class="container mt-5">
+        <h1>Historial de Pagos</h1>
+        
+        <!-- Formulario para filtrar por fechas -->
+        <form id="filter-form" class="mb-4">
+            <h2>Filtrar por Fechas</h2>
+            <div class="mb-3">
+                <label for="fechaDesde">Desde:</label>
+                <input type="date" class="form-control" id="fechaDesde" name="fechaDesde" required>
+            </div>
+            <div class="mb-3">
+                <label for="fechaHasta">Hasta:</label>
+                <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+        
+        <!-- Tabla para mostrar pagos -->
+        <h2>Lista de Pagos</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <!-- <th>ID</th> -->
+                    <th>Cliente </th>
+                    <th>CURP </th>
+                    <th>Fecha de Pago</th>
+                    <th>Monto Pagado</th>
+                    <!-- <th>ID Prestamo</th> -->
+                    <th>Quien Pago</th>
+                </tr>
+            </thead>
+            <tbody id="pagos-list">
+                <!-- Aquí se cargarán los datos de la base de datos -->
+            </tbody>
+        </table>
+    </div>
 
-    <!-- Formulario para filtrar pagos por fecha -->
-    <h2>Filtrar Pagos por Fecha</h2>
-    <form method="GET" action="recuado_admin.php">
-        <label for="fecha_inicio">Fecha de inicio:</label>
-        <input type="date" id="fecha_inicio" name="fecha_inicio" value="<?php echo $fechaInicio; ?>">
-
-        <label for="fecha_fin">Fecha de fin:</label>
-        <input type="date" id="fecha_fin" name="fecha_fin" value="<?php echo $fechaFin; ?>">
-
-        <input type="submit" value="Filtrar Pagos">
-    </form>
-
-    <!-- Lista de pagos -->
-    <h2>Lista de Pagos</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>ID Cliente</th>
-            <th>Fecha de Pago</th>
-            <th>Monto Pagado</th>
-            <th>ID Prestamo</th>
-           
-        </tr>
-        <?php while ($row = $result->fetch_assoc()) { ?>
-            <tr>
-                <td><?php echo $row["ID"]; ?></td>
-                <td><?php echo $row["IDCliente"]; ?></td>
-                <td><?php echo $row["FechaPago"]; ?></td>
-                <td><?php echo $row["MontoPagado"]; ?></td>
-                <td><?php echo $row["IDPrestamo"]; ?></td>
-                
-            </tr>
-        <?php } ?>
-    </table>
-
-    <!-- Total de pagos -->
-    <h2>Total de Pagos</h2>
-    <p id="totalPagos">Total: $<?php echo number_format($totalPagos, 2); ?></p>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="app.js"></script>
 </body>
-
 </html>
