@@ -1,3 +1,6 @@
+
+<!-- PAGINA PRINCIPAL DE ABONOS -->
+
 <?php
 date_default_timezone_set('America/Bogota');
 session_start();
@@ -139,6 +142,45 @@ $stmt_prestamo->close();
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
     <title>Perfil del Cliente</title>
+
+    <style>
+        /* Estilo del Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 
@@ -165,7 +207,7 @@ $stmt_prestamo->close();
 
             <div class="info-cliente">
                 <div class="columna">
-                    <p><strong>Nombre: </strong><?= $fila["Nombre"] ?></p>
+                    <p><strong>Nombre: </strong><a href="/controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>"><?= $fila["Nombre"] ?></a></p>
                     <p><strong>Apellido: </strong><?= $fila["Apellido"] ?> </p>
                     <p><strong>Curp: </strong><?= $fila["IdentificacionCURP"] ?> </p>
                     <p><strong>Domicilio: </strong><?= $fila["Domicilio"] ?> </p>
@@ -452,7 +494,6 @@ $stmt_prestamo->close();
 
             ?>
 
-
             <!-- Formulario de Pago -->
             <form method="post" action="process_payment.php" id="formPago">
                 <input type="hidden" name="id_cliente" value="<?= htmlspecialchars($id_cliente ?? ''); ?>">
@@ -472,6 +513,93 @@ $stmt_prestamo->close();
                 <input type="hidden" id="montoAPagar" value="<?= htmlspecialchars($montoAPagar ?? '0'); ?>">
             </form>
 
+            <!-- Modal de Confirmación de Pago -->
+            <div id="modalConfirmacion" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p id="resumenPago">Pago: <span id="valorCuota"></span><br>Resta: <span id="valorResta"></span></p>
+                    <button id="confirmarPago">Confirmar</button>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="modalPago" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>Pago realizado</p>
+                    <button id="cerrarModal">Cerrar</button>
+                    <a href="https://wa.me/123456789?text=He%20realizado%20el%20pago" target="_blank">Enviar mensaje por WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <script>
+                $(document).ready(function() {
+                    // Manejar el envío del formulario
+                    $('#formPago').on('submit', function(event) {
+                        event.preventDefault(); // Previene el envío del formulario
+
+                        // Actualiza los valores en el modal de confirmación
+                        $('#valorCuota').text($('#cuota').val());
+                        $('#valorResta').text($('#campo2').val());
+
+                        // Muestra el primer modal
+                        $('#modalConfirmacion').show();
+                    });
+
+                    // Manejar la confirmación del pago
+                    $('#confirmarPago').click(function() {
+                        // Recoge los valores del formulario
+                        var idCliente = $('input[name="id_cliente"]').val();
+                        var idPrestamo = $('input[name="id_prestamo"]').val();
+                        var cuota = $('#cuota').val();
+                        var campo2 = $('#campo2').val();
+                        var montoAPagar = $('#montoAPagar').val();
+
+                        // Datos a enviar
+                        var formData = {
+                            id_cliente: idCliente,
+                            id_prestamo: idPrestamo,
+                            cuota: cuota,
+                            campo2: campo2,
+                            montoAPagar: montoAPagar,
+                            action: 'Pagar' // Asegúrate de que este valor coincida con lo que espera process_payment.php
+                        };
+
+                        // Envía la solicitud AJAX
+                        $.ajax({
+                            type: 'POST',
+                            url: 'process_payment.php',
+                            data: formData,
+                            dataType: 'json', // Espera una respuesta en formato JSON
+                            success: function(response) {
+                                $('#modalConfirmacion').hide();
+                                $('#modalPago').show();
+
+                                // Manejar la redirección
+                                if (response.siguienteClienteId) {
+                                    $('#cerrarModal').click(function() {
+                                        window.location.href = 'perfil_abonos.php?id=' + response.siguienteClienteId;
+                                    });
+                                    $('#whatsappLink').attr('href', 'https://wa.me/123456789?text=He%20realizado%20el%20pago').click(function() {
+                                        window.location.href = 'perfil_abonos.php?id=' + response.siguienteClienteId;
+                                    });
+                                } else if (response.mensaje) {
+                                    alert(response.mensaje);
+                                }
+                            },
+                            error: function() {
+                                alert('Error en el procesamiento del pago.');
+                            }
+                        });
+                    });
+
+                    // Cerrar los modales
+                    $('.close, #cerrarModal').click(function() {
+                        $('.modal').hide();
+                    });
+                });
+            </script>
 
             <!-- Incluir el archivo JavaScript -->
             <script>

@@ -1,3 +1,7 @@
+
+<!-- PROCESAR TODOS LOS PAGOS DE ABONOS -->
+
+
 <?php
 session_start();
 include("../../../../../controllers/conexion.php"); // Incluye tu archivo de conexión a la base de datos.
@@ -130,10 +134,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'], $_POST['id_c
 
     $siguiente_cliente_id = obtenerSiguienteClienteId($conexion, $id_cliente);
     if ($siguiente_cliente_id !== null) {
-        header("Location: perfil_abonos.php?id=$siguiente_cliente_id");
-        exit();
+        // En lugar de redirigir, devuelve el ID del siguiente cliente
+        echo json_encode(['siguienteClienteId' => $siguiente_cliente_id]);
     } else {
-        echo '<script>alert("No hay más clientes");</script>';
+        echo json_encode(['mensaje' => 'No hay más clientes']);
     }
 }
 

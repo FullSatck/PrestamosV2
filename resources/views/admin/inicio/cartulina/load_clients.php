@@ -1,3 +1,6 @@
+
+<!-- PASAR DE CLIENTE CON ANTERIOR Y SIGUIENTE -->
+
 <?php
 include '../../../../../controllers/conexion.php';
 

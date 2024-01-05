@@ -1,3 +1,7 @@
+
+<!-- LISTA DE CLIENTES EN RUTA -->
+<!-- orden_clientes.tex = orden que se le da a la ruta -->
+
 <?php
 session_start();
 
