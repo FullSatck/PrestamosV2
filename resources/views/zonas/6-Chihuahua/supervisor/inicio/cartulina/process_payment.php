@@ -55,9 +55,9 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada)
 
     // Insertar en la tabla "historial_pagos" y "facturas".
     $fecha_pago = date('Y-m-d');
-    $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
+    $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo, IDUsuario) VALUES (?, ?, ?, ?, ?)";
     $stmt_insert_historial = $conexion->prepare($sql_insert_historial);
-    $stmt_insert_historial->bind_param("issi", $id_cliente, $fecha_pago, $cuota_ingresada, $idPrestamo);
+    $stmt_insert_historial->bind_param("issii", $id_cliente, $fecha_pago, $cuota_ingresada, $idPrestamo, $_SESSION['usuario_id']);
     if (!$stmt_insert_historial->execute()) {
         echo "Error al insertar en historial de pagos.";
         return;
