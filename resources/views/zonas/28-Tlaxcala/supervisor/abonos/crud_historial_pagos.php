@@ -59,7 +59,7 @@ if (isset($_GET['clienteId'])) {
         <div class="nombre-usuario">
             <?php
         if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
+            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
         }
         ?>
         </div>
@@ -81,55 +81,65 @@ if (isset($_GET['clienteId'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
 
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
 
-            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/clientes/lista_clientes.php" class="selected">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/clientes/lista_clientes.php" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/gastos/gastos.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
             </a> 
 
-            <a href="/resources/views/zonas/28-Tlaxcala/cobrador/cartera/lista_cartera.php">
+            <a href="/resources/views/zonas/28-Tlaxcala/supervisor/ruta/lista_super.php">
                 <div class="option">
-                    <i class="fa-regular fa-address-book"></i>
-                    <h4>Cobros</h4>
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
                 </div>
             </a>
-
-
-
         </div>
 
     </div>
+
 
 
     <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
