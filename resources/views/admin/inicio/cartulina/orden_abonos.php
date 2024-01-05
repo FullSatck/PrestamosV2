@@ -113,6 +113,8 @@ $result = $stmt->get_result();
 
         <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
 
+        <a href="/resources/views/admin/inicio/cartulina/orden_fijo.php" class="back-link1">Ruta fija</a>
+
         <div class="nombre-usuario">
             <?php
             if (isset($_SESSION["nombre_usuario"])) {
