@@ -119,7 +119,7 @@ $stmt->close();
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/ruta.php">
                 <div class="option">
@@ -185,7 +185,7 @@ $stmt->close();
                 </div>
             </div>
 
-            
+
     </main>
 
 
