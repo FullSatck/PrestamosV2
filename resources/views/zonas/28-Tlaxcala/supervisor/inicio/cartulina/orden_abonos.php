@@ -30,7 +30,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, p.ID as IDPrestamo
         FROM clientes c
         INNER JOIN prestamos p ON c.ID = p.IDCliente
         LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
-        WHERE hp.FechaPago IS NULL AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Puebla'";
+        WHERE hp.FechaPago IS NULL AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Tlaxcala'";
 
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("s", $fecha_actual);

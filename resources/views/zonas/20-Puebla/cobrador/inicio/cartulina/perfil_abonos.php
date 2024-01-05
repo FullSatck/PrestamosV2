@@ -74,10 +74,10 @@ $user_zone = $_SESSION['user_zone'];
 $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
-if ($_SESSION["rol"] == 2) {
-    $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
-    $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
-    $ruta_cliente = "/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php";
+if ($_SESSION["rol"] == 3) {
+    $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
+    $ruta_filtro = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
+    $ruta_cliente = "/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php";
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
     $ruta_filtro = "/default_dashboard.php";
