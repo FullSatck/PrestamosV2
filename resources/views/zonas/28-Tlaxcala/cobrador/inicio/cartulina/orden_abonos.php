@@ -30,7 +30,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, p.ID as IDPrestamo
         FROM clientes c
         INNER JOIN prestamos p ON c.ID = p.IDCliente
         LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
-        WHERE hp.FechaPago IS NULL AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Puebla'";
+        WHERE hp.FechaPago IS NULL AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Tlaxcala'";
 
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("s", $fecha_actual);
@@ -106,7 +106,7 @@ $result = $stmt->get_result();
 
         ?>
 
-        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
+        <a href="/resources/views/zonas/28-Tlaxcala/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
 
         <div class="nombre-usuario">
             <?php

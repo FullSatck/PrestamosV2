@@ -65,7 +65,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: /resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php");
+    header("location: /resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php");
     exit();
 }
 
@@ -75,9 +75,9 @@ $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
 if ($_SESSION["rol"] == 2) {
-    $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
-    $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
-    $ruta_cliente = "/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php";
+    $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
+    $ruta_filtro = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
+    $ruta_cliente = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php";
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
     $ruta_filtro = "/default_dashboard.php";
@@ -96,7 +96,7 @@ $fecha_actual = date('Y-m-d');
 $sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.MontoAPagar, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
-                 WHERE p.IDCliente = ? AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Puebla'
+                 WHERE p.IDCliente = ? AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Chihuahua'
                  ORDER BY p.FechaInicio ASC
                  LIMIT 1";
 

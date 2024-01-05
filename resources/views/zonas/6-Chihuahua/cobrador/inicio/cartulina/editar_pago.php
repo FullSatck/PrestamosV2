@@ -37,10 +37,7 @@ $factura = $resultado->fetch_assoc();
 
 // Cerrar la consulta
 $stmt->close();
-
-// Si se envió el formulario para actualizar la factura 
-
-// ...
+ 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $monto = $_POST['monto'];
