@@ -134,10 +134,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'], $_POST['id_c
 
     $siguiente_cliente_id = obtenerSiguienteClienteId($conexion, $id_cliente);
     if ($siguiente_cliente_id !== null) {
-        // En lugar de redirigir, devuelve el ID del siguiente cliente
-        echo json_encode(['siguienteClienteId' => $siguiente_cliente_id]);
+        header("Location: perfil_abonos.php?id=$siguiente_cliente_id");
+        exit();
     } else {
-        echo json_encode(['mensaje' => 'No hay más clientes']);
+        echo '<script>alert("No hay más clientes");</script>';
     }
 }
 
