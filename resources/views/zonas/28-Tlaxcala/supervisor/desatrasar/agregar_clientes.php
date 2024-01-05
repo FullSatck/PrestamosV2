@@ -79,7 +79,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 
     <header><br>
-        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -110,7 +110,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 
         <h1>Registro de Clientes Atrasados </h1>
-        <form action="/controllers/validar_cliente_QuintanaRoo.php" method="POST" enctype="multipart/form-data">
+        <form action="/controllers/validar_cliente_Tlaxcala.php" method="POST" enctype="multipart/form-data">
             <div class="input-container">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -160,7 +160,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     // Incluye el archivo de conexión a la base de datos
                     include("../../../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
-                    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Quintana Roo'";
+                    $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre = 'Tlaxcala'";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
                     // Genera las opciones del menú desplegable para Zona
                     while ($row = mysqli_fetch_assoc($resultZonas)) {
@@ -177,7 +177,7 @@ if (!isset($_SESSION["usuario_id"])) {
                     // Incluye el archivo de conexión a la base de datos
                     include("../../../../../../controllers/conexion.php");
                     // Consulta SQL para obtener las zonas
-                    $consultaZonas = "SELECT * FROM ciudades WHERE iDZona = 22";
+                    $consultaZonas = "SELECT * FROM ciudades WHERE iDZona = 28";
                     $resultZonas = mysqli_query($conexion, $consultaZonas);
                     // Genera las opciones del menú desplegable para Zona
                     while ($row = mysqli_fetch_assoc($resultZonas)) {
