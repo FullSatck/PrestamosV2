@@ -106,7 +106,7 @@ $result = $stmt->get_result();
 
         ?>
 
-        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
+        <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
 
         <div class="nombre-usuario">
             <?php
