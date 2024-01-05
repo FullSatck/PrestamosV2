@@ -14,20 +14,19 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
-// Verificar si se ha pasado un ID válido como parámetro GET
+// ID DE URL
 if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-    // Redirigir a una página de error o a una página predeterminada
-    header("location: ../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    // SI EL ID NO ES VALIDO IR A
+    header("location: ../../../../../index.php");
     exit();
 }
 
-
-// Incluir el archivo de conexión a la base de datos
+// CONEXION
 include("../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
-// Asumiendo que la tabla de roles se llama 'roles' y tiene las columnas 'id' y 'nombre_rol'
+// NOMBRE Y ROL 
 $sql_nombre = "SELECT usuarios.nombre, roles.nombre FROM usuarios INNER JOIN roles ON usuarios.rolID = roles.id WHERE usuarios.id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
@@ -36,10 +35,9 @@ $resultado = $stmt->get_result();
 
 if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
-    $_SESSION["nombre"] = $fila["nombre"]; // Guarda el nombre del rol en la sesión
+    $_SESSION["nombre"] = $fila["nombre"];
 }
 $stmt->close();
-
 
 
 // Obtener el ID del cliente desde el parámetro GET
@@ -107,7 +105,7 @@ $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
 $resultado_prestamo = $stmt_prestamo->get_result();
 
-$mostrarMensajeAgregarPrestamo = true; // Inicialmente asume que no hay préstamos pendientes
+$mostrarMensajeAgregarPrestamo = true;
 
 if ($resultado_prestamo->num_rows > 0) {
     // Cliente tiene al menos un préstamo pendiente
@@ -197,7 +195,7 @@ $stmt_prestamo->close();
 
             <a href="<?= $ruta_cliente ?>" class="back-link3">R Clientes</a>
 
-            <a href="orden_abonos.php" class="back-link1">Ruta</a>
+            <a href="orden_abonos.php" class="back-link1">Enrutar</a>
 
         </header>
 
@@ -391,7 +389,7 @@ $stmt_prestamo->close();
                 ?>
             </div>
 
-
+            <!-- VER MAS O VER MENOS -->
             <script>
                 function showMore() {
                     window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
@@ -411,14 +409,10 @@ $stmt_prestamo->close();
             list($prevIndex, $currentIndex, $nextIndex) = obtenerIndicesClienteActual($clientes, $id_cliente);
             ?>
 
-
-
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
                 <div class="busqueda-container">
                     <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" class="input-busqueda">
-
-
 
                     <div id="resultadosBusqueda" class="resultados-busqueda">
                         <!-- Los resultados de la búsqueda se mostrarán aquí -->
@@ -512,94 +506,6 @@ $stmt_prestamo->close();
                 <!-- Campos ocultos para pasar valores a JavaScript -->
                 <input type="hidden" id="montoAPagar" value="<?= htmlspecialchars($montoAPagar ?? '0'); ?>">
             </form>
-
-            <!-- Modal de Confirmación de Pago -->
-            <div id="modalConfirmacion" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <p id="resumenPago">Pago: <span id="valorCuota"></span><br>Resta: <span id="valorResta"></span></p>
-                    <button id="confirmarPago">Confirmar</button>
-                </div>
-            </div>
-
-            <!-- Modal -->
-            <div id="modalPago" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <p>Pago realizado</p>
-                    <button id="cerrarModal">Cerrar</button>
-                    <a href="https://wa.me/123456789?text=He%20realizado%20el%20pago" target="_blank">Enviar mensaje por WhatsApp</a>
-                </div>
-            </div>
-
-            <!-- Modal -->
-            <script>
-                $(document).ready(function() {
-                    // Manejar el envío del formulario
-                    $('#formPago').on('submit', function(event) {
-                        event.preventDefault(); // Previene el envío del formulario
-
-                        // Actualiza los valores en el modal de confirmación
-                        $('#valorCuota').text($('#cuota').val());
-                        $('#valorResta').text($('#campo2').val());
-
-                        // Muestra el primer modal
-                        $('#modalConfirmacion').show();
-                    });
-
-                    // Manejar la confirmación del pago
-                    $('#confirmarPago').click(function() {
-                        // Recoge los valores del formulario
-                        var idCliente = $('input[name="id_cliente"]').val();
-                        var idPrestamo = $('input[name="id_prestamo"]').val();
-                        var cuota = $('#cuota').val();
-                        var campo2 = $('#campo2').val();
-                        var montoAPagar = $('#montoAPagar').val();
-
-                        // Datos a enviar
-                        var formData = {
-                            id_cliente: idCliente,
-                            id_prestamo: idPrestamo,
-                            cuota: cuota,
-                            campo2: campo2,
-                            montoAPagar: montoAPagar,
-                            action: 'Pagar' // Asegúrate de que este valor coincida con lo que espera process_payment.php
-                        };
-
-                        // Envía la solicitud AJAX
-                        $.ajax({
-                            type: 'POST',
-                            url: 'process_payment.php',
-                            data: formData,
-                            dataType: 'json', // Espera una respuesta en formato JSON
-                            success: function(response) {
-                                $('#modalConfirmacion').hide();
-                                $('#modalPago').show();
-
-                                // Manejar la redirección
-                                if (response.siguienteClienteId) {
-                                    $('#cerrarModal').click(function() {
-                                        window.location.href = 'perfil_abonos.php?id=' + response.siguienteClienteId;
-                                    });
-                                    $('#whatsappLink').attr('href', 'https://wa.me/123456789?text=He%20realizado%20el%20pago').click(function() {
-                                        window.location.href = 'perfil_abonos.php?id=' + response.siguienteClienteId;
-                                    });
-                                } else if (response.mensaje) {
-                                    alert(response.mensaje);
-                                }
-                            },
-                            error: function() {
-                                alert('Error en el procesamiento del pago.');
-                            }
-                        });
-                    });
-
-                    // Cerrar los modales
-                    $('.close, #cerrarModal').click(function() {
-                        $('.modal').hide();
-                    });
-                });
-            </script>
 
             <!-- Incluir el archivo JavaScript -->
             <script>
