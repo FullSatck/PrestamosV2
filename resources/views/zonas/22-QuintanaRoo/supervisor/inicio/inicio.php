@@ -180,6 +180,12 @@ $stmt->close();
                 </div>
             </div>
         </div>
+        <div class="cuadro cuadro-4">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/desatrasar/agregar_clientes.php" class="titulo">desactrasar</a><br>
+                    <p>Version beta</p>
+                </div>
+            </div>
 
         </div>
     </main>

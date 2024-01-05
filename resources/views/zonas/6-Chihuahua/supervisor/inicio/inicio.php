@@ -178,6 +178,12 @@ $stmt->close();
                     <p>Version beta</p>
                 </div>
             </div>
+            <div class="cuadro cuadro-4">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/desatrasar/agregar_clientes.php" class="titulo">desactrasar</a><br>
+                    <p>Version beta</p>
+                </div>
+            </div>
 
             
     </main>
