@@ -14,7 +14,7 @@ if (isset($_SESSION["usuario_id"])) {
 // Verificar si se ha pasado un ID válido como parámetro GET
 if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
     // Redirigir a una página de error o a una página predeterminada
-    header("location: ../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    header("location: ../../../../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
     exit();
 }
 
@@ -65,7 +65,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: /resources/views/admin/inicio/prestadia/prestamos_del_dia.php");
+    header("location: /resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php");
     exit();
 }
 
@@ -74,10 +74,10 @@ $user_zone = $_SESSION['user_zone'];
 $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
-if ($_SESSION["rol"] == 3) {
-    $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
-    $ruta_filtro = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
-    $ruta_cliente = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php";
+if ($_SESSION["rol"] == 2) {
+    $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
+    $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
+    $ruta_cliente = "/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php";
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
     $ruta_filtro = "/default_dashboard.php";
@@ -96,9 +96,10 @@ $fecha_actual = date('Y-m-d');
 $sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.MontoAPagar, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
-                 WHERE p.IDCliente = ? AND p.Estado = 'pendiente'
+                 WHERE p.IDCliente = ? AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Puebla'
                  ORDER BY p.FechaInicio ASC
                  LIMIT 1";
+
 $stmt_prestamo = $conexion->prepare($sql_prestamo);
 $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
@@ -205,39 +206,43 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <?php
+                    if (!function_exists('obtenerOrdenClientes')) {
+                        function obtenerOrdenClientes()
+                        {
+                            $rutaArchivo = __DIR__ . '/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                            if (file_exists($rutaArchivo)) {
+                                $contenido = file_get_contents($rutaArchivo);
+                                return explode(',', $contenido);
+                            }
+                            return [];
+                        }
+                    }
+
                     $fecha_actual = date("Y-m-d");
+                    $ordenClientes = obtenerOrdenClientes();
 
-                    // Consulta para contar el total de clientes de 'Chihuahua' con préstamos pendientes que no han pagado hoy
-                    $sql_total_clientes = "SELECT COUNT(DISTINCT c.ID) AS TotalClientes
-                           FROM clientes c
-                           INNER JOIN prestamos p ON c.ID = p.IDCliente
-                           LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
-                           WHERE c.ZonaAsignada = 'Chihuahua' AND p.Estado = 'pendiente' AND hp.ID IS NULL";
-                    $stmt_total = $conexion->prepare($sql_total_clientes);
-                    $stmt_total->bind_param("s", $fecha_actual);
-                    $stmt_total->execute();
-                    $resultado_total = $stmt_total->get_result();
-                    $fila_total = $resultado_total->fetch_assoc();
-                    $total_clientes = $fila_total['TotalClientes'];
-                    $stmt_total->close();
+                    // Filtrar solo los clientes con préstamos pendientes que no han pagado hoy
+                    $clientesPendientes = array_filter($ordenClientes, function ($idCliente) use ($conexion, $fecha_actual) {
+                        $sql = "SELECT c.ID
+                FROM clientes c
+                INNER JOIN prestamos p ON c.ID = p.IDCliente
+                LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
+                WHERE c.ID = ? AND p.Estado = 'pendiente' AND hp.ID IS NULL";
+                        $stmt = $conexion->prepare($sql);
+                        $stmt->bind_param("si", $fecha_actual, $idCliente);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        $existe = $stmt->num_rows > 0;
+                        $stmt->close();
+                        return $existe;
+                    });
 
-                    // Consulta para determinar la posición del cliente actual en la lista de clientes de 'Chihuahua' con préstamos pendientes que no han pagado hoy
-                    $sql_posicion_cliente = "SELECT COUNT(DISTINCT c.ID) AS Posicion
-                             FROM clientes c
-                             INNER JOIN prestamos p ON c.ID = p.IDCliente
-                             LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
-                             WHERE c.ZonaAsignada = 'Chihuahua' AND p.Estado = 'pendiente' AND hp.ID IS NULL AND c.ID <= ?";
-                    $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
-                    $stmt_posicion->bind_param("si", $fecha_actual, $id_cliente);
-                    $stmt_posicion->execute();
-                    $stmt_posicion->bind_result($posicion_cliente);
-                    $stmt_posicion->fetch();
-                    $stmt_posicion->close();
+                    // Contar el total de clientes pendientes y determinar la posición actual
+                    $total_clientes = count($clientesPendientes);
+                    $posicion_actual = array_search($id_cliente, $clientesPendientes) + 1; // +1 para ajustar el índice base 0
                     ?>
-                    <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
+                    <p><strong>Cliente: </strong><?= $posicion_actual . "/" . $total_clientes; ?></p>
                 </div>
-
-
 
             </div>
 

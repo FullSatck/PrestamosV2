@@ -2,43 +2,18 @@
 session_start();
 include("../../../../../../../controllers/conexion.php"); // Incluye tu archivo de conexión a la base de datos.
 
-function obtenerOrdenClientes()
-{
-    $rutaArchivo = 'orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
-    if (file_exists($rutaArchivo)) {
-        $contenido = file_get_contents($rutaArchivo);
-        return explode(',', $contenido);
-    }
-    return [];
-}
-
 function obtenerSiguienteClienteId($conexion, $id_cliente_actual)
 {
-    $idEncontrado = 0;
-    $ordenClientes = obtenerOrdenClientes();
-    $indiceActual = array_search($id_cliente_actual, $ordenClientes);
-
-    if ($indiceActual !== false && isset($ordenClientes[$indiceActual + 1])) {
-        $idSiguienteCliente = $ordenClientes[$indiceActual + 1];
-
-        // Verificar si el siguiente cliente tiene un préstamo pendiente
-        $sql = "SELECT c.ID
-                FROM clientes c
-                INNER JOIN prestamos p ON c.ID = p.IDCliente
-                WHERE c.ID = ? AND p.Estado = 'pendiente'";
-        $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("i", $idSiguienteCliente);
-        $stmt->execute();
-        $stmt->bind_result($idEncontrado);
-        if ($stmt->fetch()) {
-            $stmt->close();
-            return $idEncontrado;
-        }
-        $stmt->close();
-    }
-    return null;
+    $siguiente_cliente_id = 0;
+    $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
+    $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
+    $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
+    $stmt_siguiente_cliente->execute();
+    $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
+    $stmt_siguiente_cliente->fetch();
+    $stmt_siguiente_cliente->close();
+    return $siguiente_cliente_id;
 }
-
 
 function procesarPago($conexion, $id_cliente, $cuota_ingresada)
 {

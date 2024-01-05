@@ -1,13 +1,16 @@
 <?php
 include '../../../../../../../controllers/conexion.php';
 
-function obtenerOrdenClientes() {
-    $rutaArchivo = 'orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
-    if (file_exists($rutaArchivo)) {
-        $contenido = file_get_contents($rutaArchivo);
-        return explode(',', $contenido);
+if (!function_exists('obtenerOrdenClientes')) {
+    function obtenerOrdenClientes()
+    {
+        $rutaArchivo = __DIR__ . '/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+        if (file_exists($rutaArchivo)) {
+            $contenido = file_get_contents($rutaArchivo);
+            return explode(',', $contenido);
+        }
+        return [];
     }
-    return [];
 }
 
 function obtenerClientes($conexion) {
@@ -33,7 +36,7 @@ function obtenerClientes($conexion) {
         }
     } else {
         // Si no hay un orden definido, obtener todos los clientes
-        $query = "SELECT id, Nombre, Apellido FROM clientes WHERE ZonaAsignada = 'Chihuahua'";
+        $query = "SELECT id, Nombre, Apellido FROM clientes";
         $result = $conexion->query($query);
         if (!$result) {
             die("Error en la consulta: " . mysqli_error($conexion));
