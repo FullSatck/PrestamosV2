@@ -57,6 +57,11 @@ function obtenerSuma($conexion, $tabla, $columna)
     }
 }
 
+
+include("verificar_permisos.php");
+
+
+
 // Obtener los totales
 $totalMonto = obtenerSuma($conexion, "prestamos", "MontoAPagar");
 $totalIngresos = obtenerSuma($conexion, "historial_pagos", "MontoPagado");
@@ -191,7 +196,7 @@ date_default_timezone_set('America/Bogota');
 
             <a href="/resources/views/admin/cartera/lista_cartera.php">
                 <div class="option">
-                <i class="fa-solid fa-basket-shopping"></i> 
+                    <i class="fa-solid fa-basket-shopping"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
@@ -202,20 +207,32 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Inicio Administrador</h1>
         <div class="cuadros-container">
-
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
-                    <p>Mantenimiento</p>
+                    <a href="/resources/views/admin/inicio/permisos/permisos.php" class="titulo">Permisos</a>
+                    <p>Version beta</p>
                 </div>
             </div>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros </a>
-                    <p>Version beta v2</p>
+
+            <?php if ($tiene_permiso_desatrasar) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
+                        <p>Mantenimiento</p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
+
+            <!-- Botón "VerFiltros" que se mostrará si el usuario tiene el permiso correspondiente -->
+            <?php if ($tiene_permiso_ver_filtros) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros </a>
+                        <p>Version beta v2</p>
+                    </div>
+                </div>
+            <?php endif; ?>
 
             <!-- TRAER EL PRIMER ID -->
 
@@ -266,77 +283,92 @@ date_default_timezone_set('America/Bogota');
 
             ?>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
-                    <p>Version beta</p>
+            <?php if ($tiene_permiso_abonos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
-
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/creditos/crudPrestamos.php" class="titulo">List De Prestamos</a>
-
-                    <p>Total de Préstamos: <?= $total_prestamos ?></p>
-                </div>
-            </div>
-
-
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="titulo">List De Clientes</a>
-
-                    <p>Total de Clientes: <?= $total_clientes ?></p>
-                </div>
-            </div>
+            <?php endif; ?>
 
 
 
-            <!-- <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
-                    </p>
+            <?php if ($tiene_permiso_list_de_prestamos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/creditos/crudPrestamos.php" class="titulo">List De Prestamos</a>
+                        <p>Total de Préstamos: <?= $total_prestamos ?></p>
+                    </div>
                 </div>
-            </div> -->
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
-                    </p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/contabilidad/contabilidad.php" class="titulo">Contabilidad </a>
-                    <p>Version Beta v1</p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
-                    </p>
-                </div>
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
-                </div>
-            </div>
+            <?php endif; ?>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
-                </div>
-            </div>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
-                    <p>Mantenimiento</p>
+
+            <?php if ($tiene_permiso_listar_clientes) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/clientes/lista_clientes.php" class="titulo">List De Clientes</a>
+                        <p>Total de Clientes: <?= $total_clientes ?></p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
+
+
+
+
+            <?php if ($tiene_permiso_recaudos) : ?>
+                <div class="cuadro cuadro-3">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
+                        <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
+                        </p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_contabilidad) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/contabilidad/contabilidad.php" class="titulo">Contabilidad </a>
+                        <p>Version Beta v1</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_comision) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
+                        <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?></p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_prest_cancelados) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados</a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_apagar_sistema) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema</a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_lista_clavos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos</a>
+                        <p>Mantenimiento</p>
+                    </div>
+                </div>
+            <?php endif; ?>
 
             <?php
             // Incluye tu archivo de conexión a la base de datos
@@ -348,8 +380,8 @@ date_default_timezone_set('America/Bogota');
             $row = $result->fetch_row();
             $count = $row[0];
 
-            // Si la tabla está vacía (count es 0), muestra el cuadro
-            if ($count == 0) {
+            // Verifica si el usuario tiene permiso y si la tabla está vacía
+            if ($tiene_permiso_saldo_inicial && $count == 0) {
             ?>
                 <div class="cuadro cuadro-2">
                     <div class="cuadro-1-1">
@@ -362,6 +394,7 @@ date_default_timezone_set('America/Bogota');
             // Cierra la conexión a la base de datos
             $conexion->close();
             ?>
+
 
 
 
