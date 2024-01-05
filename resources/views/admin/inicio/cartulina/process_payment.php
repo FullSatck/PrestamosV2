@@ -1,3 +1,7 @@
+
+<!-- PROCESAR TODOS LOS PAGOS DE ABONOS -->
+
+
 <?php
 session_start();
 include("../../../../../controllers/conexion.php"); // Incluye tu archivo de conexión a la base de datos.

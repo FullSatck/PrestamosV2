@@ -1,3 +1,6 @@
+
+<!-- PAGINA PRINCIPAL DE ABONOS -->
+
 <?php
 date_default_timezone_set('America/Bogota');
 session_start();
@@ -11,20 +14,19 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
-// Verificar si se ha pasado un ID válido como parámetro GET
+// ID DE URL
 if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-    // Redirigir a una página de error o a una página predeterminada
-    header("location: ../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    // SI EL ID NO ES VALIDO IR A
+    header("location: ../../../../../index.php");
     exit();
 }
 
-
-// Incluir el archivo de conexión a la base de datos
+// CONEXION
 include("../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
-// Asumiendo que la tabla de roles se llama 'roles' y tiene las columnas 'id' y 'nombre_rol'
+// NOMBRE Y ROL 
 $sql_nombre = "SELECT usuarios.nombre, roles.nombre FROM usuarios INNER JOIN roles ON usuarios.rolID = roles.id WHERE usuarios.id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
@@ -33,10 +35,9 @@ $resultado = $stmt->get_result();
 
 if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
-    $_SESSION["nombre"] = $fila["nombre"]; // Guarda el nombre del rol en la sesión
+    $_SESSION["nombre"] = $fila["nombre"];
 }
 $stmt->close();
-
 
 
 // Obtener el ID del cliente desde el parámetro GET
@@ -104,7 +105,7 @@ $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
 $resultado_prestamo = $stmt_prestamo->get_result();
 
-$mostrarMensajeAgregarPrestamo = true; // Inicialmente asume que no hay préstamos pendientes
+$mostrarMensajeAgregarPrestamo = true;
 
 if ($resultado_prestamo->num_rows > 0) {
     // Cliente tiene al menos un préstamo pendiente
@@ -139,6 +140,45 @@ $stmt_prestamo->close();
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
     <title>Perfil del Cliente</title>
+
+    <style>
+        /* Estilo del Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 
@@ -155,7 +195,7 @@ $stmt_prestamo->close();
 
             <a href="<?= $ruta_cliente ?>" class="back-link3">R Clientes</a>
 
-            <a href="orden_abonos.php" class="back-link1">Ruta</a>
+            <a href="orden_abonos.php" class="back-link1">Enrutar</a>
 
         </header>
 
@@ -165,7 +205,7 @@ $stmt_prestamo->close();
 
             <div class="info-cliente">
                 <div class="columna">
-                    <p><strong>Nombre: </strong><?= $fila["Nombre"] ?></p>
+                    <p><strong>Nombre: </strong><a href="/controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>"><?= $fila["Nombre"] ?></a></p>
                     <p><strong>Apellido: </strong><?= $fila["Apellido"] ?> </p>
                     <p><strong>Curp: </strong><?= $fila["IdentificacionCURP"] ?> </p>
                     <p><strong>Domicilio: </strong><?= $fila["Domicilio"] ?> </p>
@@ -349,7 +389,7 @@ $stmt_prestamo->close();
                 ?>
             </div>
 
-
+            <!-- VER MAS O VER MENOS -->
             <script>
                 function showMore() {
                     window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
@@ -369,14 +409,10 @@ $stmt_prestamo->close();
             list($prevIndex, $currentIndex, $nextIndex) = obtenerIndicesClienteActual($clientes, $id_cliente);
             ?>
 
-
-
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
                 <div class="busqueda-container">
                     <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" class="input-busqueda">
-
-
 
                     <div id="resultadosBusqueda" class="resultados-busqueda">
                         <!-- Los resultados de la búsqueda se mostrarán aquí -->
@@ -452,7 +488,6 @@ $stmt_prestamo->close();
 
             ?>
 
-
             <!-- Formulario de Pago -->
             <form method="post" action="process_payment.php" id="formPago">
                 <input type="hidden" name="id_cliente" value="<?= htmlspecialchars($id_cliente ?? ''); ?>">
@@ -471,7 +506,6 @@ $stmt_prestamo->close();
                 <!-- Campos ocultos para pasar valores a JavaScript -->
                 <input type="hidden" id="montoAPagar" value="<?= htmlspecialchars($montoAPagar ?? '0'); ?>">
             </form>
-
 
             <!-- Incluir el archivo JavaScript -->
             <script>
