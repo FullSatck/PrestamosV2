@@ -94,7 +94,7 @@ if (!isset($_SESSION["usuario_id"])) {
 <body style="background-color: #a8dbd6;">
 
     <header><br>
-        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
