@@ -4,7 +4,7 @@ include 'load_clients.php'; // AsegÃºrate de que este archivo incluya la conexiÃ
 
 $busqueda = $_GET['busqueda'] ?? '';
 
-$query = "SELECT id, Nombre, Apellido, Telefono FROM clientes WHERE (Nombre LIKE ? OR Apellido LIKE ? OR Telefono LIKE ?) AND ZonaAsignada = 'Chihuahua'";
+$query = "SELECT id, Nombre, Apellido, Telefono FROM clientes WHERE Nombre LIKE ? OR Apellido LIKE ? OR Telefono LIKE ?";
 $stmt = $conexion->prepare($query);
 $likeBusqueda = '%' . $busqueda . '%';
 $stmt->bind_param("sss", $likeBusqueda, $likeBusqueda, $likeBusqueda);
