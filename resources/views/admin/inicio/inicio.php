@@ -239,7 +239,7 @@ date_default_timezone_set('America/Bogota');
             <?php
             function obtenerOrdenClientes()
             {
-                $rutaArchivo = 'cartulina/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                $rutaArchivo = 'cartulina/orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
                 if (file_exists($rutaArchivo)) {
                     $contenido = file_get_contents($rutaArchivo);
                     return explode(',', $contenido);
@@ -395,19 +395,10 @@ date_default_timezone_set('America/Bogota');
             $conexion->close();
             ?>
 
-
-
-
-
-
-
         </div>
-
 
         </div>
         </div>
-
-
     </main>
 
 

@@ -7,7 +7,7 @@ include '../../../../../controllers/conexion.php';
 if (!function_exists('obtenerOrdenClientes')) {
     function obtenerOrdenClientes()
     {
-        $rutaArchivo = __DIR__ . '/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+        $rutaArchivo = __DIR__ . '/orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
         if (file_exists($rutaArchivo)) {
             $contenido = file_get_contents($rutaArchivo);
             return explode(',', $contenido);

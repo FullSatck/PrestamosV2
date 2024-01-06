@@ -1,22 +1,17 @@
-
-<!-- LISTA DE CLIENTES EN RUTA -->
-<!-- orden_clientes.tex = orden que se le da a la ruta -->
+<!-- ORDEN FIJO -->
 
 <?php
 session_start();
 
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
-    // El usuario no está autenticado, redirige a la página de inicio de sesión
     header("Location: ../index.php");
     exit();
 }
 
-// Incluye el archivo de conexión
 include("../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
-$fecha_actual = date("Y-m-d");
 
 $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
 $stmt = $conexion->prepare($sql_nombre);
@@ -28,30 +23,30 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
-$fecha_actual = date("Y-m-d");
-
+// Consulta para obtener todos los clientes con préstamos pendientes
 $sql = "SELECT c.ID, c.Nombre, c.Apellido, p.ID as IDPrestamo
         FROM clientes c
         INNER JOIN prestamos p ON c.ID = p.IDCliente
-        LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
-        WHERE hp.FechaPago IS NULL AND p.Estado = 'pendiente'";
+        WHERE p.Estado = 'pendiente'";
 
 $stmt = $conexion->prepare($sql);
-$stmt->bind_param("s", $fecha_actual);
 $stmt->execute();
 $result = $stmt->get_result();
 
- 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['orden'])) {
+    $orden = $_POST['orden'];
+    file_put_contents('orden_clientes.txt', $orden);
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Fechas de Pago</title>
+    <title>Ruta fija</title>
     <link rel="stylesheet" href="/public/assets/css/abonosruta.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
     <style>
@@ -61,57 +56,59 @@ $result = $stmt->get_result();
     </style>
 </head>
 
-<body id="body">
-    <header>
+<body>
 
-        <?php
-        function obtenerOrdenClientes()
-        {
-            $rutaArchivo = 'orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
-            if (file_exists($rutaArchivo)) {
-                $contenido = file_get_contents($rutaArchivo);
-                return explode(',', $contenido);
-            }
-            return [];
+    <?php
+    function obtenerOrdenClientes()
+    {
+        $rutaArchivo = 'orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
+        if (file_exists($rutaArchivo)) {
+            $contenido = file_get_contents($rutaArchivo);
+            return explode(',', $contenido);
         }
+        return [];
+    }
 
-        function obtenerPrimerID($conexion)
-        {
-            $fecha_actual = date("Y-m-d");
-            $ordenClientes = obtenerOrdenClientes();
-            $primer_id = 0;
+    function obtenerPrimerID($conexion)
+    {
+        $fecha_actual = date("Y-m-d");
+        $ordenClientes = obtenerOrdenClientes();
+        $primer_id = 0;
 
-            $idEncontrado = 0;
+        $idEncontrado = 0;
 
-            foreach ($ordenClientes as $idCliente) {
-                // Consulta para verificar si este cliente ha pagado hoy
-                $sql = "SELECT c.ID
+        foreach ($ordenClientes as $idCliente) {
+            // Consulta para verificar si este cliente ha pagado hoy
+            $sql = "SELECT c.ID
                             FROM clientes c
                             LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
                             WHERE c.ID = ? AND hp.ID IS NULL
                             LIMIT 1";
 
-                $stmt = $conexion->prepare($sql);
-                $stmt->bind_param("si", $fecha_actual, $idCliente);
-                $stmt->execute();
-                $stmt->bind_result($idEncontrado);
-                if ($stmt->fetch()) {
-                    $primer_id = $idEncontrado;
-                    $stmt->close();
-                    break;
-                }
+            $stmt = $conexion->prepare($sql);
+            $stmt->bind_param("si", $fecha_actual, $idCliente);
+            $stmt->execute();
+            $stmt->bind_result($idEncontrado);
+            if ($stmt->fetch()) {
+                $primer_id = $idEncontrado;
                 $stmt->close();
+                break;
             }
-
-            return $primer_id;
+            $stmt->close();
         }
 
-        // Obtener el primer ID de cliente que no ha pagado hoy y está primero en el orden personalizado
-        $primer_id = obtenerPrimerID($conexion);
+        return $primer_id;
+    }
 
-        ?> 
+    // Obtener el primer ID de cliente que no ha pagado hoy y está primero en el orden personalizado
+    $primer_id = obtenerPrimerID($conexion);
 
-        <a href="/resources/views/admin/inicio/cartulina/orden_fijo.php" class="back-link1">Volver</a>
+    ?>
+
+    <header>
+    <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
+
+        <a href="/resources/views/admin/inicio/cartulina/orden_abonos.php" class="back-link1">Pendintes hoy</a>
 
         <div class="nombre-usuario">
             <?php
@@ -137,23 +134,19 @@ $result = $stmt->get_result();
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>ID Préstamo</th>
-                        <th>Enrutar</th>
+                        <th>Ordenar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row["ID"]) . "</td>"; // ID del cliente
-                            echo "<td>" . htmlspecialchars($row["Nombre"]) . "</td>";
-                            echo "<td>" . htmlspecialchars($row["Apellido"]) . "</td>";
-                            echo "<td>" . htmlspecialchars($row["IDPrestamo"]) . "</td>"; // ID del préstamo
-                            echo "<td class='drag-handle'>|||</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='5'>No hay pagos pendientes para hoy.</td></tr>";
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row["ID"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["Nombre"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["Apellido"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["IDPrestamo"]) . "</td>";
+                        echo "<td class='drag-handle'>|||</td>";
+                        echo "</tr>";
                     }
                     ?>
                 </tbody>
@@ -161,15 +154,15 @@ $result = $stmt->get_result();
         </div>
     </main>
 
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script>
         $(document).ready(function() {
             const listaPagos = $("#lista-pagos tbody");
 
             // Recuperar el orden almacenado en el localStorage, si existe
-            const savedOrder = localStorage.getItem('sortableTableOrder');
+            const savedOrder = localStorage.getItem('sortableClientesOrder');
             if (savedOrder) {
                 // Reordenar los elementos de la tabla según el orden guardado
                 const idsOrdenados = savedOrder.split(',');
@@ -198,11 +191,11 @@ $result = $stmt->get_result();
                 }).get();
 
                 // Guardar el nuevo orden en localStorage
-                localStorage.setItem('sortableTableOrder', idsOrdenados.join(','));
+                localStorage.setItem('sortableClientesOrder', idsOrdenados.join(','));
 
                 // Enviar el nuevo orden al servidor
                 $.ajax({
-                    url: 'guardar_orden.php', // Asegúrate de que esta URL sea correcta
+                    url: 'guardar_orden_fijo.php', // Asegúrate de que esta URL sea correcta
                     type: 'POST',
                     data: {
                         orden: idsOrdenados.join(',')
@@ -215,6 +208,8 @@ $result = $stmt->get_result();
             }
         });
     </script>
+
+
 </body>
 
 </html>
