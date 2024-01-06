@@ -143,15 +143,6 @@ $stmt_permiso_hacer_prestamo->fetch();
 $stmt_permiso_hacer_prestamo->close();
 
 
-// Permiso para "Prest Atrasado"
-$permiso_prest_atrasado_id = 14;
-$sql_permiso_prest_atrasado = "SELECT COUNT(*) FROM usuarios_permisos WHERE usuario_id = ? AND permiso_id = ?";
-$stmt_permiso_prest_atrasado = $conexion->prepare($sql_permiso_prest_atrasado);
-$stmt_permiso_prest_atrasado->bind_param("ii", $usuario_id, $permiso_prest_atrasado_id);
-$stmt_permiso_prest_atrasado->execute();
-$stmt_permiso_prest_atrasado->bind_result($permiso_prest_atrasado_count);
-$stmt_permiso_prest_atrasado->fetch();
-$stmt_permiso_prest_atrasado->close();
 
 
 
@@ -170,4 +161,3 @@ $tiene_permiso_lista_clavos = ($permiso_lista_clavos_count > 0);
 $tiene_permiso_list_de_prestamos = ($permiso_list_de_prestamos_count > 0);
 $tiene_permiso_saldo_inicial = ($permiso_saldo_inicial_count > 0);
 $tiene_permiso_hacer_prestamo = ($permiso_hacer_prestamo_count > 0);
-$tiene_permiso_prest_atrasado = ($permiso_prest_atrasado_count > 0);

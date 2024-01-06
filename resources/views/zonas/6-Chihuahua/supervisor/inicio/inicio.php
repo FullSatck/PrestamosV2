@@ -27,6 +27,9 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
+
+
+// verificancion de permisos 
 include("../../../../../../controllers/verificar_permisos.php");
 ?>
 

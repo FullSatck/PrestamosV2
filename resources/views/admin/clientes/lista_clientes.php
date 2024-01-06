@@ -247,6 +247,7 @@ $resultado = $conexion->query($sql);
                                     </a>
                                 </td>
                             <?php endif; ?>
+                            
 
                             <?php if ($tiene_permiso_desatrasar) : ?>
                                 <td>
