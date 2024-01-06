@@ -123,7 +123,7 @@ $stmt->close();
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/28-Tlaxcala/supervisor/ruta/lista_super.php">
                 <div class="option">
@@ -165,28 +165,44 @@ $stmt->close();
             $primer_id = obtenerPrimerID($conexion);
             ?>
 
+            <?php if ($tiene_permiso_abonos) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>"
+                        class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_prest_cancelados) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/Pcancelados/pcancelados.php"
+                        class="titulo">Prest Cancelados </a>
                 </div>
             </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_desatrasar) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/desatrasar/agregar_clientes.php" class="titulo">Desatrasar </a>
+                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/desatrasar/agregar_clientes.php"
+                        class="titulo">Desatrasar </a>
                 </div>
             </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_ver_filtros) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
+                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/prestadia/prestamos_del_dia.php"
+                        class="titulo">Filtros</a>
                     <p>Version beta</p>
                 </div>
             </div>
+            <?php endif; ?>
+            
         </div>
 
         </div>

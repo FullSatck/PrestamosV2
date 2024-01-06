@@ -123,7 +123,7 @@ include("../../../../../../controllers/verificar_permisos.php");
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/ruta/lista_super.php">
                 <div class="option">
@@ -165,23 +165,30 @@ include("../../../../../../controllers/verificar_permisos.php");
             $primer_id = obtenerPrimerID($conexion);
             ?>
 
+            <?php if ($tiene_permiso_abonos) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>"
+                        class="titulo">Abonos</a>
                     <p>Version beta</p>
                 </div>
             </div>
-           
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_prest_cancelados) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/Pcancelados/pcancelados.php"
+                        class="titulo">Prest Cancelados </a>
                 </div>
             </div>
+            <?php endif; ?>
 
             <?php if ($tiene_permiso_desatrasar) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
+                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/desatrasar/agregar_clientes.php"
+                        class="titulo">Desatrasar</a>
                     <p>Version beta</p>
                 </div>
             </div>
@@ -190,15 +197,16 @@ include("../../../../../../controllers/verificar_permisos.php");
             <?php if ($tiene_permiso_ver_filtros) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
+                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php"
+                        class="titulo">Filtros</a>
                     <p>Version beta</p>
                 </div>
             </div>
             <?php endif; ?>
-            
+
         </div>
 
-       
+
     </main>
 
 
