@@ -19,7 +19,7 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    
+
 </head>
 
 <body>
@@ -81,7 +81,7 @@ session_start();
             </div>
         </div>
     </div>
-   
+
     <script>
         // Esta función se ejecuta cuando se carga la página
         window.onload = function() {
@@ -109,18 +109,23 @@ session_start();
         };
     </script>
     <script>
-        // Cargar permisos disponibles al seleccionar un usuario
-        $("#usuario_id").on("change", function() {
-            var usuario_id = $(this).val();
-            $.ajax({
-                url: "cargar_permisos.php", // Ruta a tu archivo PHP para cargar permisos
-                method: "POST",
-                data: {
-                    usuario_id: usuario_id
-                },
-                success: function(data) {
-                    $("#permisos-list").html(data);
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Evento para manejar cambios en la selección del usuario
+            document.getElementById('usuario_id').addEventListener('change', function() {
+                var usuario_id = this.value;
+
+                fetch('cargar_permisos.php', {
+                        method: 'POST',
+                        body: new URLSearchParams('usuario_id=' + usuario_id),
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('permisos-list').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error:', error));
             });
         });
     </script>

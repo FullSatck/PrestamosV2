@@ -1,31 +1,55 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
 
+// Validacion de rol para ingresar a la pagina 
+require_once '../../../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
-if (isset($_SESSION["usuario_id"])) {
-    // El usuario está autenticado, puede acceder a esta página
-} else {
+if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+    header("Location: ../../../../../index.php");
     exit();
+} else {
+    // El usuario está autenticado, obtén el ID del usuario de la sesión
+    $usuario_id = $_SESSION["usuario_id"];
+
+    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
+    // Preparar la consulta para obtener el rol del usuario
+    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+    $stmt->bind_param("i", $usuario_id);
+
+    // Ejecutar la consulta
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $fila = $resultado->fetch_assoc();
+
+    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
+    if (!$fila) {
+        // Redirige al usuario a una página de error o de inicio
+        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
+        exit();
+    }
+
+    // Extrae el nombre del rol del resultado
+    $rol_usuario = $fila['Nombre'];
+
+    // Verifica si el rol del usuario corresponde al necesario para esta página
+    if ($rol_usuario !== 'supervisor') {
+        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
+        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
+        exit();
+    }
 }
-
-
-// Incluye el archivo de conexión
-include("../../../../../../controllers/conexion.php");
-
-$usuario_id = $_SESSION["usuario_id"];
-
-$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
 
 
 
