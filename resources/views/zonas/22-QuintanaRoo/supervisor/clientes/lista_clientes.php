@@ -34,6 +34,9 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
 
 
 $resultado = $conexion->query($sql);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -151,88 +154,86 @@ $resultado = $conexion->query($sql);
 
         <?php if ($resultado->num_rows > 0) { ?>
 
-        <div class="table-scroll-container">
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Domicilio</th>
-                    <th>Teléfono</th>
-                    <th>Zona Asignada</th>
-                    <?php if ($tiene_permiso_hacer_prestamo) : ?>
-                    <th>Hacer Prestamo</th>
-                    <?php endif; ?>
-                    <?php if ($tiene_permiso_desatrasar) : ?>
-                    <th>Prestamo Atrasado</th>
-                    <?php endif; ?>
-
-                    <th>Perfil</th>
-                    <th>Pagos</th>
-                </tr>
-                <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <tr>
-                    <td><?= "REC 100" . $fila["ID"] ?></td>
-                    <td><?= $fila["Nombre"] ?></td>
-                    <td><?= $fila["Apellido"] ?></td>
-                    <td><?= $fila["Domicilio"] ?></td>
-                    <td><?= $fila["Telefono"] ?></td>
-                    <td><?= $fila["ZonaAsignada"] ?></td>
-                    <td>
-
+            <div class="table-scroll-container">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Domicilio</th>
+                        <th>Teléfono</th>
+                        <th>Zona Asignada</th>
                         <?php if ($tiene_permiso_hacer_prestamo) : ?>
-                        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>"
-                            class="boton-hacer-prestamo">
-                            <i class="fas fa-hand-holding-usd"></i>
-                            <span>Hacer Préstamo</span>
-                        </a>
-                    </td>
-                    <?php endif; ?>
+                            <th>Hacer Prestamo</th>
+                        <?php endif; ?>
+                        <?php if ($tiene_permiso_desatrasar) : ?>
+                            <th>Prestamo Atrasado</th>
+                        <?php endif; ?>
+                        <th>Perfil</th>
+                        <th>Pagos</th>
+                    </tr>
+                    <?php while ($fila = $resultado->fetch_assoc()) { ?>
+                        <tr>
+                            <td><?= "REC 100" . $fila["ID"] ?></td>
+                            <td><?= $fila["Nombre"] ?></td>
+                            <td><?= $fila["Apellido"] ?></td>
+                            <td><?= $fila["Domicilio"] ?></td>
+                            <td><?= $fila["Telefono"] ?></td>
+                            <td><?= $fila["ZonaAsignada"] ?></td>
 
-                    <?php if ($tiene_permiso_desatrasar) : ?>
-                    <td>
-                        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>"
-                            class="boton-hacer-prestamo boton-rojo">
-                            <i class="fas fa-hand-holding-usd"></i>
-                            <span>Prest Atrasado</span>
-                        </a>
-                    </td>
-                    <?php endif; ?>
 
-                    <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                    <td><a
-                            href="/resources/views/zonas/22-QuintanaRoo/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                    </td>
-                </tr>
-                <?php } ?>
-            </table>
+                            <?php if ($tiene_permiso_hacer_prestamo) : ?>
+                                <td>
+
+                                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Hacer Préstamo</span>
+                                    </a>
+                                </td>
+                            <?php endif; ?>
+                            
+                            <?php if ($tiene_permiso_desatrasar) : ?>
+                                <td>
+                                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Prest Atrasado</span>
+                                    </a>
+                                </td>
+                            <?php endif; ?>
+
+                            <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
+                            <td><a href="/resources/views/zonas/22-QuintanaRoo/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </table>
             <?php } else { ?>
-            <p>No se encontraron clientes en la base de datos.</p>
+                <p>No se encontraron clientes en la base de datos.</p>
             <?php } ?>
-        </div>
+            </div>
     </main>
 
     <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
+        // JavaScript para la búsqueda en tiempo real
+        const searchInput = document.getElementById('search-input');
+        const table = document.querySelector('table');
+        const rows = table.querySelectorAll('tbody tr');
 
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.toLowerCase();
 
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
+            rows.forEach((row) => {
+                const rowData = Array.from(row.children)
+                    .map((cell) => cell.textContent.toLowerCase())
+                    .join('');
 
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+                if (rowData.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
-    });
     </script>
 
     <script src="/public/assets/js/MenuLate.js"></script>
