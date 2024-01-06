@@ -67,7 +67,7 @@ $result = $stmt->get_result();
         <?php
         function obtenerOrdenClientes()
         {
-            $rutaArchivo = 'orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+            $rutaArchivo = 'orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
             if (file_exists($rutaArchivo)) {
                 $contenido = file_get_contents($rutaArchivo);
                 return explode(',', $contenido);
@@ -109,11 +109,9 @@ $result = $stmt->get_result();
         // Obtener el primer ID de cliente que no ha pagado hoy y está primero en el orden personalizado
         $primer_id = obtenerPrimerID($conexion);
 
-        ?>
+        ?> 
 
-        <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
-
-        <a href="/resources/views/admin/inicio/cartulina/orden_fijo.php" class="back-link1">Ruta fija</a>
+        <a href="/resources/views/admin/inicio/cartulina/orden_fijo.php" class="back-link1">Volver</a>
 
         <div class="nombre-usuario">
             <?php

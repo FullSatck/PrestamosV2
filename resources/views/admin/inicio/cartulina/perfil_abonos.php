@@ -1,4 +1,3 @@
-
 <!-- PAGINA PRINCIPAL DE ABONOS -->
 
 <?php
@@ -195,7 +194,7 @@ $stmt_prestamo->close();
 
             <a href="<?= $ruta_cliente ?>" class="back-link3">R Clientes</a>
 
-            <a href="orden_abonos.php" class="back-link1">Enrutar</a>
+            <a href="orden_fijo.php" class="back-link1">Enrutar</a>
 
         </header>
 
@@ -248,7 +247,7 @@ $stmt_prestamo->close();
                     if (!function_exists('obtenerOrdenClientes')) {
                         function obtenerOrdenClientes()
                         {
-                            $rutaArchivo = __DIR__ . '/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                            $rutaArchivo = __DIR__ . '/orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
                             if (file_exists($rutaArchivo)) {
                                 $contenido = file_get_contents($rutaArchivo);
                                 return explode(',', $contenido);
@@ -257,18 +256,16 @@ $stmt_prestamo->close();
                         }
                     }
 
-                    $fecha_actual = date("Y-m-d");
                     $ordenClientes = obtenerOrdenClientes();
 
-                    // Filtrar solo los clientes con préstamos pendientes que no han pagado hoy
-                    $clientesPendientes = array_filter($ordenClientes, function ($idCliente) use ($conexion, $fecha_actual) {
+                    // Filtrar solo los clientes con préstamos pendientes
+                    $clientesPendientes = array_filter($ordenClientes, function ($idCliente) use ($conexion) {
                         $sql = "SELECT c.ID
                 FROM clientes c
                 INNER JOIN prestamos p ON c.ID = p.IDCliente
-                LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
-                WHERE c.ID = ? AND p.Estado = 'pendiente' AND hp.ID IS NULL";
+                WHERE c.ID = ? AND p.Estado = 'pendiente'";
                         $stmt = $conexion->prepare($sql);
-                        $stmt->bind_param("si", $fecha_actual, $idCliente);
+                        $stmt->bind_param("i", $idCliente);
                         $stmt->execute();
                         $stmt->store_result();
                         $existe = $stmt->num_rows > 0;
@@ -276,12 +273,16 @@ $stmt_prestamo->close();
                         return $existe;
                     });
 
-                    // Contar el total de clientes pendientes y determinar la posición actual
+                    // Contar el total de clientes pendientes
                     $total_clientes = count($clientesPendientes);
+
+                    // Determinar la posición actual del cliente en la lista
                     $posicion_actual = array_search($id_cliente, $clientesPendientes) + 1; // +1 para ajustar el índice base 0
                     ?>
-                    <p><strong>Cliente: </strong><?= $posicion_actual . "/" . $total_clientes; ?></p>
+                    <p><strong>Posición actual: </strong><?= $posicion_actual . " de " . $total_clientes; ?></p>
                 </div>
+
+
 
             </div>
 
