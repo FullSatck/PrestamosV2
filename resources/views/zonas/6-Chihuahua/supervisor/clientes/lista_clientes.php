@@ -35,6 +35,8 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
 
 $resultado = $conexion->query($sql);
 date_default_timezone_set('America/Bogota');
+// verificancion de permisos 
+include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 <!DOCTYPE html>
@@ -162,8 +164,12 @@ date_default_timezone_set('America/Bogota');
                         <th>Domicilio</th>
                         <th>Teléfono</th>
                         <th>Zona Asignada</th>
+                        <?php if ($tiene_permiso_hacer_prestamo) : ?>
                         <th>Hacer Prestamo </th>
+                        <?php endif; ?>
+                        <?php if ($tiene_permiso_desatrasar) : ?>
                         <th>Prestamo Atrasado </th>
+                        <?php endif; ?>
                         <th>Perfil</th>
                         <th>Pagos</th>
                     </tr>
@@ -174,22 +180,25 @@ date_default_timezone_set('America/Bogota');
                             <td><?= $fila["Apellido"] ?></td>
                             <td><?= $fila["Domicilio"] ?></td>
                             <td><?= $fila["Telefono"] ?></td>
-                            
+
                             <td><?= $fila["ZonaAsignada"] ?></td>
                             <td>
-                               
+                            <?php if ($tiene_permiso_hacer_prestamo) : ?>
                                 <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
                                     <i class="fas fa-hand-holding-usd"></i>
                                     <span>Hacer Préstamo</span>
                                 </a>
                             </td>
+                            <?php endif; ?>
 
-                            <td>
-                                <a href="/resources/views/zonas/6-Chihuahua/supervisor/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <span>Prest Atrasado</span>
-                                </a>
-                            </td>
+                            <?php if ($tiene_permiso_desatrasar) : ?>
+                                <td>
+                                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Prest Atrasado</span>
+                                    </a>
+                                </td>
+                            <?php endif; ?>
                             <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                             <td><a href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
                             </td>

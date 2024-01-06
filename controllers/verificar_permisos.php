@@ -1,9 +1,8 @@
 <?php
 
-// Archivo: verificar_permisos.php
-// Comprobar permisos
-require_once '../../../../controllers/conexion.php';
+require_once 'conexion.php';
 
+// Comprobar permisos
 // Obtener el ID del usuario actual (suponiendo que ya tengas esta información)
 $usuario_id = $_SESSION["usuario_id"];
 
@@ -133,6 +132,19 @@ $stmt_permiso_saldo_inicial->bind_result($permiso_saldo_inicial_count);
 $stmt_permiso_saldo_inicial->fetch();
 $stmt_permiso_saldo_inicial->close();
 
+// Permiso para "Hacer Préstamo"
+$permiso_hacer_prestamo_id = 13; // Asegúrate de usar el ID correcto para este permiso
+$sql_permiso_hacer_prestamo = "SELECT COUNT(*) FROM usuarios_permisos WHERE usuario_id = ? AND permiso_id = ?";
+$stmt_permiso_hacer_prestamo = $conexion->prepare($sql_permiso_hacer_prestamo);
+$stmt_permiso_hacer_prestamo->bind_param("ii", $usuario_id, $permiso_hacer_prestamo_id);
+$stmt_permiso_hacer_prestamo->execute();
+$stmt_permiso_hacer_prestamo->bind_result($permiso_hacer_prestamo_count);
+$stmt_permiso_hacer_prestamo->fetch();
+$stmt_permiso_hacer_prestamo->close();
+
+
+
+
 
 // Comprueba si el usuario tiene el permiso 
 $tiene_permiso_abonos = ($permiso_abonos_count > 0);
@@ -148,3 +160,4 @@ $tiene_permiso_apagar_sistema = ($permiso_apagar_sistema_count > 0);
 $tiene_permiso_lista_clavos = ($permiso_lista_clavos_count > 0);
 $tiene_permiso_list_de_prestamos = ($permiso_list_de_prestamos_count > 0);
 $tiene_permiso_saldo_inicial = ($permiso_saldo_inicial_count > 0);
+$tiene_permiso_hacer_prestamo = ($permiso_hacer_prestamo_count > 0);

@@ -1,4 +1,6 @@
 <?php
+session_start(); // Iniciar la sesión al principio del archivo
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once '../../../../../controllers/conexion.php';
 
@@ -11,7 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt_delete->bind_param("i", $usuario_id);
 
     if (!$stmt_delete->execute()) {
-        die("Error al eliminar permisos anteriores: " . $stmt_delete->error);
+        // Manejo del error
+        $_SESSION['error_message'] = "Error al eliminar permisos anteriores: " . $stmt_delete->error;
+        header("Location: permisos.php");
+        exit();
     }
 
     // Insertar los nuevos permisos seleccionados
@@ -21,10 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_insert->bind_param("ii", $usuario_id, $permiso_id);
 
         if (!$stmt_insert->execute()) {
-            die("Error al asignar permisos: " . $stmt_insert->error);
+            // Manejo del error
+            $_SESSION['error_message'] = "Error al asignar permisos: " . $stmt_insert->error;
+            header("Location: permisos.php");
+            exit();
         }
     }
 
+    // Guardar mensaje de éxito en la sesión
+    $_SESSION['message'] = "Permisos actualizados correctamente.";
+
+    // Redirigir a la página de permisos
     header("Location: permisos.php");
     exit();
 }
+?>
