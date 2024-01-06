@@ -28,6 +28,9 @@ if ($fila = $resultado->fetch_assoc()) {
 $stmt->close();
 
 date_default_timezone_set('America/Bogota');
+
+ // Ruta de permisos
+ include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 

@@ -26,6 +26,9 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
+
+ // Ruta de permisos
+ include("../../../../../../controllers/verificar_permisos.php");
  
 ?>
 
