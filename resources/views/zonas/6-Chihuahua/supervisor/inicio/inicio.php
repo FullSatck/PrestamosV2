@@ -26,6 +26,8 @@ if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
 }
 $stmt->close();
+
+include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 
@@ -160,30 +162,40 @@ $stmt->close();
             // Obtener el primer ID de cliente de la base de datos
             $primer_id = obtenerPrimerID($conexion);
             ?>
-
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
-                    <p>Version beta</p>
+            <?php if ($tiene_permiso_abonos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_prest_cancelados) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
                 </div>
             </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_ver_filtros) : ?>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a><br>
                     <p>Version beta</p>
                 </div>
             </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_desatrasar) : ?>
             <div class="cuadro cuadro-4">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/6-Chihuahua/supervisor/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a><br>
                     <p>Version beta</p>
                 </div>
             </div>
+            <?php endif; ?>
 
 
     </main>

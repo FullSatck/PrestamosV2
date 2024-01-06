@@ -58,7 +58,7 @@ function obtenerSuma($conexion, $tabla, $columna)
 }
 
 
-include("verificar_permisos.php");
+include("../../../../controllers/verificar_permisos.php");
 
 
 
@@ -152,20 +152,23 @@ date_default_timezone_set('America/Bogota');
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
-
+            <?php if ($tiene_permiso_listar_clientes) : ?>
             <a href="/resources/views/admin/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
+            <?php endif; ?>
 
+            <?php if ($tiene_permiso_listar_clientes) : ?>
             <a href="/resources/views/admin/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
+            <?php endif; ?>
             <a href="/resources/views/admin/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>

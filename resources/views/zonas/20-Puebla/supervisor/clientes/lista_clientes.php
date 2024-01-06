@@ -160,8 +160,12 @@ $resultado = $conexion->query($sql);
                         <th>Domicilio</th>
                         <th>Teléfono</th>
                         <th>Zona Asignada</th>
-                        <th>Hacer Prestamo </th>
-                        <th>Prestamo Atrasado </th>
+                        <?php if ($tiene_permiso_hacer_prestamo) : ?>
+                            <th>Hacer Prestamo</th>
+                        <?php endif; ?>
+                        <?php if ($tiene_permiso_desatrasar) : ?>
+                            <th>Prestamo Atrasado</th>
+                        <?php endif; ?>
                         <th>Perfil</th>
                         <th>Pagos</th>
                     </tr>
@@ -173,6 +177,8 @@ $resultado = $conexion->query($sql);
                             <td><?= $fila["Domicilio"] ?></td>
                             <td><?= $fila["Telefono"] ?></td>
                             <td><?= $fila["ZonaAsignada"] ?></td>
+
+                            <?php if ($tiene_permiso_hacer_prestamo) : ?>
                             <td>
 
                                 <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
@@ -180,6 +186,9 @@ $resultado = $conexion->query($sql);
                                     <span>Hacer Préstamo</span>
                                 </a>
                             </td>
+                            <?php endif; ?>
+
+                            <?php if ($tiene_permiso_desatrasar) : ?>
 
                             <td>
                                 <a href="/resources/views/zonas/20-Puebla/supervisor/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
@@ -187,6 +196,7 @@ $resultado = $conexion->query($sql);
                                     <span>Prest Atrasado</span>
                                 </a>
                             </td>
+                            <?php endif; ?>
 
                             <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
                             <td><a href="/resources/views/zonas/20-Puebla/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
