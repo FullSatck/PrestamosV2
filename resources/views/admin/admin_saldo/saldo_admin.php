@@ -106,13 +106,6 @@ if (!isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php" class="selected">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
-                </div>
-            </a>
-
             <a href="/resources/views/admin/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
@@ -155,10 +148,10 @@ if (!isset($_SESSION["usuario_id"])) {
 
             <a href="/resources/views/admin/gastos/gastos.php">
                 <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <i class="fa-regular fa-address-book"></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -169,7 +162,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
             <a href="/resources/views/admin/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <i class="fa-solid fa-basket-shopping"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>

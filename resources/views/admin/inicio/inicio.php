@@ -57,6 +57,11 @@ function obtenerSuma($conexion, $tabla, $columna)
     }
 }
 
+
+include("../../../../controllers/verificar_permisos.php");
+
+
+
 // Obtener los totales
 $totalMonto = obtenerSuma($conexion, "prestamos", "MontoAPagar");
 $totalIngresos = obtenerSuma($conexion, "historial_pagos", "MontoPagado");
@@ -127,17 +132,10 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href="/resources/views/admin/inicio/inicio.php">
+            <a href="" class="selected">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
-                </div>
-            </a>
-
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
                 </div>
             </a>
 
@@ -154,20 +152,23 @@ date_default_timezone_set('America/Bogota');
                     <h4>Registrar Usuario</h4>
                 </div>
             </a>
-
+            <?php if ($tiene_permiso_listar_clientes) : ?>
             <a href="/resources/views/admin/clientes/lista_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
+            <?php endif; ?>
 
+            <?php if ($tiene_permiso_listar_clientes) : ?>
             <a href="/resources/views/admin/clientes/agregar_clientes.php">
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
+            <?php endif; ?>
             <a href="/resources/views/admin/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
@@ -186,7 +187,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -196,9 +197,9 @@ date_default_timezone_set('America/Bogota');
             </a>
 
 
-            <a href="/resources/views/admin/cartera/lista_cartera.php" class="selected">
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <i class="fa-solid fa-basket-shopping"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
@@ -209,27 +210,56 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Inicio Administrador</h1>
         <div class="cuadros-container">
-
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
-                    <p>Mantenimiento</p>
+                    <a href="/resources/views/admin/inicio/permisos/permisos.php" class="titulo">Permisos</a>
+                    <p>Version beta</p>
                 </div>
             </div>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros </a>
-                    <p>Version beta v2</p>
+
+            <?php if ($tiene_permiso_desatrasar) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
+                        <p>Mantenimiento</p>
+                    </div>
                 </div>
-            </div>
- 
+            <?php endif; ?>
+
+            <!-- Botón "VerFiltros" que se mostrará si el usuario tiene el permiso correspondiente -->
+            <?php if ($tiene_permiso_ver_filtros) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros </a>
+                        <p>Version beta v2</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+
+            <!-- ULTIMO ID -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var enlaceAbonos = document.querySelector('.enlace-abonos');
+                    if (enlaceAbonos) {
+                        var ultimoID = localStorage.getItem('ultimoIDCliente');
+                        var fechaUltimaVisita = localStorage.getItem('fechaUltimaVisita');
+                        var fechaActual = new Date().toISOString().split('T')[0];
+
+                        if (ultimoID && fechaUltimaVisita === fechaActual) {
+                            enlaceAbonos.href = '/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=' + ultimoID;
+                        }
+                        // Si no hay un último ID o la fecha es diferente, se usa el primer ID de orden_fijo.txt
+                    }
+                });
+            </script>
+            
             <!-- TRAER EL PRIMER ID -->
-
             <?php
             function obtenerOrdenClientes()
             {
-                $rutaArchivo = 'cartulina/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                $rutaArchivo = 'cartulina/orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
                 if (file_exists($rutaArchivo)) {
                     $contenido = file_get_contents($rutaArchivo);
                     return explode(',', $contenido);
@@ -241,7 +271,7 @@ date_default_timezone_set('America/Bogota');
             {
                 $fecha_actual = date("Y-m-d");
                 $ordenClientes = obtenerOrdenClientes();
-                $primer_id = 0; 
+                $primer_id = 0;
 
                 $idEncontrado = 0;
 
@@ -272,86 +302,124 @@ date_default_timezone_set('America/Bogota');
             $primer_id = obtenerPrimerID($conexion);
 
             ?>
- 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
-                    <p>Version beta</p>
+
+
+            <?php if ($tiene_permiso_abonos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                    <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo enlace-abonos">Abonos</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
- 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/creditos/crudPrestamos.php" class="titulo">List De Prestamos</a>
+            <?php endif; ?>
 
-                    <p>Total de Préstamos: <?= $total_prestamos ?></p>
+
+
+            <?php if ($tiene_permiso_list_de_prestamos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/creditos/crudPrestamos.php" class="titulo">List De Prestamos</a>
+                        <p>Total de Préstamos: <?= $total_prestamos ?></p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/clientes/lista_clientes.php" class="titulo">List De Clientes</a>
 
-                    <p>Total de Clientes: <?= $total_clientes ?></p>
+            <?php if ($tiene_permiso_listar_clientes) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/clientes/lista_clientes.php" class="titulo">List De Clientes</a>
+                        <p>Total de Clientes: <?= $total_clientes ?></p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
 
 
-            <!-- <div class="cuadro cuadro-1">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/cobro_inicio.php" class="titulo">Prestamos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='cob'>$ " . number_format($totalMonto, 0, '.', '.') . "</span>"; ?>
-                    </p>
+
+            <?php if ($tiene_permiso_recaudos) : ?>
+                <div class="cuadro cuadro-3">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
+                        <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
+                        </p>
+                    </div>
                 </div>
-            </div> -->
-            <div class="cuadro cuadro-3">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/recuado_admin.php" class="titulo">Recaudos</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='ing'> $ " . number_format($totalIngresos, 0, '.', '.') . "</span>" ?>
-                    </p>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_contabilidad) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/contabilidad/contabilidad.php" class="titulo">Contabilidad </a>
+                        <p>Version Beta v1</p>
+                    </div>
                 </div>
-            </div>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/contabilidad/contabilidad.php" class="titulo">Contabilidad </a>
-                    <p>Version Beta v1</p>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_comision) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
+                        <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?></p>
+                    </div>
                 </div>
-            </div>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                    <p><?php echo "<strong>Total:</strong> <span class='com'>$ " . number_format($totalComisiones, 0, '.', '.') . "</span>"; ?>
-                    </p>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_prest_cancelados) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados</a>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema </a>
+            <?php if ($tiene_permiso_apagar_sistema) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/inicio/apagarSis/apagarSist.php" class="titulo">Apagar Sistema</a>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos </a>
-                    <p>Mantenimiento</p>
-
+            <?php if ($tiene_permiso_lista_clavos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/controllers/ListaClavos.php" class="titulo">Lista Clavos</a>
+                        <p>Mantenimiento</p>
+                    </div>
                 </div>
+            <?php endif; ?>
 
-            </div>
+            <?php
+            // Incluye tu archivo de conexión a la base de datos
+            include("../../../../controllers/conexion.php");
 
+            // Consulta para verificar si la tabla saldo_admin tiene datos
+            $sql = "SELECT COUNT(*) FROM saldo_admin";
+            $result = $conexion->query($sql);
+            $row = $result->fetch_row();
+            $count = $row[0];
 
+            // Verifica si el usuario tiene permiso y si la tabla está vacía
+            if ($tiene_permiso_saldo_inicial && $count == 0) {
+            ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/admin/admin_saldo/saldo_admin.php" class="titulo">Saldo inicial</a>
+                    </div>
+                </div>
+            <?php
+            }
 
+            // Cierra la conexión a la base de datos
+            $conexion->close();
+            ?>
 
         </div>
 
-
         </div>
         </div>
-
-
     </main>
 
 

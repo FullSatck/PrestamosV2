@@ -57,10 +57,10 @@ if (isset($_GET['clienteId'])) {
         </div>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Supervisor<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -80,43 +80,63 @@ if (isset($_GET['clienteId'])) {
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php">
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
                 </div>
             </a>
 
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/crudusuarios.php">
+                <div class="option">
+                    <i class="fa-solid fa-users" title=""></i>
+                    <h4>Usuarios</h4>
+                </div>
+            </a>
 
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/usuarios/registrar.php">
+                <div class="option">
+                    <i class="fa-solid fa-user-plus" title=""></i>
+                    <h4>Registrar Usuario</h4>
+                </div>
+            </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/lista_clientes.php" class="selected">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/lista_clientes.php"class="selected">
                 <div class="option">
                     <i class="fa-solid fa-people-group" title=""></i>
                     <h4>Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php" >
                 <div class="option">
                     <i class="fa-solid fa-user-tag" title=""></i>
                     <h4>Registrar Clientes</h4>
                 </div>
             </a>
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/creditos/crudPrestamos.php">
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/crudPrestamos.php">
                 <div class="option">
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
             </a>
- 
 
-            <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
+
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
+
+            <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/ruta.php">
+                <div class="option">
+                    <i class="fa-solid fa-map" title=""></i>
+                    <h4>Enrutar</h4>
+                </div>
+            </a>
+
         </div>
 
     </div>

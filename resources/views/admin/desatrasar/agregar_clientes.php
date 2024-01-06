@@ -110,7 +110,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 
     <h1>Registro de Clientes Atrasados </h1>
-    <form action="/controllers/validar_cliente2.php" method="POST" enctype="multipart/form-data">
+    <form action="/controllers/validar_cliente_Admin.php" method="POST" enctype="multipart/form-data">
         <div class="input-container">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>

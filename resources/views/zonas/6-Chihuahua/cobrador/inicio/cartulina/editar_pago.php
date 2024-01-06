@@ -37,10 +37,7 @@ $factura = $resultado->fetch_assoc();
 
 // Cerrar la consulta
 $stmt->close();
-
-// Si se envió el formulario para actualizar la factura 
-
-// ...
+ 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $monto = $_POST['monto'];
@@ -63,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt_update_prestamos->close();
 
     // Redireccionar después de la actualización
-    header("Location: cartulina.php?id=" . $factura['cliente_id']);
+    header("Location: perfil_abonos.php?id=" . $factura['cliente_id']);
     exit();
 }
 

@@ -7,14 +7,14 @@ if (isset($_SESSION["usuario_id"])) {
     // El usuario está autenticado, puede acceder a esta página
 } else {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../index.php");
+    header("Location: ../../../../../index.php");
     exit();
 }
 
 // Verificar si se ha pasado un ID válido como parámetro GET
 if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
     // Redirigir a una página de error o a una página predeterminada
-    header("location: ../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    header("location: ../../../../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
     exit();
 }
 
@@ -51,6 +51,7 @@ $sql = "SELECT c.*, m.Nombre AS MonedaNombre, ciu.Nombre AS CiudadNombre
 
 $resultado = $conexion->query($sql);
 
+
 if ($resultado->num_rows === 1) {
     // Mostrar los detalles del cliente aquí
     $fila = $resultado->fetch_assoc();
@@ -64,7 +65,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: /resources/views/admin/inicio/prestadia/prestamos_del_dia.php");
+    header("location: /resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php");
     exit();
 }
 
@@ -73,55 +74,14 @@ $user_zone = $_SESSION['user_zone'];
 $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
-if ($_SESSION["rol"] == 1) {
-    $ruta_volver = "/resources/views/admin/inicio/inicio.php";
-    $ruta_filtro = "/resources/views/admin/inicio/prestadia/prestamos_del_dia.php";
-    $ruta_cliente = "/resources/views/admin/clientes/agregar_clientes.php";
-} elseif ($_SESSION["rol"] == 3) {
-    // Ruta para el rol 3 (cobrador) en base a la zona
-    if ($_SESSION['user_zone'] === '6') {
-        $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php";
-    } elseif ($_SESSION['user_zone'] === '20') {
-        $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php";
-    } elseif ($_SESSION['user_zone'] === '22') {
-        $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
-        $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
-        $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php";
-    } elseif ($_SESSION["rol"] == 2) {
-        // Ruta para el rol 3 (cobrador) en base a la zona
-        if ($_SESSION['user_zone'] === '6') {
-            $ruta_volver = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php";
-            $ruta_filtro = "/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php";
-            $ruta_cliente = "/resources/views/zonas/6-Chihuahua/supervisor/clientes/agregar_clientes.php";
-        } elseif ($_SESSION['user_zone'] === '20') {
-            $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/inicio/inicio.php";
-            $ruta_filtro = "/resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php";
-            $ruta_cliente = "/resources/views/zonas/20-Puebla/supervisor/clientes/agregar_clientes.php";
-        } elseif ($_SESSION['user_zone'] === '22') {
-            $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/inicio.php";
-            $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php";
-            $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/agregar_clientes.php";
-        } else {
-            // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
-            $ruta_volver = "index.php";
-            $ruta_filtro = "index.php";
-            $ruta_cliente = "index.php";
-        }
-    } else {
-        // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
-        $ruta_volver = "index.php";
-        $ruta_filtro = "index.php";
-        $ruta_cliente = "index.php";
-    }
+if ($_SESSION["rol"] == 2) {
+    $ruta_volver = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php";
+    $ruta_filtro = "/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php";
+    $ruta_cliente = "/resources/views/zonas/6-Chihuahua/cobrador/clientes/agregar_clientes.php";
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
     $ruta_filtro = "/default_dashboard.php";
 }
-
 
 // Variables para prevenir errores
 $info_prestamo = [
@@ -136,9 +96,10 @@ $fecha_actual = date('Y-m-d');
 $sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.MontoAPagar, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
                  FROM prestamos p 
                  INNER JOIN clientes c ON p.IDCliente = c.ID 
-                 WHERE p.IDCliente = ? AND p.Estado = 'pendiente'
+                 WHERE p.IDCliente = ? AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Chihuahua'
                  ORDER BY p.FechaInicio ASC
                  LIMIT 1";
+
 $stmt_prestamo = $conexion->prepare($sql_prestamo);
 $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
@@ -195,13 +156,8 @@ $stmt_prestamo->close();
 
             <a href="<?= $ruta_cliente ?>" class="back-link3">R Clientes</a>
 
-            <div class="nombre-usuario">
-                <?php
-                if (isset($_SESSION["nombre_usuario"], $_SESSION["nombre"])) {
-                    echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span>" . htmlspecialchars($_SESSION["nombre"]) . "</span>";
-                }
-                ?>
-            </div>
+            <a href="orden_abonos.php" class="back-link1">Ruta</a>
+
         </header>
 
         <main>
@@ -250,22 +206,44 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <?php
-                    $sql_total_clientes = "SELECT COUNT(*) AS TotalClientes FROM clientes WHERE ZonaAsignada = 'Chihuahua'";
-                    $resultado_total = $conexion->query($sql_total_clientes);
-                    $fila_total = $resultado_total->fetch_assoc();
-                    $total_clientes = $fila_total['TotalClientes'];
+                    if (!function_exists('obtenerOrdenClientes')) {
+                        function obtenerOrdenClientes()
+                        {
+                            $rutaArchivo = __DIR__ . '/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                            if (file_exists($rutaArchivo)) {
+                                $contenido = file_get_contents($rutaArchivo);
+                                return explode(',', $contenido);
+                            }
+                            return [];
+                        }
+                    }
 
-                    $sql_posicion_cliente = "SELECT COUNT(*) AS Posicion FROM clientes WHERE ID <= ? AND ZonaAsignada = 'Chihuahua'";
-                    $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
-                    $stmt_posicion->bind_param("i", $id_cliente);
-                    $stmt_posicion->execute();
-                    $stmt_posicion->bind_result($posicion_cliente);
-                    $stmt_posicion->fetch();
-                    $stmt_posicion->close();
+                    $fecha_actual = date("Y-m-d");
+                    $ordenClientes = obtenerOrdenClientes();
 
+                    // Filtrar solo los clientes con préstamos pendientes que no han pagado hoy
+                    $clientesPendientes = array_filter($ordenClientes, function ($idCliente) use ($conexion, $fecha_actual) {
+                        $sql = "SELECT c.ID
+                FROM clientes c
+                INNER JOIN prestamos p ON c.ID = p.IDCliente
+                LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
+                WHERE c.ID = ? AND p.Estado = 'pendiente' AND hp.ID IS NULL";
+                        $stmt = $conexion->prepare($sql);
+                        $stmt->bind_param("si", $fecha_actual, $idCliente);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        $existe = $stmt->num_rows > 0;
+                        $stmt->close();
+                        return $existe;
+                    });
+
+                    // Contar el total de clientes pendientes y determinar la posición actual
+                    $total_clientes = count($clientesPendientes);
+                    $posicion_actual = array_search($id_cliente, $clientesPendientes) + 1; // +1 para ajustar el índice base 0
                     ?>
-                    <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
+                    <p><strong>Cliente: </strong><?= $posicion_actual . "/" . $total_clientes; ?></p>
                 </div>
+
             </div>
 
             <!-- CARTULINA DE FACTURAS -->
@@ -478,78 +456,127 @@ $stmt_prestamo->close();
 
             <!-- Formulario de Pago -->
             <form method="post" action="process_payment.php" id="formPago">
-                <input type="hidden" name="id_cliente" value="<?= $id_cliente; ?>">
-                <input type="hidden" name="id_prestamo" value="<?= $idPrestamo; ?>">
+                <input type="hidden" name="id_cliente" value="<?= htmlspecialchars($id_cliente ?? ''); ?>">
+                <input type="hidden" name="id_prestamo" value="<?= htmlspecialchars($info_prestamo['idPrestamo'] ?? ''); ?>">
 
                 <!-- Campos para el pago -->
                 <input type="text" id="cuota" name="cuota" placeholder="Cuota">
                 <input type="text" id="campo2" name="campo2" placeholder="Resta">
-                <input type="text" id="variable" placeholder="Deuda" value="<?= htmlspecialchars(($montoAPagar - $info_prestamo['Cuota'] < 0) ? 0 : $montoAPagar - $info_prestamo['Cuota']); ?>" readonly>
+                <input type="text" id="variable" placeholder="Deuda" readonly>
 
                 <!-- Botones para las acciones -->
                 <input type="submit" name="action" value="Pagar" class="boton1">
-                <input type="submit" name="action" value="No pago" class="boton2">
-                <input type="submit" name="action" value="Mas tarde" class="boton3">
+                <input type="submit" name="action" value="No pago" class="boton2" id="noPago">
+                <input type="submit" name="action" value="Mas tarde" class="boton3" id="masTarde">
 
+                <!-- Campos ocultos para pasar valores a JavaScript -->
+                <input type="hidden" id="montoAPagar" value="<?= htmlspecialchars($montoAPagar ?? '0'); ?>">
             </form>
 
-            <form method="post" action="process_payment.php" id="formPago">
-                <input type="button" value="Desatrasar " class="boton4" onclick="window.location.href='../resources/views/admin/desatrasar/agregar_clientes.php';">
-            </form>
 
-            <!-- Luego, en tu HTML, reemplaza el valor de $total_prestamo por $montoAPagar -->
-
+            <!-- Incluir el archivo JavaScript -->
             <script>
-                var cuotaEsperada = <?= json_encode($info_prestamo['Cuota']); ?>;
-                var montoAPagar = <?= json_encode($montoAPagar); ?>;
-                console.log("Cuota esperada:", cuotaEsperada); // Para depuración
-                console.log("Monto a pagar:", montoAPagar); // Para depuración
-
                 window.onload = function() {
                     var formPago = document.getElementById('formPago');
                     var campoCuota = document.getElementById('cuota');
                     var campoResta = document.getElementById('campo2');
                     var campoDeuda = document.getElementById('variable');
+                    var botonPagar = formPago.querySelector('input[name="action"][value="Pagar"]');
+                    var montoAPagar = parseFloat(document.getElementById('montoAPagar').value);
 
-                    campoResta.addEventListener('input', function() {
-                        var valorResta = parseFloat(campoResta.value.replace(',', '.'));
-                        var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
-                        campoResta.style.backgroundColor = valorResta === deudaActual ? 'green' : 'red';
+                    campoCuota.addEventListener('input', function() {
+                        actualizarDeudaYResta();
+                        validarCuota();
+                        actualizarVisibilidadBotonPagar();
                     });
 
-                    formPago.addEventListener('submit', function(event) {
-                        // Verificar si la acción es "Pagar"
-                        var accion = formPago.querySelector('input[name="action"]:checked').value;
-                        if (accion === 'Pagar') {
-                            var cuotaIngresada = parseFloat(campoCuota.value.replace(',', '.'));
-                            var valorResta = parseFloat(campoResta.value.replace(',', '.'));
-                            var deudaActual = parseFloat(campoDeuda.value.replace(',', '.'));
-                            var tolerancia = 0.01;
+                    campoResta.addEventListener('input', function() {
+                        validarResta();
+                        actualizarVisibilidadBotonPagar();
+                    });
 
-                            if (deudaActual === 0 && valorResta === 0) {
-                                if (Math.abs(cuotaIngresada - montoAPagar) > tolerancia) {
-                                    event.preventDefault();
-                                    alert('La cuota ingresada debe ser igual al monto total a pagar.');
-                                    return;
-                                }
-                            } else {
-                                if (Math.abs(cuotaIngresada - cuotaEsperada) > tolerancia) {
-                                    event.preventDefault();
-                                    alert('La cuota ingresada no es correcta.');
-                                    return;
-                                }
-                                if (valorResta !== deudaActual) {
-                                    event.preventDefault();
-                                    alert('El saldo que resta que se ingresó no es correcto.');
-                                    return;
-                                }
+                    function actualizarDeudaYResta() {
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        var nuevaDeuda = montoAPagar - cuotaIngresada;
+                        campoDeuda.value = nuevaDeuda.toFixed(2);
+                        campoResta.value = nuevaDeuda.toFixed(2);
+                        validarResta();
+                    }
+
+                    function validarResta() {
+                        var valorResta = parseFloat(campoResta.value) || 0;
+                        var deudaActual = parseFloat(campoDeuda.value) || 0;
+                        campoResta.style.backgroundColor = (valorResta === deudaActual) ? 'green' : 'red';
+                    }
+
+                    function validarCuota() {
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        campoCuota.style.backgroundColor = (cuotaIngresada <= montoAPagar) ? '' : 'red';
+                    }
+
+                    function actualizarVisibilidadBotonPagar() {
+                        var esCuotaInvalida = campoCuota.style.backgroundColor === 'red';
+                        var esRestaInvalida = campoResta.style.backgroundColor === 'red';
+                        botonPagar.style.display = (esCuotaInvalida || esRestaInvalida) ? 'none' : '';
+                    }
+
+                    formPago.addEventListener('submit', function(event) {
+                        var accion = formPago.querySelector('input[name="action"]:checked').value;
+                        var cuotaIngresada = parseFloat(campoCuota.value) || 0;
+                        var valorResta = parseFloat(campoResta.value) || 0;
+                        var deudaActual = parseFloat(campoDeuda.value) || 0;
+
+                        // Verificar si el campo de cuota está en rojo
+                        var esCuotaInvalida = campoCuota.style.backgroundColor === 'red';
+
+                        if (accion === 'Pagar') {
+                            if (esCuotaInvalida || cuotaIngresada > montoAPagar || valorResta !== deudaActual) {
+                                event.preventDefault();
+                                alert('Revisa los valores ingresados. La cuota no puede ser mayor al monto a pagar, no debe estar en rojo, y el valor en "Resta" debe ser igual al valor en "Deuda".');
                             }
                         }
                     });
                 };
             </script>
 
+            <?php
+            // Consulta SQL para obtener los préstamos del cliente
+            $sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
+            $resultado_prestamos = $conexion->query($sql_prestamos);
 
+            ?>
+
+            <div class="profile-loans">
+                <h2>Préstamos del Cliente</h2>
+                <div class="table-scroll-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID del Préstamo</th>
+                                <th>Deuda</th>
+                                <th>Plazo</th>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Vencimiento</th>
+                                <th>Estado</th>
+                                <th>Pagos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($fila_prestamo = $resultado_prestamos->fetch_assoc()) : ?>
+                                <tr>
+                                    <td><?= "REC 100" . $fila_prestamo["ID"] ?></a></td>
+                                    <td><?= $fila_prestamo["MontoAPagar"] ?></td>
+                                    <td><?= $fila_prestamo["Plazo"] ?></td>
+                                    <td><?= $fila_prestamo["FechaInicio"] ?></td>
+                                    <td><?= $fila_prestamo["FechaVencimiento"] ?></td>
+                                    <td><?= $fila_prestamo["Estado"] ?></td>
+                                    <td><a href="dias_pago.php?id=<?= $fila_prestamo["ID"] ?>">Pagos</a></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
 
         </main>

@@ -106,7 +106,7 @@ $sql_prestamos = "SELECT * FROM prestamos WHERE IDCliente = $id_cliente";
 $resultado_prestamos = $conexion->query($sql_prestamos);
 
 // Obtener clientes que han pasado ciertos días hábiles sin pagar una cuota
-$diasHabilesSinPagar = 20; // Modificado para cumplir con la nueva regla de 20 días
+$diasHabilesSinPagar = 15;
 $fechaLimite = date('Y-m-d', strtotime("-$diasHabilesSinPagar weekdays"));
 $query = "SELECT p.IDCliente, p.ID, p.MontoCuota, MIN(p.FechaInicio) AS FechaInicio
           FROM prestamos p
@@ -177,11 +177,7 @@ if ($clavosResult) {
     }
 }
 
-// Ahora $esClavo se actualizará según la nueva lógica
 ?>
-
-<!-- Aquí sigue el resto de tu código HTML/PHP, usando $esClavo según tus necesidades -->
-
 
 
 <!DOCTYPE html>
@@ -227,7 +223,7 @@ if ($clavosResult) {
                 <p>Colonia: <strong><?= $fila["asentamiento"] ?></strong></p>
                 <!-- Nuevas secciones agregadas -->
                 <p>Días sin Pagar: <?= $diasSinPagar ?></p>
-                <p>Clavo: <?php echo $diasSinPagar >= 20 ? 'Sí' : 'No'; ?></p>
+                <p>Clavo: <?= $esClavo ?></p>
             </div>
         </div>
 
@@ -285,4 +281,3 @@ if ($clavosResult) {
             crossorigin="anonymous"></script>
 </body>
 </html>
-

@@ -27,8 +27,11 @@ if ($fila = $resultado->fetch_assoc()) {
 }
 $stmt->close();
 
- 
+
 date_default_timezone_set('America/Bogota');
+
+// Ruta a permisos 
+include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 
@@ -117,7 +120,7 @@ date_default_timezone_set('America/Bogota');
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/20-Puebla/cobrador/ruta/ruta.php">
                 <div class="option">
@@ -143,9 +146,9 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Inicio cobrador de Puebla</h1>
         <div class="cuadros-container">
-         
 
-        <?php
+
+            <?php
             function obtenerPrimerID($conexion)
             {
                 $primer_id = 0;
@@ -168,23 +171,34 @@ date_default_timezone_set('America/Bogota');
 
             // Obtener el primer ID de cliente de la base de datos
             $primer_id = obtenerPrimerID($conexion);
-            ?> 
-
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
-                    <p>Version beta</p>
+            ?>
+            <?php if ($tiene_permiso_abonos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
+            <?php if ($tiene_permiso_prest_cancelados) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_ver_filtros) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
                     <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
                     <p>Version beta</p>
                 </div>
             </div>
+            <?php endif; ?>
 
-           
+
         </div>
     </main>
 

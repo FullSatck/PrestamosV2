@@ -53,6 +53,8 @@ if (!isset($_SESSION["usuario_id"])) {
     }
 }
 
+include("../../../../controllers/verificar_permisos.php");
+
 // El usuario ha iniciado sesión, mostrar el contenido de la página aquí
 ?>
 
@@ -118,13 +120,6 @@ $resultado = $conexion->query($sql);
                 </div>
             </a>
 
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
-                </div>
-            </a>
-
             <a href="/resources/views/admin/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
@@ -167,10 +162,10 @@ $resultado = $conexion->query($sql);
 
             <a href="/resources/views/admin/gastos/gastos.php">
                 <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <i class="fa-regular fa-address-book"></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -181,7 +176,7 @@ $resultado = $conexion->query($sql);
 
             <a href="/resources/views/admin/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <i class="fa-solid fa-basket-shopping"></i>
                     <h4>Cobros</h4>
                 </div>
             </a>
@@ -215,9 +210,13 @@ $resultado = $conexion->query($sql);
                         <th>Teléfono</th>
 
                         <th>Zona Asignada</th>
-                        <!-- <th>Estado</th> -->
-                        <th>Hacer Prestamo </th>
-                        <th>Prestamo Atrasado </th>
+
+                        <?php if ($tiene_permiso_hacer_prestamo) : ?>
+                            <th>Hacer Prestamo</th>
+                        <?php endif; ?>
+                        <?php if ($tiene_permiso_desatrasar) : ?>
+                            <th>Prestamo Atrasado</th>
+                        <?php endif; ?>
 
 
                         <th>Editar</th>
@@ -237,19 +236,27 @@ $resultado = $conexion->query($sql);
 
                             <td><?= $fila["ZonaAsignada"] ?></td>
                             <!-- <td><?= $fila["Estado"] == 1 ? 'Activo' : 'Inactivo' ?></td> -->
-                            <td>
-                                <a href="/resources/views/admin/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <span>Hacer Préstamo</span>
-                                </a>
-                            </td>
 
-                            <td>
-                                <a href="/resources/views/admin/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <span>Prest Atrasado</span>
-                                </a>
-                            </td>
+
+
+                            <?php if ($tiene_permiso_hacer_prestamo) : ?>
+                                <td>
+                                    <a href="/resources/views/admin/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Hacer Préstamo</span>
+                                    </a>
+                                </td>
+                            <?php endif; ?>
+                            
+
+                            <?php if ($tiene_permiso_desatrasar) : ?>
+                                <td>
+                                    <a href="/resources/views/admin/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Prest Atrasado</span>
+                                    </a>
+                                </td>
+                            <?php endif; ?>
 
 
                             <td><a href="editar_cliente.php?id=<?= $fila["ID"] ?>">Editar</a></td>

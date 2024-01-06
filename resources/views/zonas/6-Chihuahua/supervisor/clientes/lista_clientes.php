@@ -35,6 +35,8 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
 
 $resultado = $conexion->query($sql);
 date_default_timezone_set('America/Bogota');
+// verificancion de permisos 
+include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 <!DOCTYPE html>
@@ -58,10 +60,10 @@ date_default_timezone_set('America/Bogota');
 
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Supervisor<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Supervisor<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -122,13 +124,13 @@ date_default_timezone_set('America/Bogota');
                     <h4>Prestamos</h4>
                 </div>
             </a>
- 
+
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/supervisor/ruta/ruta.php">
                 <div class="option">
@@ -153,62 +155,83 @@ date_default_timezone_set('America/Bogota');
 
         <?php if ($resultado->num_rows > 0) { ?>
 
-        <div class="table-scroll-container">
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Domicilio</th>
-                    <th>Teléfono</th>
-                    <th>Moneda Preferida</th>
-                    <th>Zona Asignada</th>
-                    <th>Acciones</th>
-                    <th>Pagos</th>
-                </tr>
-                <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <tr>
-                    <td><?= "REC 100" .$fila["ID"] ?></td>
-                    <td><?= $fila["Nombre"] ?></td>
-                    <td><?= $fila["Apellido"] ?></td>
-                    <td><?= $fila["Domicilio"] ?></td>
-                    <td><?= $fila["Telefono"] ?></td>
-                    <td><?= $fila["moneda"] ?></td> <!-- Mostrar el nombre de la moneda -->
-                    <td><?= $fila["ZonaAsignada"] ?></td>
-                    <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
-                    <td><a
-                            href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
-                    </td>
-                </tr>
-                <?php } ?>
-            </table>
+            <div class="table-scroll-container">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Domicilio</th>
+                        <th>Teléfono</th>
+                        <th>Zona Asignada</th>
+                        <?php if ($tiene_permiso_hacer_prestamo) : ?>
+                        <th>Hacer Prestamo </th>
+                        <?php endif; ?>
+                        <?php if ($tiene_permiso_desatrasar) : ?>
+                        <th>Prestamo Atrasado </th>
+                        <?php endif; ?>
+                        <th>Perfil</th>
+                        <th>Pagos</th>
+                    </tr>
+                    <?php while ($fila = $resultado->fetch_assoc()) { ?>
+                        <tr>
+                            <td><?= "REC 100" . $fila["ID"] ?></td>
+                            <td><?= $fila["Nombre"] ?></td>
+                            <td><?= $fila["Apellido"] ?></td>
+                            <td><?= $fila["Domicilio"] ?></td>
+                            <td><?= $fila["Telefono"] ?></td>
+
+                            <td><?= $fila["ZonaAsignada"] ?></td>
+                            <td>
+                            <?php if ($tiene_permiso_hacer_prestamo) : ?>
+                                <a href="/resources/views/zonas/6-Chihuahua/supervisor/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    <span>Hacer Préstamo</span>
+                                </a>
+                            </td>
+                            <?php endif; ?>
+
+                            <?php if ($tiene_permiso_desatrasar) : ?>
+                                <td>
+                                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Prest Atrasado</span>
+                                    </a>
+                                </td>
+                            <?php endif; ?>
+                            <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
+                            <td><a href="/resources/views/zonas/6-Chihuahua/supervisor/abonos/crud_historial_pagos.php?clienteId=<?= $fila["ID"] ?>">pagos</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </table>
             <?php } else { ?>
-            <p>No se encontraron clientes en la base de datos.</p>
+                <p>No se encontraron clientes en la base de datos.</p>
             <?php } ?>
-        </div>
+            </div>
     </main>
 
     <script>
-    // JavaScript para la búsqueda en tiempo real
-    const searchInput = document.getElementById('search-input');
-    const table = document.querySelector('table');
-    const rows = table.querySelectorAll('tbody tr');
+        // JavaScript para la búsqueda en tiempo real
+        const searchInput = document.getElementById('search-input');
+        const table = document.querySelector('table');
+        const rows = table.querySelectorAll('tbody tr');
 
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.toLowerCase();
 
-        rows.forEach((row) => {
-            const rowData = Array.from(row.children)
-                .map((cell) => cell.textContent.toLowerCase())
-                .join('');
+            rows.forEach((row) => {
+                const rowData = Array.from(row.children)
+                    .map((cell) => cell.textContent.toLowerCase())
+                    .join('');
 
-            if (rowData.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+                if (rowData.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
-    });
     </script>
 
     <script src="/public/assets/js/MenuLate.js"></script>

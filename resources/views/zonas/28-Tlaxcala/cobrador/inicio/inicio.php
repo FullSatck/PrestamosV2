@@ -28,6 +28,9 @@ if ($fila = $resultado->fetch_assoc()) {
 $stmt->close();
 
 date_default_timezone_set('America/Bogota');
+
+ // Ruta de permisos
+ include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 
@@ -166,7 +169,11 @@ date_default_timezone_set('America/Bogota');
                     <p>Version beta</p>
                 </div>
             </div>
-
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/28-Tlaxcala/cobrador/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                </div>
+            </div>
 
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">

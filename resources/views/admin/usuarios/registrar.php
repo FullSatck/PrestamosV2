@@ -106,13 +106,6 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
-                </div>
-            </a>
-
             <a href="/resources/views/admin/usuarios/crudusuarios.php">
                 <div class="option">
                     <i class="fa-solid fa-users" title=""></i>
@@ -155,10 +148,10 @@ date_default_timezone_set('America/Bogota');
 
             <a href="/resources/views/admin/gastos/gastos.php">
                 <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <i class="fa-regular fa-address-book"></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -169,7 +162,7 @@ date_default_timezone_set('America/Bogota');
 
             <a href="/resources/views/admin/cartera/lista_cartera.php">
                 <div class="option">
-                    <i class="fa-solid fa-scale-balanced" title=""></i>
+                <i class="fa-solid fa-basket-shopping"></i> 
                     <h4>Cobros</h4>
                 </div>
             </a>
@@ -202,13 +195,13 @@ date_default_timezone_set('America/Bogota');
                     <input type="password" id="contrasena" name="contrasena" placeholder="Por favor ingrese su clave" required>
                 </div>
                 <div class="input-container">
-                    <label for="zona">Zona:</label>
+                    <label for="zona">Estado:</label>
                     <select id="zona" name="zona" required>
                         <?php
                         // Incluye el archivo de conexión a la base de datos
                         include("../../../../controllers/conexion.php");
                         // Consulta SQL para obtener las zonas
-                        $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Chihuahua', 'Puebla', 'Quintana Roo')";
+                        $consultaZonas = "SELECT ID, Nombre FROM zonas WHERE Nombre IN ('Chihuahua', 'Puebla', 'Quintana Roo', 'Tlaxcala')";
                         $resultZonas = mysqli_query($conexion, $consultaZonas);
                         // Genera las opciones del menú desplegable para Zona
                         while ($row = mysqli_fetch_assoc($resultZonas)) {
@@ -223,7 +216,7 @@ date_default_timezone_set('America/Bogota');
                     <select id="RolID" name="RolID" required>
                         <?php
                         // Consulta SQL para obtener las opciones de roles
-                        $consultaRoles = "SELECT ID, Nombre FROM roles";
+                        $consultaRoles = "SELECT ID, Nombre FROM roles WHERE Nombre IN ('admin', 'supervisor', 'cobrador')";
                         $resultRoles = mysqli_query($conexion, $consultaRoles);
                         // Genera las opciones del menú desplegable para Rol
                         while ($row = mysqli_fetch_assoc($resultRoles)) {

@@ -75,7 +75,7 @@ if (!isset($_SESSION["usuario_id"])) {
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
 
-        <a href="agregar_gasto.php" class="back-link1"> 
+        <a href="agregar_gasto.php" class="back-link1">
             <span class="spann">Agregar Gasto</span>
         </a>
 
@@ -108,13 +108,6 @@ if (!isset($_SESSION["usuario_id"])) {
                 <div class="option">
                     <i class="fa-solid fa-landmark" title="Inicio"></i>
                     <h4>Inicio</h4>
-                </div>
-            </a>
-
-            <a href=" /resources/views/admin/admin_saldo/saldo_admin.php">
-                <div class="option">
-                    <i class="fa-solid fa-sack-dollar" title=""></i>
-                    <h4>Saldo Inicial</h4>
                 </div>
             </a>
 
@@ -160,10 +153,10 @@ if (!isset($_SESSION["usuario_id"])) {
 
             <a href="/resources/views/admin/gastos/gastos.php" class="selected">
                 <div class="option">
-                    <i class="fa-solid fa-sack-xmark" title=""></i>
+                    <i class="fa-regular fa-address-book"></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
@@ -172,7 +165,12 @@ if (!isset($_SESSION["usuario_id"])) {
                 </div>
             </a>
 
-
+            <a href="/resources/views/admin/cartera/lista_cartera.php">
+                <div class="option">
+                <i class="fa-solid fa-basket-shopping"></i> 
+                    <h4>Cobros</h4>
+                </div>
+            </a>
 
         </div>
 

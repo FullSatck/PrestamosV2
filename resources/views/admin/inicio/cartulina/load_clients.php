@@ -1,13 +1,19 @@
+
+<!-- PASAR DE CLIENTE CON ANTERIOR Y SIGUIENTE -->
+
 <?php
 include '../../../../../controllers/conexion.php';
 
-function obtenerOrdenClientes() {
-    $rutaArchivo = 'orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
-    if (file_exists($rutaArchivo)) {
-        $contenido = file_get_contents($rutaArchivo);
-        return explode(',', $contenido);
+if (!function_exists('obtenerOrdenClientes')) {
+    function obtenerOrdenClientes()
+    {
+        $rutaArchivo = __DIR__ . '/orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
+        if (file_exists($rutaArchivo)) {
+            $contenido = file_get_contents($rutaArchivo);
+            return explode(',', $contenido);
+        }
+        return [];
     }
-    return [];
 }
 
 function obtenerClientes($conexion) {

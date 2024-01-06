@@ -28,6 +28,9 @@ if ($fila = $resultado->fetch_assoc()) {
 $stmt->close();
 
 date_default_timezone_set('America/Bogota');
+
+// Ruta a permisos 
+include("../../../../../..//controllers/verificar_permisos.php");
 ?>
 
 
@@ -51,10 +54,10 @@ date_default_timezone_set('America/Bogota');
         </div>
         <div class="nombre-usuario">
             <?php
-        if (isset($_SESSION["nombre_usuario"])) {
-            echo htmlspecialchars($_SESSION["nombre_usuario"])."<br>" . "<span> Cobrador<span>";
-        }
-        ?>
+            if (isset($_SESSION["nombre_usuario"])) {
+                echo htmlspecialchars($_SESSION["nombre_usuario"]) . "<br>" . "<span> Cobrador<span>";
+            }
+            ?>
         </div>
     </header>
 
@@ -103,13 +106,13 @@ date_default_timezone_set('America/Bogota');
                     <h4>Prestamos</h4>
                 </div>
             </a>
- 
+
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
                 </div>
-            </a> 
+            </a>
 
             <a href="/resources/views/zonas/6-Chihuahua/cobrador/ruta/ruta.php">
                 <div class="option">
@@ -125,7 +128,7 @@ date_default_timezone_set('America/Bogota');
                 </div>
             </a>
 
-          
+
 
 
 
@@ -136,49 +139,82 @@ date_default_timezone_set('America/Bogota');
     <main>
         <h1>Inicio cobrador de Chihuahua</h1>
         <div class="cuadros-container">
-            
+
 
             <!-- TRAER EL PRIMER ID -->
             <?php
+            function obtenerOrdenClientes()
+            {
+                $rutaArchivo = 'cartulina/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                if (file_exists($rutaArchivo)) {
+                    $contenido = file_get_contents($rutaArchivo);
+                    return explode(',', $contenido);
+                }
+                return [];
+            }
+
             function obtenerPrimerID($conexion)
             {
+                $fecha_actual = date("Y-m-d");
+                $ordenClientes = obtenerOrdenClientes();
                 $primer_id = 0;
 
-                // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
-                $sql_primer_id = "SELECT ID
-                      FROM clientes
-                      WHERE ZonaAsignada = 'Chihuahua'
-                      ORDER BY ID ASC
-                      LIMIT 1";
+                $idEncontrado = 0;
 
-                $stmt_primer_id = $conexion->prepare($sql_primer_id);
-                $stmt_primer_id->execute();
-                $stmt_primer_id->bind_result($primer_id);
-                $stmt_primer_id->fetch();
-                $stmt_primer_id->close();
+                foreach ($ordenClientes as $idCliente) {
+                    // Consulta para verificar si este cliente ha pagado hoy
+                    $sql = "SELECT c.ID
+        FROM clientes c
+        LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
+        WHERE c.ID = ? AND c.ZonaAsignada = 'Chihuahua' AND hp.ID IS NULL
+        LIMIT 1";
+
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bind_param("si", $fecha_actual, $idCliente);
+                    $stmt->execute();
+                    $stmt->bind_result($idEncontrado);
+                    if ($stmt->fetch()) {
+                        $primer_id = $idEncontrado;
+                        $stmt->close();
+                        break;
+                    }
+                    $stmt->close();
+                }
 
                 return $primer_id;
             }
 
-            // Obtener el primer ID de cliente de la base de datos
+            // Obtener el primer ID de cliente que no ha pagado hoy y está primero en el orden personalizado
             $primer_id = obtenerPrimerID($conexion);
-            ?> 
 
+            ?>
+            <?php if ($tiene_permiso_abonos) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_prest_cancelados) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
-                    <p>Version beta</p>
+                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
                 </div>
             </div>
+            <?php endif; ?>
 
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
-                    <p>Version beta</p>
+            <?php if ($tiene_permiso_ver_filtros) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
-          
+
         </div>
     </main>
 

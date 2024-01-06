@@ -1,3 +1,6 @@
+
+<!-- FORMULARIO PARA EDITAR ULTIMO PAGO -->
+
 <?php
 session_start();
 date_default_timezone_set('America/Bogota');
@@ -16,7 +19,7 @@ if (!isset($_GET['id'])) {
 }
 
 // Incluir el archivo de conexión a la base de datos
-require_once("../../../../../controllers/conexion.php");
+include("../../../../../controllers/conexion.php");
 
 // Obtener el ID de la factura de la URL
 $id_factura = intval($_GET['id']);
@@ -63,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt_update_prestamos->close();
 
     // Redireccionar después de la actualización
-    header("Location: cartulina.php?id=" . $factura['cliente_id']);
+    header("Location: perfil_abonos.php?id=" . $factura['cliente_id']);
     exit();
 }
 

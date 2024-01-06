@@ -1,3 +1,5 @@
+<!-- PAGINA PRINCIPAL DE ABONOS -->
+
 <?php
 date_default_timezone_set('America/Bogota');
 session_start();
@@ -11,20 +13,19 @@ if (isset($_SESSION["usuario_id"])) {
     exit();
 }
 
-// Verificar si se ha pasado un ID válido como parámetro GET
+// ID DE URL
 if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-    // Redirigir a una página de error o a una página predeterminada
-    header("location: ../../../../../index.php"); // Reemplaza 'error_page.php' con la página de error correspondiente
+    // SI EL ID NO ES VALIDO IR A
+    header("location: ../../../../../index.php");
     exit();
 }
 
-
-// Incluir el archivo de conexión a la base de datos
+// CONEXION
 include("../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
-// Asumiendo que la tabla de roles se llama 'roles' y tiene las columnas 'id' y 'nombre_rol'
+// NOMBRE Y ROL
 $sql_nombre = "SELECT usuarios.nombre, roles.nombre FROM usuarios INNER JOIN roles ON usuarios.rolID = roles.id WHERE usuarios.id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
@@ -33,10 +34,9 @@ $resultado = $stmt->get_result();
 
 if ($fila = $resultado->fetch_assoc()) {
     $_SESSION["nombre_usuario"] = $fila["nombre"];
-    $_SESSION["nombre"] = $fila["nombre"]; // Guarda el nombre del rol en la sesión
+    $_SESSION["nombre"] = $fila["nombre"];
 }
 $stmt->close();
-
 
 
 // Obtener el ID del cliente desde el parámetro GET
@@ -93,9 +93,9 @@ $info_prestamo = [
 $total_prestamo = 0.00;
 $fecha_actual = date('Y-m-d');
 
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.MontoAPagar, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
-                 FROM prestamos p 
-                 INNER JOIN clientes c ON p.IDCliente = c.ID 
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.MontoAPagar, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono, c.ciudad
+                 FROM prestamos p
+                 INNER JOIN clientes c ON p.IDCliente = c.ID
                  WHERE p.IDCliente = ? AND p.Estado = 'pendiente'
                  ORDER BY p.FechaInicio ASC
                  LIMIT 1";
@@ -104,7 +104,24 @@ $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
 $resultado_prestamo = $stmt_prestamo->get_result();
 
-$mostrarMensajeAgregarPrestamo = true; // Inicialmente asume que no hay préstamos pendientes
+
+// NOMBRE DE LA CIUDAD
+$idCiudad = $fila["ciudad"];
+
+$sql_ciudad = "SELECT Nombre FROM ciudades WHERE ID = ?";
+$stmt_ciudad = $conexion->prepare($sql_ciudad);
+$stmt_ciudad->bind_param("i", $idCiudad);
+$stmt_ciudad->execute();
+$resultado_ciudad = $stmt_ciudad->get_result();
+
+if ($fila_ciudad = $resultado_ciudad->fetch_assoc()) {
+    $nombreCiudad = $fila_ciudad['Nombre'];
+} else {
+    $nombreCiudad = "Nombre de ciudad no disponible";
+}
+
+
+$mostrarMensajeAgregarPrestamo = true;
 
 if ($resultado_prestamo->num_rows > 0) {
     // Cliente tiene al menos un préstamo pendiente
@@ -139,6 +156,25 @@ $stmt_prestamo->close();
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.3/js/select2.min.js"></script>
     <title>Perfil del Cliente</title>
+
+    <style>
+        .fecha-hoy {
+            color: red;
+            /* Color del texto */
+            font-weight: bold;
+            /* Hacer el texto más grueso */
+            background-color: yellow;
+            /* Fondo de color para resaltar */
+            padding: 3px;
+            /* Espaciado interno para que no esté tan apretado */
+            border-radius: 5px;
+            /* Bordes redondeados */
+            box-shadow: 0 0 5px gray;
+            /* Sombra ligera para un efecto 3D */
+        }
+    </style>
+
+
 </head>
 
 
@@ -155,7 +191,7 @@ $stmt_prestamo->close();
 
             <a href="<?= $ruta_cliente ?>" class="back-link3">R Clientes</a>
 
-            <a href="orden_abonos.php" class="back-link1">Ruta</a>
+            <a href="orden_fijo.php" class="back-link1">Enrutar</a>
 
         </header>
 
@@ -165,7 +201,7 @@ $stmt_prestamo->close();
 
             <div class="info-cliente">
                 <div class="columna">
-                    <p><strong>Nombre: </strong><?= $fila["Nombre"] ?></p>
+                    <p><strong>Nombre: </strong><a href="/controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>"><?= $fila["Nombre"] ?></a></p>
                     <p><strong>Apellido: </strong><?= $fila["Apellido"] ?> </p>
                     <p><strong>Curp: </strong><?= $fila["IdentificacionCURP"] ?> </p>
                     <p><strong>Domicilio: </strong><?= $fila["Domicilio"] ?> </p>
@@ -181,7 +217,7 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <p><strong>Estado: </strong><?= $fila["ZonaAsignada"] ?> </p>
-                    <p><strong>Municipio: </strong><?= $fila["CiudadNombre"] ?> </p>
+                    <p><strong>Municipio: </strong><?= $nombreCiudad ?></p>
                     <p><strong>Colonia: </strong><?= $fila["asentamiento"] ?> </p>
                     <?php if (!$mostrarMensajeAgregarPrestamo) : ?>
                         <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
@@ -205,37 +241,44 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <?php
-                    $fecha_actual = date("Y-m-d");
+                    if (!function_exists('obtenerOrdenClientes')) {
+                        function obtenerOrdenClientes()
+                        {
+                            $rutaArchivo = __DIR__ . '/orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
+                            if (file_exists($rutaArchivo)) {
+                                $contenido = file_get_contents($rutaArchivo);
+                                return explode(',', $contenido);
+                            }
+                            return [];
+                        }
+                    }
 
-                    // Consulta para contar el total de clientes con préstamos pendientes que no han pagado hoy
-                    $sql_total_clientes = "SELECT COUNT(DISTINCT c.ID) AS TotalClientes
-                           FROM clientes c
-                           INNER JOIN prestamos p ON c.ID = p.IDCliente
-                           LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
-                           WHERE p.Estado = 'pendiente' AND hp.ID IS NULL";
-                    $stmt_total = $conexion->prepare($sql_total_clientes);
-                    $stmt_total->bind_param("s", $fecha_actual);
-                    $stmt_total->execute();
-                    $resultado_total = $stmt_total->get_result();
-                    $fila_total = $resultado_total->fetch_assoc();
-                    $total_clientes = $fila_total['TotalClientes'];
-                    $stmt_total->close();
+                    $ordenClientes = obtenerOrdenClientes();
 
-                    // Consulta para determinar la posición del cliente actual en la lista de clientes con préstamos pendientes que no han pagado hoy
-                    $sql_posicion_cliente = "SELECT COUNT(DISTINCT c.ID) AS Posicion
-                             FROM clientes c
-                             INNER JOIN prestamos p ON c.ID = p.IDCliente
-                             LEFT JOIN historial_pagos hp ON p.ID = hp.IDPrestamo AND hp.FechaPago = ?
-                             WHERE p.Estado = 'pendiente' AND hp.ID IS NULL AND c.ID <= ?";
-                    $stmt_posicion = $conexion->prepare($sql_posicion_cliente);
-                    $stmt_posicion->bind_param("si", $fecha_actual, $id_cliente);
-                    $stmt_posicion->execute();
-                    $stmt_posicion->bind_result($posicion_cliente);
-                    $stmt_posicion->fetch();
-                    $stmt_posicion->close();
+                    // Filtrar solo los clientes con préstamos pendientes
+                    $clientesPendientes = array_filter($ordenClientes, function ($idCliente) use ($conexion) {
+                        $sql = "SELECT c.ID
+                FROM clientes c
+                INNER JOIN prestamos p ON c.ID = p.IDCliente
+                WHERE c.ID = ? AND p.Estado = 'pendiente'";
+                        $stmt = $conexion->prepare($sql);
+                        $stmt->bind_param("i", $idCliente);
+                        $stmt->execute();
+                        $stmt->store_result();
+                        $existe = $stmt->num_rows > 0;
+                        $stmt->close();
+                        return $existe;
+                    });
+
+                    // Contar el total de clientes pendientes
+                    $total_clientes = count($clientesPendientes);
+
+                    // Determinar la posición actual del cliente en la lista
+                    $posicion_actual = array_search($id_cliente, $clientesPendientes) + 1; // +1 para ajustar el índice base 0
                     ?>
-                    <p><strong>Cliente: </strong><?= $posicion_cliente . "/" . $total_clientes; ?></p>
+                    <p><strong>Posición actual: </strong><?= $posicion_actual . " de " . $total_clientes; ?></p>
                 </div>
+
 
 
             </div>
@@ -243,11 +286,12 @@ $stmt_prestamo->close();
             <!-- CARTULINA DE FACTURAS -->
 
             <div class="profile-loans">
-                <!-- TABLA DE VER MENOS -->
                 <?php
+                $fechaHoy = date("Y-m-d"); // Definir la fecha de hoy
+
                 if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
                     // Si se solicita mostrar todas las filas
-                    $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda 
+                    $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda
                 FROM facturas f
                 JOIN prestamos p ON f.id_prestamos = p.ID
                 WHERE f.cliente_id = ? AND p.estado != 'pagado'";
@@ -262,27 +306,26 @@ $stmt_prestamo->close();
                         echo "<table id='tabla-prestamos'>";
                         echo "<tr><th>No. cuota</th><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
                         $last_row = null;
-                        $contador_cuota = 1; // Iniciar el contador de cuotas
+                        $contador_cuota = 1;
 
                         while ($fila = $resultado->fetch_assoc()) {
-                            // Mostrar el número de cuota como "cuota actual / plazo total"
+                            $claseFecha = ($fila['fecha'] == $fechaHoy) ? "class='fecha-hoy'" : "";
                             echo "<tr>";
                             echo "<td>" . $contador_cuota . "/" . $info_prestamo['Plazo'] . "</td>";
-                            echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                            echo "<td " . $claseFecha . ">" . htmlspecialchars($fila['fecha']) . "</td>";
                             echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
                             echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
                             echo "</tr>";
 
-                            $contador_cuota++; // Incrementar el contador de cuotas
-                            $last_row = $fila; // Actualizar la última fila en cada iteración
+                            $contador_cuota++;
+                            $last_row = $fila;
                         }
 
                         echo "</table>";
 
-                        // Mostrar el enlace de "Editar" solo para la última fila
                         if ($last_row) {
                             echo "<div class='edit-button'>";
-                            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
+                            echo "<button onclick='showLess()'>Ver menos</button>";
                             echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
                             echo "</div>";
                         }
@@ -291,11 +334,9 @@ $stmt_prestamo->close();
                     }
 
                     $stmt->close();
-                }
-                //  TABLA DE VER MAS  
-                else {
-                    // Mantén la consulta original sin cambios, mostrará todas las cuotas sin importar su monto.
-                    $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda 
+                } else {
+                    // TABLA DE VER MAS
+                    $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda
                 FROM facturas f
                 JOIN prestamos p ON f.id_prestamos = p.ID
                 WHERE f.cliente_id = ? AND p.estado != 'pagado'";
@@ -312,15 +353,15 @@ $stmt_prestamo->close();
                         $contador_cuota = 0;
 
                         while ($fila = $resultado->fetch_assoc()) {
-                            $last_row = $fila; // Actualizar la última fila en cada iteración
-                            $contador_cuota++; // Incrementar el contador de cuotas
+                            $last_row = $fila;
+                            $contador_cuota++;
                         }
 
-                        // Mostrar solo la última fila
                         if ($last_row) {
+                            $claseFecha = ($last_row['fecha'] == $fechaHoy) ? "class='fecha-hoy'" : "";
                             echo "<tr>";
                             echo "<td>" . $contador_cuota . "/" . $info_prestamo['Plazo'] . "</td>";
-                            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+                            echo "<td " . $claseFecha . ">" . htmlspecialchars($last_row['fecha']) . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
                             echo "</tr>";
@@ -328,7 +369,6 @@ $stmt_prestamo->close();
 
                         echo "</table>";
 
-                        // Mostrar el enlace de "Editar" solo para la última fila
                         if ($last_row) {
                             echo "<div class='edit-button'>";
                             echo "<button onclick='showMore()' class='edit-button'>Ver más</button>";
@@ -344,7 +384,7 @@ $stmt_prestamo->close();
                 ?>
             </div>
 
-
+            <!-- VER MAS O VER MENOS -->
             <script>
                 function showMore() {
                     window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
@@ -364,14 +404,10 @@ $stmt_prestamo->close();
             list($prevIndex, $currentIndex, $nextIndex) = obtenerIndicesClienteActual($clientes, $id_cliente);
             ?>
 
-
-
             <h2>Clientes:</h2>
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
                 <div class="busqueda-container">
                     <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" class="input-busqueda">
-
-
 
                     <div id="resultadosBusqueda" class="resultados-busqueda">
                         <!-- Los resultados de la búsqueda se mostrarán aquí -->
@@ -447,7 +483,6 @@ $stmt_prestamo->close();
 
             ?>
 
-
             <!-- Formulario de Pago -->
             <form method="post" action="process_payment.php" id="formPago">
                 <input type="hidden" name="id_cliente" value="<?= htmlspecialchars($id_cliente ?? ''); ?>">
@@ -466,7 +501,6 @@ $stmt_prestamo->close();
                 <!-- Campos ocultos para pasar valores a JavaScript -->
                 <input type="hidden" id="montoAPagar" value="<?= htmlspecialchars($montoAPagar ?? '0'); ?>">
             </form>
-
 
             <!-- Incluir el archivo JavaScript -->
             <script>
@@ -574,6 +608,28 @@ $stmt_prestamo->close();
 
 
         </main>
+
+        <!-- GUARDAR CACHE DEL ULTIMO CLIENTE -->
+
+        <?php
+        if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+            $id_cliente_actual = $_GET['id'];
+        } else {
+            header('Location: pagina_de_error.php');
+            exit();
+        }
+        ?>
+
+        <script>
+            // Guardar la fecha de la última visita cuando la página se carga
+            localStorage.setItem('fechaUltimaVisita', new Date().toISOString().split('T')[0]);
+
+            // Guardar el último ID del cliente cuando la página se está por cerrar
+            window.onbeforeunload = function() {
+                localStorage.setItem('ultimoIDCliente', '<?= $id_cliente_actual; ?>');
+            };
+        </script>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>
