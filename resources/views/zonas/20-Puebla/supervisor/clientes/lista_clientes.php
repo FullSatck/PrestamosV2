@@ -35,6 +35,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
 
 $resultado = $conexion->query($sql);
 
+// consulta a permisos 
 include("../../../../../../controllers/verificar_permisos.php");
 
 ?>
@@ -182,23 +183,23 @@ include("../../../../../../controllers/verificar_permisos.php");
                             <td><?= $fila["ZonaAsignada"] ?></td>
 
                             <?php if ($tiene_permiso_hacer_prestamo) : ?>
-                            <td>
+                                <td>
 
-                                <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <span>Hacer Préstamo</span>
-                                </a>
-                            </td>
+                                    <a href="/resources/views/zonas/20-Puebla/supervisor/creditos/prestamos.php?cliente_id=<?= $fila["ID"] ?>" class="boton-hacer-prestamo">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Hacer Préstamo</span>
+                                    </a>
+                                </td>
                             <?php endif; ?>
 
                             <?php if ($tiene_permiso_desatrasar) : ?>
 
-                            <td>
-                                <a href="/resources/views/zonas/20-Puebla/supervisor/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <span>Prest Atrasado</span>
-                                </a>
-                            </td>
+                                <td>
+                                    <a href="/resources/views/zonas/20-Puebla/supervisor/desatrasar/hacerPrestamo.php?clienteId=<?= $fila["ID"] ?>" class="boton-hacer-prestamo boton-rojo">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Prest Atrasado</span>
+                                    </a>
+                                </td>
                             <?php endif; ?>
 
                             <td><a href="../../../../../../controllers/perfil_cliente.php?id=<?= $fila["ID"] ?>">Perfil</a></td>
