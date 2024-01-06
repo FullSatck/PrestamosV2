@@ -234,8 +234,25 @@ date_default_timezone_set('America/Bogota');
                 </div>
             <?php endif; ?>
 
-            <!-- TRAER EL PRIMER ID -->
 
+            <!-- ULTIMO ID -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var enlaceAbonos = document.querySelector('.enlace-abonos');
+                    if (enlaceAbonos) {
+                        var ultimoID = localStorage.getItem('ultimoIDCliente');
+                        var fechaUltimaVisita = localStorage.getItem('fechaUltimaVisita');
+                        var fechaActual = new Date().toISOString().split('T')[0];
+
+                        if (ultimoID && fechaUltimaVisita === fechaActual) {
+                            enlaceAbonos.href = '/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=' + ultimoID;
+                        }
+                        // Si no hay un último ID o la fecha es diferente, se usa el primer ID de orden_fijo.txt
+                    }
+                });
+            </script>
+            
+            <!-- TRAER EL PRIMER ID -->
             <?php
             function obtenerOrdenClientes()
             {
@@ -283,10 +300,11 @@ date_default_timezone_set('America/Bogota');
 
             ?>
 
+
             <?php if ($tiene_permiso_abonos) : ?>
                 <div class="cuadro cuadro-2">
                     <div class="cuadro-1-1">
-                        <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                    <a href="/resources/views/admin/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo enlace-abonos">Abonos</a>
                         <p>Version beta</p>
                     </div>
                 </div>

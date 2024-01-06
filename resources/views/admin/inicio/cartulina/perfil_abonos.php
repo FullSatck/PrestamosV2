@@ -25,7 +25,7 @@ include("../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 
-// NOMBRE Y ROL 
+// NOMBRE Y ROL
 $sql_nombre = "SELECT usuarios.nombre, roles.nombre FROM usuarios INNER JOIN roles ON usuarios.rolID = roles.id WHERE usuarios.id = ?";
 $stmt = $conexion->prepare($sql_nombre);
 $stmt->bind_param("i", $usuario_id);
@@ -93,9 +93,9 @@ $info_prestamo = [
 $total_prestamo = 0.00;
 $fecha_actual = date('Y-m-d');
 
-$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.MontoAPagar, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono
-                 FROM prestamos p 
-                 INNER JOIN clientes c ON p.IDCliente = c.ID 
+$sql_prestamo = "SELECT p.ID, p.Monto, p.TasaInteres, p.Plazo, p.Estado, p.EstadoP, p.FechaInicio, p.FechaVencimiento, p.MontoAPagar, p.Cuota, p.CuotasVencidas, c.Nombre, c.Telefono, c.ciudad
+                 FROM prestamos p
+                 INNER JOIN clientes c ON p.IDCliente = c.ID
                  WHERE p.IDCliente = ? AND p.Estado = 'pendiente'
                  ORDER BY p.FechaInicio ASC
                  LIMIT 1";
@@ -103,6 +103,23 @@ $stmt_prestamo = $conexion->prepare($sql_prestamo);
 $stmt_prestamo->bind_param("i", $id_cliente);
 $stmt_prestamo->execute();
 $resultado_prestamo = $stmt_prestamo->get_result();
+
+
+// NOMBRE DE LA CIUDAD
+$idCiudad = $fila["ciudad"];
+
+$sql_ciudad = "SELECT Nombre FROM ciudades WHERE ID = ?";
+$stmt_ciudad = $conexion->prepare($sql_ciudad);
+$stmt_ciudad->bind_param("i", $idCiudad);
+$stmt_ciudad->execute();
+$resultado_ciudad = $stmt_ciudad->get_result();
+
+if ($fila_ciudad = $resultado_ciudad->fetch_assoc()) {
+    $nombreCiudad = $fila_ciudad['Nombre'];
+} else {
+    $nombreCiudad = "Nombre de ciudad no disponible";
+}
+
 
 $mostrarMensajeAgregarPrestamo = true;
 
@@ -141,43 +158,23 @@ $stmt_prestamo->close();
     <title>Perfil del Cliente</title>
 
     <style>
-        /* Estilo del Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
+        .fecha-hoy {
+            color: red;
+            /* Color del texto */
             font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+            /* Hacer el texto más grueso */
+            background-color: yellow;
+            /* Fondo de color para resaltar */
+            padding: 3px;
+            /* Espaciado interno para que no esté tan apretado */
+            border-radius: 5px;
+            /* Bordes redondeados */
+            box-shadow: 0 0 5px gray;
+            /* Sombra ligera para un efecto 3D */
         }
     </style>
+
+
 </head>
 
 
@@ -220,7 +217,7 @@ $stmt_prestamo->close();
                 </div>
                 <div class="columna">
                     <p><strong>Estado: </strong><?= $fila["ZonaAsignada"] ?> </p>
-                    <p><strong>Municipio: </strong><?= $fila["CiudadNombre"] ?> </p>
+                    <p><strong>Municipio: </strong><?= $nombreCiudad ?></p>
                     <p><strong>Colonia: </strong><?= $fila["asentamiento"] ?> </p>
                     <?php if (!$mostrarMensajeAgregarPrestamo) : ?>
                         <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
@@ -289,11 +286,12 @@ $stmt_prestamo->close();
             <!-- CARTULINA DE FACTURAS -->
 
             <div class="profile-loans">
-                <!-- TABLA DE VER MENOS -->
                 <?php
+                $fechaHoy = date("Y-m-d"); // Definir la fecha de hoy
+
                 if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
                     // Si se solicita mostrar todas las filas
-                    $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda 
+                    $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda
                 FROM facturas f
                 JOIN prestamos p ON f.id_prestamos = p.ID
                 WHERE f.cliente_id = ? AND p.estado != 'pagado'";
@@ -308,27 +306,26 @@ $stmt_prestamo->close();
                         echo "<table id='tabla-prestamos'>";
                         echo "<tr><th>No. cuota</th><th>Fecha</th><th>Abono</th><th>Resta</th></tr>";
                         $last_row = null;
-                        $contador_cuota = 1; // Iniciar el contador de cuotas
+                        $contador_cuota = 1;
 
                         while ($fila = $resultado->fetch_assoc()) {
-                            // Mostrar el número de cuota como "cuota actual / plazo total"
+                            $claseFecha = ($fila['fecha'] == $fechaHoy) ? "class='fecha-hoy'" : "";
                             echo "<tr>";
                             echo "<td>" . $contador_cuota . "/" . $info_prestamo['Plazo'] . "</td>";
-                            echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                            echo "<td " . $claseFecha . ">" . htmlspecialchars($fila['fecha']) . "</td>";
                             echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
                             echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
                             echo "</tr>";
 
-                            $contador_cuota++; // Incrementar el contador de cuotas
-                            $last_row = $fila; // Actualizar la última fila en cada iteración
+                            $contador_cuota++;
+                            $last_row = $fila;
                         }
 
                         echo "</table>";
 
-                        // Mostrar el enlace de "Editar" solo para la última fila
                         if ($last_row) {
                             echo "<div class='edit-button'>";
-                            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
+                            echo "<button onclick='showLess()'>Ver menos</button>";
                             echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
                             echo "</div>";
                         }
@@ -337,11 +334,9 @@ $stmt_prestamo->close();
                     }
 
                     $stmt->close();
-                }
-                //  TABLA DE VER MAS  
-                else {
-                    // Mantén la consulta original sin cambios, mostrará todas las cuotas sin importar su monto.
-                    $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda 
+                } else {
+                    // TABLA DE VER MAS
+                    $sql = "SELECT f.id, f.fecha, f.monto_pagado, f.monto_deuda
                 FROM facturas f
                 JOIN prestamos p ON f.id_prestamos = p.ID
                 WHERE f.cliente_id = ? AND p.estado != 'pagado'";
@@ -358,15 +353,15 @@ $stmt_prestamo->close();
                         $contador_cuota = 0;
 
                         while ($fila = $resultado->fetch_assoc()) {
-                            $last_row = $fila; // Actualizar la última fila en cada iteración
-                            $contador_cuota++; // Incrementar el contador de cuotas
+                            $last_row = $fila;
+                            $contador_cuota++;
                         }
 
-                        // Mostrar solo la última fila
                         if ($last_row) {
+                            $claseFecha = ($last_row['fecha'] == $fechaHoy) ? "class='fecha-hoy'" : "";
                             echo "<tr>";
                             echo "<td>" . $contador_cuota . "/" . $info_prestamo['Plazo'] . "</td>";
-                            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+                            echo "<td " . $claseFecha . ">" . htmlspecialchars($last_row['fecha']) . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
                             echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
                             echo "</tr>";
@@ -374,7 +369,6 @@ $stmt_prestamo->close();
 
                         echo "</table>";
 
-                        // Mostrar el enlace de "Editar" solo para la última fila
                         if ($last_row) {
                             echo "<div class='edit-button'>";
                             echo "<button onclick='showMore()' class='edit-button'>Ver más</button>";
@@ -614,6 +608,28 @@ $stmt_prestamo->close();
 
 
         </main>
+
+        <!-- GUARDAR CACHE DEL ULTIMO CLIENTE -->
+
+        <?php
+        if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+            $id_cliente_actual = $_GET['id'];
+        } else {
+            header('Location: pagina_de_error.php');
+            exit();
+        }
+        ?>
+
+        <script>
+            // Guardar la fecha de la última visita cuando la página se carga
+            localStorage.setItem('fechaUltimaVisita', new Date().toISOString().split('T')[0]);
+
+            // Guardar el último ID del cliente cuando la página se está por cerrar
+            window.onbeforeunload = function() {
+                localStorage.setItem('ultimoIDCliente', '<?= $id_cliente_actual; ?>');
+            };
+        </script>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>
