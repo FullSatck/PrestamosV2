@@ -1,3 +1,6 @@
+
+// VALIDAR QUE LA COUTA NO ESTE EN 0
+
 window.onload = function() {
     var formPago = document.getElementById('formPago');
     var campoCuota = document.getElementById('cuota');
