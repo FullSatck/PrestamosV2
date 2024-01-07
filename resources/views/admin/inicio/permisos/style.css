@@ -97,6 +97,27 @@ body {
     margin-bottom: 1rem;
     overflow-x: auto; /* Hace que la tabla sea desplazable horizontalmente */
 }
+/* Estilos para mensajes de éxito */
+.success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+/* Estilos para mensajes de error */
+.error-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
 
 @media (max-width: 768px) {
     .responsive-table {

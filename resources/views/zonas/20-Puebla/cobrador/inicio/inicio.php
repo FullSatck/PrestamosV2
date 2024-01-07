@@ -231,14 +231,21 @@ include("../../../../../../controllers/verificar_permisos.php");
             <?php endif; ?>
 
             <?php if ($tiene_permiso_ver_filtros) : ?>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
-                    <p>Version beta</p>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
-
+            <?php if ($tiene_permiso_comision) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/comision_inicio.php" class="titulo">Comision</a>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
 
         </div>
     </main>

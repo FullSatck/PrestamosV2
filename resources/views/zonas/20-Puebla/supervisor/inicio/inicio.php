@@ -241,6 +241,13 @@ include("../../../../../../controllers/verificar_permisos.php");
                     </div>
                 </div>
             <?php endif; ?>
+
+            <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="p" class="titulo">Desatrasar</a><br>
+                        <p>Version beta</p>
+                    </div>
+                </div>
         </div>
     </main>
 

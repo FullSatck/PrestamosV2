@@ -1,6 +1,7 @@
 <?php
-session_start();
 date_default_timezone_set('America/Bogota');
+
+session_start();
 
 // Validacion de rol para ingresar a la pagina 
 require_once '../../../../../../controllers/conexion.php';
@@ -8,7 +9,7 @@ require_once '../../../../../../controllers/conexion.php';
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 } else {
     // El usuario está autenticado, obtén el ID del usuario de la sesión
@@ -36,7 +37,7 @@ if (!isset($_SESSION["usuario_id"])) {
     // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
     if (!$fila) {
         // Redirige al usuario a una página de error o de inicio
-        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
+        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
 
@@ -46,17 +47,23 @@ if (!isset($_SESSION["usuario_id"])) {
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'supervisor') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
+        header("Location: /ruta_a_pagina_de_error_o_inicio.php");
         exit();
     }
 }
+// Conectar a la base de datos
+include("../../../../../../controllers/conexion.php");
+
+// Consulta SQL
+$sql = "SELECT prestamos.ID, clientes.Nombre AS NombreCliente, prestamos.MontoAPagar, prestamos.Comision
+        FROM prestamos
+        INNER JOIN clientes ON prestamos.IDCliente = clientes.ID
+        WHERE clientes.ZonaAsignada  = 'Chihuahua'";
 
 
-
-// verificancion de permisos 
-include("../../../../../../controllers/verificar_permisos.php");
+// Ejecutar la consulta
+$result = $conexion->query($sql);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,10 +71,9 @@ include("../../../../../../controllers/verificar_permisos.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <script src="https://kit.fontawesome.com/9454e88444.js" crossorigin="anonymous"></script>
-    <title>Recaudo</title>
-    <link rel="stylesheet" href="/public/assets/css/inicio.css">
+    <title>Comisiones </title>
+    <link rel="stylesheet" href="/public/assets/css/comision_inicio.css">
+    <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
 
 <body id="body">
@@ -160,84 +166,74 @@ include("../../../../../../controllers/verificar_permisos.php");
 
     </div>
 
+    <!-- ACA VA EL CONTENIDO DE LA PAGINA -->
+
     <main>
-        <h1>Inicio Supervisor</h1>
-        <div class="cuadros-container">
+        <main>
+
+            <h1>Comisiones totales</h1>
+
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar...">
+            </div>
 
 
-            <?php
-            function obtenerPrimerID($conexion)
-            {
-                $primer_id = 0;
+            <table id="prestamos-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre del Cliente</th>
+                        <th>Monto a Pagar</th>
+                        <th>Comisión</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($result->num_rows > 0) : ?>
+                        <?php while ($row = $result->fetch_assoc()) : ?>
+                            <tr>
+                                <td><?php echo $row['ID']; ?></td>
+                                <td><?php echo $row['NombreCliente']; ?></td>
+                                <td><?php echo number_format($row['MontoAPagar'], 0, '.', '.'); ?></td>
+                                <td><?php echo number_format($row['Comision'], 0, '.', '.'); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="4">No hay préstamos registrados.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
 
-                // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
-                $sql_primer_id = "SELECT ID
-                      FROM clientes
-                      WHERE ZonaAsignada = 'Chihuahua'
-                      ORDER BY ID ASC
-                      LIMIT 1";
 
-                $stmt_primer_id = $conexion->prepare($sql_primer_id);
-                $stmt_primer_id->execute();
-                $stmt_primer_id->bind_result($primer_id);
-                $stmt_primer_id->fetch();
-                $stmt_primer_id->close();
 
-                return $primer_id;
+
+        </main>
+
+
+        <script>
+            // Función para filtrar las filas de la tabla
+            function filterTable(event) {
+                var filter = event.target.value.toUpperCase();
+                var rows = document.querySelector("#prestamos-table tbody").rows;
+
+                for (var i = 0; i < rows.length; i++) {
+                    var firstCol = rows[i].cells[0].textContent.toUpperCase();
+                    var secondCol = rows[i].cells[1].textContent.toUpperCase();
+                    var thirdCol = rows[i].cells[2].textContent.toUpperCase();
+                    var fourthCol = rows[i].cells[3].textContent.toUpperCase();
+                    if (firstCol.indexOf(filter) > -1 || secondCol.indexOf(filter) > -1 || thirdCol.indexOf(filter) > -1 || fourthCol.indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
             }
 
-            // Obtener el primer ID de cliente de la base de datos
-            $primer_id = obtenerPrimerID($conexion);
-            ?>
-            <?php if ($tiene_permiso_abonos) : ?>
-                <div class="cuadro cuadro-2">
-                    <div class="cuadro-1-1">
-                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
-                        <p>Version beta</p>
-                    </div>
-                </div>
-            <?php endif; ?>
+            document.querySelector('#search-input').addEventListener('keyup', filterTable, false);
+        </script>
 
-            <?php if ($tiene_permiso_prest_cancelados) : ?>
-                <div class="cuadro cuadro-2">
-                    <div class="cuadro-1-1">
-                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
-                    </div>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($tiene_permiso_ver_filtros) : ?>
-                <div class="cuadro cuadro-4">
-                    <div class="cuadro-1-1">
-                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a><br>
-                        <p>Version beta</p>
-                    </div>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($tiene_permiso_desatrasar) : ?>
-                <div class="cuadro cuadro-4">
-                    <div class="cuadro-1-1">
-                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a><br>
-                        <p>Version beta</p>
-                    </div>
-                </div>
-            <?php endif; ?>
-            
-            <?php if ($tiene_permiso_comision) : ?>
-            <div class="cuadro cuadro-4">
-                    <div class="cuadro-1-1">
-                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/comision_inicio.php" class="titulo">Comision</a><br>
-                        <p>Version beta</p>
-                    </div>
-                </div>
-                <?php endif; ?>
-
-
-    </main>
-
-
-    <script src="/public/assets/js/MenuLate.js"></script>
+        <script src="/public/assets/js/MenuLate.js"></script>
 </body>
 
 </html>

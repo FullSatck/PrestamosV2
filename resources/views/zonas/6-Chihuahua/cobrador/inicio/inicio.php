@@ -30,7 +30,7 @@ $stmt->close();
 date_default_timezone_set('America/Bogota');
 
 // Ruta a permisos 
-include("../../../../../..//controllers/verificar_permisos.php");
+include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 
@@ -214,6 +214,15 @@ include("../../../../../..//controllers/verificar_permisos.php");
                 </div>
             <?php endif; ?>
 
+            
+            <?php if ($tiene_permiso_comision) : ?>
+            <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/comision_inicio.php" class="titulo">Comision</a>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+                <?php endif; ?>
 
         </div>
     </main>
