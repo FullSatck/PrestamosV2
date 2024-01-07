@@ -13,7 +13,7 @@ if (!isset($_SESSION["usuario_id"])) {
 }
 
 // Incluye el archivo de conexión
-include("../../../../../controllers/conexion.php");
+include("../../../../../../../controllers/conexion.php");
 
 $usuario_id = $_SESSION["usuario_id"];
 $fecha_actual = date("Y-m-d");
