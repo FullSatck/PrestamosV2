@@ -158,7 +158,7 @@ include("../../../../../../controllers/verificar_permisos.php");
                     }
                 });
             </script>
-            
+
             <!-- TRAER EL PRIMER ID -->
             <?php
             function obtenerOrdenClientes()
@@ -211,7 +211,7 @@ include("../../../../../../controllers/verificar_permisos.php");
             <?php if ($tiene_permiso_abonos) : ?>
                 <div class="cuadro cuadro-2">
                     <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo enlace-abonos">Abonos</a>
+                        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo enlace-abonos">Abonos</a>
                         <p>Version beta</p>
                     </div>
                 </div>
@@ -241,13 +241,16 @@ include("../../../../../../controllers/verificar_permisos.php");
                     </div>
                 </div>
             <?php endif; ?>
-
-            <div class="cuadro cuadro-4">
+            
+            <?php if ($tiene_permiso_comision) : ?>
+                <div class="cuadro cuadro-4">
                     <div class="cuadro-1-1">
-                        <a href="p" class="titulo">Desatrasar</a><br>
+                        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/comision_inicio.php" class="titulo">Comision</a><br>
                         <p>Version beta</p>
                     </div>
                 </div>
+
+            <?php endif; ?>
         </div>
     </main>
 

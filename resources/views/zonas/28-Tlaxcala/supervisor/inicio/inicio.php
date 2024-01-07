@@ -202,7 +202,16 @@ $stmt->close();
                 </div>
             </div>
             <?php endif; ?>
-            
+
+            <?php if ($tiene_permiso_comision) : ?>
+            <div class="cuadro cuadro-2">
+                <div class="cuadro-1-1">
+                    <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/comision_inicio.php"
+                        class="titulo">Comision</a>
+                    <p>Version beta</p>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
 
         </div>

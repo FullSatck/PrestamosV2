@@ -28,7 +28,7 @@ if ($fila = $resultado->fetch_assoc()) {
 $stmt->close();
 
 
- // Ruta de permisos
+// Ruta de permisos
 include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
@@ -166,42 +166,48 @@ include("../../../../../../controllers/verificar_permisos.php");
             ?>
 
             <?php if ($tiene_permiso_abonos) : ?>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>"
-                        class="titulo">Abonos</a>
-                    <p>Version beta</p>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
 
             <?php if ($tiene_permiso_prest_cancelados) : ?>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/Pcancelados/pcancelados.php"
-                        class="titulo">Prest Cancelados </a>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
 
             <?php if ($tiene_permiso_desatrasar) : ?>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/desatrasar/agregar_clientes.php"
-                        class="titulo">Desatrasar</a>
-                    <p>Version beta</p>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
 
             <?php if ($tiene_permiso_ver_filtros) : ?>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php"
-                        class="titulo">Filtros</a>
-                    <p>Version beta</p>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
+            
+            <?php if ($tiene_permiso_comision) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/22-QuintanaRoo/supervisor/inicio/comision_inicio.php" class="titulo">Comision</a>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+
             <?php endif; ?>
 
         </div>

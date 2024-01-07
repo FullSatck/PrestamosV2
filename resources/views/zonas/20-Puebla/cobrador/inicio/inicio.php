@@ -238,6 +238,8 @@ include("../../../../../../controllers/verificar_permisos.php");
                     </div>
                 </div>
             <?php endif; ?>
+
+            
             <?php if ($tiene_permiso_comision) : ?>
                 <div class="cuadro cuadro-2">
                     <div class="cuadro-1-1">
