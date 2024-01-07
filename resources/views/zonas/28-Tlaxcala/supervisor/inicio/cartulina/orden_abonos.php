@@ -1,3 +1,7 @@
+
+<!-- LISTA DE CLIENTES EN RUTA -->
+<!-- orden_clientes.tex = orden que se le da a la ruta -->
+
 <?php
 session_start();
 
@@ -30,13 +34,14 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, p.ID as IDPrestamo
         FROM clientes c
         INNER JOIN prestamos p ON c.ID = p.IDCliente
         LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
-        WHERE hp.FechaPago IS NULL AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Tlaxcala'";
+        WHERE hp.FechaPago IS NULL AND p.Estado = 'pendiente'";
 
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("s", $fecha_actual);
 $stmt->execute();
 $result = $stmt->get_result();
 
+ 
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +67,7 @@ $result = $stmt->get_result();
         <?php
         function obtenerOrdenClientes()
         {
-            $rutaArchivo = 'orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+            $rutaArchivo = 'orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
             if (file_exists($rutaArchivo)) {
                 $contenido = file_get_contents($rutaArchivo);
                 return explode(',', $contenido);
@@ -104,9 +109,9 @@ $result = $stmt->get_result();
         // Obtener el primer ID de cliente que no ha pagado hoy y está primero en el orden personalizado
         $primer_id = obtenerPrimerID($conexion);
 
-        ?>
+        ?> 
 
-        <a href="/resources/views/zonas/28-Tlaxcala/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
+        <a href="/resources/views/zonas/20-Puebla/supervisor/inicio/cartulina/orden_fijo.php" class="back-link1">Volver</a>
 
         <div class="nombre-usuario">
             <?php

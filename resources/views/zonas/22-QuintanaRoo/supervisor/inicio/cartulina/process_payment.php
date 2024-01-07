@@ -1,19 +1,22 @@
+<!-- PROCESAR TODOS LOS PAGOS DE ABONOS -->
+
+
 <?php
 session_start();
 include("../../../../../../../controllers/conexion.php"); // Incluye tu archivo de conexión a la base de datos.
 
 function obtenerSiguienteClienteId($conexion, $id_cliente_actual)
 {
-    $siguiente_cliente_id = 0;
-    $sql_siguiente_cliente = "SELECT ID FROM clientes WHERE ID > ? ORDER BY ID ASC LIMIT 1";
-    $stmt_siguiente_cliente = $conexion->prepare($sql_siguiente_cliente);
-    $stmt_siguiente_cliente->bind_param("i", $id_cliente_actual);
-    $stmt_siguiente_cliente->execute();
-    $stmt_siguiente_cliente->bind_result($siguiente_cliente_id);
-    $stmt_siguiente_cliente->fetch();
-    $stmt_siguiente_cliente->close();
-    return $siguiente_cliente_id;
+    $ordenClientes = file_exists('orden_fijo.txt') ? explode(',', file_get_contents('orden_fijo.txt')) : [];
+    $posicionActual = array_search($id_cliente_actual, $ordenClientes);
+
+    if ($posicionActual !== false && isset($ordenClientes[$posicionActual + 1])) {
+        return $ordenClientes[$posicionActual + 1];
+    }
+
+    return null; // Retorna null si no hay siguiente cliente en el orden
 }
+
 
 function procesarPago($conexion, $id_cliente, $cuota_ingresada)
 {
@@ -32,6 +35,8 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada)
     $stmt_prestamo->close();
 
     // Actualizar MontoAPagar en la tabla "prestamos".
+    $cuota_ingresada = floatval($cuota_ingresada);
+    $monto_deuda = $montoAPagar - $cuota_ingresada;
     $monto_deuda = $montoAPagar - $cuota_ingresada;
     $sql_update_prestamo = "UPDATE prestamos SET MontoAPagar = ?, Pospuesto = 0, mas_tarde = 0 WHERE IDCliente = ?";
     $stmt_update_prestamo = $conexion->prepare($sql_update_prestamo);
@@ -55,9 +60,9 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada)
 
     // Insertar en la tabla "historial_pagos" y "facturas".
     $fecha_pago = date('Y-m-d');
-    $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo) VALUES (?, ?, ?, ?)";
+    $sql_insert_historial = "INSERT INTO historial_pagos (IDCliente, FechaPago, MontoPagado, IDPrestamo, IDUsuario) VALUES (?, ?, ?, ?, ?)";
     $stmt_insert_historial = $conexion->prepare($sql_insert_historial);
-    $stmt_insert_historial->bind_param("issi", $id_cliente, $fecha_pago, $cuota_ingresada, $idPrestamo);
+    $stmt_insert_historial->bind_param("issii", $id_cliente, $fecha_pago, $cuota_ingresada, $idPrestamo, $_SESSION['usuario_id']);
     if (!$stmt_insert_historial->execute()) {
         echo "Error al insertar en historial de pagos.";
         return;
@@ -75,7 +80,8 @@ function procesarPago($conexion, $id_cliente, $cuota_ingresada)
 }
 
 
-function procesarNoPagoOMasTarde($conexion, $id_cliente, $accion) {
+function procesarNoPagoOMasTarde($conexion, $id_cliente, $accion)
+{
     // Primero, verifica si alguna de las acciones ya se ha realizado.
     $sql_verificar = "SELECT Pospuesto, mas_tarde FROM prestamos WHERE IDCliente = ?";
     $stmt_verificar = $conexion->prepare($sql_verificar);
@@ -133,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'], $_POST['id_c
         header("Location: perfil_abonos.php?id=$siguiente_cliente_id");
         exit();
     } else {
-        echo '<script>alert("No hay más clientes");</script>';
+        echo '<script>alert("No hay más clientes en el orden establecido.");</script>';
     }
 }
 

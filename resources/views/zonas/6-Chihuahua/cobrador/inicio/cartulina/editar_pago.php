@@ -1,3 +1,6 @@
+
+<!-- FORMULARIO PARA EDITAR ULTIMO PAGO -->
+
 <?php
 session_start();
 date_default_timezone_set('America/Bogota');
@@ -5,7 +8,7 @@ date_default_timezone_set('America/Bogota');
 // Verifica si el usuario está autenticado
 if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../index.php");
+    header("Location: ../../../../../../index.php");
     exit();
 }
 
@@ -37,7 +40,10 @@ $factura = $resultado->fetch_assoc();
 
 // Cerrar la consulta
 $stmt->close();
- 
+
+// Si se envió el formulario para actualizar la factura 
+
+// ...
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $monto = $_POST['monto'];
