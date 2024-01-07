@@ -28,7 +28,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, p.ID AS IDPrestamo
         FROM clientes c
         INNER JOIN prestamos p ON c.ID = p.IDCliente
         WHERE p.Estado = 'pendiente' 
-        AND c.ZonaAsignada = 'Puebla'";
+        AND c.ZonaAsignada = 'Chihuahua'";
 
 $stmt = $conexion->prepare($sql);
 $stmt->execute();
@@ -36,7 +36,7 @@ $result = $stmt->get_result();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['orden'])) {
     $orden = $_POST['orden'];
-    file_put_contents('orden_clientes.txt', $orden);
+    file_put_contents('orden_fijo.txt', $orden);
 }
 ?>
 

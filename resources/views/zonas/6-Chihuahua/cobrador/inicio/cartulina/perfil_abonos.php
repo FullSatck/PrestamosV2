@@ -65,7 +65,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: /resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php");
+    header("location: /resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php");
     exit();
 }
 
