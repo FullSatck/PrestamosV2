@@ -36,7 +36,7 @@ $fila = $resultado->fetch_assoc();
 $stmt->close();
 
 // Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
-if (!$fila || $fila['Nombre'] !== 'supervisor') {
+if (!$fila || $fila['Nombre'] !== 'cobrador') {
     header("Location: /ruta_a_pagina_de_error_o_inicio.php");
     exit();
 }
@@ -66,7 +66,7 @@ if (!$fila || $fila['Nombre'] !== 'supervisor') {
 
 <body>
     <header>
-    <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php" class="botonn">
+    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>

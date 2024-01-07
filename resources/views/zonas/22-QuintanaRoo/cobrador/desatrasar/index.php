@@ -36,7 +36,7 @@ $fila = $resultado->fetch_assoc();
 $stmt->close();
 
 // Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
-if (!$fila || $fila['Nombre'] !== 'supervisor') {
+if (!$fila || $fila['Nombre'] !== 'cobrador') {
     header("Location: /ruta_a_pagina_de_error_o_inicio.php");
     exit();
 }
@@ -66,7 +66,7 @@ if (!$fila || $fila['Nombre'] !== 'supervisor') {
 
 <body>
     <header>
-    <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/inicio.php" class="botonn">
+        <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php" class="botonn">
             <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span class="spann">Volver al Inicio</span>
         </a>
@@ -124,8 +124,7 @@ if (!$fila || $fila['Nombre'] !== 'supervisor') {
                 $plazoPrestamo = $row_prestamo['Plazo'];
 
                 // Limitar el número de cuotas al plazo del préstamo
-                $numCuotas = min($plazoPrestamo, floor(($fechaActual - $fechaInicio) / (60 * 60 * 24)) + 1);
-
+                $numCuotas = min($plazoPrestamo, floor(($fechaActual - strtotime('+1 day', $fechaInicio)) / (60 * 60 * 24)));
                 echo '<div class="boton-contenedor">';
                 echo '<a href="editar_prestamo.php?prestamo_id=' . $row_prestamo['ID'] . '" class="btn btn-editar-prestamo">Editar Préstamo</a>';
                 echo '</div>';
@@ -153,7 +152,7 @@ if (!$fila || $fila['Nombre'] !== 'supervisor') {
                 echo '<div id="formularios_cuotas" class="mb-3">';
                 // Generar automáticamente los formularios de cuotas
                 $fechaHoy = strtotime("today");
-                $fechaCuota = $fechaInicio; // Modificado para usar la fecha de inicio directamente
+                $fechaCuota = strtotime("+1 day", $fechaInicio); // Ajustar la fecha para que comience un día después
                 $totalCuotas = 0; // Inicializa la variable para el total de cuotas
                 for ($i = 1; $i <= $numCuotas; $i++) {
                     if ($fechaCuota <= $fechaHoy) {
