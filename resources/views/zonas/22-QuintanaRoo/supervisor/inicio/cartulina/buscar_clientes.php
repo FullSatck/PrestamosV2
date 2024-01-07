@@ -1,3 +1,6 @@
+
+<!-- CODIGO PARA EL BUSCADOR DE CLIENTES -->
+
 <?php
 include '../../../../../../../controllers/conexion.php';
 include 'load_clients.php'; // Asegúrate de que este archivo incluya la conexión a la base de datos
