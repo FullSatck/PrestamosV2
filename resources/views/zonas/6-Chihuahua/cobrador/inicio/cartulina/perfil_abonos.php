@@ -327,8 +327,7 @@ $stmt_prestamo->close();
 
                         if ($last_row) {
                             echo "<div class='edit-button'>";
-                            echo "<button onclick='showLess()'>Ver menos</button>";
-                            echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
+                            echo "<button onclick='showLess()'>Ver menos</button>"; 
                             echo "</div>";
                         }
                     } else {
@@ -373,8 +372,7 @@ $stmt_prestamo->close();
 
                         if ($last_row) {
                             echo "<div class='edit-button'>";
-                            echo "<button onclick='showMore()' class='edit-button'>Ver más</button>";
-                            echo "<a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar último pago</a>";
+                            echo "<button onclick='showMore()' class='edit-button'>Ver más</button>"; 
                             echo "</div>";
                         }
                     } else {
