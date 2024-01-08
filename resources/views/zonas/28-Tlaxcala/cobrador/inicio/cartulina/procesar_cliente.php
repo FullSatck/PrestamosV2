@@ -1,3 +1,6 @@
+
+<!-- PASAR DE CLIENTE -->
+
 <?php
 // Verificar si se ha enviado el ID del cliente seleccionado
 if(isset($_POST['cliente'])){

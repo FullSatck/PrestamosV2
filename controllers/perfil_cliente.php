@@ -80,6 +80,8 @@ if ($_SESSION["rol"] == 1) {
         $ruta_volver = "/resources/views/zonas/20-Puebla/supervisor/clientes/lista_clientes.php";
     } elseif ($_SESSION['user_zone'] === '22') {
         $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/supervisor/clientes/lista_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '28') {
+        $ruta_volver = "/resources/views/zonas/28-Tlaxcala/supervisor/clientes/lista_clientes.php";
     } else {
         // Si no coincide con ninguna zona válida para supervisor, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";
@@ -92,6 +94,8 @@ if ($_SESSION["rol"] == 1) {
         $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/clientes/lista_clientes.php";
     } elseif ($_SESSION['user_zone'] === '22') {
         $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/lista_clientes.php";
+    } elseif ($_SESSION['user_zone'] === '28') {
+        $ruta_volver = "/resources/views/zonas/28-Tlaxcala/cobrador/clientes/lista_clientes.php";
     } else {
         // Si no coincide con ninguna zona válida para cobrador, redirigir a un dashboard predeterminado
         $ruta_volver = "/default_dashboard.php";

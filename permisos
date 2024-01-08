@@ -1,0 +1,86 @@
+// RUTA PARA LOS PERMISOS
+include("../../../../controllers/verificar_permisos.php");
+
+//PERMISOS
+
+//PERMISO ABONOS
+
+<?php if ($tiene_permiso_abonos) : ?>
+
+<?php endif; ?>
+
+
+//PERMISOS PARA VER PRESTAMOS CANCELADOS
+<?php if ($tiene_permiso_prest_cancelados) : ?>
+
+<?php endif; ?>
+
+//PERMISOS PARA VER FILTROS
+<?php if ($tiene_permiso_ver_filtros) : ?>
+
+<?php endif; ?>
+
+//PERMISOS PARA DESATRASAR
+
+<?php if ($tiene_permiso_desatrasar) : ?>
+
+<?php endif; ?>
+
+
+//PERMISOS PARA VER LAS LISTA DE PRESTAMOS
+
+<?php if ($tiene_permiso_list_de_prestamos) : ?>
+
+<?php endif; ?>
+
+//PERMISOS PARA VER LOS LISTADOS DE CLIENTES Y REGISTRAR CLIENTES
+
+<?php if ($tiene_permiso_listar_clientes) : ?>
+
+<?php endif; ?>
+
+//PERMISOS PARA RECAUDOS
+
+<?php if ($tiene_permiso_recaudos) : ?>
+
+<?php endif; ?>
+
+
+//PERMISOS PARA VER LA CONTABILIDAD
+
+<?php if ($tiene_permiso_contabilidad) : ?>
+
+<?php endif; ?>
+
+
+//PERMISOS PARA VER LAS COMISIONES
+
+<?php if ($tiene_permiso_comision) : ?>
+
+<?php endif; ?>
+
+
+//PERMISOS PARA VER LOS PRESTAMOS CANCELADOS
+
+<?php if ($tiene_permiso_prest_cancelados) : ?>
+
+<?php endif; ?>
+
+//PERMISOS PARA APAGAR EL SISTEMA
+
+<?php if ($tiene_permiso_apagar_sistema) : ?>
+
+<?php endif; ?>
+
+//PERMISOS PARA VER LA LISTAS DE CLAVOS
+
+<?php if ($tiene_permiso_lista_clavos) : ?>
+
+<?php endif; ?>
+
+//PERMISOS PARA HACER PRESTAMOS
+
+<?php if ($tiene_permiso_hacer_prestamo) : ?>
+
+
+<?php endif; ?>

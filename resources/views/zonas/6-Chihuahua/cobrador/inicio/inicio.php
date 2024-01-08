@@ -30,7 +30,7 @@ $stmt->close();
 date_default_timezone_set('America/Bogota');
 
 // Ruta a permisos 
-include("../../../../../..//controllers/verificar_permisos.php");
+include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 
@@ -141,11 +141,28 @@ include("../../../../../..//controllers/verificar_permisos.php");
         <div class="cuadros-container">
 
 
+            <!-- ULTIMO ID -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var enlaceAbonos = document.querySelector('.enlace-abonos');
+                    if (enlaceAbonos) {
+                        var ultimoID = localStorage.getItem('ultimoIDCliente');
+                        var fechaUltimaVisita = localStorage.getItem('fechaUltimaVisita');
+                        var fechaActual = new Date().toISOString().split('T')[0];
+
+                        if (ultimoID && fechaUltimaVisita === fechaActual) {
+                            enlaceAbonos.href = '/resources/views/zonas/6-Chihuahua/cobrador/inicio/cartulina/perfil_abonos.php?id=' + ultimoID;
+                        }
+                        // Si no hay un último ID o la fecha es diferente, se usa el primer ID de orden_fijo.txt
+                    }
+                });
+            </script>
+            
             <!-- TRAER EL PRIMER ID -->
             <?php
             function obtenerOrdenClientes()
             {
-                $rutaArchivo = 'cartulina/orden_clientes.txt'; // Asegúrate de que esta ruta sea correcta
+                $rutaArchivo = 'cartulina/orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
                 if (file_exists($rutaArchivo)) {
                     $contenido = file_get_contents($rutaArchivo);
                     return explode(',', $contenido);
@@ -164,10 +181,10 @@ include("../../../../../..//controllers/verificar_permisos.php");
                 foreach ($ordenClientes as $idCliente) {
                     // Consulta para verificar si este cliente ha pagado hoy
                     $sql = "SELECT c.ID
-        FROM clientes c
-        LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
-        WHERE c.ID = ? AND c.ZonaAsignada = 'Chihuahua' AND hp.ID IS NULL
-        LIMIT 1";
+                            FROM clientes c
+                            LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
+                            WHERE c.ID = ? AND hp.ID IS NULL
+                            LIMIT 1";
 
                     $stmt = $conexion->prepare($sql);
                     $stmt->bind_param("si", $fecha_actual, $idCliente);
@@ -188,15 +205,26 @@ include("../../../../../..//controllers/verificar_permisos.php");
             $primer_id = obtenerPrimerID($conexion);
 
             ?>
+
+
             <?php if ($tiene_permiso_abonos) : ?>
                 <div class="cuadro cuadro-2">
                     <div class="cuadro-1-1">
-                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                    <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo enlace-abonos">Abonos</a>
                         <p>Version beta</p>
                     </div>
                 </div>
             <?php endif; ?>
-
+            
+            <?php if ($tiene_permiso_desatrasar) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a><br>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+                
+            <?php endif; ?>
             <?php if ($tiene_permiso_prest_cancelados) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
@@ -209,6 +237,25 @@ include("../../../../../..//controllers/verificar_permisos.php");
                 <div class="cuadro cuadro-2">
                     <div class="cuadro-1-1">
                         <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            
+            <?php if ($tiene_permiso_comision) : ?>
+            <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/inicio/comision_inicio.php" class="titulo">Comision</a>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <?php if ($tiene_permiso_recaudos) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
                         <p>Version beta</p>
                     </div>
                 </div>

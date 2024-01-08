@@ -46,7 +46,7 @@ if (!isset($_SESSION["usuario_id"])) {
     // Verifica si el rol del usuario corresponde al necesario para esta página
     if ($rol_usuario !== 'supervisor') {
         // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
-        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
+        header("Location: /resource/views/zonas/6-Chihuahua/inicio/inicio.php");
         exit();
     }
 }

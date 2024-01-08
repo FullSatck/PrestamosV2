@@ -1,31 +1,55 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
 
+// Validacion de rol para ingresar a la pagina 
+require_once '../../../../../../controllers/conexion.php';
 
 // Verifica si el usuario está autenticado
-if (isset($_SESSION["usuario_id"])) {
-    // El usuario está autenticado, puede acceder a esta página
-} else {
+if (!isset($_SESSION["usuario_id"])) {
     // El usuario no está autenticado, redirige a la página de inicio de sesión
-    header("Location: ../../../../../../index.php");
+    header("Location: ../../../../../index.php");
     exit();
+} else {
+    // El usuario está autenticado, obtén el ID del usuario de la sesión
+    $usuario_id = $_SESSION["usuario_id"];
+
+    $sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+    $stmt = $conexion->prepare($sql_nombre);
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($fila = $resultado->fetch_assoc()) {
+        $_SESSION["nombre_usuario"] = $fila["nombre"];
+    }
+    $stmt->close();
+
+    // Preparar la consulta para obtener el rol del usuario
+    $stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+    $stmt->bind_param("i", $usuario_id);
+
+    // Ejecutar la consulta
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $fila = $resultado->fetch_assoc();
+
+    // Verifica si el resultado es nulo, lo que significaría que el usuario no tiene un rol válido
+    if (!$fila) {
+        // Redirige al usuario a una página de error o de inicio
+        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
+        exit();
+    }
+
+    // Extrae el nombre del rol del resultado
+    $rol_usuario = $fila['Nombre'];
+
+    // Verifica si el rol del usuario corresponde al necesario para esta página
+    if ($rol_usuario !== 'supervisor') {
+        // El usuario no tiene el rol correcto, redirige a la página de error o de inicio
+        header("Location: /resource/views/zonas/6-chihuahua/inicio/inicio.php");
+        exit();
+    }
 }
-
-
-// Incluye el archivo de conexión
-include("../../../../../../controllers/conexion.php");
-
-$usuario_id = $_SESSION["usuario_id"];
-
-$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
-$stmt = $conexion->prepare($sql_nombre);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-if ($fila = $resultado->fetch_assoc()) {
-    $_SESSION["nombre_usuario"] = $fila["nombre"];
-}
-$stmt->close();
 
 
 
@@ -141,65 +165,124 @@ include("../../../../../../controllers/verificar_permisos.php");
         <div class="cuadros-container">
 
 
+            <!-- ULTIMO ID -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var enlaceAbonos = document.querySelector('.enlace-abonos');
+                    if (enlaceAbonos) {
+                        var ultimoID = localStorage.getItem('ultimoIDCliente');
+                        var fechaUltimaVisita = localStorage.getItem('fechaUltimaVisita');
+                        var fechaActual = new Date().toISOString().split('T')[0];
+
+                        if (ultimoID && fechaUltimaVisita === fechaActual) {
+                            enlaceAbonos.href = '/resources/views/zonas/6-Chihuahua/supervisor/inicio/cartulina/perfil_abonos.php?id=' + ultimoID;
+                        }
+                        // Si no hay un último ID o la fecha es diferente, se usa el primer ID de orden_fijo.txt
+                    }
+                });
+            </script>
+
+            <!-- TRAER EL PRIMER ID -->
             <?php
+            function obtenerOrdenClientes()
+            {
+                $rutaArchivo = 'cartulina/orden_fijo.txt'; // Asegúrate de que esta ruta sea correcta
+                if (file_exists($rutaArchivo)) {
+                    $contenido = file_get_contents($rutaArchivo);
+                    return explode(',', $contenido);
+                }
+                return [];
+            }
+
             function obtenerPrimerID($conexion)
             {
+                $fecha_actual = date("Y-m-d");
+                $ordenClientes = obtenerOrdenClientes();
                 $primer_id = 0;
 
-                // Consulta para obtener el primer ID de cliente con ZonaAsignada 'Quintana Roo'
-                $sql_primer_id = "SELECT ID
-                      FROM clientes
-                      WHERE ZonaAsignada = 'Chihuahua'
-                      ORDER BY ID ASC
-                      LIMIT 1";
+                $idEncontrado = 0;
 
-                $stmt_primer_id = $conexion->prepare($sql_primer_id);
-                $stmt_primer_id->execute();
-                $stmt_primer_id->bind_result($primer_id);
-                $stmt_primer_id->fetch();
-                $stmt_primer_id->close();
+                foreach ($ordenClientes as $idCliente) {
+                    // Consulta para verificar si este cliente ha pagado hoy
+                    $sql = "SELECT c.ID
+                            FROM clientes c
+                            LEFT JOIN historial_pagos hp ON c.ID = hp.IDCliente AND hp.FechaPago = ?
+                            WHERE c.ID = ? AND hp.ID IS NULL
+                            LIMIT 1";
+
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bind_param("si", $fecha_actual, $idCliente);
+                    $stmt->execute();
+                    $stmt->bind_result($idEncontrado);
+                    if ($stmt->fetch()) {
+                        $primer_id = $idEncontrado;
+                        $stmt->close();
+                        break;
+                    }
+                    $stmt->close();
+                }
 
                 return $primer_id;
             }
 
-            // Obtener el primer ID de cliente de la base de datos
+            // Obtener el primer ID de cliente que no ha pagado hoy y está primero en el orden personalizado
             $primer_id = obtenerPrimerID($conexion);
+
             ?>
+
+
             <?php if ($tiene_permiso_abonos) : ?>
                 <div class="cuadro cuadro-2">
                     <div class="cuadro-1-1">
-                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo">Abonos</a>
+                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="titulo enlace-abonos">Abonos</a>
                         <p>Version beta</p>
                     </div>
                 </div>
             <?php endif; ?>
 
             <?php if ($tiene_permiso_prest_cancelados) : ?>
-            <div class="cuadro cuadro-2">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/Pcancelados/pcancelados.php" class="titulo">Prest Cancelados </a>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
 
             <?php if ($tiene_permiso_ver_filtros) : ?>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a><br>
-                    <p>Version beta</p>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/prestadia/prestamos_del_dia.php" class="titulo">Filtros</a><br>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
 
             <?php if ($tiene_permiso_desatrasar) : ?>
-            <div class="cuadro cuadro-4">
-                <div class="cuadro-1-1">
-                    <a href="/resources/views/zonas/6-Chihuahua/supervisor/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a><br>
-                    <p>Version beta</p>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a><br>
+                        <p>Version beta</p>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
 
+            <?php if ($tiene_permiso_comision) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/inicio/comision_inicio.php" class="titulo">Comision</a><br>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($tiene_permiso_recaudos) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/supervisor/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
 
     </main>
 

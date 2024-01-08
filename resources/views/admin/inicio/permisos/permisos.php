@@ -1,7 +1,46 @@
 <?php
+
+date_default_timezone_set('America/Bogota');
 session_start();
 
+// Verifica si el usuario está autenticado
+if (!isset($_SESSION["usuario_id"])) {
+    header("Location: ../../../../../../index.php");
+    exit();
+}
 
+// Incluye la configuración de conexión a la base de datos
+require_once '../../../../../controllers/conexion.php';
+
+// El usuario está autenticado, obtén el ID del usuario de la sesión
+$usuario_id = $_SESSION["usuario_id"];
+
+$sql_nombre = "SELECT nombre FROM usuarios WHERE id = ?";
+$stmt = $conexion->prepare($sql_nombre);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($fila = $resultado->fetch_assoc()) {
+    $_SESSION["nombre_usuario"] = $fila["nombre"];
+}
+$stmt->close();
+
+// Preparar la consulta para obtener el rol del usuario
+$stmt = $conexion->prepare("SELECT roles.Nombre FROM usuarios INNER JOIN roles ON usuarios.RolID = roles.ID WHERE usuarios.ID = ?");
+$stmt->bind_param("i", $usuario_id);
+
+// Ejecutar la consulta
+$stmt->execute();
+$resultado = $stmt->get_result();
+$fila = $resultado->fetch_assoc();
+
+$stmt->close();
+
+// Verifica si el resultado es nulo o si el rol del usuario no es 'admin'
+if (!$fila || $fila['Nombre'] !== 'admin') {
+    header("Location: /ruta_a_pagina_de_error_o_inicio.php");
+    exit();
+}
 
 ?>
 
@@ -19,10 +58,14 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    
+
 </head>
 
 <body>
+    <br><br><br>
+<div class="header">
+        <a href="/resources/views/admin/inicio/inicio.php" class="btn btn-inicio">Inicio</a>
+    </div>
     <div class="message-container">
         <?php
         // Mostrar el mensaje de error si existe
@@ -81,7 +124,7 @@ session_start();
             </div>
         </div>
     </div>
-   
+
     <script>
         // Esta función se ejecuta cuando se carga la página
         window.onload = function() {
@@ -109,18 +152,23 @@ session_start();
         };
     </script>
     <script>
-        // Cargar permisos disponibles al seleccionar un usuario
-        $("#usuario_id").on("change", function() {
-            var usuario_id = $(this).val();
-            $.ajax({
-                url: "cargar_permisos.php", // Ruta a tu archivo PHP para cargar permisos
-                method: "POST",
-                data: {
-                    usuario_id: usuario_id
-                },
-                success: function(data) {
-                    $("#permisos-list").html(data);
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Evento para manejar cambios en la selección del usuario
+            document.getElementById('usuario_id').addEventListener('change', function() {
+                var usuario_id = this.value;
+
+                fetch('cargar_permisos.php', {
+                        method: 'POST',
+                        body: new URLSearchParams('usuario_id=' + usuario_id),
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('permisos-list').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error:', error));
             });
         });
     </script>
