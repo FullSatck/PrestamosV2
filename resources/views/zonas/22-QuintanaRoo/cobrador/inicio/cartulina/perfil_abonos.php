@@ -65,7 +65,7 @@ if ($resultado->num_rows === 1) {
     }
 } else {
     // Cliente no encontrado en la base de datos, redirigir a una página de error o a la lista de clientes
-    header("location: /resources/views/zonas/20-Puebla/supervisor/inicio/prestadia/prestamos_del_dia.php");
+    header("location: /resources/views/zonas/22-QuintanaRoo/supervisor/inicio/prestadia/prestamos_del_dia.php");
     exit();
 }
 
@@ -75,9 +75,9 @@ $user_role = $_SESSION['rol'];
 
 // Si el rol es 1 (administrador)
 if ($_SESSION["rol"] == 3) {
-    $ruta_volver = "/resources/views/zonas/20-Puebla/cobrador/inicio/inicio.php";
-    $ruta_filtro = "/resources/views/zonas/20-Puebla/cobrador/inicio/prestadia/prestamos_del_dia.php";
-    $ruta_cliente = "/resources/views/zonas/20-Puebla/cobrador/clientes/agregar_clientes.php";
+    $ruta_volver = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/inicio.php";
+    $ruta_filtro = "/resources/views/zonas/22-QuintanaRoo/cobrador/inicio/prestadia/prestamos_del_dia.php";
+    $ruta_cliente = "/resources/views/zonas/22-QuintanaRoo/cobrador/clientes/agregar_clientes.php";
 } else {
     // Si no hay un rol válido, redirigir a una página predeterminada
     $ruta_filtro = "/default_dashboard.php";
@@ -260,7 +260,7 @@ $stmt_prestamo->close();
                         $sql = "SELECT c.ID, c.Nombre, c.Apellido, p.ID AS IDPrestamo
         FROM clientes c
         INNER JOIN prestamos p ON c.ID = p.IDCliente
-        WHERE c.ID = ? AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Puebla'";
+        WHERE c.ID = ? AND p.Estado = 'pendiente' AND c.ZonaAsignada = 'Chihuahua'";
 
 
                         $stmt = $conexion->prepare($sql);
@@ -410,41 +410,42 @@ $stmt_prestamo->close();
             <form action='procesar_cliente.php' method='post' id='clienteForm'>
                 <div class="busqueda-container">
                     <input type="text" id="filtroBusqueda" placeholder="Buscar cliente" class="input-busqueda">
-
                     <div id="resultadosBusqueda" class="resultados-busqueda">
                         <!-- Los resultados de la búsqueda se mostrarán aquí -->
-                    </div><br>
-
-                    <div class="navegacion-container">
-                        <input type='hidden' id='selectedClientId' name='cliente'>
-                        <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
-                        <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
                     </div>
-                    <br>
-
+                </div>
+                <div class="navegacion-container">
+                    <input type='hidden' id='selectedClientId' name='cliente'>
+                    <a href='#' onclick='navigate("prev"); return false;' class='boton4'>Anterior</a>
+                    <a href='#' onclick='navigate("next"); return false;' class='boton4'>Siguiente</a>
+                </div>
+                <br>
             </form>
 
             <script>
                 $(document).ready(function() {
+                    // Manejar la entrada de búsqueda
                     $('#filtroBusqueda').on('input', function() {
                         var busqueda = $(this).val();
-                        if (busqueda.length > 2) {
+                        if (busqueda.length > 1) {
                             $.ajax({
-                                url: 'buscar_clientes.php',
+                                url: 'buscar_clientes.php', // Asegúrate de que la ruta sea correcta
                                 type: 'GET',
+                                dataType: 'json',
                                 data: {
                                     'busqueda': busqueda
                                 },
-                                success: function(data) {
-                                    var clientes = JSON.parse(data);
-                                    var html = '<ul>';
+                                success: function(clientes) {
+                                    var html = '';
                                     for (var i = 0; i < clientes.length; i++) {
-                                        html += '<li onclick="seleccionarCliente(' + clientes[i].id + ')">' +
-                                            clientes[i].Nombre + ' ' + clientes[i].Apellido + ' - ' + clientes[i].Telefono +
-                                            '</li>';
+                                        html += '<div onclick="seleccionarCliente(' + clientes[i].id + ')">' +
+                                            clientes[i].nombre + ' ' + clientes[i].apellido + '</div>';
                                     }
-                                    html += '</ul>';
                                     $('#resultadosBusqueda').html(html);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("Error en la solicitud AJAX: " + status + ", " + error);
+                                    $('#resultadosBusqueda').html('<p>Error al buscar clientes</p>');
                                 }
                             });
                         } else {
@@ -454,10 +455,14 @@ $stmt_prestamo->close();
                 });
 
                 function seleccionarCliente(clienteId) {
-                    window.location.href = 'perfil_abonos.php?id=' + clienteId;
+                    $('#selectedClientId').val(clienteId);
+                    $('#clienteForm').submit();
                 }
 
                 function navigate(direction) {
+                    // Reemplaza esto con el código adecuado para obtener los índices previos y siguientes
+                    var prevIndex = 0; // Índice previo
+                    var nextIndex = 1; // Índice siguiente
                     var selectedClientId = direction === "prev" ? <?= $clientes[$prevIndex]['id'] ?> : <?= $clientes[$nextIndex]['id'] ?>;
                     $('#selectedClientId').val(selectedClientId);
                     $('#clienteForm').submit();

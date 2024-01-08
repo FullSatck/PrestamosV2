@@ -350,35 +350,44 @@ td {
     background-color: #8a42a0;
 }
 
-.resultados-busqueda ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    max-height: 200px;
-    overflow-y: auto;
+/* Estilos para el contenedor de búsqueda */
+.busqueda-container {
+    width: 100%; /* Ajusta el ancho según tus necesidades */
+    margin: 0 auto; /* Centra el contenedor */
+    padding: 20px; /* Espaciado interno para el contenedor */
 }
 
-.resultados-busqueda li {
-    padding: 8px;
-    cursor: pointer;
-}
-
-.resultados-busqueda li:hover {
-    background-color: #ececec;
-}
-
+/* Estilos para el campo de entrada de búsqueda */
 .input-busqueda {
-    width: calc(33.33% - 10px);
-    /* Aquí definimos el ancho en escritorio */
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    /* Agregar otros estilos necesarios aquí */
+    width: 100%; /* Utiliza todo el ancho disponible */
+    padding: 10px; /* Espaciado interno para el campo de texto */
+    margin-bottom: 10px; /* Espacio debajo del campo de texto */
+    border: 1px solid #ddd; /* Borde sutil */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
 
+/* Estilos para el contenedor de resultados de búsqueda */
+.resultados-busqueda {
+    width: 100%; /* Utiliza todo el ancho disponible */
+    max-height: 300px; /* Altura máxima antes de usar scroll */
+    overflow-y: auto; /* Permite scroll si el contenido excede la altura máxima */
+    background-color: #f9f9f9; /* Fondo claro para los resultados */
+    border: 1px solid #ddd; /* Borde para el contenedor de resultados */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Estilos para cada resultado individual dentro del contenedor */
+.resultados-busqueda div {
+    padding: 10px; /* Espaciado interno para cada resultado */
+    border-bottom: 1px solid #eee; /* Borde entre resultados */
+    cursor: pointer; /* Cambia el cursor a una mano para indicar clickeabilidad */
+}
+
+.resultados-busqueda div:hover {
+    background-color: #eaeaea; /* Cambia el fondo al pasar el mouse */
+}
 
 
 /* Media Queries */
