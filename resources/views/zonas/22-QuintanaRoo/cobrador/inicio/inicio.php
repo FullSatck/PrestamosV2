@@ -239,6 +239,15 @@ date_default_timezone_set('America/Bogota');
             </div>
             <?php endif; ?>
 
+            <?php if ($tiene_permiso_desatrasar) : ?>
+                <div class="cuadro cuadro-2">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
         </div>
     </main>
 

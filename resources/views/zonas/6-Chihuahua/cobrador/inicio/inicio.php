@@ -215,7 +215,15 @@ include("../../../../../../controllers/verificar_permisos.php");
                     </div>
                 </div>
             <?php endif; ?>
-
+            <?php if ($tiene_permiso_desatrasar) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/desatrasar/agregar_clientes.php" class="titulo">Desatrasar</a><br>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+                
+            <?php endif; ?>
             <?php if ($tiene_permiso_prest_cancelados) : ?>
             <div class="cuadro cuadro-2">
                 <div class="cuadro-1-1">
@@ -242,6 +250,16 @@ include("../../../../../../controllers/verificar_permisos.php");
                     </div>
                 </div>
                 <?php endif; ?>
+
+                <?php if ($tiene_permiso_recaudos) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/6-Chihuahua/cobrador/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
 
         </div>
     </main>

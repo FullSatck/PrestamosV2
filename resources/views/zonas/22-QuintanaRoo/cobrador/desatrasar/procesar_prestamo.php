@@ -7,7 +7,7 @@ include '../../../../../../controllers/conexion.php';
 $id_cliente = $_POST['id_cliente'];
 
 // Verificar si el cliente ya tiene un préstamo en los últimos 5 minutos
-$sql_verificar_prestamo = "SELECT COUNT(*) as count FROM prestamos WHERE IDCliente = ? AND FechaCreacion >= NOW() - INTERVAL 9999999 MINUTE";
+$sql_verificar_prestamo = "SELECT COUNT(*) as count FROM prestamos WHERE IDCliente = ? AND FechaCreacion >= NOW() - INTERVAL 90 MINUTE";
 $stmt = $conexion->prepare($sql_verificar_prestamo);
 $stmt->bind_param("i", $id_cliente);
 $stmt->execute();
