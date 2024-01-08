@@ -62,6 +62,10 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 </head>
 
 <body>
+    <br><br><br>
+<div class="header">
+        <a href="/resources/views/admin/inicio/inicio.php" class="btn btn-inicio">Inicio</a>
+    </div>
     <div class="message-container">
         <?php
         // Mostrar el mensaje de error si existe
