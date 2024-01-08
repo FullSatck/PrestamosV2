@@ -28,7 +28,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, p.ID AS IDPrestamo
         FROM clientes c
         INNER JOIN prestamos p ON c.ID = p.IDCliente
         WHERE p.Estado = 'pendiente' 
-        AND c.ZonaAsignada = 'Puebla'";
+        AND c.ZonaAsignada = 'tlaxcala'";
 
 $stmt = $conexion->prepare($sql);
 $stmt->execute();
@@ -107,9 +107,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['orden'])) {
     ?>
 
     <header>
-    <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
+    <a href="/resources/views/zonas/28-Tlaxcala/cobrador/inicio/cartulina/perfil_abonos.php?id=<?= $primer_id ?>" class="back-link1">Volver</a>
 
-        <a href="/resources/views/zonas/20-Puebla/cobrador/inicio/cartulina/orden_abonos.php" class="back-link1">Pendintes hoy</a>
+        <a href="/resources/views/zonas/28-Tlaxcala/cobrador/inicio/cartulina/orden_abonos.php" class="back-link1">Pendintes hoy</a>
 
         <div class="nombre-usuario">
             <?php
