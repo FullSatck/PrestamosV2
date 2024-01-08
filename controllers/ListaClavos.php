@@ -71,39 +71,6 @@ if ($result) {
     }
 }
 
-// Verificar y actualizar el estado de los clientes en la lista de clavos
-$clavosQuery = "SELECT p.ID AS PrestamoID, p.IDCliente
-                FROM prestamos p
-                WHERE p.Estado = 'clavo'"; // Asumiendo que 'clavo' es un estado en la tabla prestamos
-
-$clavosResult = $conexion->query($clavosQuery);
-
-if ($clavosResult) {
-    while ($clavoRow = $clavosResult->fetch_assoc()) {
-        $prestamoID = $clavoRow['PrestamoID'];
-        $clienteID = $clavoRow['IDCliente'];
-
-        // Verificar si el cliente ha realizado el pago de la cuota pendiente
-        $pagoQuery = "SELECT SUM(MontoPagado) AS TotalPagado
-                      FROM historial_pagos
-                      WHERE IDPrestamo = $prestamoID AND FechaPago >= '$fechaLimite'";
-        $pagoResult = $conexion->query($pagoQuery);
-        $pagoRow = $pagoResult->fetch_assoc();
-
-        // Obtener el monto total de la cuota pendiente
-        $montoCuotaQuery = "SELECT MontoCuota FROM prestamos WHERE ID = $prestamoID";
-        $montoCuotaResult = $conexion->query($montoCuotaQuery);
-        $montoCuotaRow = $montoCuotaResult->fetch_assoc();
-        $montoCuota = $montoCuotaRow['MontoCuota'];
-
-        if ($pagoRow['TotalPagado'] >= $montoCuota) {
-            // El cliente ha pagado, actualizar su estado para sacarlo de la lista de clavos
-            $updatePrestamoQuery = "UPDATE prestamos SET Estado = 'activo' WHERE ID = $prestamoID"; // Asumiendo que 'activo' es el estado normal
-            $conexion->query($updatePrestamoQuery);
-        }
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +79,58 @@ if ($clavosResult) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes Clavos</title>
-    <link rel="stylesheet" type="text/css" href="/public/assets/css/clavos.css">
+    <!-- Enlace a Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        header {
+            background-color: #007bff;
+            padding: 10px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nombre-usuario {
+            text-align: right;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .botonn {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .spann {
+            margin-left: 5px;
+        }
+    </style>
 </head>
 <body>
 
@@ -138,54 +156,65 @@ if ($clavosResult) {
     <form action="" method="GET">
         <label for="buscar">Buscar:</label>
         <input type="text" id="buscar" name="buscar">
-        <button type="submit">Buscar</button>
+        <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Deuda</th>
-                <th>Días sin pagar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            // Mostrar los resultados en la tabla de clientes clavos
-            $clavosQuery = "SELECT c.ID, c.Nombre, c.EstadoID, p.MontoAPagar, p.MontoCuota, p.FechaVencimiento
-                            FROM clientes c
-                            JOIN prestamos p ON c.ID = p.IDCliente
-                            WHERE c.EstadoID = 2 AND p.FechaVencimiento <= '$fechaLimite'";
+    <table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Deuda</th>
+            <th>Días sin pagar</th>
+            <th>Perfil</th> <!-- Nueva columna "Perfil" -->
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        // Mostrar los resultados en la tabla de clientes clavos
+        $clavosQuery = "SELECT c.ID, c.Nombre, c.EstadoID, p.MontoAPagar, p.MontoCuota, p.FechaVencimiento
+                        FROM clientes c
+                        JOIN prestamos p ON c.ID = p.IDCliente
+                        WHERE c.EstadoID = 2 AND p.FechaVencimiento <= '$fechaLimite'";
 
-            // Modificar la consulta si se ha enviado una búsqueda
-            if (isset($_GET['buscar'])) {
-                $busqueda = $_GET['buscar'];
-                $clavosQuery .= " AND (c.ID LIKE '%$busqueda%' OR c.Nombre LIKE '%$busqueda%')";
+        // Modificar la consulta si se ha enviado una búsqueda
+        if (isset($_GET['buscar'])) {
+            $busqueda = $_GET['buscar'];
+            $clavosQuery .= " AND (c.ID LIKE '%$busqueda%' OR c.Nombre LIKE '%$busqueda%')";
+        }
+
+        $clavosResult = $conexion->query($clavosQuery);
+
+        if ($clavosResult) {
+            while ($clavoRow = $clavosResult->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $clavoRow['ID'] . "</td>";
+                echo "<td>" . $clavoRow['Nombre'] . "</td>";
+                echo "<td>$" . ($clavoRow['MontoAPagar'] ?: $clavoRow['MontoCuota']) . "</td>";
+
+                // Calcular días sin pagar
+                $fechaVencimiento = new DateTime($clavoRow['FechaVencimiento']);
+                $fechaActual = new DateTime();
+                $diasSinPagar = $fechaActual->diff($fechaVencimiento)->days;
+
+                echo "<td>Días sin pagar: $diasSinPagar</td>";
+
+                // Nuevo campo "Perfil" como enlace a perfil_cliente.php
+                echo "<td><a href='/controllers/perfil_cliente.php?id=" . $clavoRow['ID'] . "' class='btn btn-info'>Ver Perfil</a></td>";
+
+                echo "</tr>";
             }
+        }
+        ?>
+    </tbody>
+</table>
 
-            $clavosResult = $conexion->query($clavosQuery);
-
-            if ($clavosResult) {
-                while ($clavoRow = $clavosResult->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $clavoRow['ID'] . "</td>";
-                    echo "<td>" . $clavoRow['Nombre'] . "</td>";
-                    echo "<td>$" . ($clavoRow['MontoAPagar'] ?: $clavoRow['MontoCuota']) . "</td>";
-
-                    // Calcular días sin pagar
-                    $fechaVencimiento = new DateTime($clavoRow['FechaVencimiento']);
-                    $fechaActual = new DateTime();
-                    $diasSinPagar = $fechaActual->diff($fechaVencimiento)->days;
-
-                    echo "<td>Días sin pagar: $diasSinPagar</td>";
-                    echo "</tr>";
-                }
-            }
-            ?>
-        </tbody>
-    </table>
 </div>
+
+<!-- Enlace a Bootstrap JS y Popper.js (necesarios para algunas funciones de Bootstrap) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
