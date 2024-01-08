@@ -56,91 +56,82 @@ if (!$fila || $fila['Nombre'] !== 'admin') {
 <body>
 
 <header>
-        <div class="container mt-3">
-            <!-- Botón para ir al inicio en el encabezado -->
-            <a href="/resources/views/admin/inicio/inicio.php" class="btn btn-primary">Ir al Inicio</a>
-        </div>
-    </header>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Prestamos Cancelados</h1>
-
-       
-        <!-- Barra de búsqueda en tiempo real -->
-        <div class="mb-3">
-            <input type="text" id="search" class="form-control" placeholder="Buscar ">
-        </div>
-
-        <!-- Tabla responsiva con scroll horizontal en dispositivos móviles -->
-        <div class="table-responsive">
-            <?php
-            // Incluir el archivo de conexión a la base de datos
-            require_once '../../../../../controllers/conexion.php';
-
-            // Consulta SQL para seleccionar préstamos pagados con datos del cliente (incluyendo apellido)
-            $sql = "SELECT p.*, CONCAT(c.Nombre, ' ', c.Apellido) AS NombreCompleto, c.IdentificacionCURP
-                    FROM prestamos AS p
-                    INNER JOIN clientes AS c ON p.IDCliente = c.ID
-                    WHERE p.Estado = 'pagado'";
-            $result = $conexion->query($sql);
-
-            if ($result->num_rows > 0) {
-                echo "<table id='prestamosTable' class='display table table-striped table-bordered'>
-                        <thead class='thead-dark'>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre del Cliente</th>
-                                <th>CURP</th>
-                                <th>Monto</th>
-                                <th>Tasa de Interés</th>
-                                <th>Plazo</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Vencimiento</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>";
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>" . $row["ID"] . "</td>
-                            <td>" . $row["NombreCompleto"] . "</td>
-                            <td>" . $row["IdentificacionCURP"] . "</td>
-                            <td>" . $row["Monto"] . "</td>
-                            <td>" . $row["TasaInteres"] . "</td>
-                            <td>" . $row["Plazo"] . "</td>
-                            <td>" . $row["FechaInicio"] . "</td>
-                            <td>" . $row["FechaVencimiento"] . "</td>
-                            <td><a href='/resources/views/admin/creditos/prestamos.php?cliente_id=" . $row["IDCliente"] . "' class='btn btn-primary btn-sm'>Hacer Préstamo</a></td>
-                        </tr>";
-                }
-                echo "</tbody></table>";
-            } else {
-                echo "<p class='mt-3 text-center'>No se encontraron préstamos pagados.</p>";
-            }
-
-            // Cerrar la conexión
-            $conexion->close();
-            ?>
-        </div>
+    <div class="container mt-3">
+        <!-- Botón para ir al inicio en el encabezado -->
+        <a href="/resources/views/admin/inicio/inicio.php" class="btn btn-primary">Ir al Inicio</a>
 
     </div>
+</header>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Prestamos Cancelados</h1>
 
-  
 
-    <!-- Agrega JavaScript para la búsqueda en tiempo real y DataTables -->
-    <script>
-        $(document).ready(function() {
-            
-            
-             $('#search').on('keyup', function() {
-                var searchText = $(this).val().toLowerCase();
-                $('table tbody tr').filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
-                });
+    <!-- Barra de búsqueda en tiempo real -->
+    <div class="mb-3">
+        <input type="text" id="search" class="form-control" placeholder="Buscar ">
+    </div>
+
+    <!-- Tabla responsiva con scroll horizontal en dispositivos móviles -->
+    <div class="table-responsive">
+        <?php
+        // Incluir el archivo de conexión a la base de datos
+        require_once '../../../../../controllers/conexion.php';
+
+        // Consulta SQL para seleccionar préstamos pagados con datos del cliente (incluyendo apellido)
+        $sql = "SELECT p.*, CONCAT(c.Nombre, ' ', c.Apellido) AS NombreCompleto, c.IdentificacionCURP
+                FROM prestamos AS p
+                INNER JOIN clientes AS c ON p.IDCliente = c.ID
+                WHERE p.Estado = 'pagado'";
+        $result = $conexion->query($sql);
+
+        if ($result->num_rows > 0) {
+            echo "<table id='prestamosTable' class='display table table-striped table-bordered'>
+                    <thead class='thead-dark'>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre del Cliente</th>
+                            <th>CURP</th>
+                            <th>Perfil</th>
+                            <th>Hacer Prestamo</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>" . $row["ID"] . "</td>
+                        <td>" . $row["NombreCompleto"] . "</td>
+                        <td>" . $row["IdentificacionCURP"] . "</td>
+                        <td><a href='/resources/views/admin/creditos/prestamos.php?cliente_id=" . $row["IDCliente"] . "' class='btn btn-primary btn-sm'>Hacer Préstamo</a></td>
+                        <td><a href='/controllers/perfil_cliente.php?id=" . $row["IDCliente"] . "' class='btn btn-primary btn-sm'>Ver Perfil</a></td>
+                    </tr>";
+            }
+            echo "</tbody></table>";
+        } else {
+            echo "<p class='mt-3 text-center'>No se encontraron préstamos pagados.</p>";
+        }
+
+        // Cerrar la conexión
+        $conexion->close();
+        ?>
+    </div>
+
+</div>
+
+
+
+<!-- Agrega JavaScript para la búsqueda en tiempo real y DataTables -->
+<script>
+    $(document).ready(function() {
+        $('#search').on('keyup', function() {
+            var searchText = $(this).val().toLowerCase();
+            $('table tbody tr').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
             });
         });
-    </script>
+    });
+</script>
 
-    <!-- Agrega Bootstrap JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<!-- Agrega Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

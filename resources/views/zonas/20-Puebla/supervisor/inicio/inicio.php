@@ -251,9 +251,18 @@ include("../../../../../../controllers/verificar_permisos.php");
                 </div>
 
             <?php endif; ?>
+
+            <?php if ($tiene_permiso_recaudos) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/20-Puebla/supervisor/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </main>
-
+   
 
     <script src="/public/assets/js/MenuLate.js"></script>
 </body>

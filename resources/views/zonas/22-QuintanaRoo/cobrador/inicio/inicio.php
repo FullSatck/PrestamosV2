@@ -209,7 +209,15 @@ date_default_timezone_set('America/Bogota');
                     </div>
                 </div>
             <?php endif; ?>
-
+            
+            <?php if ($tiene_permiso_recaudos) : ?>
+                <div class="cuadro cuadro-4">
+                    <div class="cuadro-1-1">
+                        <a href="/resources/views/zonas/22-QuintanaRoo/cobrador/recaudos/recuado_admin.php" class="titulo">Recaudos</a><br>
+                        <p>Version beta</p>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </main>
 

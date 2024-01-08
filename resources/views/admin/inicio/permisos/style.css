@@ -11,6 +11,29 @@ body {
     color: #333333;
     line-height: 1.6;
 }
+.header {
+    position: fixed; /* Fija el encabezado en la parte superior */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f9fa60; /* Color de fondo, puedes cambiarlo */
+    padding: 10px; /* Espaciado alrededor del botón */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera para resaltar */
+    z-index: 1000; /* Asegura que el encabezado esté sobre otros elementos */
+}
+
+.btn-inicio {
+    color: white; /* Color del texto del botón */
+    background-color: #007bff; /* Color de fondo del botón, azul en este caso */
+    padding: 10px 20px; /* Espaciado interno del botón */
+    text-decoration: none; /* Elimina el subrayado del texto */
+    border-radius: 5px; /* Bordes redondeados */
+    font-weight: bold; /* Texto en negrita */
+}
+
+.btn-inicio:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el mouse */
+}
 
 /* Contenedor principal */
 .container {

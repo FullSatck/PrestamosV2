@@ -36,7 +36,7 @@ $sql = "SELECT c.ID, c.Nombre, c.Apellido, c.Domicilio, c.Telefono, c.HistorialC
 $resultado = $conexion->query($sql);
 
 
-
+include("../../../../../../controllers/verificar_permisos.php");
 ?>
 
 <!DOCTYPE html>

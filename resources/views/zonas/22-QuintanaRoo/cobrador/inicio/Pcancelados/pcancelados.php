@@ -93,12 +93,8 @@ if (!$fila || $fila['Nombre'] !== 'cobrador') {
                                 <th>ID</th>
                                 <th>Nombre del Cliente</th>
                                 <th>CURP</th>
-                                <th>Monto</th>
-                                <th>Tasa de Interés</th>
-                                <th>Plazo</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Vencimiento</th>
-                                <th>Acciones</th>
+                                <th>Perfil</th>
+                                <th>Hacer Prestamo</th>
                             </tr>
                         </thead>
                         <tbody>";
@@ -107,11 +103,7 @@ if (!$fila || $fila['Nombre'] !== 'cobrador') {
                             <td>" . $row["ID"] . "</td>
                             <td>" . $row["NombreCompleto"] . "</td>
                             <td>" . $row["IdentificacionCURP"] . "</td>
-                            <td>" . $row["Monto"] . "</td>
-                            <td>" . $row["TasaInteres"] . "</td>
-                            <td>" . $row["Plazo"] . "</td>
-                            <td>" . $row["FechaInicio"] . "</td>
-                            <td>" . $row["FechaVencimiento"] . "</td>
+                            <td><a href='/controllers/perfil_cliente.php?id=" . $row["IDCliente"] . "' class='btn btn-primary btn-sm'>Ver Perfil</a></td>
                             <td><a href='/resources/views/zonas/22-QuintanaRoo/cobrador/creditos/prestamos.php?cliente_id=" . $row["IDCliente"] . "' class='btn btn-primary btn-sm'>Hacer Préstamo</a></td>
                         </tr>";
                 }
