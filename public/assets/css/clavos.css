@@ -1,9 +1,11 @@
-/* clavos.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
 
 .container {
     width: 80%;
     margin: auto;
-    padding: 20px;
 }
 
 table {
@@ -12,12 +14,48 @@ table {
     margin-top: 20px;
 }
 
-th, td {
-    border: 1px solid #090808;
-    padding: 8px;
+th,
+td {
+    border: 1px solid #0b0606;
+    padding: 12px;
     text-align: left;
 }
 
 th {
-    background-color: #0a0909;
+    background-color: #f2f2f2;
+}
+
+/* Estilo alternativo para las filas */
+tr:nth-child(even) {
+    background-color: #de2222;
+}
+
+/* Hover sobre las filas */
+tr:hover {
+    background-color: #dfcaca;
+}
+
+/* Estilos para la barra de búsqueda */
+form {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+label {
+    margin-right: 10px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    font-size: 16px;
+}
+
+button {
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    border: none;
 }

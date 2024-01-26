@@ -1,71 +1,51 @@
 <?php
 date_default_timezone_set('America/Bogota');
-// Conexión al servidor con usuario, contraseña y base de datos
 $servidor = "localhost";
 $usuario = "root";
 $contrasena = "";
 $dbnombre = "prestamos";
 
-// Crear la conexión
 $conexion = new mysqli($servidor, $usuario, $contrasena, $dbnombre);
 
-// Comprobar la conexión
 if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
-// Puedes descomentar las siguientes líneas para confirmar que la conexión es efectiva
 
-// else {
-  //   echo "Conexión efectiva";
-// }
-
-?>
-
-<?php
-// ... (tu código de conexión)
-
-// Verificar si se recibió una solicitud para cambiar el estado de pago
-if (isset($_POST['cliente_id']) && isset($_POST['nuevo_estado']) && $_SESSION['rol'] === 'admin') {
-    $cliente_id = $_POST['cliente_id'];
-    $nuevo_estado = $_POST['nuevo_estado'];
-
-    // Actualizar el estado de pago en la tabla de clientes
-    $update_query = "UPDATE clientes SET EstadoPago = '$nuevo_estado' WHERE ID = $cliente_id";
-    $conexion->query($update_query);
-
-    // Si el nuevo estado es 'moroso', mover el cliente a la tabla de clientes clavos
-    if ($nuevo_estado === 'moroso') {
-        $insert_query = "INSERT INTO clientes_clavos (ID, Nombre, Deuda) SELECT ID, Nombre, 0.00 FROM clientes WHERE ID = $cliente_id";
-        $conexion->query($insert_query);
-    }
-}
-
-// Realizar consulta para obtener datos de clientes morosos
-$query = "SELECT * FROM clientes WHERE EstadoPago = 'moroso'";
+// Obtener clientes que han pasado 20 días sin pagar
+$diasSinPagar = 20;
+$fechaLimite = date('Y-m-d', strtotime("-$diasSinPagar days"));
+$query = "SELECT * FROM prestamos WHERE Estado = 'pendiente' AND FechaVencimiento <= '$fechaLimite'";
 $result = $conexion->query($query);
 
-// Comprobar si la consulta fue exitosa
-if ($result === false) {
-    // Manejar el error de la consulta
-    echo "Error en la consulta: " . $conexion->error;
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        // Mover cliente a la tabla de clientes clavos
+        $clienteID = $row['IDCliente'];
+        $updateQuery = "UPDATE clientes SET EstadoID = 2 WHERE ID = $clienteID";
+        $conexion->query($updateQuery);
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes Clavos</title>
-    <link rel="stylesheet" type="text/css" href="clavos.css">
+    <link rel="stylesheet" type="text/css" href="/public/assets/css/clavos.css">
 </head>
-
 <body>
 
     <div class="container">
         <h2>Clientes Clavos</h2>
+
+        <!-- Agrega el formulario de búsqueda -->
+        <form action="" method="GET">
+            <label for="buscar">Buscar:</label>
+            <input type="text" id="buscar" name="buscar">
+            <button type="submit">Buscar</button>
+        </form>
 
         <table>
             <thead>
@@ -73,17 +53,40 @@ if ($result === false) {
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Deuda</th>
+                    <th>Días sin pagar</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                // Mostrar los resultados en la tabla
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['ID'] . "</td>";
-                    echo "<td>" . $row['Nombre'] . "</td>";
-                    echo "<td>Deuda</td>";  // Necesitarás obtener la deuda desde tu base de datos
-                    echo "</tr>";
+                // Mostrar los resultados en la tabla de clientes clavos
+                $clavosQuery = "SELECT c.ID, c.Nombre, c.EstadoID, p.MontoAPagar, p.MontoCuota, p.FechaVencimiento
+                                FROM clientes c
+                                JOIN prestamos p ON c.ID = p.IDCliente
+                                WHERE c.EstadoID = 2";
+
+                // Modificar la consulta si se ha enviado una búsqueda
+                if (isset($_GET['buscar'])) {
+                    $busqueda = $_GET['buscar'];
+                    $clavosQuery .= " AND (c.ID LIKE '%$busqueda%' OR c.Nombre LIKE '%$busqueda%')";
+                }
+
+                $clavosResult = $conexion->query($clavosQuery);
+
+                if ($clavosResult) {
+                    while ($clavoRow = $clavosResult->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $clavoRow['ID'] . "</td>";
+                        echo "<td>" . $clavoRow['Nombre'] . "</td>";
+                        echo "<td>$" . ($clavoRow['MontoAPagar'] ?: $clavoRow['MontoCuota']) . "</td>";
+
+                        // Calcular días sin pagar
+                        $fechaVencimiento = new DateTime($clavoRow['FechaVencimiento']);
+                        $fechaActual = new DateTime();
+                        $diasSinPagar = $fechaActual->diff($fechaVencimiento)->days;
+
+                        echo "<td>Días sin pagar: $diasSinPagar</td>";
+                        echo "</tr>";
+                    }
                 }
                 ?>
             </tbody>
@@ -91,5 +94,4 @@ if ($result === false) {
     </div>
 
 </body>
-
 </html>
