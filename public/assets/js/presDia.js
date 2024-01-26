@@ -84,6 +84,7 @@ function procesarPago(prestamoId, montoCuota) {
 }
 
 
+
 function abrirModalPosponerPago(prestamoId, montoCuota, nombreCliente, direccionCliente, telefonoCliente, identificacionCURP, montoAPagar) {
 
     globalPrestamoId = prestamoId;

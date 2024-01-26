@@ -58,6 +58,7 @@ $stmt->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -71,9 +72,10 @@ $stmt->close();
     <link rel="stylesheet" href="/public/assets/css/abonos.css">
     <script src="https://kit.fontawesome.com/41bcea2ae3.js" crossorigin="anonymous"></script>
 </head>
+
 <body id="body">
 
-<header>
+    <header>
         <div class="icon__menu">
             <i class="fas fa-bars" id="btn_open"></i>
         </div>
@@ -149,7 +151,7 @@ $stmt->close();
                     <i class="fa-solid fa-hand-holding-dollar" title=""></i>
                     <h4>Prestamos</h4>
                 </div>
-            </a> 
+            </a>
             <a href="/resources/views/admin/cobros/cobros.php">
                 <div class="option">
                     <i class="fa-solid fa-arrow-right-to-city" title=""></i>
@@ -157,7 +159,7 @@ $stmt->close();
                 </div>
             </a>
 
-           <a href="/resources/views/admin/gastos/gastos.php">
+            <a href="/resources/views/admin/gastos/gastos.php">
                 <div class="option">
                     <i class="fa-solid fa-sack-xmark" title=""></i>
                     <h4>Gastos</h4>
@@ -173,13 +175,13 @@ $stmt->close();
 
             <a href="/resources/views/admin/abonos/abonos.php" class="selected">
                 <div class="option">
-                <i class="fa-solid fa-money-bill-trend-up" title=""></i>
+                    <i class="fa-solid fa-money-bill-trend-up" title=""></i>
                     <h4>Abonos</h4>
                 </div>
             </a>
             <a href="/resources/views/admin/retiros/retiros.php">
                 <div class="option">
-                <i class="fa-solid fa-scale-balanced" title=""></i>
+                    <i class="fa-solid fa-scale-balanced" title=""></i>
                     <h4>Retiros</h4>
                 </div>
             </a>
@@ -191,79 +193,120 @@ $stmt->close();
 
     <main>
         <div class="container">
-            <h1 class="mt-5">Formulario de Pago de Préstamos</h1>
+            <h1 class="mt-5">Abonos</h1>
 
-          
+            <!-- CARTULINAAAAAAAAA -->
 
-            <!-- Información del cliente -->
-            <div id="cliente-info" class="mt-4">
-                <h2>Información del Cliente</h2> <br>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="cliente-id"><strong>ID del Cliente: </strong></label>
-                        <span id="cliente-id"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="cliente-nombre"><strong>Nombre: </strong></label>
-                        <span id="cliente-nombre"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="cliente-apellido"><strong>Apellido: </strong></label>
-                        <span id="cliente-apellido"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="cliente-domicilio"><strong>Domicilio:</strong></label>
-                        <span id="cliente-domicilio"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="cliente-telefono"><strong>Teléfono:</strong></label>
-                        <span id="cliente-telefono"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="cliente-curp"><strong>Identificación CURP:</strong></label>
-                        <span id="cliente-curp"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="cliente-zona"><strong>Zona Asignada:</strong></label>
-                        <span id="cliente-zona"></span>
-                    </div>
+            <div class="info-cliente">
+                <div class="columna">
+                    <p><strong>Nombre: </strong><?= $fila["Nombre"] ?></p>
+                    <p><strong>Apellido: </strong><?= $fila["Apellido"] ?> </p>
+                    <p><strong>Curp: </strong><?= $fila["IdentificacionCURP"] ?> </p>
+                    <p><strong>Domicilio: </strong><?= $fila["Domicilio"] ?> </p>
+                    <p><strong>Teléfono: </strong><?= $fila["Telefono"] ?> </p>
+                    <p><strong>Cuota:</strong> <?= htmlspecialchars(number_format($info_prestamo['Cuota'])); ?></p>
+                    <p><strong>Total:</strong> <?= htmlspecialchars(number_format($total_prestamo)); ?>
+                </div>
+                <div class="columna">
+                    <p><strong>Estado: </strong><?= $fila["ZonaAsignada"] ?> </p>
+                    <p><strong>Municipio: </strong><?= $fila["CiudadNombre"] ?> </p>
+                    <p><strong>Cononia: </strong><?= $fila["asentamiento"] ?> </p>
+                    <p><strong>Plazo:</strong> <?= htmlspecialchars($info_prestamo['Plazo']); ?></p>
+                    <p><strong>Estado:</strong> <?= htmlspecialchars($info_prestamo['Estado']); ?></p>
+                    <p><strong>Inicio:</strong> <?= htmlspecialchars($info_prestamo['FechaInicio']); ?></p>
+                    <p><strong>Fin:</strong> <?= htmlspecialchars($info_prestamo['FechaVencimiento']); ?></p>
+                    </p>
                 </div>
             </div>
 
-            <!-- Información del préstamo -->
-            <div id="prestamo-info" class="mt-4">
-                <h2>Información del Préstamo</h2> <br>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="prestamo-id"><strong>ID de Préstamo:</strong></label>
-                        <span id="prestamo-id"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="prestamo-tasa"><strong>Tasa de Interés:</strong></label>
-                        <span id="prestamo-tasa"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="prestamo-fecha-inicio"><strong>Fecha de Inicio:</strong></label>
-                        <span id="prestamo-fecha-inicio"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="prestamo-fecha-vencimiento"><strong>Fecha de Vencimiento:</strong></label>
-                        <span id="prestamo-fecha-vencimiento"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="prestamo-zona"><strong>Zona:</strong></label>
-                        <span id="prestamo-zona"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="prestamo-monto-pagar"><strong>Deuda:</strong></label>
-                        <span id="prestamo-monto-pagar"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="prestamo-cuota"><strong>Cuota:</strong></label>
-                        <span id="prestamo-cuota"></span>
-                    </div>
-                </div>
+            <div class="profile-loans">
+                <?php
+    include("../../../../controllers/conexion.php");
+
+    if (isset($_GET['show_all']) && $_GET['show_all'] === 'true') {
+        // Si se solicita mostrar todas las filas
+        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $id_cliente);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $num_rows = $resultado->num_rows;
+        if ($num_rows > 0) {
+            echo "<table id='tabla-prestamos'>";
+            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+            $last_row = null;
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($fila['fecha']) . "</td>";
+                echo "<td>" . htmlspecialchars($fila['monto_pagado']) . "</td>";
+                echo "<td>" . htmlspecialchars($fila['monto_deuda']) . "</td>";
+                $last_row = $fila; // Actualizar la última fila en cada iteración
+                echo "</tr>";
+            }
+
+            // Mostrar el enlace de "Editar" solo para la última fila
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+            echo "</tr>";
+
+            echo "</table>";
+            echo "<button onclick='showLess()'>Ver menos</button>"; // Botón para mostrar menos
+        } else {
+            echo "<p>No se encontraron pagos para este cliente.</p>";
+        }
+
+        $stmt->close();
+    } else {
+        // Mostrar solo la última fila inicialmente
+        $sql = "SELECT id, fecha, monto_pagado, monto_deuda FROM facturas WHERE cliente_id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $id_cliente);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $num_rows = $resultado->num_rows;
+        if ($num_rows > 0) {
+            echo "<table id='tabla-prestamos'>";
+            echo "<tr><th>Fecha</th><th>Abono</th><th>Resta</th><th>Editar</th></tr>";
+            $last_row = null;
+            while ($fila = $resultado->fetch_assoc()) {
+                $last_row = $fila; // Actualizar la última fila en cada iteración
+            }
+
+            // Mostrar solo la última fila
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($last_row['fecha']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_pagado']) . "</td>";
+            echo "<td>" . htmlspecialchars($last_row['monto_deuda']) . "</td>";
+            echo "<td><a href='editar_pago.php?id=" . $last_row['id'] . "'>Editar</a></td>";
+            echo "</tr>";
+
+            echo "</table>";
+
+            echo "<button onclick='showMore()'>Ver más</button>";
+        } else {
+            echo "<p>No se encontraron pagos para este cliente.</p>";
+        }
+
+        $stmt->close();
+    }
+    ?>
             </div>
+
+            <script>
+            function showMore() {
+                window.location.href = '?id=<?= $id_cliente ?>&show_all=true';
+            }
+
+            function showLess() {
+                window.location.href = '?id=<?= $id_cliente ?>&show_all=false';
+            }
+            </script>
+
 
             <!-- Formulario de pago -->
             <div id="pago-form" class="mt-4">
@@ -335,7 +378,7 @@ $stmt->close();
                         <!-- Agregar un botón para compartir la factura por WhatsApp -->
 
                         <button type="button" class="btn btn-primary" id="compartirPorWhatsAppButton">
-                            Compartir por WhatsApp 
+                            Compartir por WhatsApp
                         </button>
 
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
